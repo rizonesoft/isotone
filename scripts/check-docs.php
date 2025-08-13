@@ -1,0 +1,348 @@
+<?php
+/**
+ * Documentation Integrity Checker for Isotone CMS
+ * 
+ * This script ensures all documentation is synchronized with the actual codebase.
+ * Run: php scripts/check-docs.php
+ */
+
+declare(strict_types=1);
+
+class DocChecker
+{
+    private array $errors = [];
+    private array $warnings = [];
+    private string $rootPath;
+    
+    public function __construct()
+    {
+        $this->rootPath = dirname(__DIR__);
+    }
+    
+    public function run(): int
+    {
+        echo "🔍 Checking Isotone CMS Documentation Integrity...\n\n";
+        
+        $this->checkReadmeStatus();
+        $this->checkFileReferences();
+        $this->checkEnvVariables();
+        $this->checkComposerScripts();
+        $this->checkProjectStructure();
+        $this->checkRoutes();
+        $this->checkCodeExamples();
+        $this->checkTodoMarkers();
+        
+        return $this->report();
+    }
+    
+    /**
+     * Check if README.md status matches reality
+     */
+    private function checkReadmeStatus(): void
+    {
+        $readme = file_get_contents($this->rootPath . '/README.md');
+        
+        // Check completed features
+        if (strpos($readme, '✅ Basic routing system') !== false) {
+            if (!file_exists($this->rootPath . '/app/Core/Application.php')) {
+                $this->errors[] = "README.md: Claims routing system complete but Application.php missing";
+            }
+        }
+        
+        if (strpos($readme, '✅ Database integration') !== false) {
+            if (!file_exists($this->rootPath . '/app/Core/Database.php')) {
+                $this->warnings[] = "README.md: Database marked complete but Database.php not found";
+            }
+        }
+        
+        // Check if vendor exists when claiming composer is set up
+        if (strpos($readme, '✅ Composer configuration') !== false) {
+            if (!is_dir($this->rootPath . '/vendor')) {
+                $this->errors[] = "README.md: Claims Composer setup but vendor/ directory missing";
+            }
+        }
+    }
+    
+    /**
+     * Check if all referenced files in documentation exist
+     */
+    private function checkFileReferences(): void
+    {
+        $docFiles = glob($this->rootPath . '/docs/*.md');
+        $docFiles[] = $this->rootPath . '/README.md';
+        $docFiles[] = $this->rootPath . '/CLAUDE.md';
+        
+        foreach ($docFiles as $docFile) {
+            if (!file_exists($docFile)) continue;
+            
+            $content = file_get_contents($docFile);
+            $docName = basename($docFile);
+            
+            // Find file references like `app/Core/Application.php`
+            preg_match_all('/`([a-zA-Z0-9\/_.-]+\.(php|json|md|env|htaccess))`/', $content, $matches);
+            
+            foreach ($matches[1] as $file) {
+                $fullPath = $this->rootPath . '/' . $file;
+                $altPath = $this->rootPath . '/' . ltrim($file, '/');
+                
+                if (!file_exists($fullPath) && !file_exists($altPath) && !file_exists($file)) {
+                    // Special case for .env (which shouldn't exist, only .env.example)
+                    if ($file === '.env' || basename($file) === '.env') {
+                        continue;
+                    }
+                    $this->warnings[] = "$docName: References non-existent file: $file";
+                }
+            }
+        }
+    }
+    
+    /**
+     * Check if all env variables used in code are documented
+     */
+    private function checkEnvVariables(): void
+    {
+        $envExample = $this->rootPath . '/.env.example';
+        if (!file_exists($envExample)) {
+            $this->errors[] = ".env.example file missing!";
+            return;
+        }
+        
+        // Parse .env.example
+        $exampleVars = [];
+        $lines = file($envExample);
+        foreach ($lines as $line) {
+            if (preg_match('/^([A-Z_]+)=/', $line, $matches)) {
+                $exampleVars[] = $matches[1];
+            }
+        }
+        
+        // Find all env() calls in PHP files
+        $usedVars = [];
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($this->rootPath . '/app')
+        );
+        
+        foreach ($iterator as $file) {
+            if ($file->isFile() && $file->getExtension() === 'php') {
+                $content = file_get_contents($file->getPathname());
+                
+                // Find env('VAR_NAME') calls
+                preg_match_all("/env\(['\"]([A-Z_]+)['\"]/", $content, $matches);
+                foreach ($matches[1] as $var) {
+                    if (!in_array($var, $usedVars)) {
+                        $usedVars[] = $var;
+                    }
+                }
+            }
+        }
+        
+        // Check for undocumented variables
+        $undocumented = array_diff($usedVars, $exampleVars);
+        foreach ($undocumented as $var) {
+            $this->errors[] = ".env.example: Missing variable '$var' (used in code)";
+        }
+        
+        // Check for unused variables
+        $unused = array_diff($exampleVars, $usedVars);
+        foreach ($unused as $var) {
+            // Some vars might be for future use, so warning only
+            $this->warnings[] = ".env.example: Variable '$var' defined but never used";
+        }
+    }
+    
+    /**
+     * Check if composer scripts are documented
+     */
+    private function checkComposerScripts(): void
+    {
+        $composerFile = $this->rootPath . '/composer.json';
+        if (!file_exists($composerFile)) {
+            $this->errors[] = "composer.json missing!";
+            return;
+        }
+        
+        $composer = json_decode(file_get_contents($composerFile), true);
+        $scripts = array_keys($composer['scripts'] ?? []);
+        
+        // Check documentation files
+        $docsContent = '';
+        $docsContent .= file_get_contents($this->rootPath . '/README.md');
+        if (file_exists($this->rootPath . '/docs/development-setup.md')) {
+            $docsContent .= file_get_contents($this->rootPath . '/docs/development-setup.md');
+        }
+        if (file_exists($this->rootPath . '/docs/getting-started.md')) {
+            $docsContent .= file_get_contents($this->rootPath . '/docs/getting-started.md');
+        }
+        
+        foreach ($scripts as $script) {
+            if (strpos($docsContent, "composer $script") === false) {
+                $this->warnings[] = "Composer script '$script' not documented";
+            }
+        }
+    }
+    
+    /**
+     * Check if project structure in docs matches reality
+     */
+    private function checkProjectStructure(): void
+    {
+        // Expected structure from documentation
+        $expectedDirs = [
+            'app/Core',
+            'app/Http/Controllers',
+            'app/Http/Middleware',
+            'app/Models',
+            'app/Services',
+            'public',
+            'config',
+            'content/uploads',
+            'content/cache',
+            'plugins',
+            'themes',
+            'storage/logs',
+            'docs'
+        ];
+        
+        foreach ($expectedDirs as $dir) {
+            if (!is_dir($this->rootPath . '/' . $dir)) {
+                $this->warnings[] = "Directory structure: '$dir' documented but doesn't exist";
+            }
+        }
+    }
+    
+    /**
+     * Check if routes documented match actual routes
+     */
+    private function checkRoutes(): void
+    {
+        $appFile = $this->rootPath . '/app/Core/Application.php';
+        if (!file_exists($appFile)) {
+            return;
+        }
+        
+        $content = file_get_contents($appFile);
+        
+        // Extract routes
+        preg_match_all("/routes->add\(['\"]([^'\"]+)['\"],\s*new Route\(['\"]([^'\"]+)['\"]/", $content, $matches);
+        
+        $routes = [];
+        for ($i = 0; $i < count($matches[1]); $i++) {
+            $routes[$matches[1][$i]] = $matches[2][$i];
+        }
+        
+        // Check if documented routes exist
+        $gettingStarted = $this->rootPath . '/docs/getting-started.md';
+        if (file_exists($gettingStarted)) {
+            $content = file_get_contents($gettingStarted);
+            
+            // Look for route mentions
+            if (strpos($content, '/admin') !== false && !in_array('/admin', $routes)) {
+                $this->warnings[] = "getting-started.md: References /admin route but not implemented";
+            }
+        }
+    }
+    
+    /**
+     * Check if code examples in documentation are valid
+     */
+    private function checkCodeExamples(): void
+    {
+        $docFiles = glob($this->rootPath . '/docs/*.md');
+        
+        foreach ($docFiles as $docFile) {
+            $content = file_get_contents($docFile);
+            $docName = basename($docFile);
+            
+            // Find PHP code blocks
+            preg_match_all('/```php\n(.*?)\n```/s', $content, $matches);
+            
+            foreach ($matches[1] as $code) {
+                // Basic syntax check (without executing)
+                $testFile = tempnam(sys_get_temp_dir(), 'isotone_doc_check');
+                file_put_contents($testFile, "<?php\n" . $code);
+                
+                $output = [];
+                $return = 0;
+                exec("php -l $testFile 2>&1", $output, $return);
+                
+                if ($return !== 0) {
+                    $this->warnings[] = "$docName: Contains PHP code with syntax errors";
+                }
+                
+                unlink($testFile);
+            }
+        }
+    }
+    
+    /**
+     * Check for TODO/FIXME markers
+     */
+    private function checkTodoMarkers(): void
+    {
+        $files = [
+            'README.md',
+            'docs/*.md'
+        ];
+        
+        foreach ($files as $pattern) {
+            $matchedFiles = glob($this->rootPath . '/' . $pattern);
+            foreach ($matchedFiles as $file) {
+                $content = file_get_contents($file);
+                $filename = basename($file);
+                
+                if (preg_match_all('/(TODO|FIXME|🚧|XXX)/', $content, $matches)) {
+                    $count = count($matches[0]);
+                    $this->warnings[] = "$filename: Contains $count unfinished markers (TODO/FIXME/🚧)";
+                }
+            }
+        }
+    }
+    
+    /**
+     * Generate report
+     */
+    private function report(): int
+    {
+        $totalIssues = count($this->errors) + count($this->warnings);
+        
+        if ($totalIssues === 0) {
+            echo "✅ All documentation is in sync with the codebase!\n";
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+            echo "No issues found. Documentation is up to date.\n";
+            return 0;
+        }
+        
+        if (!empty($this->errors)) {
+            echo "❌ ERRORS (must fix before commit):\n";
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+            foreach ($this->errors as $error) {
+                echo "  ✗ $error\n";
+            }
+            echo "\n";
+        }
+        
+        if (!empty($this->warnings)) {
+            echo "⚠️  WARNINGS (should fix soon):\n";
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+            foreach ($this->warnings as $warning) {
+                echo "  ⚠ $warning\n";
+            }
+            echo "\n";
+        }
+        
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        echo "Summary: " . count($this->errors) . " errors, " . count($this->warnings) . " warnings\n";
+        
+        if (!empty($this->errors)) {
+            echo "\n❌ Documentation check failed! Fix errors before committing.\n";
+            return 1;
+        }
+        
+        echo "\n⚠️  Documentation has warnings but is acceptable.\n";
+        return 0;
+    }
+}
+
+// Run the checker
+$checker = new DocChecker();
+exit($checker->run());

@@ -89,9 +89,47 @@ composer fix-style
 # Static analysis
 composer analyse
 
+# Documentation maintenance (CRITICAL for LLMs!)
+composer docs:check    # Check if docs match code
+composer docs:update   # Auto-generate some docs
+
 # Start development (visit http://localhost/isotone/)
 # No PHP built-in server needed - uses XAMPP Apache
 ```
+
+## 📚 Documentation Maintenance (REQUIRED!)
+
+**Isotone uses automated documentation checking.** As an LLM, you MUST:
+
+### When Adding Features:
+1. Update README.md status (change 🚧 to ✅ when done)
+2. Update relevant docs in `/docs`
+3. Add new env vars to `.env.example`
+4. Document new routes/endpoints
+5. Run `composer docs:check` to verify
+
+### When Changing Code:
+1. Update file references in docs if files moved/renamed
+2. Update code examples if APIs changed
+3. Update CLAUDE.md if new patterns introduced
+4. Check for outdated information
+
+### Before Completing Task:
+```bash
+# ALWAYS run this before saying you're done:
+composer docs:check
+
+# If it shows errors, fix them!
+# If it shows warnings, evaluate if they need fixing
+```
+
+### Documentation Files That Often Need Updates:
+- `README.md` - Feature status, installation steps
+- `CLAUDE.md` - This file, new patterns/rules
+- `.env.example` - New environment variables
+- `docs/getting-started.md` - New features, examples
+- `docs/LLM-DEVELOPMENT-GUIDE.md` - New patterns for AI
+- `composer.json` - New commands/dependencies
 
 ## Current Implementation Files
 
@@ -121,6 +159,7 @@ composer analyse
 2. Check `docs/LLM-DEVELOPMENT-GUIDE.md`
 3. Review existing code patterns in `app/Core/`
 4. Verify changes work with XAMPP
+5. **Run `composer docs:check`** to ensure docs are current
 
 ### Common Tasks for LLMs:
 
@@ -161,4 +200,5 @@ composer analyse
 - Use RedBeanPHP for database
 - Test on `/isotone/` URL
 - Keep shared hosting compatible
-- Update documentation
+- **Update ALL affected documentation**
+- **Run `composer docs:check` before finishing**

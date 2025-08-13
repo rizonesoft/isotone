@@ -262,9 +262,44 @@ After making changes, verify:
 - [ ] No hardcoded paths (use helpers)
 - [ ] Output is escaped for security
 - [ ] Changes work with XAMPP setup
-- [ ] Documentation is updated
+- [ ] **Documentation is updated (CRITICAL!)**
+- [ ] **Run `composer docs:check` - MUST PASS**
 - [ ] No Node.js dependencies added
 - [ ] Backward compatibility maintained
+
+## 📚 Documentation Update Workflow
+
+### Step 1: Before Making Changes
+```bash
+# Check current documentation state
+composer docs:check
+```
+
+### Step 2: After Making Changes
+```bash
+# Auto-generate what can be automated
+composer docs:update
+
+# Check for issues
+composer docs:check
+```
+
+### Step 3: Fix Any Issues
+- **ERRORS** (red ❌) - MUST fix before saying task is complete
+- **WARNINGS** (yellow ⚠️) - Should fix if related to your changes
+
+### Common Documentation Updates Needed:
+
+| If You Changed... | Update These Files |
+|-------------------|-------------------|
+| Added a route | `docs/getting-started.md`, API docs |
+| Added env variable | `.env.example` with comment |
+| Added a file | `CLAUDE.md` file list, project structure |
+| Added composer dependency | `README.md` requirements |
+| Added a command | `composer.json`, then document it |
+| Changed public API | All examples using that API |
+| Added a feature | `README.md` status section |
+| Found a pattern | `LLM-DEVELOPMENT-GUIDE.md` |
 
 ## 🆘 When Stuck
 
