@@ -110,27 +110,60 @@ class Application
             <title>Welcome to Isotone CMS</title>
             <style>
                 * { margin: 0; padding: 0; box-sizing: border-box; }
+                :root {
+                    /* Isotone Brand Colors - Professional & Unique */
+                    --isotone-primary: #2C5F2D;      /* Forest Green */
+                    --isotone-secondary: #97BC62;    /* Fresh Lime */
+                    --isotone-accent: #4A7C59;       /* Sea Green */
+                    --isotone-dark: #1A3A1A;         /* Deep Forest */
+                    --isotone-light: #E8F5E9;        /* Mint Cream */
+                    --isotone-warning: #FF9800;      /* Amber */
+                    --isotone-success: #4CAF50;      /* Success Green */
+                    --isotone-danger: #F44336;       /* Red */
+                }
                 body { 
                     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    background: linear-gradient(135deg, #2C5F2D 0%, #4A7C59 50%, #97BC62 100%);
                     min-height: 100vh;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     color: #333;
+                    position: relative;
+                }
+                body::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background-image: 
+                        radial-gradient(circle at 20% 80%, rgba(151, 188, 98, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(74, 124, 89, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(44, 95, 45, 0.2) 0%, transparent 50%);
+                    pointer-events: none;
                 }
                 .container {
                     background: white;
-                    border-radius: 12px;
+                    border-radius: 16px;
                     padding: 3rem;
-                    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                    box-shadow: 
+                        0 10px 40px rgba(44, 95, 45, 0.2),
+                        0 2px 10px rgba(0,0,0,0.1);
                     max-width: 600px;
                     text-align: center;
+                    position: relative;
+                    border: 1px solid rgba(151, 188, 98, 0.2);
                 }
                 h1 {
-                    color: #764ba2;
+                    background: linear-gradient(135deg, #2C5F2D 0%, #4A7C59 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
                     margin-bottom: 1rem;
                     font-size: 2.5rem;
+                    font-weight: 800;
                 }
                 .subtitle {
                     color: #666;
@@ -138,15 +171,20 @@ class Application
                     font-size: 1.1rem;
                 }
                 .status {
-                    background: #f0f4f8;
+                    background: linear-gradient(135deg, #E8F5E9 0%, #F1F8F1 100%);
                     padding: 1rem;
-                    border-radius: 8px;
+                    border-radius: 12px;
                     margin: 2rem 0;
+                    border: 1px solid rgba(151, 188, 98, 0.2);
                 }
                 .status-item {
                     display: flex;
                     justify-content: space-between;
                     padding: 0.5rem 0;
+                    border-bottom: 1px solid rgba(151, 188, 98, 0.1);
+                }
+                .status-item:last-child {
+                    border-bottom: none;
                 }
                 .badge {
                     padding: 0.25rem 0.75rem;
@@ -155,38 +193,58 @@ class Application
                     font-weight: bold;
                 }
                 .badge-success {
-                    background: #10b981;
+                    background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
                     color: white;
+                    box-shadow: 0 2px 4px rgba(76, 175, 80, 0.3);
                 }
                 .badge-warning {
-                    background: #f59e0b;
+                    background: linear-gradient(135deg, #FF9800 0%, #FFB74D 100%);
                     color: white;
+                    box-shadow: 0 2px 4px rgba(255, 152, 0, 0.3);
                 }
                 .btn {
                     display: inline-block;
                     padding: 0.75rem 2rem;
-                    background: #764ba2;
+                    background: linear-gradient(135deg, #2C5F2D 0%, #4A7C59 100%);
                     color: white;
                     text-decoration: none;
-                    border-radius: 8px;
+                    border-radius: 10px;
                     margin-top: 1rem;
-                    transition: transform 0.2s, box-shadow 0.2s;
+                    transition: all 0.3s ease;
+                    font-weight: 600;
+                    box-shadow: 0 4px 15px rgba(44, 95, 45, 0.3);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
                 }
                 .btn:hover {
                     transform: translateY(-2px);
-                    box-shadow: 0 10px 20px rgba(118, 75, 162, 0.3);
+                    box-shadow: 0 6px 25px rgba(44, 95, 45, 0.4);
+                    background: linear-gradient(135deg, #4A7C59 0%, #97BC62 100%);
                 }
                 code {
-                    background: #f0f4f8;
+                    background: #E8F5E9;
                     padding: 0.2rem 0.4rem;
                     border-radius: 4px;
                     font-family: 'Courier New', monospace;
+                    color: #2C5F2D;
+                    border: 1px solid rgba(151, 188, 98, 0.3);
+                }
+                
+                /* Animation for logo */
+                @keyframes float {
+                    0%, 100% { transform: translateY(0px); }
+                    50% { transform: translateY(-10px); }
+                }
+                
+                h1::before {
+                    content: '🌿 ';
+                    display: inline-block;
+                    animation: float 3s ease-in-out infinite;
                 }
             </style>
         </head>
         <body>
             <div class="container">
-                <h1>🎉 Isotone CMS</h1>
+                <h1>Isotone CMS</h1>
                 <p class="subtitle">Your lightweight CMS is ready to go!</p>
                 
                 <div class="status">
@@ -248,14 +306,61 @@ class Application
             <meta charset="UTF-8">
             <title>404 - Page Not Found</title>
             <style>
-                body { font-family: sans-serif; text-align: center; padding: 50px; }
-                h1 { color: #764ba2; }
+                * { margin: 0; padding: 0; box-sizing: border-box; }
+                body { 
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                    background: linear-gradient(135deg, #2C5F2D 0%, #4A7C59 50%, #97BC62 100%);
+                    min-height: 100vh;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: #333;
+                }
+                .error-container {
+                    background: white;
+                    border-radius: 16px;
+                    padding: 3rem;
+                    box-shadow: 0 10px 40px rgba(44, 95, 45, 0.2);
+                    text-align: center;
+                    max-width: 500px;
+                }
+                h1 { 
+                    font-size: 6rem;
+                    background: linear-gradient(135deg, #2C5F2D 0%, #4A7C59 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    margin-bottom: 1rem;
+                }
+                p {
+                    color: #666;
+                    margin-bottom: 2rem;
+                    font-size: 1.1rem;
+                }
+                a {
+                    display: inline-block;
+                    padding: 0.75rem 2rem;
+                    background: linear-gradient(135deg, #2C5F2D 0%, #4A7C59 100%);
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 10px;
+                    transition: all 0.3s ease;
+                    font-weight: 600;
+                    box-shadow: 0 4px 15px rgba(44, 95, 45, 0.3);
+                }
+                a:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 25px rgba(44, 95, 45, 0.4);
+                    background: linear-gradient(135deg, #4A7C59 0%, #97BC62 100%);
+                }
             </style>
         </head>
         <body>
-            <h1>404</h1>
-            <p>The page you're looking for doesn't exist.</p>
-            <a href="{$baseUrl}">Go Home</a>
+            <div class="error-container">
+                <h1>404</h1>
+                <p>The page you're looking for doesn't exist.</p>
+                <a href="{$baseUrl}">Go Home</a>
+            </div>
         </body>
         </html>
         HTML;
