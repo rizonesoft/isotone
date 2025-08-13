@@ -16,6 +16,9 @@ This document defines how we keep ALL documentation synchronized with code chang
 | docs/development-setup.md | Tool changes, requirements | Core |
 | docs/LLM-DEVELOPMENT-GUIDE.md | New patterns, rules for AI | AI |
 | docs/AI-CODING-STANDARDS.md | Style changes, new standards | AI |
+| .windsurf-rules.md | IDE rule changes (auto-synced) | AI |
+| .cursorrules | IDE rule changes (auto-generated) | AI |
+| .github/copilot-instructions.md | IDE rule changes (auto-generated) | AI |
 | API docs | Endpoint changes | Core |
 | Plugin docs | Hook changes | Core |
 
@@ -261,6 +264,34 @@ echo "Documentation check passed!"
 - [ ] Update all code examples
 - [ ] Mark old docs as deprecated
 - [ ] Provide migration guide
+```
+
+## 🤖 IDE Rules Synchronization
+
+### Keeping IDE Rules Updated
+
+The project maintains IDE-specific rule files that are automatically synchronized:
+
+1. **Source of Truth**: `.windsurf-rules.md` in root
+2. **Auto-sync Command**: `composer ide:sync`
+3. **Checked by**: `composer docs:check`
+
+### Supported IDEs:
+- **Windsurf**: `.windsurf/rules/development-guide.md` (synced from `.windsurf-rules.md`)
+- **Cursor**: `.cursorrules` (auto-generated)
+- **GitHub Copilot**: `.github/copilot-instructions.md` (auto-generated)
+- **VS Code**: Can use `.vscode/settings.json` (manual)
+
+### To Update IDE Rules:
+```bash
+# 1. Edit the source file
+edit .windsurf-rules.md
+
+# 2. Sync to all IDEs
+composer ide:sync
+
+# 3. Verify sync worked
+composer docs:check
 ```
 
 ## 🔄 Living Documentation Strategy

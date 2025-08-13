@@ -31,6 +31,7 @@ class DocChecker
         $this->checkRoutes();
         $this->checkCodeExamples();
         $this->checkTodoMarkers();
+        $this->checkIdeRules();
         
         return $this->report();
     }
@@ -293,6 +294,52 @@ class DocChecker
                 if (preg_match_all('/(TODO|FIXME|🚧|XXX)/', $content, $matches)) {
                     $count = count($matches[0]);
                     $this->warnings[] = "$filename: Contains $count unfinished markers (TODO/FIXME/🚧)";
+                }
+            }
+        }
+    }
+    
+    /**
+     * Check IDE rule files are in sync
+     */
+    private function checkIdeRules(): void
+    {
+        // Check if Windsurf rules exist and are in sync
+        $windsurfSource = $this->rootPath . '/.windsurf-rules.md';
+        $windsurfTarget = $this->rootPath . '/.windsurf/rules/development-guide.md';
+        
+        if (file_exists($windsurfSource)) {
+            if (file_exists($windsurfTarget)) {
+                $sourceContent = file_get_contents($windsurfSource);
+                $targetContent = file_get_contents($windsurfTarget);
+                
+                if ($sourceContent !== $targetContent) {
+                    $this->warnings[] = "Windsurf rules out of sync! Copy .windsurf-rules.md to .windsurf/rules/development-guide.md";
+                }
+            }
+            
+            // Check if windsurf rules reference correct paths
+            $content = file_get_contents($windsurfSource);
+            if (strpos($content, 'CLAUDE.md') !== false) {
+                if (!file_exists($this->rootPath . '/CLAUDE.md')) {
+                    $this->errors[] = "Windsurf rules reference missing CLAUDE.md";
+                }
+            }
+        }
+        
+        // Check for other IDE rule files
+        $ideRuleFiles = [
+            '.cursorrules' => 'Cursor',
+            '.github/copilot-instructions.md' => 'GitHub Copilot'
+        ];
+        
+        foreach ($ideRuleFiles as $file => $ide) {
+            if (file_exists($this->rootPath . '/' . $file)) {
+                $content = file_get_contents($this->rootPath . '/' . $file);
+                
+                // Check if they reference the LLM docs
+                if (strpos($content, 'LLM-DEVELOPMENT-GUIDE.md') === false) {
+                    $this->warnings[] = "$ide rules should reference docs/LLM-DEVELOPMENT-GUIDE.md";
                 }
             }
         }
