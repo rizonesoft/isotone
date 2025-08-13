@@ -1,0 +1,76 @@
+# Isotone CMS Project Structure
+
+*Auto-generated on 2025-08-13 22:40:59*
+
+## Project Structure
+
+```
+.claude/
+  settings.local.json
+.env.example
+.github/
+  copilot-instructions.md
+.windsurf/
+  rules/
+    development-guide.md
+.windsurf-rules.md
+CHANGELOG.md
+CLAUDE.md
+CONTRIBUTING.md
+GITHUB-SETUP.md
+README.md
+app/
+  Commands/
+    ChangelogCommand.php
+    VersionCommand.php
+  Core/
+    Application.php
+    Migration.php
+    Version.php
+  Http/
+    Controllers/
+    Middleware/
+  Models/
+  Services/
+  helpers.php
+composer.json
+config/
+  theme.php
+  version.json
+content/
+  backups/
+  cache/
+  uploads/
+docs/
+  AI-CODING-STANDARDS.md
+  AI-SATISFACTION-TRIGGERS.md
+  AI-VERSION-UPDATE-GUIDE.md
+  API-REFERENCE.md
+  AUTOMATED-DOCUMENTATION-WORKFLOW.md
+  COMMANDS.md
+  DOCUMENTATION-MAINTENANCE.md
+  ENVIRONMENT-VARIABLES.md
+  LLM-DEVELOPMENT-GUIDE.md
+  PROJECT-STRUCTURE.md
+  PROMPT-ENGINEERING-GUIDE.md
+  ROUTES.md
+  VERSION-MANAGEMENT.md
+  development-setup.md
+  getting-started.md
+  isotone-tech-stack.md
+index.php
+plugins/
+public/
+  admin/
+  assets/
+  index.php
+scripts/
+  check-docs.php
+  install-hooks.php
+  sync-ide-rules.php
+  update-docs.php
+storage/
+  logs/
+  temp/
+themes/
+```

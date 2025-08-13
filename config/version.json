@@ -1,0 +1,49 @@
+{
+    "current": "0.1.2",
+    "schema": "1.0.0",
+    "codename": "Genesis",
+    "release_date": "2025-08-13",
+    "history": [
+        {
+            "version": "0.1.0-alpha",
+            "date": "2025-01-13",
+            "codename": "Genesis",
+            "features": [
+                "Core foundation",
+                "Modern UI with dark theme",
+                "Basic routing system",
+                "Environment configuration",
+                "SVG logo and branding",
+                "Intelligent versioning system with semantic versioning",
+                "Version API endpoints",
+                "CLI version management commands",
+                "Automated changelog generation"
+            ],
+            "breaking_changes": []
+        },
+        {
+            "version": "0.1.1",
+            "date": "2025-08-13",
+            "codename": "Genesis",
+            "features": [
+                "Improved version badge text contrast (white text)"
+            ],
+            "breaking_changes": [],
+            "from_version": "0.1.0-alpha"
+        },
+        {
+            "version": "0.1.2",
+            "date": "2025-08-13",
+            "codename": "Genesis",
+            "features": [
+                "Intelligent documentation automation system",
+                "Smart git hooks for documentation validation",
+                "AI satisfaction detection for auto-commit workflow",
+                "Optimized documentation update triggers",
+                "Enhanced CLI version management"
+            ],
+            "breaking_changes": [],
+            "from_version": "0.1.1"
+        }
+    ]
+}

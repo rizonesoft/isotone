@@ -18,6 +18,7 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Isotone\Core\Version;
 
 class Application
 {
@@ -46,6 +47,15 @@ class Application
         // Home route
         $this->routes->add('home', new Route('/', [
             '_controller' => [$this, 'handleHome']
+        ]));
+        
+        // API routes
+        $this->routes->add('api_version', new Route('/api/version', [
+            '_controller' => [$this, 'handleApiVersion']
+        ]));
+        
+        $this->routes->add('api_system', new Route('/api/system', [
+            '_controller' => [$this, 'handleApiSystem']
         ]));
         
         // Installation check
@@ -104,6 +114,11 @@ class Application
         $composerInstalled = file_exists($this->basePath . '/vendor/autoload.php');
         $composerStatus = $composerInstalled ? 'Installed' : 'Not installed';
         $composerBadgeClass = $composerInstalled ? 'badge-success' : 'badge-warning';
+        
+        // Version information
+        $isotonerVersion = Version::format();
+        $versionBadge = Version::getBadge();
+        $versionInfo = Version::current();
         $nextStep = $composerInstalled 
             ? 'Your development environment is ready!' 
             : 'Next step: Run <code>composer install</code> to download dependencies';
@@ -443,8 +458,12 @@ class Application
                         </g>
                     </svg>
                     <h1>Isotone CMS</h1>
+                    <div style="margin-left: 1rem;">$versionBadge</div>
                 </div>
                 <p class="subtitle">Your lightweight CMS is ready to go!</p>
+                <div style="text-align: left; margin-bottom: 2rem; color: var(--text-secondary); font-size: 0.9rem;">
+                    Version: $isotonerVersion | PHP {$versionInfo['php_version']}
+                </div>
                 
                 <div class="status">
                     <div class="status-item">
@@ -1033,6 +1052,43 @@ class Application
         HTML;
         
         return new Response($html, 404);
+    }
+    
+    /**
+     * Handle API version endpoint
+     */
+    private function handleApiVersion(Request $request): Response
+    {
+        $versionInfo = Version::current();
+        
+        $response = new Response(json_encode($versionInfo, JSON_PRETTY_PRINT));
+        $response->headers->set('Content-Type', 'application/json');
+        
+        return $response;
+    }
+    
+    /**
+     * Handle API system information endpoint
+     */
+    private function handleApiSystem(Request $request): Response
+    {
+        $systemInfo = [
+            'version' => Version::current(),
+            'compatibility' => Version::getCompatibility(),
+            'environment' => [
+                'php' => PHP_VERSION,
+                'os' => PHP_OS,
+                'sapi' => PHP_SAPI,
+                'server' => $_SERVER['SERVER_SOFTWARE'] ?? 'Unknown'
+            ],
+            'features' => Version::getFeatures(),
+            'update_check' => Version::checkForUpdates()
+        ];
+        
+        $response = new Response(json_encode($systemInfo, JSON_PRETTY_PRINT));
+        $response->headers->set('Content-Type', 'application/json');
+        
+        return $response;
     }
     
     private function handleError(\Exception $e): Response

@@ -1,0 +1,168 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Isotone CMS - CLI Interface
+ * 
+ * @copyright  2025 Rizonetech (Pty) Ltd
+ * @license    MIT License
+ * @author     Rizonetech Development Team
+ */
+
+// Check if running from CLI
+if (php_sapi_name() !== 'cli') {
+    die('This script must be run from the command line.');
+}
+
+// Bootstrap
+require_once __DIR__ . '/vendor/autoload.php';
+
+use Isotone\Commands\VersionCommand;
+use Isotone\Commands\ChangelogCommand;
+use Isotone\Core\Version;
+
+// Parse command
+$command = $argv[1] ?? 'help';
+$subcommand = $argv[2] ?? null;
+
+// ASCII Art Logo
+function showLogo(): void
+{
+    echo "\n";
+    echo "  ╦╔═╗╔═╗╔╦╗╔═╗╔╗╔╔═╗  ╔═╗╔╦╗╔═╗\n";
+    echo "  ║╚═╗║ ║ ║ ║ ║║║║║╣   ║  ║║║╚═╗\n";
+    echo "  ╩╚═╝╚═╝ ╩ ╚═╝╝╚╝╚═╝  ╚═╝╩ ╩╚═╝\n";
+    echo "  " . Version::format() . "\n";
+    echo "\n";
+}
+
+// Show help
+function showHelp(): void
+{
+    showLogo();
+    echo "Usage: php isotone <command> [options]\n\n";
+    echo "Available commands:\n";
+    echo "  version          Show version information\n";
+    echo "  version:check    Check system compatibility\n";
+    echo "  version:history  Show version history\n";
+    echo "  version:bump     Bump version number\n";
+    echo "  version:set      Set version directly\n";
+    echo "  changelog        Generate and save CHANGELOG.md\n";
+    echo "  migrate          Run database migrations\n";
+    echo "  migrate:status   Check migration status\n";
+    echo "  migrate:rollback Rollback last migration batch\n";
+    echo "  help             Show this help message\n";
+    echo "\n";
+    echo "Version bump usage:\n";
+    echo "  php isotone version:bump [major|minor|patch] [stage] [codename]\n";
+    echo "  Examples:\n";
+    echo "    php isotone version:bump patch                    # 0.1.0 -> 0.1.1\n";
+    echo "    php isotone version:bump minor beta               # 0.1.0 -> 0.2.0-beta\n";
+    echo "    php isotone version:bump major stable \"Phoenix\"   # 0.1.0 -> 1.0.0 (Phoenix)\n";
+    echo "\n";
+    echo "Version set usage:\n";
+    echo "  php isotone version:set <version> [codename]\n";
+    echo "  Example: php isotone version:set 1.0.0-rc1 \"Phoenix\"\n";
+    echo "\n";
+}
+
+// Execute command
+try {
+    switch ($command) {
+        case 'version':
+            if ($subcommand === null) {
+                VersionCommand::show();
+            }
+            break;
+            
+        case 'version:check':
+            VersionCommand::check();
+            break;
+            
+        case 'version:history':
+            VersionCommand::history();
+            break;
+            
+        case 'version:bump':
+            $type = $argv[2] ?? 'patch';
+            $stage = $argv[3] ?? null;
+            $codename = $argv[4] ?? null;
+            
+            if (!in_array($type, ['major', 'minor', 'patch'])) {
+                echo "Error: Invalid version type. Use major, minor, or patch.\n";
+                exit(1);
+            }
+            
+            $newVersion = Version::bump($type, $stage, $codename);
+            echo "Version bumped to: " . Version::format($newVersion) . "\n";
+            
+            // Auto-generate changelog
+            echo "\nUpdating CHANGELOG.md...\n";
+            if (ChangelogCommand::save()) {
+                echo "CHANGELOG.md updated successfully!\n";
+            }
+            
+            // Update documentation and sync IDE rules
+            echo "\nUpdating documentation...\n";
+            system('composer docs:update');
+            system('composer ide:sync');
+            
+            // Show what changed
+            echo "\nVersion updated successfully!\n";
+            echo "All documentation and IDE rules synced!\n";
+            echo "Run 'git add config/version.json CHANGELOG.md docs/' to stage the changes.\n";
+            break;
+            
+        case 'version:set':
+            $newVersion = $argv[2] ?? null;
+            $codename = $argv[3] ?? null;
+            
+            if ($newVersion === null) {
+                echo "Error: Version number required.\n";
+                echo "Usage: php isotone version:set <version> [codename]\n";
+                exit(1);
+            }
+            
+            if (Version::set($newVersion, $codename)) {
+                echo "Version set to: " . Version::format($newVersion) . "\n";
+                echo "\nVersion updated successfully!\n";
+                echo "Run 'git add config/version.json' to stage the changes.\n";
+            } else {
+                echo "Error: Failed to set version.\n";
+                exit(1);
+            }
+            break;
+            
+        case 'changelog':
+            echo "Generating CHANGELOG.md...\n";
+            if (ChangelogCommand::save()) {
+                echo "CHANGELOG.md generated successfully!\n";
+                echo "Location: CHANGELOG.md\n";
+            } else {
+                echo "Error: Failed to generate CHANGELOG.md\n";
+                exit(1);
+            }
+            break;
+            
+        case 'migrate':
+            echo "Migration system will be implemented soon.\n";
+            break;
+            
+        case 'migrate:status':
+            echo "Migration status will be implemented soon.\n";
+            break;
+            
+        case 'migrate:rollback':
+            echo "Migration rollback will be implemented soon.\n";
+            break;
+            
+        case 'help':
+        default:
+            showHelp();
+            break;
+    }
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage() . "\n";
+    exit(1);
+}
+
+exit(0);
