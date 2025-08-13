@@ -26,6 +26,7 @@
 # IDE and editor files
 .idea/
 .vscode/
+.windsurf/
 *.sublime-project
 *.sublime-workspace
 .phpstorm.meta.php
