@@ -1,0 +1,30 @@
+# Isotone CMS - Root .htaccess
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Prevent access to system directories
+    RewriteRule ^(app|config|content|storage|vendor)/ - [F,L]
+    
+    # Check if request is not for public directory
+    RewriteCond %{REQUEST_URI} !^/isotone/public/
+    
+    # Redirect all requests to public/index.php
+    RewriteRule ^(.*)$ public/index.php [QSA,L]
+</IfModule>
+
+# Prevent access to sensitive files
+<Files ".env">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "composer.json">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "composer.lock">
+    Order allow,deny
+    Deny from all
+</Files>
