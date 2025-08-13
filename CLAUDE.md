@@ -27,8 +27,18 @@ Isotone CMS is a lightweight PHP content management system in early development.
 - ✅ Environment configuration (.env support)
 - ✅ PSR-4 autoloading and project structure
 - ✅ Composer dependencies installed
+- ✅ Modern UI design system (dark theme with glassmorphism)
 - 🚧 Database layer (RedBeanPHP) - in progress
 - 🚧 Plugin system - in progress
+
+### Design System
+- **Theme**: Modern dark with electric cyan (#00D9FF) and neon green (#00FF88) accents
+- **Typography**: Inter font with refined letter spacing (0.01em - 0.08em)
+- **Effects**: Static gradients, glassmorphism, subtle animations
+- **Logo**: Custom SVG with gradient effects, left-aligned header
+- **Favicon**: 512px PNG with web manifest for PWA support
+- **SEO**: Full meta tags, Open Graph, Twitter Cards
+- **Config**: See `config/theme.php` for color palette and design tokens
 
 ### Documentation
 - `README.md` - Project overview and quick start

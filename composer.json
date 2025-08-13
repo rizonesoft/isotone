@@ -7,8 +7,9 @@
     "homepage": "https://isotone.tech",
     "authors": [
         {
-            "name": "Isotone CMS Contributors",
-            "homepage": "https://github.com/isotone/isotone/contributors"
+            "name": "Rizonetech (Pty) Ltd",
+            "email": "info@rizonetech.com",
+            "homepage": "https://rizonetech.com"
         }
     ],
     "require": {

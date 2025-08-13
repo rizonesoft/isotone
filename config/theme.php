@@ -7,54 +7,57 @@
 
 return [
     /**
-     * Brand Colors - Nature-inspired palette
-     * Moving away from the overused purple gradients to a unique green theme
+     * Brand Colors - Modern dark theme with electric accents
+     * Unique color scheme avoiding typical AI purple gradients
      */
     'colors' => [
         // Primary Colors
-        'primary' => '#2C5F2D',       // Forest Green - Main brand color
-        'primary-dark' => '#1A3A1A',  // Deep Forest - Darker variant
-        'primary-light' => '#4A7C59', // Sea Green - Lighter variant
+        'primary' => '#0A0E27',       // Deep Space Blue - Main brand color
+        'primary-dark' => '#050714',  // Darker Space Blue
+        'primary-light' => '#141B3C', // Lighter Space Blue
         
-        // Secondary Colors
-        'secondary' => '#97BC62',     // Fresh Lime - Accent color
-        'secondary-dark' => '#7FA050', // Darker Lime
-        'secondary-light' => '#B2D083', // Lighter Lime
+        // Accent Colors
+        'accent' => '#00D9FF',        // Electric Cyan - Primary accent
+        'accent-green' => '#00FF88',  // Neon Green - Secondary accent
+        'accent-pink' => '#FF3366',   // Hot Pink - Error/warning accent
         
         // Neutral Colors
-        'background' => '#FFFFFF',    // White
-        'surface' => '#E8F5E9',       // Mint Cream - Light green tint
-        'text-primary' => '#333333',  // Dark Gray
-        'text-secondary' => '#666666', // Medium Gray
-        'border' => 'rgba(151, 188, 98, 0.2)', // Light green border
+        'background' => '#0A0E27',    // Deep Space Blue
+        'surface' => 'rgba(255, 255, 255, 0.03)', // Glass surface
+        'surface-hover' => 'rgba(255, 255, 255, 0.08)', // Glass hover
+        'text-primary' => '#FFFFFF',  // White
+        'text-secondary' => 'rgba(255, 255, 255, 0.7)', // Semi-transparent white
+        'text-muted' => 'rgba(255, 255, 255, 0.5)', // Muted white
+        'border' => 'rgba(255, 255, 255, 0.1)', // Light border
         
         // Status Colors
-        'success' => '#4CAF50',       // Success Green
-        'warning' => '#FF9800',       // Amber
-        'danger' => '#F44336',        // Red
-        'info' => '#2196F3',          // Blue
+        'success' => '#00FF88',       // Neon Green
+        'warning' => '#FFB800',       // Amber
+        'danger' => '#FF3366',        // Hot Pink
+        'info' => '#00D9FF',          // Electric Cyan
     ],
     
     /**
      * Gradients for backgrounds and buttons
      */
     'gradients' => [
-        'primary' => 'linear-gradient(135deg, #2C5F2D 0%, #4A7C59 100%)',
-        'secondary' => 'linear-gradient(135deg, #4A7C59 0%, #97BC62 100%)',
-        'background' => 'linear-gradient(135deg, #2C5F2D 0%, #4A7C59 50%, #97BC62 100%)',
-        'surface' => 'linear-gradient(135deg, #E8F5E9 0%, #F1F8F1 100%)',
-        'success' => 'linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%)',
-        'warning' => 'linear-gradient(135deg, #FF9800 0%, #FFB74D 100%)',
+        'primary' => 'linear-gradient(135deg, #00D9FF 0%, #00FF88 100%)',
+        'secondary' => 'linear-gradient(135deg, #FF3366 0%, #00D9FF 100%)',
+        'background' => 'radial-gradient(circle at 25% 25%, #00D9FF15 0%, transparent 50%)',
+        'surface' => 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)',
+        'success' => 'linear-gradient(135deg, #00FF88 0%, #00D9FF 100%)',
+        'warning' => 'linear-gradient(135deg, #FFB800 0%, #FF3366 100%)',
     ],
     
     /**
      * Typography
      */
     'typography' => [
-        'font-family' => '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-        'font-family-mono' => '"Courier New", Consolas, "Liberation Mono", monospace',
+        'font-family' => '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+        'font-family-mono' => '"Consolas", "Monaco", "Courier New", monospace',
         'font-size-base' => '16px',
-        'line-height-base' => '1.5',
+        'line-height-base' => '1.6',
+        'letter-spacing' => '0.02em',
     ],
     
     /**
@@ -73,21 +76,24 @@ return [
      * Border Radius
      */
     'radius' => [
-        'sm' => '4px',
-        'md' => '8px',
-        'lg' => '12px',
-        'xl' => '16px',
+        'sm' => '6px',
+        'md' => '12px',
+        'lg' => '16px',
+        'xl' => '24px',
         'full' => '9999px',
     ],
     
     /**
-     * Shadows
+     * Shadows (with glow effects)
      */
     'shadows' => [
-        'sm' => '0 2px 4px rgba(44, 95, 45, 0.1)',
-        'md' => '0 4px 15px rgba(44, 95, 45, 0.2)',
-        'lg' => '0 10px 40px rgba(44, 95, 45, 0.2)',
-        'xl' => '0 20px 60px rgba(44, 95, 45, 0.3)',
+        'sm' => '0 2px 4px rgba(0, 0, 0, 0.2)',
+        'md' => '0 4px 20px rgba(0, 0, 0, 0.3)',
+        'lg' => '0 10px 40px rgba(0, 0, 0, 0.5)',
+        'xl' => '0 20px 60px rgba(0, 0, 0, 0.7)',
+        'glow-cyan' => '0 0 30px rgba(0, 217, 255, 0.4)',
+        'glow-green' => '0 0 30px rgba(0, 255, 136, 0.4)',
+        'glow-pink' => '0 0 30px rgba(255, 51, 102, 0.4)',
     ],
     
     /**
@@ -96,8 +102,11 @@ return [
     'brand' => [
         'name' => 'Isotone CMS',
         'tagline' => 'Lightweight. Powerful. Everywhere.',
-        'logo_emoji' => '🌿',  // Leaf emoji for nature theme
-        'description' => 'A nature-inspired CMS that grows with your needs',
+        'logo_svg' => '/public/assets/logo.svg',  // SVG logo path
+        'favicon' => '/favicon.png',  // Favicon path
+        'favicon_ico' => '/favicon.ico',  // ICO favicon for legacy support
+        'apple_touch_icon' => '/apple-touch-icon.png',  // iOS home screen icon
+        'description' => 'A modern, high-performance CMS built for the future',
     ],
     
     /**
@@ -109,5 +118,5 @@ return [
     /**
      * Theme Mode
      */
-    'mode' => 'light', // 'light', 'dark', or 'auto'
+    'mode' => 'dark', // 'light', 'dark', or 'auto'
 ];

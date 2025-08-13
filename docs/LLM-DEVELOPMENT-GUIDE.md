@@ -181,6 +181,43 @@ class ServiceName
 }
 ```
 
+## 🎨 Design System & UI Guidelines
+
+Isotone uses a modern dark theme with unique visual identity:
+
+### Color Palette
+- **Primary**: `#0A0E27` (Deep Space Blue)
+- **Accent**: `#00D9FF` (Electric Cyan)
+- **Accent Green**: `#00FF88` (Neon Green)
+- **Danger/Error**: `#FF3366` (Hot Pink)
+
+### Typography
+- **Font**: Inter (Google Fonts), fallback to system fonts
+- **Letter Spacing**: 
+  - Body: `0.01em`
+  - Headings: `-0.01em` to `0.03em`
+  - Buttons: `0.04em`
+  - Badges: `0.08em` (uppercase)
+
+### Visual Effects
+- **Glassmorphism**: `backdrop-filter: blur(20px)`
+- **Static gradients**: No animated backgrounds
+- **Subtle grid patterns**: Low opacity overlays
+- **Box shadows with glow effects**
+
+### Theme Configuration
+All design tokens are defined in `config/theme.php`. When creating UI:
+1. Use the defined color variables
+2. Apply consistent letter spacing
+3. Avoid animated backgrounds (keep it static)
+4. Use glassmorphism for cards/modals
+
+### Important Files
+- `config/theme.php` - Color palette and design tokens
+- `public/favicon.png` - 512px favicon (auto-scaled by browsers)
+- `public/site.webmanifest` - PWA configuration
+- `public/assets/logo.svg` - Brand logo with gradient
+
 ## 🔍 How to Analyze Codebase
 
 When asked to understand or modify code:

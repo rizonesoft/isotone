@@ -8,28 +8,38 @@
 
 In physics, isotonic means "equal tension"—and that's exactly what Isotone aims to bring to web development: perfect balance between power and simplicity, features and performance, flexibility and structure.
 
-## 🚀 Planned Features
+## 🚀 Features
 
-### Built for Real-World Hosting
+### ✅ Implemented
+- **Modern UI Design** - Dark theme with glassmorphism and electric accents
+- **Custom SVG Logo** - Unique brand identity with gradient effects
+- **Favicon System** - PNG-based favicons with web manifest for PWA support
+- **SEO Optimization** - Meta tags, Open Graph, and Twitter Card support
+- **Routing System** - Symfony-based routing with clean URLs
+- **Environment Configuration** - .env file support for configuration
+- **Composer Integration** - Modern PHP dependency management
+- **PSR-12 Compliant** - Clean, standardized code structure
+
+### 🚧 In Development
+- **Database Integration** - RedBeanPHP ORM (no migrations needed)
+- **Plugin System** - WordPress-like hooks (add_action, add_filter)
+- **Admin Panel** - Content management interface
+- **Authentication** - User login and permissions
+
+### 📋 Planned Features
+
+#### Built for Real-World Hosting
 - **Shared hosting compatible** - Works on any standard PHP hosting
 - **Lightweight core** - Under 10MB base installation
 - **Resource efficient** - Runs smoothly on 128MB RAM
 - **No Node.js required** - Pure PHP for maximum compatibility
 
-### Modern Developer Experience
-- **PSR standards compliant** - Clean, maintainable code
-- **Composer-based** - Modern dependency management
+#### Modern Developer Experience
 - **RESTful API** - Headless CMS capabilities built-in
 - **Markdown native** - Write content the way developers love
 - **Git-friendly** - Version control your content and configuration
 
-### Thoughtful Architecture
-- **Hook-based plugin system** - Familiar to WordPress developers
-- **Template inheritance** - DRY theme development
-- **Alpine.js + HTMX** - Modern reactivity without the bloat
-- **Tailwind CSS** - Utility-first styling for the admin interface
-
-### Performance First
+#### Performance First
 - **Built-in caching** - Page, object, and query caching
 - **Image optimization** - Automatic resizing and WebP conversion
 - **Lazy loading** - Efficient resource loading
@@ -194,7 +204,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
 **Please do not report security vulnerabilities through public GitHub issues.**
 
-Email: security@isotone.tech
+Email: security@rizonetech.com
 
 We'll respond within 48 hours and work with you to understand and resolve the issue.
 
@@ -255,7 +265,9 @@ Isotone will leverage these excellent open-source projects:
 
 ## 📜 License
 
-Isotone CMS will be open-source software licensed under the MIT License.
+Isotone CMS is open-source software licensed under the MIT License.
+
+Copyright © 2025 Rizonetech (Pty) Ltd. All rights reserved.
 
 ## 💬 Get Involved
 
@@ -271,5 +283,7 @@ While the project is in planning phase, you can:
 **A vision for modern content management**
 
 Designed by developers, for developers who ship to production.
+
+© 2025 [Rizonetech (Pty) Ltd](https://rizonetech.com). All rights reserved.
 
 </div>

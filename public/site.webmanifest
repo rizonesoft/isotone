@@ -1,0 +1,22 @@
+{
+  "name": "Isotone CMS",
+  "short_name": "Isotone",
+  "description": "Lightweight. Powerful. Everywhere.",
+  "icons": [
+    {
+      "src": "/isotone/public/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/isotone/public/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#0A0E27",
+  "background_color": "#0A0E27",
+  "display": "standalone",
+  "start_url": "/isotone/"
+}
