@@ -265,11 +265,11 @@ try {
         }
         
         h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: 900;
             margin: 0;
             margin-bottom: 1rem;
-            letter-spacing: -0.01em;
+            letter-spacing: 0.02em;
             line-height: 1.2;
             background: linear-gradient(135deg, #FFFFFF 0%, #00D9FF 50%, #00FF88 100%);
             -webkit-background-clip: text;
