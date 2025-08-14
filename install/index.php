@@ -209,8 +209,7 @@ try {
         
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #0A0E27 0%, #1A0033 25%, #0A0E27 50%, #001A33 75%, #0A0E27 100%);
-            background-size: 200% 200%;
+            background: linear-gradient(135deg, #0A0E27 0%, #0F1433 50%, #0A0E27 100%);
             background-attachment: fixed;
             min-height: 100vh;
             display: flex;
