@@ -4,10 +4,9 @@
 /vendor/
 /node_modules/
 
-# Environment files
-.env
-.env.local
-.env.*.local
+# Configuration files with sensitive data
+config.php
+config.local.php
 # Note: database.json contains connection info for IDEs (no passwords)
 
 # Installation marker
@@ -15,15 +14,15 @@
 
 # User content (should not be in version control)
 /iso-content/uploads/*
-/iso-content/cache/*
 !/iso-content/uploads/.gitkeep
-!/iso-content/cache/.gitkeep
 
-# Logs and temporary files
-/storage/logs/*
-/storage/temp/*
-!/storage/logs/.gitkeep
-!/storage/temp/.gitkeep
+# Runtime/system generated files (always ignored)
+/iso-runtime/cache/*
+/iso-runtime/logs/*
+/iso-runtime/temp/*
+!/iso-runtime/cache/.gitkeep
+!/iso-runtime/logs/.gitkeep
+!/iso-runtime/temp/.gitkeep
 
 # IDE and editor files
 .idea/
@@ -58,7 +57,5 @@ yarn-debug.log*
 yarn-error.log*
 
 # Plugin and theme development
-/iso-content/plugins/*
-!/iso-content/plugins/index.html
-/iso-content/themes/*
-!/iso-content/themes/index.html
+# Note: We track all plugins and themes during development
+# Users can add their own .gitignore rules for production

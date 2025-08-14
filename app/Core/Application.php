@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace Isotone\Core;
 
-use Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
@@ -29,16 +28,7 @@ class Application
     public function __construct(string $basePath)
     {
         $this->basePath = $basePath;
-        $this->loadEnvironment();
         $this->initializeRoutes();
-    }
-    
-    private function loadEnvironment(): void
-    {
-        if (file_exists($this->basePath . '/.env')) {
-            $dotenv = Dotenv::createImmutable($this->basePath);
-            $dotenv->load();
-        }
     }
     
     private function initializeRoutes(): void
@@ -114,7 +104,7 @@ class Application
         $baseUrl = $this->getBaseUrl($request);
         $composerInstalled = file_exists($this->basePath . '/vendor/autoload.php');
         $composerStatus = $composerInstalled ? 'Installed' : 'Not installed';
-        $composerBadgeClass = $composerInstalled ? 'badge-success' : 'badge-warning';
+        $composerBadgeClass = $composerInstalled ? 'iso-badge-success' : 'iso-badge-warning';
         
         // Version information
         $isotonerVersion = Version::format();
@@ -124,7 +114,7 @@ class Application
         // Database information
         $dbStatus = DatabaseService::getStatus();
         $dbConnected = $dbStatus['connected'];
-        $dbBadgeClass = $dbConnected ? 'badge-success' : 'badge-danger';
+        $dbBadgeClass = $dbConnected ? 'iso-badge-success' : 'iso-badge-danger';
         $dbStatusText = $dbConnected ? 'Connected' : 'Disconnected';
         $dbError = isset($dbStatus['error']) ? $dbStatus['error'] : 'Connection failed';
         $dbInfo = $dbConnected ? "({$dbStatus['database']})" : "({$dbError})";
@@ -132,7 +122,7 @@ class Application
             ? 'Your development environment is ready!' 
             : 'Next step: Run <code>composer install</code> to download dependencies';
         $phpVersion = PHP_VERSION;
-        $environment = ucfirst(env('APP_ENV', 'development'));
+        $environment = ucfirst(defined('ENVIRONMENT') ? ENVIRONMENT : 'development');
         
         $html = <<<HTML
         <!DOCTYPE html>
@@ -174,371 +164,35 @@ class Application
             <link rel="manifest" href="{$baseUrl}/site.webmanifest">
             <!-- Fallback for older browsers if ICO exists -->
             <link rel="shortcut icon" href="{$baseUrl}/favicon.ico">
+            
+            <!-- Global Isotone CSS -->
+            <link rel="stylesheet" href="{$baseUrl}/iso-includes/css/isotone.css">
+            
             <style>
-                * { margin: 0; padding: 0; box-sizing: border-box; }
-                
-                @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
-                
-                :root {
-                    --primary: #0A0E27;           /* Deep Space Blue */
-                    --accent: #00D9FF;            /* Electric Cyan */
-                    --accent-green: #00FF88;      /* Neon Green */
-                    --surface: rgba(255, 255, 255, 0.03);
-                    --surface-hover: rgba(255, 255, 255, 0.08);
-                    --text-primary: #FFFFFF;
-                    --text-secondary: rgba(255, 255, 255, 0.7);
-                    --text-muted: rgba(255, 255, 255, 0.5);
-                    --border: rgba(255, 255, 255, 0.1);
-                    --success: #00FF88;
-                    --warning: #FFB800;
-                    --danger: #FF3366;
-                }
-                
-                body { 
-                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-                    background: linear-gradient(135deg, #0A0E27 0%, #0F1433 50%, #0A0E27 100%);
-                    background-attachment: fixed;
-                    min-height: 100vh;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    color: var(--text-primary);
-                    position: relative;
-                    overflow-x: hidden;
-                    overflow-y: auto;
-                    letter-spacing: 0.01em;
-                }
-                
-                /* Subtle static gradient overlay */
-                body::before {
-                    content: '';
-                    position: fixed;
-                    width: 100%;
-                    height: 100%;
-                    top: 0;
-                    left: 0;
-                    background: 
-                        radial-gradient(ellipse at top left, rgba(0, 217, 255, 0.08) 0%, transparent 40%),
-                        radial-gradient(ellipse at bottom right, rgba(0, 255, 136, 0.08) 0%, transparent 40%);
-                    pointer-events: none;
-                }
-                
-                .container {
-                    background: rgba(255, 255, 255, 0.02);
-                    backdrop-filter: blur(20px);
-                    -webkit-backdrop-filter: blur(20px);
-                    border-radius: 24px;
-                    padding: 3rem;
-                    max-width: 650px;
-                    width: 90%;
-                    position: relative;
-                    border: 1px solid var(--border);
-                    box-shadow: 
-                        0 0 0 1px rgba(0, 217, 255, 0.1),
-                        0 10px 40px rgba(0, 0, 0, 0.5),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-                    animation: fadeInUp 0.6s ease-out;
-                }
-                
-                @keyframes fadeInUp {
-                    from {
-                        opacity: 0;
-                        transform: translateY(30px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-                }
-                
-                .header-logo {
-                    display: flex;
-                    align-items: center;
-                    justify-content: flex-start;
-                    gap: 1.5rem;
-                    margin-bottom: 3rem;
-                }
-                
-                .logo-icon {
-                    width: 60px;
-                    height: 60px;
-                    filter: drop-shadow(0 0 20px rgba(0, 217, 255, 0.5));
-                    animation: pulse 2s ease-in-out infinite;
-                }
-                
-                @keyframes pulse {
-                    0%, 100% { 
-                        transform: scale(1);
-                        filter: drop-shadow(0 0 20px rgba(0, 217, 255, 0.5));
-                    }
-                    50% { 
-                        transform: scale(1.05);
-                        filter: drop-shadow(0 0 30px rgba(0, 255, 136, 0.6));
-                    }
-                }
-                
-                h1 {
-                    font-size: 3rem;
-                    font-weight: 900;
-                    margin: 0;
-                    letter-spacing: -0.01em;
-                    background: linear-gradient(135deg, #FFFFFF 0%, #00D9FF 50%, #00FF88 100%);
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    background-clip: text;
-                    animation: shimmer 4s ease-in-out infinite;
-                    background-size: 200% 200%;
-                }
-                
-                @keyframes shimmer {
-                    0%, 100% { background-position: 0% 50%; }
-                    50% { background-position: 100% 50%; }
-                }
-                
-                .subtitle {
-                    color: var(--text-secondary);
-                    margin-bottom: 3rem;
-                    font-size: 1.1rem;
-                    font-weight: 500;
-                    letter-spacing: 0.03em;
-                    text-align: left;
-                }
-                
-                .status {
-                    background: var(--surface);
-                    border: 1px solid var(--border);
-                    border-radius: 16px;
-                    padding: 1.5rem;
-                    margin: 2rem 0;
-                    backdrop-filter: blur(10px);
-                }
-                
-                .status-item {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    padding: 1rem;
-                    margin: 0.5rem 0;
-                    background: var(--surface);
-                    border-radius: 12px;
-                    border: 1px solid var(--border);
-                    transition: all 0.3s ease;
-                }
-                
-                .status-item:hover {
-                    background: var(--surface-hover);
-                    transform: translateX(4px);
-                    border-color: rgba(0, 217, 255, 0.3);
-                }
-                
-                .status-item span:first-child {
-                    color: var(--text-secondary);
-                    font-weight: 500;
-                    letter-spacing: 0.02em;
-                }
-                
-                .badge {
-                    padding: 0.4rem 1rem;
-                    border-radius: 20px;
-                    font-size: 0.75rem;
-                    font-weight: 600;
-                    letter-spacing: 0.08em;
-                    text-transform: uppercase;
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 0.3rem;
-                }
-                
-                .badge-success {
-                    background: rgba(0, 255, 136, 0.1);
-                    color: var(--success);
-                    border: 1px solid rgba(0, 255, 136, 0.3);
-                    box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
-                }
-                
-                .badge-success::before {
+                /* Page-specific badge icons only (not in global CSS) */
+                .iso-badge-success::before {
                     content: '✓';
                     font-weight: bold;
+                    margin-right: 0.4rem;
                 }
                 
-                .badge-warning {
-                    background: rgba(255, 184, 0, 0.1);
-                    color: var(--warning);
-                    border: 1px solid rgba(255, 184, 0, 0.3);
-                    box-shadow: 0 0 20px rgba(255, 184, 0, 0.2);
-                }
-                
-                .badge-warning::before {
+                .iso-badge-warning::before {
                     content: '○';
+                    margin-right: 0.4rem;
                 }
                 
-                .badge-danger {
-                    background: rgba(255, 69, 58, 0.1);
-                    color: #FF453A;
-                    border: 1px solid rgba(255, 69, 58, 0.3);
-                    box-shadow: 0 0 20px rgba(255, 69, 58, 0.2);
-                }
-                
-                .badge-danger::before {
+                .iso-badge-danger::before {
                     content: '✗';
                     font-weight: bold;
-                }
-                
-                .badge-info {
-                    background: rgba(0, 217, 255, 0.1);
-                    color: var(--accent);
-                    border: 1px solid rgba(0, 217, 255, 0.3);
-                    box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
-                }
-                
-                .btn {
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 0.75rem;
-                    padding: 1rem 2rem;
-                    background: linear-gradient(135deg, var(--accent), var(--accent-green));
-                    color: var(--primary);
-                    text-decoration: none;
-                    border-radius: 12px;
-                    margin-top: 2rem;
-                    font-weight: 600;
-                    font-size: 1rem;
-                    letter-spacing: 0.04em;
-                    transition: all 0.3s ease;
-                    box-shadow: 
-                        0 4px 20px rgba(0, 217, 255, 0.3),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-                    position: relative;
-                    overflow-x: hidden;
-                    overflow-y: auto;
-                }
-                
-                .btn::before {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: -100%;
-                    width: 100%;
-                    height: 100%;
-                    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-                    transition: left 0.5s;
-                }
-                
-                .btn:hover::before {
-                    left: 100%;
-                }
-                
-                .btn:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 
-                        0 6px 30px rgba(0, 217, 255, 0.4),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
-                }
-                
-                .btn::after {
-                    content: '→';
-                    font-size: 1.2rem;
-                }
-                
-                code {
-                    background: var(--surface);
-                    padding: 0.3rem 0.6rem;
-                    border-radius: 6px;
-                    font-family: 'Consolas', 'Monaco', monospace;
-                    color: var(--accent);
-                    border: 1px solid var(--border);
-                    font-size: 0.9rem;
-                    letter-spacing: 0.02em;
-                }
-                
-                /* Card Footer */
-                .card-footer {
-                    margin-top: 2rem;
-                    padding-top: 1.5rem;
-                    border-top: 1px solid var(--border);
-                    text-align: center;
-                }
-                
-                .version-info {
-                    color: var(--text-secondary);
-                    font-size: 0.85rem;
-                    font-weight: 500;
-                    letter-spacing: 0.02em;
-                    opacity: 0.8;
-                }
-                
-                .info-text {
-                    color: var(--text-secondary);
-                    font-size: 0.8rem;
-                    font-weight: 400;
-                    opacity: 0.9;
-                }
-                
-                /* Static grid decoration */
-                .grid-bg {
-                    position: fixed;
-                    width: 100%;
-                    height: 100%;
-                    top: 0;
-                    left: 0;
-                    background-image: 
-                        linear-gradient(rgba(0, 217, 255, 0.02) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(0, 217, 255, 0.02) 1px, transparent 1px);
-                    background-size: 50px 50px;
-                    pointer-events: none;
-                    opacity: 0.5;
-                }
-                
-                /* Responsive styles for mobile */
-                @media (max-width: 768px) {
-                    body {
-                        padding: 1rem;
-                        min-height: 100vh;
-                        overflow-y: scroll;
-                        -webkit-overflow-scrolling: touch;
-                    }
-                    
-                    .container {
-                        width: 100%;
-                        max-width: 100%;
-                        padding: 2rem 1.5rem;
-                        margin: 1rem 0;
-                    }
-                    
-                    h1 {
-                        font-size: 2rem;
-                    }
-                    
-                    .stats {
-                        grid-template-columns: 1fr;
-                        gap: 0.75rem;
-                    }
-                    
-                    .footer {
-                        padding: 0.75rem;
-                        font-size: 0.75rem;
-                    }
-                }
-                
-                @media (max-width: 480px) {
-                    .container {
-                        padding: 1.5rem 1rem;
-                    }
-                    
-                    h1 {
-                        font-size: 1.75rem;
-                    }
-                    
-                    .subtitle {
-                        font-size: 0.875rem;
-                    }
+                    margin-right: 0.4rem;
                 }
             </style>
         </head>
-        <body>
-            <div class="container">
-                <div class="header-logo">
-                    <svg class="logo-icon" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <body class="iso-app iso-background">
+            <div class="grid-bg"></div>
+            <div class="iso-container iso-container-md iso-animate-fadeInUp">
+                <div class="iso-header">
+                    <svg class="iso-header-logo" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <defs>
                             <linearGradient id="isotone-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
                                 <stop offset="0%" style="stop-color:#00D9FF;stop-opacity:1" />
@@ -555,40 +209,40 @@ class Application
                             <path clip-rule="evenodd" d="m12.7071 11.2929c-.3905-.3905-1.0237-.3905-1.4142 0s-.3905 1.0237 0 1.4142 1.0237.3905 1.4142 0 .3905-1.0237 0-1.4142zm-2.82842-1.41422c1.17162-1.17157 3.07102-1.17157 4.24262 0 1.1716 1.17162 1.1716 3.07102 0 4.24262s-3.071 1.1716-4.24262 0c-1.17157-1.1716-1.17157-3.071 0-4.24262z" fill-rule="evenodd"></path>
                         </g>
                     </svg>
-                    <h1>Isotone CMS</h1>
+                    <h1 class="iso-title">Isotone CMS</h1>
                     <div style="margin-left: 1rem;">$versionBadge</div>
                 </div>
-                <p class="subtitle">Your lightweight CMS is ready to go!</p>
+                <p class="iso-subtitle">Your lightweight CMS is ready to go!</p>
                 
-                <div class="status">
-                    <div class="status-item">
+                <div class="iso-status-grid">
+                    <div class="iso-status-item">
                         <span>PHP Version</span>
-                        <span class="badge badge-success">{$phpVersion}</span>
+                        <span class="iso-badge iso-badge-success">{$phpVersion}</span>
                     </div>
-                    <div class="status-item">
+                    <div class="iso-status-item">
                         <span>Environment</span>
-                        <span class="badge badge-warning">{$environment}</span>
+                        <span class="iso-badge iso-badge-warning">{$environment}</span>
                     </div>
-                    <div class="status-item">
+                    <div class="iso-status-item">
                         <span>Composer</span>
-                        <span class="badge {$composerBadgeClass}">{$composerStatus}</span>
+                        <span class="iso-badge {$composerBadgeClass}">{$composerStatus}</span>
                     </div>
-                    <div class="status-item">
+                    <div class="iso-status-item">
                         <span>Database</span>
-                        <span class="badge {$dbBadgeClass}">{$dbStatusText}</span>
+                        <span class="iso-badge {$dbBadgeClass}">{$dbStatusText}</span>
                     </div>
-                    <div class="status-item">
+                    <div class="iso-status-item">
                         <span>DB Name</span>
-                        <span class="badge badge-info">{$dbStatus['database']}</span>
+                        <span class="iso-badge iso-badge-info">{$dbStatus['database']}</span>
                     </div>
                 </div>
                 
                 <p>{$nextStep}</p>
-                <a href="{$baseUrl}/iso-admin" class="btn">Go to Admin</a>
+                <a href="{$baseUrl}/iso-admin" class="iso-btn iso-btn-arrow">Go to Admin</a>
                 
                 <!-- Card Footer with Version -->
-                <div class="card-footer">
-                    <span class="version-info">$isotonerVersion</span>
+                <div class="iso-card-footer">
+                    <span class="iso-version">$isotonerVersion</span>
                 </div>
             </div>
         </body>
@@ -601,7 +255,7 @@ class Application
     private function getBaseUrl(Request $request): string
     {
         // Use APP_URL from .env if set
-        $appUrl = env('APP_URL', '');
+        $appUrl = defined('SITE_URL') ? SITE_URL : '';
         if (!empty($appUrl)) {
             return rtrim($appUrl, '/');
         }
@@ -1211,7 +865,7 @@ class Application
     
     private function handleError(\Exception $e): Response
     {
-        $message = env('APP_DEBUG', false) ? $e->getMessage() : 'An error occurred';
+        $message = (defined('DEBUG_MODE') && DEBUG_MODE) ? $e->getMessage() : 'An error occurred';
         
         return new Response(
             '<h1>Error</h1><p>' . htmlspecialchars($message) . '</p>',

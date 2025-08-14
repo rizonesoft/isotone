@@ -1,0 +1,16 @@
+{
+    "name": "Isotone Default",
+    "version": "1.0.0",
+    "description": "The default theme for Isotone CMS with glassmorphism design",
+    "author": "Isotone Team",
+    "license": "MIT",
+    "minimum_isotone_version": "0.1.0",
+    "screenshot": "screenshot.png",
+    "tags": ["dark", "glassmorphism", "modern", "responsive"],
+    "supports": {
+        "custom_logo": true,
+        "custom_colors": true,
+        "editor_styles": true,
+        "responsive": true
+    }
+}

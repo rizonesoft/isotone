@@ -1,0 +1,209 @@
+/**
+ * Isotone CMS - Effects & Animations
+ * Animations, transitions, and special effects
+ */
+
+/* Fade In Up Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Shimmer Effect for Gradients */
+@keyframes shimmer {
+    0%, 100% { 
+        background-position: 0% 50%; 
+    }
+    50% { 
+        background-position: 100% 50%; 
+    }
+}
+
+/* Pulse Animation for Logo */
+@keyframes pulse {
+    0%, 100% { 
+        transform: scale(1);
+        filter: drop-shadow(0 0 20px rgba(0, 217, 255, 0.5));
+    }
+    50% { 
+        transform: scale(1.05);
+        filter: drop-shadow(0 0 30px rgba(0, 255, 136, 0.6));
+    }
+}
+
+/* Glow Animation */
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(0, 255, 136, 0.6);
+    }
+}
+
+/* Float Animation */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Spin Animation */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Animation Classes */
+.iso-animate-fadeInUp {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.iso-animate-shimmer {
+    animation: shimmer 4s ease-in-out infinite;
+    background-size: 200% 200%;
+}
+
+.iso-animate-pulse {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.iso-animate-glow {
+    animation: glow 2s ease-in-out infinite;
+}
+
+.iso-animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.iso-animate-spin {
+    animation: spin 2s linear infinite;
+}
+
+/* Glassmorphism Effect */
+.iso-glass {
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(71, 85, 105, 0.3);
+    box-shadow: 
+        0 0 0 1px rgba(0, 217, 255, 0.1),
+        0 10px 40px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.iso-glass-light {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.iso-glass-dark {
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+/* Hover Effects */
+.iso-hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.iso-hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
+}
+
+.iso-hover-glow {
+    transition: box-shadow 0.3s ease, filter 0.3s ease;
+}
+
+.iso-hover-glow:hover {
+    box-shadow: 0 0 30px rgba(0, 217, 255, 0.5);
+    filter: brightness(1.1);
+}
+
+/* Transition Utilities */
+.iso-transition-all {
+    transition: all 0.3s ease;
+}
+
+.iso-transition-colors {
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.iso-transition-transform {
+    transition: transform 0.3s ease;
+}
+
+.iso-transition-opacity {
+    transition: opacity 0.3s ease;
+}
+
+/* Special Effects */
+.iso-neon-border {
+    box-shadow: 
+        0 0 0 1px rgba(0, 217, 255, 0.5),
+        0 0 10px rgba(0, 217, 255, 0.3),
+        inset 0 0 10px rgba(0, 217, 255, 0.1);
+}
+
+.iso-gradient-border {
+    position: relative;
+    background: linear-gradient(var(--primary), var(--primary)) padding-box,
+                linear-gradient(135deg, var(--accent), var(--accent-green)) border-box;
+    border: 2px solid transparent;
+}
+
+/* Loading States */
+.iso-loading {
+    position: relative;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.iso-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid var(--accent);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+/* Skeleton Loading */
+.iso-skeleton {
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.05) 25%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0.05) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* Disabled State */
+.iso-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}

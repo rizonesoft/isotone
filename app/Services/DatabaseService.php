@@ -37,12 +37,12 @@ class DatabaseService
                 stripos(file_get_contents('/proc/version'), 'WSL') !== false
             );
             
-            // Get database configuration
-            $configHost = env('DB_HOST', 'localhost');
-            $port = env('DB_PORT', '3306');
-            $database = env('DB_DATABASE', '');
-            $username = env('DB_USERNAME', '');
-            $password = env('DB_PASSWORD', '');
+            // Get database configuration from config.php
+            $configHost = defined('DB_HOST') ? DB_HOST : 'localhost';
+            $port = defined('DB_PORT') ? DB_PORT : 3306;
+            $database = defined('DB_NAME') ? DB_NAME : '';
+            $username = defined('DB_USER') ? DB_USER : '';
+            $password = defined('DB_PASSWORD') ? DB_PASSWORD : '';
             
             // Determine the actual host based on environment
             if ($is_wsl && php_sapi_name() === 'cli') {

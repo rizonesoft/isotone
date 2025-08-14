@@ -8,6 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) and other LLMs when 
 - 📖 [`docs/LLM-DEVELOPMENT-GUIDE.md`](docs/LLM-DEVELOPMENT-GUIDE.md) - Essential rules for LLM developers
 - 📏 [`docs/AI-CODING-STANDARDS.md`](docs/AI-CODING-STANDARDS.md) - Coding standards for AI
 - 💬 [`docs/PROMPT-ENGINEERING-GUIDE.md`](docs/PROMPT-ENGINEERING-GUIDE.md) - How to write prompts for this project
+- 🔧 [`docs/LLM-CONFIG-RULES.md`](docs/LLM-CONFIG-RULES.md) - **CRITICAL: Config.php rules (NO .env files!)**
 
 ## ⚠️ AUTO-COMMIT ON SATISFACTION
 **CRITICAL**: When user says "perfect", "thanks", "good", "excellent", "happy with" - IMMEDIATELY:
@@ -32,7 +33,7 @@ Isotone CMS is a lightweight PHP content management system in early development.
 
 **Early Development Phase** - Core foundation implemented:
 - ✅ Basic routing system with Symfony components
-- ✅ Environment configuration (.env support)
+- ✅ Configuration system using `config.php` (WordPress-style)
 - ✅ PSR-4 autoloading and project structure
 - ✅ Composer dependencies installed
 - ✅ Modern UI design system (dark theme with glassmorphism)
@@ -54,6 +55,77 @@ Isotone CMS is a lightweight PHP content management system in early development.
 - **Favicon**: 512px PNG with web manifest for PWA support
 - **SEO**: Full meta tags, Open Graph, Twitter Cards
 - **Config**: See `config/theme.php` for color palette and design tokens
+
+### 🎨 CSS Architecture - CRITICAL RULES
+
+#### 🚫 NO INLINE CSS POLICY
+**IMPORTANT**: Isotone maintains a strict **NO INLINE CSS** policy. As an LLM/IDE, you MUST:
+
+1. **ALWAYS** search for existing styles in `/iso-includes/css/` before creating new styles
+2. **CHECK** the modular CSS files in this order:
+   - `base.css` - Variables, typography, resets
+   - `layout.css` - Containers, grids, structural elements  
+   - `components.css` - Buttons, forms, badges, UI components
+   - `effects.css` - Animations, glassmorphism, transitions
+3. **EVALUATE** if a new style can be made modular/reusable before creating it
+4. **USE** existing classes with `iso-` prefix (e.g., `iso-container`, `iso-btn`, `iso-title`)
+5. **ONLY** use inline styles for truly page-specific, one-off requirements
+6. **PREFER** creating new classes in the appropriate CSS module over inline styles
+
+#### CSS File Structure
+```
+iso-includes/css/
+├── isotone.css      # Main import file - include this in pages
+├── base.css         # CSS variables, fonts, resets
+├── layout.css       # Page structure, containers, grids
+├── components.css   # Reusable UI components
+└── effects.css      # Animations and visual effects
+```
+
+#### Example Usage
+```html
+<!-- GOOD: Using modular CSS classes -->
+<div class="iso-container iso-glass">
+    <h1 class="iso-title">Welcome</h1>
+    <button class="iso-btn iso-btn-arrow">Continue</button>
+</div>
+
+<!-- BAD: Inline styles (avoid!) -->
+<div style="background: rgba(255,255,255,0.1); padding: 2rem;">
+    <h1 style="color: #00D9FF;">Welcome</h1>
+</div>
+```
+
+### Configuration System - CRITICAL FOR LLMs
+
+#### 🔧 NO .ENV FILES - USE config.php
+**IMPORTANT**: Isotone uses a traditional `config.php` file, NOT .env files.
+
+1. **Configuration location**: `/config.php` in root directory
+2. **Template file**: `/config.sample.php` (tracked in git)
+3. **Actual config**: `/config.php` (ignored by git, contains credentials)
+
+#### When setting up Isotone:
+```bash
+cp config.sample.php config.php
+# Then edit config.php with database credentials
+```
+
+#### Key configuration constants:
+- `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` - Database settings
+- `DEBUG_MODE`, `DISPLAY_ERRORS` - Development settings
+- `SITE_URL`, `ADMIN_EMAIL` - Application settings
+- `ENVIRONMENT` - Current environment (development/staging/production)
+
+#### NEVER:
+- Create or reference .env files
+- Use Dotenv package (it's been removed)
+- Suggest environment variables for configuration
+
+#### ALWAYS:
+- Use `config.php` for all configuration
+- Reference configuration via PHP constants (e.g., `DB_NAME`)
+- Keep sensitive data in `config.php` (not tracked in git)
 
 ### Documentation
 - `README.md` - Project overview and quick start
@@ -95,23 +167,26 @@ isotone/
 ├── iso-admin/       # Admin panel (coming soon)
 ├── iso-includes/    # Shared resources
 │   ├── assets/      # Images, logos, icons
-│   ├── css/         # Global CSS
+│   ├── css/         # Modular CSS architecture (NO INLINE CSS!)
 │   ├── js/          # Global JavaScript
 │   └── scripts/     # PHP includes
-├── iso-content/     # User content
+├── iso-content/     # User content (preserve during updates)
 │   ├── plugins/     # Installed plugins
 │   ├── themes/      # Installed themes
-│   ├── uploads/     # Media uploads
-│   └── cache/       # Cache files
+│   └── uploads/     # Media uploads
+├── iso-runtime/     # System generated (safe to delete)
+│   ├── cache/       # Page cache, compiled templates
+│   ├── logs/        # Application logs
+│   └── temp/        # Temporary files
 ├── config/          # Configuration
 ├── docs/            # Documentation
 ├── install/         # Installation wizard
 ├── scripts/         # Build/IDE scripts
-├── storage/         # Logs and temp files
 ├── vendor/          # Composer dependencies
+├── config.php       # Main configuration (DO NOT COMMIT)
+├── config.sample.php # Configuration template
 ├── index.php        # Main entry point
-├── .htaccess        # Security & routing
-└── .env             # Environment config
+└── .htaccess        # Security & routing
 ```
 
 Note: The `/public` folder was removed to simplify routing. Everything now runs from the root directory.

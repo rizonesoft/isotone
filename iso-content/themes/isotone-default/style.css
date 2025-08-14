@@ -1,0 +1,86 @@
+/**
+ * Isotone Default Theme Styles
+ * Theme-specific styles that extend the core CSS
+ */
+
+/* Header Styles */
+.iso-header-main {
+    padding: var(--space-lg) 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: var(--space-2xl);
+}
+
+.iso-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-xl);
+}
+
+.iso-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    text-decoration: none;
+}
+
+.iso-logo {
+    width: 40px;
+    height: 40px;
+    filter: drop-shadow(0 0 10px rgba(0, 217, 255, 0.5));
+}
+
+/* Main Content */
+.iso-main {
+    min-height: calc(100vh - 200px);
+    padding: var(--space-xl) 0;
+}
+
+.iso-article {
+    margin-bottom: var(--space-2xl);
+}
+
+.iso-content {
+    line-height: 1.8;
+    color: var(--text-primary);
+}
+
+.iso-content h2 {
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-md);
+    color: var(--accent);
+}
+
+.iso-content p {
+    margin-bottom: var(--space-md);
+}
+
+.iso-content a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+.iso-content a:hover {
+    border-bottom-color: var(--accent);
+}
+
+/* No Content Message */
+.iso-no-content {
+    text-align: center;
+    padding: var(--space-3xl) 0;
+}
+
+/* Footer */
+.iso-footer {
+    margin-top: var(--space-3xl);
+    padding: var(--space-xl) 0;
+    border-top: 1px solid var(--border);
+}
+
+.iso-footer-content {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+}

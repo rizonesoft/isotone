@@ -78,11 +78,12 @@ For detailed requirements and technology stack, see [Technology Stack Documentat
 
 3. **Configure database**
    ```bash
-   cp .env.example .env
-   # Edit .env with your database credentials
+   cp config.sample.php config.php
+   # Edit config.php with your database credentials
    ```
-   - Create database `isotone_db` in phpMyAdmin
-   - Default: username `root`, no password
+   - Create database in phpMyAdmin (e.g., `isotone_db`)
+   - Update `DB_NAME`, `DB_USER`, `DB_PASSWORD` in config.php
+   - Configuration follows standard PHP CMS pattern (like WordPress)
 
 4. **Run installation wizard**
    ```
@@ -115,22 +116,30 @@ isotone/
 ├── iso-admin/           # Admin panel (coming soon)
 ├── iso-includes/        # Shared resources
 │   ├── assets/          # Static assets (images, logos)
-│   ├── css/             # Global CSS files
+│   ├── css/             # Modular CSS architecture
+│   │   ├── base.css     # Core variables & typography
+│   │   ├── layout.css   # Containers, grids & structure
+│   │   ├── components.css # Buttons, forms, badges
+│   │   ├── effects.css  # Animations & glassmorphism
+│   │   └── isotone.css  # Main import file
 │   ├── js/              # Global JavaScript files
 │   └── scripts/         # PHP include scripts
 ├── iso-content/         # User-generated content
 │   ├── plugins/         # Installed plugins
 │   ├── themes/          # Installed themes
-│   ├── uploads/         # Media uploads
-│   └── cache/           # Cache files
+│   └── uploads/         # Media uploads
+├── iso-runtime/         # System-generated files
+│   ├── cache/           # Page cache, compiled templates
+│   ├── logs/            # Application logs
+│   └── temp/            # Temporary files
 ├── config/              # Configuration files
 ├── docs/                # Documentation
 ├── install/             # Installation wizard (delete after setup)
 │   └── index.php        # Web-based installer
 ├── scripts/             # Automated/IDE scripts
-├── storage/             # Logs and temporary files
 ├── vendor/              # Composer dependencies
-├── .env                 # Environment config (create from .env.example)
+├── config.php           # Main configuration (create from config.sample.php)
+├── config.sample.php    # Configuration template
 ├── index.php            # Main entry point
 ├── .htaccess            # Security & routing
 ├── composer.json        # PHP dependencies
@@ -149,6 +158,8 @@ isotone/
 - Front controller pattern
 - PSR-4 autoloading
 - Development environment setup
+- Modular CSS architecture with glassmorphism effects
+- Installation wizard with database setup
 
 🚧 **In Progress:**
 - Database integration with RedBeanPHP
@@ -185,9 +196,11 @@ composer analyse
 ## 📚 Documentation
 
 ### Available Now
+- [Configuration Guide](docs/CONFIGURATION.md) - Complete config.php documentation
 - [Development Environment Setup](docs/development-setup.md) - Complete setup guide for Windows/Mac/Linux
 - [Getting Started Guide](docs/getting-started.md) - Learn the basics and build your first plugin
 - [Technology Stack Specification](docs/isotone-tech-stack.md) - Detailed technical architecture
+- [CSS Architecture Guide](#css-architecture) - Modular CSS system documentation
 
 ### Coming Soon
 - Installation Guide for Production
@@ -273,6 +286,40 @@ Target benchmarks for Isotone CMS on a $5/month shared hosting plan:
 - Advanced custom fields
 - Multilingual support
 - E-commerce capabilities
+
+## 🎨 CSS Architecture
+
+Isotone uses a **modular and reusable CSS system** that eliminates duplication between pages. The architecture is organized into specialized files:
+
+### CSS File Structure
+- **`base.css`** - Core variables, typography, and resets
+- **`layout.css`** - Containers, grids, backgrounds, and structural elements
+- **`components.css`** - Buttons, forms, badges, cards, and UI components
+- **`effects.css`** - Animations, transitions, and glassmorphism effects
+- **`isotone.css`** - Main file that imports all modules
+
+### Key Features
+- **CSS Custom Properties** - Consistent theming with CSS variables
+- **Glassmorphism Effects** - Modern frosted glass aesthetic
+- **Responsive Design** - Mobile-first approach with breakpoints
+- **BEM-like Naming** - Prefixed classes (`iso-`) for namespace isolation
+- **Zero Duplication** - Shared styles across all pages
+- **Page-Specific Overrides** - Minimal inline styles only when necessary
+
+### Usage Example
+```html
+<!-- Include the main CSS file -->
+<link rel="stylesheet" href="/iso-includes/css/isotone.css">
+
+<!-- Use modular classes -->
+<div class="iso-container iso-glass">
+    <h1 class="iso-title">Isotone CMS</h1>
+    <button class="iso-btn iso-btn-arrow">Get Started</button>
+</div>
+```
+
+### 🚫 IMPORTANT: No Inline CSS Rule
+**For developers and LLM IDEs:** ALWAYS search for existing styles in the modular CSS system before creating new styles. If a style doesn't exist, evaluate if it can be made modular and reusable before resorting to inline CSS. We maintain a strict **NO INLINE CSS** policy to ensure consistency and maintainability.
 
 ## 🙏 Planned Technologies
 

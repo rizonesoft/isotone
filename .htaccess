@@ -8,7 +8,7 @@
     RewriteEngine On
     
     # Prevent direct access to sensitive directories
-    RewriteRule ^(app|config|docs|scripts|storage|tests|vendor)(/|$) - [F,L]
+    RewriteRule ^(app|config|docs|scripts|tests|vendor|iso-runtime)(/|$) - [F,L]
     
     # Prevent access to sensitive files  
     RewriteRule \.(env|git|md|lock|json)$ - [F,L]

@@ -1,0 +1,13 @@
+{
+    "name": "Hello Isotone",
+    "version": "1.0.0",
+    "description": "A simple example plugin demonstrating the Isotone plugin API",
+    "author": "Isotone Team",
+    "license": "MIT",
+    "minimum_isotone_version": "0.1.0",
+    "website": "https://github.com/rizonesoft/isotone",
+    "tags": ["example", "development", "tutorial"],
+    "main_file": "hello-isotone.php",
+    "activation_hook": "hello_isotone_activate",
+    "deactivation_hook": "hello_isotone_deactivate"
+}

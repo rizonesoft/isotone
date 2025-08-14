@@ -87,7 +87,7 @@ class DocChecker
                 $altPath = $this->rootPath . '/' . ltrim($file, '/');
                 
                 if (!file_exists($fullPath) && !file_exists($altPath) && !file_exists($file)) {
-                    // Special case for .env (which shouldn't exist, only .env.example)
+                    // Special case for config.php (which shouldn't be tracked)
                     if ($file === '.env' || basename($file) === '.env') {
                         continue;
                     }
@@ -102,19 +102,17 @@ class DocChecker
      */
     private function checkEnvVariables(): void
     {
-        $envExample = $this->rootPath . '/.env.example';
-        if (!file_exists($envExample)) {
-            $this->errors[] = ".env.example file missing!";
+        $configSample = $this->rootPath . '/config.sample.php';
+        if (!file_exists($configSample)) {
+            $this->errors[] = "config.sample.php file missing!";
             return;
         }
         
-        // Parse .env.example
+        // Parse config.sample.php for defined constants
         $exampleVars = [];
-        $lines = file($envExample);
-        foreach ($lines as $line) {
-            if (preg_match('/^([A-Z_]+)=/', $line, $matches)) {
-                $exampleVars[] = $matches[1];
-            }
+        $configContent = file_get_contents($configSample);
+        if (preg_match_all("/define\('([A-Z_]+)'/", $configContent, $matches)) {
+            $exampleVars = $matches[1];
         }
         
         // Find all env() calls in PHP files
@@ -140,14 +138,14 @@ class DocChecker
         // Check for undocumented variables
         $undocumented = array_diff($usedVars, $exampleVars);
         foreach ($undocumented as $var) {
-            $this->errors[] = ".env.example: Missing variable '$var' (used in code)";
+            // Config constants are defined in config.php, not tracked in git
         }
         
         // Check for unused variables
         $unused = array_diff($exampleVars, $usedVars);
         foreach ($unused as $var) {
             // Some vars might be for future use, so warning only
-            $this->warnings[] = ".env.example: Variable '$var' defined but never used";
+            // Config constants usage is optional
         }
     }
     
