@@ -196,22 +196,20 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
             animation: slideIn 0.3s ease-out;
         }
         
-        /* Glassmorphism glow animation */
-        @keyframes glow {
-            0%, 100% {
-                text-shadow: 0 0 20px rgba(0, 217, 255, 0.5),
-                             0 0 40px rgba(0, 217, 255, 0.3),
-                             0 0 60px rgba(0, 217, 255, 0.1);
+        /* Pulse Animation for Logo - matching frontend */
+        @keyframes pulse {
+            0%, 100% { 
+                transform: scale(1);
+                filter: drop-shadow(0 0 20px rgba(0, 217, 255, 0.5));
             }
-            50% {
-                text-shadow: 0 0 30px rgba(0, 255, 136, 0.6),
-                             0 0 50px rgba(0, 255, 136, 0.4),
-                             0 0 70px rgba(0, 255, 136, 0.2);
+            50% { 
+                transform: scale(1.05);
+                filter: drop-shadow(0 0 30px rgba(0, 255, 136, 0.6));
             }
         }
         
-        .isotone-glow {
-            animation: glow 3s ease-in-out infinite;
+        .isotone-logo-pulse {
+            animation: pulse 2s ease-in-out infinite;
         }
     </style>
     
@@ -238,13 +236,10 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                 </button>
                 
                 <!-- Logo -->
-                <div class="flex items-center space-x-2 group">
+                <div class="flex items-center space-x-2">
                     <!-- Isotone SVG Logo -->
-                    <div class="w-8 h-8 relative">
-                        <div class="absolute inset-0 bg-gradient-to-r from-cyan-400 to-green-400 rounded-lg opacity-20 group-hover:opacity-30 transition-opacity"></div>
-                        <img src="/isotone/iso-includes/assets/logo.svg" alt="Isotone" class="w-8 h-8 relative z-10">
-                    </div>
-                    <h2 class="text-xl font-bold bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent isotone-glow">
+                    <img src="/isotone/iso-includes/assets/logo.svg" alt="Isotone" class="w-8 h-8 isotone-logo-pulse">
+                    <h2 class="text-xl font-bold bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent">
                         Isotone
                     </h2>
                 </div>
