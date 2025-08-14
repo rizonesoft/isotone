@@ -268,8 +268,9 @@ try {
             font-size: 3rem;
             font-weight: 900;
             margin: 0;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
             letter-spacing: -0.01em;
+            line-height: 1.2;
             background: linear-gradient(135deg, #FFFFFF 0%, #00D9FF 50%, #00FF88 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -286,7 +287,9 @@ try {
         .subtitle {
             color: var(--text-secondary);
             margin-bottom: 2rem;
+            margin-top: -0.5rem;
             font-size: 1.1rem;
+            line-height: 1.5;
         }
         
         .form-group {
@@ -494,7 +497,7 @@ try {
             height: 60px;
             filter: drop-shadow(0 0 20px rgba(0, 217, 255, 0.5));
             animation: pulse 2s ease-in-out infinite;
-            margin: 0 auto 1.5rem;
+            margin: 0 auto 2.5rem;
             display: block;
         }
         
