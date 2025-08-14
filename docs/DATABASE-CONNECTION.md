@@ -180,7 +180,24 @@ isotoneuser       -- User accounts
 isotonecontent    -- Pages and content (when created)
 ```
 
-Note: RedBeanPHP uses singular table names without underscores by convention.
+### Table Structure
+
+**isotonesetting table:**
+- `setting_key` - Configuration key name (e.g., 'site_title')
+- `setting_value` - Configuration value
+- `setting_type` - Data type (string, int, boolean, etc.)
+- `updated_at` - Last update timestamp
+
+**isotoneuser table:**
+- `username` - User login name
+- `email` - User email address
+- `password` - Hashed password
+- `role` - User role (superadmin, admin, editor, etc.)
+- `status` - Account status (active, inactive, suspended)
+- `created_at` - Account creation timestamp
+- `updated_at` - Last update timestamp
+
+Note: RedBeanPHP uses singular table names without underscores by convention. Column names avoid MySQL reserved words like 'key', 'value', and 'type'.
 
 ## RedBeanPHP ORM
 

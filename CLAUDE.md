@@ -41,6 +41,11 @@ Isotone CMS is a lightweight PHP content management system in early development.
 - 🚧 Plugin system - in progress
 - 🚧 Admin panel - in progress
 
+### Database Notes
+- Tables: `isotonesetting`, `isotoneuser`, `isotonecontent`
+- Settings columns: `setting_key`, `setting_value`, `setting_type` (avoid MySQL reserved words)
+- User columns: `username`, `email`, `password`, `role`, `status`, `created_at`, `updated_at`
+
 ### Design System
 - **Theme**: Modern dark with electric cyan (#00D9FF) and neon green (#00FF88) accents
 - **Typography**: Inter font with refined letter spacing (0.01em - 0.08em)

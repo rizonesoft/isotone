@@ -116,6 +116,29 @@ R::store($post);
 $posts = R::findAll('post', 'ORDER BY created_at DESC');
 ```
 
+### Working with Settings
+
+Settings are stored in the `isotonesetting` table:
+
+```php
+// Get a setting
+$setting = R::findOne('isotonesetting', 'setting_key = ?', ['site_title']);
+$siteTitle = $setting ? $setting->setting_value : 'Default Title';
+
+// Update a setting
+$setting = R::findOne('isotonesetting', 'setting_key = ?', ['site_title']);
+if (!$setting) {
+    $setting = R::dispense('isotonesetting');
+    $setting->setting_key = 'site_title';
+}
+$setting->setting_value = 'My New Site Title';
+$setting->setting_type = 'string';
+$setting->updated_at = date('Y-m-d H:i:s');
+R::store($setting);
+```
+
+Note: Column names use `setting_key`, `setting_value`, and `setting_type` to avoid MySQL reserved words.
+
 ### Creating Models
 
 Create a model in `app/Models/Post.php`:
