@@ -9,6 +9,13 @@ This file provides guidance to Claude Code (claude.ai/code) and other LLMs when 
 - 📏 [`docs/AI-CODING-STANDARDS.md`](docs/AI-CODING-STANDARDS.md) - Coding standards for AI
 - 💬 [`docs/PROMPT-ENGINEERING-GUIDE.md`](docs/PROMPT-ENGINEERING-GUIDE.md) - How to write prompts for this project
 
+## ⚠️ AUTO-COMMIT ON SATISFACTION
+**CRITICAL**: When user says "perfect", "thanks", "good", "excellent", "happy with" - IMMEDIATELY:
+1. Run: `git add -A && git commit -m "description" && git push`
+2. Don't wait for explicit commit command
+3. Common phrases: "That's perfect thanks", "Looks good", "Happy with that"
+4. See `docs/AI-SATISFACTION-TRIGGERS.md` for full list
+
 ## Project Overview
 
 Isotone CMS is a lightweight PHP content management system in early development. It features a WordPress-like plugin system, RedBeanPHP ORM, and is designed for shared hosting compatibility.

@@ -4,19 +4,22 @@ This guide helps AI assistants recognize when to automatically update documentat
 
 ## User Satisfaction Indicators
 
-### ✅ Strong Satisfaction Signals
-- "Perfect!"
-- "Excellent!"
+### ✅ Strong Satisfaction Signals (AUTO-COMMIT IMMEDIATELY)
+- "Perfect!" / "That's perfect" / "Perfect thanks"
+- "Excellent!" / "Excellent work"
 - "That's exactly what I wanted"
-- "Great work!"
-- "This looks good"
-- "Ship it!"
-- "Ready to commit"
-- "Let's push this"
-- "I'm happy with this"
+- "Great work!" / "Great job"
+- "This looks good" / "Looks good"
+- "Ship it!" / "Ready to ship"
+- "Ready to commit" / "Commit this"
+- "Let's push this" / "Push it"
+- "I'm happy with this" / "Happy with that"
 - "This is working perfectly"
 - "Fantastic implementation"
-- "Well done"
+- "Well done" / "Good job"
+- "That's perfect thanks" (VERY STRONG - user said this today!)
+- "Awesome" / "Amazing"
+- "Love it" / "I love this"
 
 ### ✅ Implementation Completion Signals
 - "The feature is complete"
@@ -49,6 +52,20 @@ This guide helps AI assistants recognize when to automatically update documentat
 - "Try again"
 - "Almost there"
 - User still iterating/testing
+
+## CRITICAL DECISION FLOWCHART FOR AI
+
+```
+User Message Received
+        ↓
+Contains "perfect", "thanks", "good", "excellent", "happy"?
+        ↓ YES
+Is it about completed work (not a question)?
+        ↓ YES
+IMMEDIATELY: git add -A && git commit && git push
+        ↓
+Inform user: "Changes committed and pushed!"
+```
 
 ## AI Action Triggers
 
@@ -229,6 +246,20 @@ AI should generate semantic commit messages based on context:
 ### Proactive Suggestions
 When detecting satisfaction, AI can ask:
 "Should I also update the documentation to include this new feature?"
+
+## LESSONS LEARNED - NEVER MISS THESE
+
+### Case Study: "That's perfect thanks"
+**User said**: "That's perfect thanks"
+**AI should have**: Immediately committed and pushed
+**Why it was missed**: AI focused on responding instead of detecting satisfaction
+**LESSON**: Always scan for satisfaction keywords BEFORE responding
+
+### Common Mistakes to Avoid
+1. **Missing "thanks" + positive word** = Strong satisfaction signal
+2. **Forgetting to commit** when user expresses completion
+3. **Waiting for explicit "commit" command** when satisfaction is clear
+4. **Not recognizing contextual satisfaction** (e.g., after fixing an issue)
 
 ## Settings for AI Assistants
 
