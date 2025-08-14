@@ -5,6 +5,24 @@ All notable changes to Isotone will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.4-alpha] - Genesis - 2025-08-14
+
+### Added
+- Modern admin interface with collapsible sidebar and submenus
+- Top admin bar with quick actions and search (Cmd/Ctrl+K)
+- Responsive dashboard with widgets (stats, analytics, quick draft)
+- System health monitoring widget
+- User management with CRUD operations
+- Breadcrumb navigation and toast notifications
+- Dark/light mode toggle UI (ready for implementation)
+- Mobile responsive design with Alpine.js interactivity
+- Chart.js integration for analytics visualization
+- Heroicons SVG icon system throughout admin
+- localStorage persistence for UI preferences
+- Authentication system with role-based permissions
+- RedBeanPHP ORM integration (no migrations needed)
+- WordPress-like plugin system hooks
+
 ## [0.1.3-alpha] - Genesis - 2025-08-14
 
 ### Added

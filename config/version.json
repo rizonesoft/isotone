@@ -1,5 +1,5 @@
 {
-    "current": "0.1.3-alpha",
+    "current": "0.1.4-alpha",
     "schema": "1.0.0",
     "codename": "Genesis",
     "release_date": "2025-08-14",
@@ -72,6 +72,29 @@
                 "GITHUB-SETUP.md and DOCS-STRUCTURE.md moved from root to docs/"
             ],
             "from_version": "0.1.2-alpha"
+        },
+        {
+            "version": "0.1.4-alpha",
+            "date": "2025-08-14",
+            "codename": "Genesis",
+            "features": [
+                "Modern admin interface with collapsible sidebar and submenus",
+                "Top admin bar with quick actions and search (Cmd/Ctrl+K)",
+                "Responsive dashboard with widgets (stats, analytics, quick draft)",
+                "System health monitoring widget",
+                "User management with CRUD operations",
+                "Breadcrumb navigation and toast notifications",
+                "Dark/light mode toggle UI (ready for implementation)",
+                "Mobile responsive design with Alpine.js interactivity",
+                "Chart.js integration for analytics visualization",
+                "Heroicons SVG icon system throughout admin",
+                "localStorage persistence for UI preferences",
+                "Authentication system with role-based permissions",
+                "RedBeanPHP ORM integration (no migrations needed)",
+                "WordPress-like plugin system hooks"
+            ],
+            "breaking_changes": [],
+            "from_version": "0.1.3-alpha"
         }
     ]
 }
