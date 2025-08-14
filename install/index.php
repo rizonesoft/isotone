@@ -540,16 +540,43 @@ try {
             flex-shrink: 0;
         }
         
-        /* Logo in corner for already installed page */
-        .logo-corner {
+        /* Brand corner for already installed page */
+        .brand-corner {
             position: absolute;
             top: 2rem;
             left: 2rem;
-            width: 40px;
-            height: 40px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 10;
+        }
+        
+        .brand-corner .logo-corner {
+            width: 35px;
+            height: 35px;
             filter: drop-shadow(0 0 15px rgba(0, 217, 255, 0.5));
             animation: pulse 2s ease-in-out infinite;
-            z-index: 10;
+        }
+        
+        .brand-text {
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: -0.01em;
+            background: linear-gradient(135deg, #FFFFFF 0%, #00D9FF 50%, #00FF88 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s ease-in-out infinite;
+            background-size: 200% 200%;
+        }
+        
+        /* Smaller heading for already installed */
+        h2.installed-heading {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            letter-spacing: 0.02em;
         }
         
         @keyframes pulse {
@@ -585,6 +612,20 @@ try {
                 width: 50px;
                 height: 50px;
             }
+            
+            .brand-corner {
+                top: 1.5rem;
+                left: 1.5rem;
+            }
+            
+            .brand-corner .logo-corner {
+                width: 30px;
+                height: 30px;
+            }
+            
+            .brand-text {
+                font-size: 1.25rem;
+            }
         }
     </style>
 </head>
@@ -592,9 +633,12 @@ try {
     <div class="grid-bg"></div>
     <div class="container">
         <?php if ($isInstalled): ?>
-            <img src="../iso-includes/assets/logo.svg" alt="Isotone" class="logo-corner">
+            <div class="brand-corner">
+                <img src="../iso-includes/assets/logo.svg" alt="Isotone" class="logo-corner">
+                <span class="brand-text">Isotone</span>
+            </div>
             <div class="installed">
-                <h1>Already Installed</h1>
+                <h2 class="installed-heading">Already Installed</h2>
                 <p class="subtitle">Isotone CMS is already installed on this system.</p>
                 <div class="status info">
                     To reinstall, delete the .isotone-installed file in the root directory.
