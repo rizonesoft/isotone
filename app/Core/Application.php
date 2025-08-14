@@ -101,6 +101,18 @@ class Application
     
     private function handleHome(Request $request): Response
     {
+        // Check if we should show the landing page or development status
+        $showLandingPage = true; // For now, always show landing page
+        
+        if ($showLandingPage) {
+            // Include the landing page
+            ob_start();
+            include $this->basePath . '/iso-includes/landing-page.php';
+            $html = ob_get_clean();
+            return new Response($html);
+        }
+        
+        // Original development status page (kept for reference)
         $baseUrl = $this->getBaseUrl($request);
         $composerInstalled = file_exists($this->basePath . '/vendor/autoload.php');
         $composerStatus = $composerInstalled ? 'Installed' : 'Not installed';
