@@ -112,20 +112,23 @@ isotone/
 │   ├── Commands/        # CLI commands
 │   ├── Models/          # Data models
 │   └── Services/        # Business logic
-├── assets/              # Static assets (CSS, JS, images)
-├── admin/               # Admin panel (coming soon)
+├── iso-admin/           # Admin panel (coming soon)
+├── iso-includes/        # Shared resources
+│   ├── assets/          # Static assets (images, logos)
+│   ├── css/             # Global CSS files
+│   ├── js/              # Global JavaScript files
+│   └── scripts/         # PHP include scripts
+├── iso-content/         # User-generated content
+│   ├── plugins/         # Installed plugins
+│   ├── themes/          # Installed themes
+│   ├── uploads/         # Media uploads
+│   └── cache/           # Cache files
 ├── config/              # Configuration files
-├── content/             # User content (gitignored)
-│   ├── uploads/         # Media files
-│   ├── cache/           # Cache files
-│   └── backups/         # Backup files
 ├── docs/                # Documentation
 ├── install/             # Installation wizard (delete after setup)
 │   └── index.php        # Web-based installer
-├── plugins/             # Installed plugins
 ├── scripts/             # Automated/IDE scripts
 ├── storage/             # Logs and temporary files
-├── themes/              # Installed themes
 ├── vendor/              # Composer dependencies
 ├── .env                 # Environment config (create from .env.example)
 ├── index.php            # Main entry point

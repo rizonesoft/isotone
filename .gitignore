@@ -14,12 +14,10 @@
 .isotone-installed
 
 # User content (should not be in version control)
-/content/uploads/*
-/content/cache/*
-/content/backups/*
-!/content/uploads/.gitkeep
-!/content/cache/.gitkeep
-!/content/backups/.gitkeep
+/iso-content/uploads/*
+/iso-content/cache/*
+!/iso-content/uploads/.gitkeep
+!/iso-content/cache/.gitkeep
 
 # Logs and temporary files
 /storage/logs/*
@@ -60,10 +58,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # Plugin and theme development
-/plugins/*
-!/plugins/index.html
-!/plugins/.gitkeep
-/themes/*
-!/themes/index.html
-!/themes/.gitkeep
-!/themes/default/
+/iso-content/plugins/*
+!/iso-content/plugins/index.html
+/iso-content/themes/*
+!/iso-content/themes/index.html

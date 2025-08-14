@@ -92,16 +92,22 @@ isotone/
 │   ├── Commands/    # CLI commands
 │   ├── Models/      # Data models
 │   └── Services/    # Business logic
-├── admin/           # Admin panel (coming soon)
-├── assets/          # Static assets (CSS, JS, images)
+├── iso-admin/       # Admin panel (coming soon)
+├── iso-includes/    # Shared resources
+│   ├── assets/      # Images, logos, icons
+│   ├── css/         # Global CSS
+│   ├── js/          # Global JavaScript
+│   └── scripts/     # PHP includes
+├── iso-content/     # User content
+│   ├── plugins/     # Installed plugins
+│   ├── themes/      # Installed themes
+│   ├── uploads/     # Media uploads
+│   └── cache/       # Cache files
 ├── config/          # Configuration
-├── content/         # User content
 ├── docs/            # Documentation
-├── install/         # Installation wizard (delete after setup)
-├── plugins/         # Plugin directory
-├── scripts/         # Automated/IDE scripts
+├── install/         # Installation wizard
+├── scripts/         # Build/IDE scripts
 ├── storage/         # Logs and temp files
-├── themes/          # Theme directory
 ├── vendor/          # Composer dependencies
 ├── index.php        # Main entry point
 ├── .htaccess        # Security & routing
@@ -215,7 +221,7 @@ composer docs:check
 - Name as `Model_[tablename]`
 
 **Add a plugin:**
-- Create in `plugins/[plugin-name]/`
+- Create in `iso-content/plugins/[plugin-name]/`
 - Use WordPress-style hooks
 - No npm/build required
 

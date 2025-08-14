@@ -1,0 +1,10 @@
+# Isotone CMS - Admin Directory
+
+# Directory listing disabled
+Options -Indexes
+
+# Allow PHP execution in admin area
+<FilesMatch "\.php$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>

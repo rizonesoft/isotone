@@ -1,0 +1,16 @@
+# Isotone CMS - iso-includes Directory Protection
+
+# Allow access to assets, js, css
+<FilesMatch "\.(css|js|jpg|jpeg|png|gif|svg|ico|webp|woff|woff2|ttf|eot)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
+
+# Deny access to PHP scripts
+<FilesMatch "\.php$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Directory listing disabled
+Options -Indexes

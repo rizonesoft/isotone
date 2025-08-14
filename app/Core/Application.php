@@ -584,7 +584,7 @@ class Application
                 </div>
                 
                 <p>{$nextStep}</p>
-                <a href="{$baseUrl}/admin" class="btn">Go to Admin</a>
+                <a href="{$baseUrl}/iso-admin" class="btn">Go to Admin</a>
                 
                 <!-- Card Footer with Version -->
                 <div class="card-footer">

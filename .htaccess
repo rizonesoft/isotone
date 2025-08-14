@@ -7,15 +7,15 @@
 
     RewriteEngine On
     
-    # Prevent direct access to sensitive directories (but allow install)
-    RewriteRule ^(app|config|content|docs|scripts|storage|tests|vendor|public)(/|$) - [F,L]
+    # Prevent direct access to sensitive directories
+    RewriteRule ^(app|config|docs|scripts|storage|tests|vendor)(/|$) - [F,L]
     
     # Prevent access to sensitive files  
     RewriteRule \.(env|git|md|lock|json)$ - [F,L]
     RewriteRule ^(composer|phpunit|isotone|CLAUDE|LICENSE|README) - [F,L]
     
-    # Allow access to assets, admin, setup, and install directories
-    RewriteCond %{REQUEST_URI} ^/(assets|admin|setup|install)/
+    # Allow access to iso-includes, iso-admin, iso-content, and install directories
+    RewriteCond %{REQUEST_URI} ^/(iso-includes|iso-admin|iso-content|install)/
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule ^ - [L]
     

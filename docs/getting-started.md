@@ -34,16 +34,22 @@ isotone/
 │   ├── Models/         # Data models
 │   ├── Services/       # Business logic
 │   └── helpers.php     # Helper functions
-├── admin/              # Admin panel (coming soon)
-├── assets/             # Static assets
+├── iso-admin/          # Admin panel (coming soon)
+├── iso-includes/       # Shared resources
+│   ├── assets/         # Images, logos
+│   ├── css/            # Global styles
+│   ├── js/             # Global scripts
+│   └── scripts/        # PHP includes
+├── iso-content/        # User content
+│   ├── plugins/        # Installed plugins
+│   ├── themes/         # Installed themes
+│   ├── uploads/        # Media files
+│   └── cache/          # Cache files
 ├── config/             # Configuration files
-├── content/            # User-generated content
 ├── docs/               # Documentation
-├── install/            # Installation wizard (delete after setup)
-├── plugins/            # Plugin files
-├── scripts/            # Automated/IDE scripts
-├── storage/            # Logs and cache
-├── themes/             # Theme files
+├── install/            # Installation wizard
+├── scripts/            # Build scripts
+├── storage/            # Logs and temp
 ├── vendor/             # Composer dependencies
 ├── index.php           # Entry point
 ├── .htaccess           # URL rewriting & security
@@ -161,10 +167,10 @@ class Post extends SimpleModel
 
 ### Basic Plugin Structure
 
-Create a new directory in `plugins/`:
+Create a new directory in `iso-content/plugins/`:
 
 ```
-plugins/
+iso-content/plugins/
 └── my-plugin/
     ├── my-plugin.php    # Main plugin file
     └── README.md        # Documentation
@@ -198,10 +204,10 @@ add_filter('isotone_content', function($content) {
 
 ### Basic Theme Structure
 
-Create a new directory in `themes/`:
+Create a new directory in `iso-content/themes/`:
 
 ```
-themes/
+iso-content/themes/
 └── my-theme/
     ├── index.php       # Main template
     ├── style.css       # Theme styles

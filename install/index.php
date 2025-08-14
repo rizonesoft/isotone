@@ -580,7 +580,7 @@ try {
         <?php if ($isInstalled): ?>
             <div class="installed">
                 <div class="header-logo">
-                    <img src="../assets/logo.svg" alt="Isotone" class="logo-icon">
+                    <img src="../iso-includes/assets/logo.svg" alt="Isotone" class="logo-icon">
                     <h1>Already Installed</h1>
                 </div>
                 <p class="subtitle">Isotone CMS is already installed on this system.</p>
@@ -589,7 +589,7 @@ try {
                 </div>
                 <div class="links">
                     <a href="../">Home</a>
-                    <a href="../admin">Admin Panel</a>
+                    <a href="../iso-admin">Admin Panel</a>
                 </div>
             </div>
         <?php elseif ($success): ?>
@@ -599,14 +599,14 @@ try {
                 <div class="status success">
                     <?php echo htmlspecialchars($message); ?>
                 </div>
-                <a href="../admin" class="btn has-arrow">Go to Admin Panel</a>
+                <a href="../iso-admin" class="btn has-arrow">Go to Admin Panel</a>
                 <div class="links">
                     <a href="../">View Site</a>
                 </div>
             </div>
         <?php else: ?>
             <div class="header-logo">
-                <img src="../assets/logo.svg" alt="Isotone" class="logo-icon">
+                <img src="../iso-includes/assets/logo.svg" alt="Isotone" class="logo-icon">
                 <h1>Install Isotone</h1>
             </div>
             <p class="subtitle">Set up your Super Admin account</p>
