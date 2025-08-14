@@ -187,7 +187,9 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Isotone CMS - Installation</title>
-    <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="../assets/images/favicon.png">
+    <link rel="apple-touch-icon" href="../assets/images/favicon.png">
+    <link rel="manifest" href="../manifest.json">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -207,15 +209,32 @@ try {
         
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #0A0E27 0%, #0F1433 50%, #0A0E27 100%);
+            background: linear-gradient(135deg, #0A0E27 0%, #1A0033 25%, #0A0E27 50%, #001A33 75%, #0A0E27 100%);
+            background-size: 200% 200%;
             background-attachment: fixed;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--text-primary);
-            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
             overflow-y: auto;
+            letter-spacing: 0.01em;
+        }
+        
+        /* Subtle static gradient overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: 
+                radial-gradient(ellipse at top left, rgba(0, 217, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(ellipse at bottom right, rgba(0, 255, 136, 0.08) 0%, transparent 40%);
+            pointer-events: none;
         }
         
         .container {
@@ -225,22 +244,44 @@ try {
             border-radius: 24px;
             padding: 3rem;
             max-width: 500px;
-            width: 100%;
+            width: 90%;
+            position: relative;
             border: 1px solid var(--border);
             box-shadow: 
                 0 0 0 1px rgba(0, 217, 255, 0.1),
-                0 10px 40px rgba(0, 0, 0, 0.5);
+                0 10px 40px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         h1 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             font-weight: 900;
+            margin: 0;
             margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--accent), var(--accent-green));
+            letter-spacing: -0.01em;
+            background: linear-gradient(135deg, #FFFFFF 0%, #00D9FF 50%, #00FF88 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            letter-spacing: -0.02em;
+            animation: shimmer 4s ease-in-out infinite;
+            background-size: 200% 200%;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
         
         .subtitle {
@@ -292,21 +333,51 @@ try {
         
         .btn {
             width: 100%;
-            padding: 1rem;
+            padding: 1rem 2rem;
             background: linear-gradient(135deg, var(--accent), var(--accent-green));
             color: var(--primary);
             border: none;
+            text-decoration: none;
             border-radius: 12px;
+            margin-top: 1rem;
             font-weight: 600;
             font-size: 1rem;
+            letter-spacing: 0.04em;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-top: 1rem;
+            box-shadow: 
+                0 4px 20px rgba(0, 217, 255, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn:hover::before:not(:disabled) {
+            left: 100%;
         }
         
         .btn:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
+            box-shadow: 
+                0 6px 30px rgba(0, 217, 255, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn.has-arrow::after {
+            content: '→';
+            font-size: 1.2rem;
+            margin-left: 0.5rem;
         }
         
         .btn:disabled {
@@ -403,44 +474,98 @@ try {
             color: var(--accent-green);
         }
         
-        @media (max-width: 640px) {
+        /* Static grid decoration */
+        .grid-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-image: 
+                linear-gradient(rgba(0, 217, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 217, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        
+        /* Logo styling */
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            filter: drop-shadow(0 0 20px rgba(0, 217, 255, 0.5));
+            animation: pulse 2s ease-in-out infinite;
+            margin: 0 auto 1.5rem;
+            display: block;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { 
+                transform: scale(1);
+                filter: drop-shadow(0 0 20px rgba(0, 217, 255, 0.5));
+            }
+            50% { 
+                transform: scale(1.05);
+                filter: drop-shadow(0 0 30px rgba(0, 255, 136, 0.6));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+                min-height: 100vh;
+                overflow-y: scroll;
+                -webkit-overflow-scrolling: touch;
+            }
+            
             .container {
                 padding: 2rem 1.5rem;
+                max-width: 95%;
+                margin: 1rem auto;
             }
             
             h1 {
                 font-size: 2rem;
             }
+            
+            .logo-icon {
+                width: 50px;
+                height: 50px;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="grid-bg"></div>
     <div class="container">
         <?php if ($isInstalled): ?>
             <div class="installed">
+                <img src="../assets/images/logo.svg" alt="Isotone" class="logo-icon">
                 <h1>Already Installed</h1>
                 <p class="subtitle">Isotone CMS is already installed on this system.</p>
                 <div class="status info">
                     To reinstall, delete the .isotone-installed file in the root directory.
                 </div>
                 <div class="links">
-                    <a href="/">Home</a>
-                    <a href="/admin">Admin Panel</a>
+                    <a href="../">Home</a>
+                    <a href="../admin">Admin Panel</a>
                 </div>
             </div>
         <?php elseif ($success): ?>
             <div class="installed">
+                <img src="../assets/images/logo.svg" alt="Isotone" class="logo-icon">
                 <h1>Installation Complete!</h1>
                 <p class="subtitle">Your Isotone CMS is ready to use.</p>
                 <div class="status success">
                     <?php echo htmlspecialchars($message); ?>
                 </div>
-                <a href="/admin" class="btn">Go to Admin Panel</a>
+                <a href="../admin" class="btn has-arrow">Go to Admin Panel</a>
                 <div class="links">
-                    <a href="/">View Site</a>
+                    <a href="../">View Site</a>
                 </div>
             </div>
         <?php else: ?>
+            <img src="../assets/images/logo.svg" alt="Isotone" class="logo-icon">
             <h1>Install Isotone</h1>
             <p class="subtitle">Set up your Super Admin account</p>
             
@@ -527,7 +652,7 @@ try {
             </form>
             
             <div class="links">
-                <a href="/">Back to Home</a>
+                <a href="../">Back to Home</a>
                 <a href="https://github.com/rizonesoft/isotone" target="_blank">Documentation</a>
             </div>
         <?php endif; ?>
