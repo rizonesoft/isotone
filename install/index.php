@@ -564,7 +564,7 @@ try {
                 </div>
             </div>
         <?php else: ?>
-            <img src="../assets/images/logo.svg" alt="Isotone" class="logo-icon">
+            <img src="../assets/logo.svg" alt="Isotone" class="logo-icon">
             <h1>Install Isotone</h1>
             <p class="subtitle">Set up your Super Admin account</p>
             
