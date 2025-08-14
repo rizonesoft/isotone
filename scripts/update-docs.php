@@ -34,6 +34,12 @@ class DocUpdater
         $this->generateApiDocumentation();
         
         $this->report();
+        
+        // Sync to user-docs after updates
+        $this->syncUserDocs();
+        
+        // Sync IDE rules after updates
+        $this->syncIdeRules();
     }
     
     /**
@@ -348,6 +354,48 @@ class DocUpdater
             echo "  ✓ $update\n";
         }
         echo "\n✅ Documentation auto-update complete!\n";
+    }
+    
+    /**
+     * Sync documentation to user-docs
+     */
+    private function syncUserDocs(): void
+    {
+        echo "\n🔄 Syncing to user-docs...\n";
+        
+        // Run the sync script
+        $output = [];
+        $returnCode = 0;
+        exec('php ' . $this->rootPath . '/scripts/sync-user-docs.php', $output, $returnCode);
+        
+        foreach ($output as $line) {
+            echo $line . "\n";
+        }
+        
+        if ($returnCode !== 0) {
+            echo "⚠️  Warning: User docs sync encountered issues\n";
+        }
+    }
+    
+    /**
+     * Sync IDE rules for consistent development
+     */
+    private function syncIdeRules(): void
+    {
+        echo "\n🔧 Syncing IDE rules...\n";
+        
+        // Run the IDE sync script
+        $output = [];
+        $returnCode = 0;
+        exec('php ' . $this->rootPath . '/scripts/sync-ide-rules.php', $output, $returnCode);
+        
+        foreach ($output as $line) {
+            echo $line . "\n";
+        }
+        
+        if ($returnCode !== 0) {
+            echo "⚠️  Warning: IDE rules sync encountered issues\n";
+        }
     }
 }
 

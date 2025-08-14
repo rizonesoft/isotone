@@ -1,13 +1,12 @@
 # Isotone CMS Project Structure
 
-*Auto-generated on 2025-08-14 00:21:56*
+*Auto-generated on 2025-08-14 10:52:01*
 
 ## Project Structure
 
 ```
 .claude/
   settings.local.json
-.env.example
 .github/
   copilot-instructions.md
 .windsurf/
@@ -17,9 +16,7 @@
 CHANGELOG.md
 CLAUDE.md
 CONTRIBUTING.md
-GITHUB-SETUP.md
 README.md
-admin/
 app/
   Commands/
     ChangelogCommand.php
@@ -36,15 +33,12 @@ app/
   Services/
     DatabaseService.php
   helpers.php
-assets/
 composer.json
 config/
   theme.php
   version.json
-content/
-  backups/
-  cache/
-  uploads/
+config.php
+config.sample.php
 database.json
 docs/
   AI-CODING-STANDARDS.md
@@ -53,26 +47,64 @@ docs/
   API-REFERENCE.md
   AUTOMATED-DOCUMENTATION-WORKFLOW.md
   COMMANDS.md
+  CONFIGURATION.md
   DATABASE-CONNECTION.md
+  DEVELOPMENT-SETUP.md
+  DOCS-STRUCTURE.md
   DOCUMENTATION-MAINTENANCE.md
   ENVIRONMENT-VARIABLES.md
+  GETTING-STARTED.md
+  GITHUB-SETUP.md
+  ISOTONE-TECH-STACK.md
+  LLM-CONFIG-RULES.md
   LLM-DEVELOPMENT-GUIDE.md
   PROJECT-STRUCTURE.md
   PROMPT-ENGINEERING-GUIDE.md
   ROUTES.md
   VERSION-MANAGEMENT.md
-  development-setup.md
-  getting-started.md
-  isotone-tech-stack.md
 index.php
-plugins/
+install/
+  README.md
+  index.php
+  test-db.php
+iso-admin/
+  index.php
+iso-content/
+  README.md
+  plugins/
+    hello-isotone/
+  themes/
+    isotone-default/
+  uploads/
+iso-includes/
+  assets/
+  css/
+  js/
+  scripts/
+iso-runtime/
+  README.md
+  cache/
+  logs/
+  temp/
 scripts/
   README.md
   check-docs.php
   sync-ide-rules.php
+  sync-user-docs.php
   update-docs.php
-storage/
-  logs/
-  temp/
-themes/
+user-docs/
+  README.md
+  SYNC-NOTE.md
+  api/
+  configuration/
+    config-guide.md
+    database.md
+  development/
+    api-reference.md
+    getting-started.md
+  guides/
+  installation/
+    development-setup.md
+    quick-start.md
+    tech-stack.md
 ```

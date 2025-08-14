@@ -12,9 +12,9 @@ Thank you for your interest in contributing to Isotone CMS! We welcome contribut
 ## 📋 Before You Begin
 
 1. **Read the documentation**
-   - [Development Setup](docs/development-setup.md)
-   - [Getting Started](docs/getting-started.md)
-   - [Technology Stack](docs/isotone-tech-stack.md)
+   - [Development Setup](docs/DEVELOPMENT-SETUP.md)
+   - [Getting Started](docs/GETTING-STARTED.md)
+   - [Technology Stack](docs/ISOTONE-TECH-STACK.md)
 
 2. **Understand our constraints**
    - Must work on shared hosting (no Node.js)

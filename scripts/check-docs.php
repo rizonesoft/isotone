@@ -166,11 +166,11 @@ class DocChecker
         // Check documentation files
         $docsContent = '';
         $docsContent .= file_get_contents($this->rootPath . '/README.md');
-        if (file_exists($this->rootPath . '/docs/development-setup.md')) {
-            $docsContent .= file_get_contents($this->rootPath . '/docs/development-setup.md');
+        if (file_exists($this->rootPath . '/docs/DEVELOPMENT-SETUP.md')) {
+            $docsContent .= file_get_contents($this->rootPath . '/docs/DEVELOPMENT-SETUP.md');
         }
-        if (file_exists($this->rootPath . '/docs/getting-started.md')) {
-            $docsContent .= file_get_contents($this->rootPath . '/docs/getting-started.md');
+        if (file_exists($this->rootPath . '/docs/GETTING-STARTED.md')) {
+            $docsContent .= file_get_contents($this->rootPath . '/docs/GETTING-STARTED.md');
         }
         
         foreach ($scripts as $script) {
@@ -230,13 +230,13 @@ class DocChecker
         }
         
         // Check if documented routes exist
-        $gettingStarted = $this->rootPath . '/docs/getting-started.md';
+        $gettingStarted = $this->rootPath . '/docs/GETTING-STARTED.md';
         if (file_exists($gettingStarted)) {
             $content = file_get_contents($gettingStarted);
             
             // Look for route mentions
             if (strpos($content, '/admin') !== false && !in_array('/admin', $routes)) {
-                $this->warnings[] = "getting-started.md: References /admin route but not implemented";
+                $this->warnings[] = "GETTING-STARTED.md: References /admin route but not implemented";
             }
         }
     }

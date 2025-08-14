@@ -12,8 +12,8 @@ This document defines how we keep ALL documentation synchronized with code chang
 | CLAUDE.md | New patterns, file changes, rules | Core |
 | composer.json | Dependency changes, commands | Core |
 | .env.example | New environment variables | Core |
-| docs/getting-started.md | New features, API changes | Core |
-| docs/development-setup.md | Tool changes, requirements | Core |
+| docs/GETTING-STARTED.md | New features, API changes | Core |
+| docs/DEVELOPMENT-SETUP.md | Tool changes, requirements | Core |
 | docs/LLM-DEVELOPMENT-GUIDE.md | New patterns, rules for AI | AI |
 | docs/AI-CODING-STANDARDS.md | Style changes, new standards | AI |
 | .windsurf-rules.md | IDE rule changes (auto-synced) | AI |
@@ -147,7 +147,7 @@ class DocChecker
         $routes = array_combine($matches[1], $matches[2]);
         
         // Check if documented routes exist
-        $gettingStarted = file_get_contents('docs/getting-started.md');
+        $gettingStarted = file_get_contents('docs/GETTING-STARTED.md');
         if (strpos($gettingStarted, '/admin') !== false && !isset($routes['admin'])) {
             $this->warnings[] = 'Documentation mentions /admin route but not found in Application.php';
         }
@@ -159,7 +159,7 @@ class DocChecker
         $scripts = array_keys($composer['scripts'] ?? []);
         
         // Check if documented scripts exist
-        $docs = file_get_contents('README.md') . file_get_contents('docs/development-setup.md');
+        $docs = file_get_contents('README.md') . file_get_contents('docs/DEVELOPMENT-SETUP.md');
         
         foreach ($scripts as $script) {
             if (strpos($docs, "composer $script") === false) {
@@ -237,17 +237,17 @@ echo "Documentation check passed!"
 ### If you added a new file:
 - [ ] Update CLAUDE.md file list
 - [ ] Update project structure in README.md
-- [ ] Update getting-started.md if user-facing
+- [ ] Update GETTING-STARTED.md if user-facing
 - [ ] Add to LLM-DEVELOPMENT-GUIDE.md if it's a pattern
 
 ### If you added a route:
-- [ ] Document in getting-started.md
+- [ ] Document in GETTING-STARTED.md
 - [ ] Update API documentation
 - [ ] Add example to CLAUDE.md
 
 ### If you added an env variable:
 - [ ] Add to .env.example with comment
-- [ ] Document in development-setup.md
+- [ ] Document in DEVELOPMENT-SETUP.md
 - [ ] Update installation instructions
 
 ### If you added a composer dependency:
@@ -434,7 +434,7 @@ Add to every LLM prompt:
 After implementing this feature:
 1. Update README.md if feature is user-visible
 2. Update CLAUDE.md with new patterns/files
-3. Update getting-started.md with examples
+3. Update GETTING-STARTED.md with examples
 4. Update .env.example with new variables
 5. Run: composer docs:check
 ```

@@ -329,7 +329,7 @@ composer docs:check
 
 | If You Changed... | Update These Files |
 |-------------------|-------------------|
-| Added a route | `docs/getting-started.md`, API docs |
+| Added a route | `docs/GETTING-STARTED.md`, API docs |
 | Added env variable | `.env.example` with comment |
 | Added a file | `CLAUDE.md` file list, project structure |
 | Added composer dependency | `README.md` requirements |
@@ -352,8 +352,8 @@ If you're unsure:
 
 - `CLAUDE.md` - Project-specific rules
 - `docs/AI-CODING-STANDARDS.md` - AI-specific coding standards
-- `docs/getting-started.md` - Basic concepts
-- `docs/development-setup.md` - Environment details
+- `docs/GETTING-STARTED.md` - Basic concepts
+- `docs/DEVELOPMENT-SETUP.md` - Environment details
 
 ---
 

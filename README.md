@@ -53,7 +53,7 @@ In physics, isotonic means "equal tension"—and that's exactly what Isotone aim
 - 50MB disk space (minimum)
 - 128MB RAM (minimum)
 
-For detailed requirements and technology stack, see [Technology Stack Documentation](docs/isotone-tech-stack.md).
+For detailed requirements and technology stack, see [Technology Stack Documentation](docs/ISOTONE-TECH-STACK.md).
 
 ## 🎯 Quick Start
 
@@ -102,7 +102,7 @@ For detailed requirements and technology stack, see [Technology Stack Documentat
    - Delete `/install` directory after setup
    - Or rename: `mv install install.backup`
 
-For detailed setup instructions, see the [Development Setup Guide](docs/development-setup.md).
+For detailed setup instructions, see the [Development Setup Guide](docs/DEVELOPMENT-SETUP.md).
 
 ## 🏗️ Project Structure
 
@@ -133,7 +133,8 @@ isotone/
 │   ├── logs/            # Application logs
 │   └── temp/            # Temporary files
 ├── config/              # Configuration files
-├── docs/                # Documentation
+├── docs/                # LLM/Technical documentation (don't reorganize)
+├── user-docs/           # User-facing documentation (well organized)
 ├── install/             # Installation wizard (delete after setup)
 │   └── index.php        # Web-based installer
 ├── scripts/             # Automated/IDE scripts
@@ -177,8 +178,8 @@ isotone/
 ### Getting Started with Development
 
 See our comprehensive guides:
-- [Development Environment Setup](docs/development-setup.md) - Set up XAMPP, Composer, and tools
-- [Getting Started Guide](docs/getting-started.md) - Learn Isotone basics and create your first plugin
+- [Development Environment Setup](docs/DEVELOPMENT-SETUP.md) - Set up XAMPP, Composer, and tools
+- [Getting Started Guide](docs/GETTING-STARTED.md) - Learn Isotone basics and create your first plugin
 
 ### Running Tests
 
@@ -195,11 +196,20 @@ composer analyse
 
 ## 📚 Documentation
 
-### Available Now
+### 📖 User Documentation
+**Well-organized guides for humans:** See [`user-docs/README.md`](user-docs/README.md)
+- Installation & Setup Guides
+- Configuration Documentation  
+- Developer Tutorials
+- API Reference
+- User Guides
+
+### 🤖 Technical Documentation
+**For LLMs and automated tools:** [`docs/`](docs/) (do not reorganize)
 - [Configuration Guide](docs/CONFIGURATION.md) - Complete config.php documentation
-- [Development Environment Setup](docs/development-setup.md) - Complete setup guide for Windows/Mac/Linux
-- [Getting Started Guide](docs/getting-started.md) - Learn the basics and build your first plugin
-- [Technology Stack Specification](docs/isotone-tech-stack.md) - Detailed technical architecture
+- [Development Environment Setup](docs/DEVELOPMENT-SETUP.md) - Complete setup guide for Windows/Mac/Linux
+- [Getting Started Guide](docs/GETTING-STARTED.md) - Learn the basics and build your first plugin
+- [Technology Stack Specification](docs/ISOTONE-TECH-STACK.md) - Detailed technical architecture
 - [CSS Architecture Guide](#css-architecture) - Modular CSS system documentation
 
 ### Coming Soon

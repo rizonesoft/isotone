@@ -264,4 +264,4 @@ Planned improvements to the versioning system:
 
 ---
 
-For more information, see the [Development Guide](development-setup.md) or run `php isotone help`.
+For more information, see the [Development Guide](DEVELOPMENT-SETUP.md) or run `php isotone help`.

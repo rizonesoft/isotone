@@ -50,6 +50,11 @@
         "fix-style": "phpcbf app --standard=PSR12",
         "docs:check": "php scripts/check-docs.php",
         "docs:update": "php scripts/update-docs.php",
+        "docs:sync": "php scripts/sync-user-docs.php",
+        "docs:all": [
+            "@docs:update",
+            "@docs:check"
+        ],
         "ide:sync": "php scripts/sync-ide-rules.php",
         "pre-commit": [
             "@docs:check",

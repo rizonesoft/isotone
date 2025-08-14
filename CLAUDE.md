@@ -10,6 +10,14 @@ This file provides guidance to Claude Code (claude.ai/code) and other LLMs when 
 - 💬 [`docs/PROMPT-ENGINEERING-GUIDE.md`](docs/PROMPT-ENGINEERING-GUIDE.md) - How to write prompts for this project
 - 🔧 [`docs/LLM-CONFIG-RULES.md`](docs/LLM-CONFIG-RULES.md) - **CRITICAL: Config.php rules (NO .env files!)**
 
+## 📝 NOTES & REMINDERS
+
+**The user has a `NOTES.md` file for saving notes, reminders, and ideas.**
+- When asked to "save a note" or "remember this", add it to NOTES.md
+- Organize notes under the appropriate section
+- Update the "Last updated" date when adding notes
+- The file is tracked in git by default (can be ignored if needed)
+
 ## ⚠️ AUTO-COMMIT ON SATISFACTION
 **CRITICAL**: When user says "perfect", "thanks", "good", "excellent", "happy with" - IMMEDIATELY:
 1. Run: `git add -A && git commit -m "description" && git push`
@@ -129,9 +137,9 @@ cp config.sample.php config.php
 
 ### Documentation
 - `README.md` - Project overview and quick start
-- `docs/development-setup.md` - Complete setup guide for XAMPP and other environments
-- `docs/getting-started.md` - Tutorial for developers new to Isotone
-- `docs/isotone-tech-stack.md` - Technical architecture specification
+- `docs/DEVELOPMENT-SETUP.md` - Complete setup guide for XAMPP and other environments
+- `docs/GETTING-STARTED.md` - Tutorial for developers new to Isotone
+- `docs/ISOTONE-TECH-STACK.md` - Technical architecture specification
 
 ## Development Environment
 
@@ -179,12 +187,14 @@ isotone/
 │   ├── logs/        # Application logs
 │   └── temp/        # Temporary files
 ├── config/          # Configuration
-├── docs/            # Documentation
+├── docs/            # LLM/Technical documentation (don't reorganize)
+├── user-docs/       # User-facing documentation (well organized)
 ├── install/         # Installation wizard
 ├── scripts/         # Build/IDE scripts
 ├── vendor/          # Composer dependencies
 ├── config.php       # Main configuration (DO NOT COMMIT)
 ├── config.sample.php # Configuration template
+├── NOTES.md         # User's notes and reminders
 ├── index.php        # Main entry point
 └── .htaccess        # Security & routing
 ```
@@ -211,6 +221,8 @@ composer analyse
 # Documentation maintenance (CRITICAL for LLMs!)
 composer docs:check    # Check if docs match code
 composer docs:update   # Auto-generate some docs
+composer docs:sync     # Sync user-docs
+composer docs:all      # Complete update + check
 
 # Start development (visit http://localhost/isotone/)
 # No PHP built-in server needed - uses XAMPP Apache
@@ -246,7 +258,7 @@ composer docs:check
 - `README.md` - Feature status, installation steps
 - `CLAUDE.md` - This file, new patterns/rules
 - `.env.example` - New environment variables
-- `docs/getting-started.md` - New features, examples
+- `docs/GETTING-STARTED.md` - New features, examples
 - `docs/LLM-DEVELOPMENT-GUIDE.md` - New patterns for AI
 - `composer.json` - New commands/dependencies
 
@@ -298,29 +310,47 @@ composer docs:check
 **Add a plugin:**
 - Create in `iso-content/plugins/[plugin-name]/`
 - Use WordPress-style hooks
-- No npm/build required
 
-**Fix a bug:**
-- Read error carefully
-- Check `.env` configuration
-- Test with XAMPP paths
-- Escape all output
+**Save a note or reminder:**
+- Add to `NOTES.md` under appropriate section
+- Update the "Last updated" date
+- Keep notes organized and clear
 
 ### ⛔ NEVER Do These:
-- Run `npm install` or any npm command
-- Create database migrations
-- Use Laravel/Symfony patterns
-- Add complex build processes
-- Assume root URL (always `/isotone/`)
-- Commit `.env` file
-- Modify `vendor/` directory
+- **Never** run `npm install` or any npm command (pure PHP project)
+- **Never** create database migrations (RedBeanPHP handles schema automatically)
+- **Never** use Laravel/Symfony full framework patterns (this is lightweight)
+- **Never** add complex build processes (must work on shared hosting)
+- **Never** assume root URL (always use `/isotone/` path)
+- **Never** commit `config.php` to git (it contains credentials)
+- **Never** modify `vendor/` directory directly
+- **Never** create or reference `.env` files (use config.php instead)
 
 ### ✅ ALWAYS Do These:
-- Follow PSR-12 standards
-- Add PHPDoc comments
-- Escape HTML output
-- Use RedBeanPHP for database
-- Test on `/isotone/` URL
+- Follow PSR-12 coding standards
+- Add PHPDoc comments to functions/classes
+- Escape HTML output for security
+- Use RedBeanPHP for all database operations
+- Test on `/isotone/` URL path
 - Keep shared hosting compatible
-- **Update ALL affected documentation**
-- **Run `composer docs:check` before finishing**
+- Use `config.php` for all configuration
+- **Update ALL affected documentation when changing code**
+- **Run `composer docs:check` before completing any task**
+
+## IDE Integration
+- `.windsurf-rules.md` - Windsurf IDE rules
+- `.cursorrules` - Cursor IDE rules
+- `.github/copilot-instructions.md` - GitHub Copilot
+
+## Git Workflow
+- **Pre-commit**: Runs `docs:check` only
+- **Pre-push**: Runs `docs:update` for version changes
+- **Manual**: Use `composer docs:all` for complete update
+
+## Remember
+- Keep code simple and maintainable
+- Follow existing patterns
+- Document everything
+- Test on XAMPP
+- No Node.js/npm dependencies
+- Use `NOTES.md` for user's notes and reminders

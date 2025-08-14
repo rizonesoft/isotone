@@ -127,7 +127,7 @@ AI Action:
 
 | If discussing... | Update these docs... |
 |------------------|---------------------|
-| New features | README.md feature list, getting-started.md |
+| New features | README.md feature list, GETTING-STARTED.md |
 | API changes | API documentation, examples |
 | Version changes | CHANGELOG.md, version docs |
 | Configuration | .env.example, setup guides |

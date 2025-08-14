@@ -168,7 +168,7 @@ First public release of Isotone CMS!
 - Theme support
 
 ### Installation
-See [Development Setup Guide](docs/development-setup.md)
+See [Development Setup Guide](docs/DEVELOPMENT-SETUP.md)
 ```
 
 ## 📝 Repository Description Template

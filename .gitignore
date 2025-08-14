@@ -7,6 +7,9 @@
 # Configuration files with sensitive data
 config.php
 config.local.php
+
+# Personal notes (optional - uncomment to ignore)
+# NOTES.md
 # Note: database.json contains connection info for IDEs (no passwords)
 
 # Installation marker
