@@ -320,19 +320,22 @@ function render_icon($icon_name, $class = 'w-5 h-5') {
     <div class="flex h-full pt-16">
         <!-- Sidebar -->
         <aside :class="sidebarCollapsed ? 'w-16' : 'w-64'" 
-               class="fixed left-0 top-16 bottom-0 bg-gray-800 border-r border-gray-700 overflow-y-auto sidebar-transition z-30"
+               class="fixed left-0 top-16 bottom-0 bg-gray-800 border-r border-gray-700 overflow-y-auto overflow-x-hidden sidebar-transition z-30"
                x-data="{ collapsed: false }">
             
             <!-- Collapse Toggle -->
-            <button @click="sidebarCollapsed = !sidebarCollapsed" 
-                    class="absolute -right-3 top-8 w-6 h-6 bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-600 transition-colors">
-                <svg class="w-4 h-4 transition-transform" :class="sidebarCollapsed && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                </svg>
-            </button>
+            <div class="relative">
+                <button @click="sidebarCollapsed = !sidebarCollapsed" 
+                        class="absolute top-4 w-8 h-8 bg-gray-700 hover:bg-gray-600 rounded-lg flex items-center justify-center transition-all z-40"
+                        :class="sidebarCollapsed ? 'left-5' : 'right-4'">
+                    <svg class="w-5 h-5 transition-transform" :class="sidebarCollapsed && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+            </div>
             
             <!-- Menu -->
-            <nav class="mt-4">
+            <nav class="mt-16">
                 <?php foreach ($admin_menu as $key => $item): ?>
                 <div x-data="{ open: false }">
                     <!-- Main Menu Item -->

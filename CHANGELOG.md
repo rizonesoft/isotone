@@ -39,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documentation files renamed to ALL CAPS (development-setup.md → DEVELOPMENT-SETUP.md)
 - GITHUB-SETUP.md and DOCS-STRUCTURE.md moved from root to docs/
 
-## [0.1.2] - Genesis - 2025-08-13
+## [0.1.2-alpha] - Genesis - 2025-08-13
 
 ### Added
 - Intelligent documentation automation system
@@ -47,12 +47,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - AI satisfaction detection for auto-commit workflow
 - Optimized documentation update triggers
 - Enhanced CLI version management
-
-## [0.1.2-alpha] - Genesis - 2025-08-13
-
-## [0.1.1] - Genesis - 2025-08-13
-
-### Added
 - Improved version badge text contrast (white text)
 
 ## [0.1.0-alpha] - Genesis - 2025-01-13
