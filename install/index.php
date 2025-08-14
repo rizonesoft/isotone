@@ -113,13 +113,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$isInstalled) {
                     ];
                     
                     foreach ($settings as $key => $value) {
-                        $setting = R::findOne('isotonesetting', 'key = ?', [$key]);
+                        $setting = R::findOne('isotonesetting', 'setting_key = ?', [$key]);
                         if (!$setting) {
                             $setting = R::dispense('isotonesetting');
-                            $setting->key = $key;
+                            $setting->setting_key = $key;
                         }
-                        $setting->value = $value;
-                        $setting->type = 'string';
+                        $setting->setting_value = $value;
+                        $setting->setting_type = 'string';
                         $setting->updated_at = date('Y-m-d H:i:s');
                         R::store($setting);
                     }
