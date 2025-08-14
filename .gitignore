@@ -10,6 +10,9 @@
 .env.*.local
 # Note: database.json contains connection info for IDEs (no passwords)
 
+# Installation marker
+.isotone-installed
+
 # User content (should not be in version control)
 /content/uploads/*
 /content/cache/*

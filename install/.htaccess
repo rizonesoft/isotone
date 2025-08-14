@@ -1,0 +1,21 @@
+# Isotone CMS Installation Directory Protection
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Allow access to index.php
+    RewriteRule ^index\.php$ - [L]
+    
+    # Block all other PHP files
+    RewriteRule \.php$ - [F]
+</IfModule>
+
+# Prevent directory browsing
+Options -Indexes
+
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "DENY"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>

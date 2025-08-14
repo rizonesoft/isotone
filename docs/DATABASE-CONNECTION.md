@@ -162,6 +162,8 @@ DB_PASSWORD=
 1. **Web access works?**: Check http://localhost/isotone/
 2. **Database exists?**: Verify `isotone_db` exists in phpMyAdmin
 3. **Check .env file**: Ensure it's not `.env.example`
+4. **Run installation wizard**: Visit http://localhost/isotone/install/
+5. **Test connection**: Visit http://localhost/isotone/install/test-db.php
 
 ### WSL CLI Can't Connect
 This is expected behavior. The application will auto-detect and handle WSL connections.
@@ -170,22 +172,23 @@ This is expected behavior. The application will auto-detect and handle WSL conne
 
 ## Database Schema
 
-After initialization, these tables exist:
+After running the installation wizard, these tables are created:
 
 ```sql
-isotone_settings    -- System configuration
-isotone_users       -- User accounts
-isotone_content     -- Pages and content
-isotone_migrations  -- Migration tracking (when used)
+isotonesetting    -- System configuration
+isotoneuser       -- User accounts  
+isotonecontent    -- Pages and content (when created)
 ```
+
+Note: RedBeanPHP uses singular table names without underscores by convention.
 
 ## RedBeanPHP ORM
 
 The application uses RedBeanPHP, which:
 - Creates tables automatically when needed
 - Doesn't require migrations for development
-- Uses convention: lowercase, underscore_separated names
-- Prefixes all tables with `isotone_`
+- Uses convention: lowercase singular table names
+- Table naming: `isotoneuser`, `isotonesetting`, etc. (no underscores)
 
 ## Best Practices
 

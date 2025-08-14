@@ -67,7 +67,7 @@ For detailed requirements and technology stack, see [Technology Stack Documentat
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/isotone/isotone.git
+   git clone https://github.com/rizonesoft/isotone.git
    cd isotone
    ```
 
@@ -76,16 +76,30 @@ For detailed requirements and technology stack, see [Technology Stack Documentat
    composer install
    ```
 
-3. **Configure environment**
+3. **Configure database**
    ```bash
    cp .env.example .env
    # Edit .env with your database credentials
    ```
+   - Create database `isotone_db` in phpMyAdmin
+   - Default: username `root`, no password
 
-4. **Access the site**
+4. **Run installation wizard**
+   ```
+   http://localhost/isotone/install/
+   ```
+   - Choose your Super Admin username
+   - Set your email and password
+   - No default credentials - you choose everything
+
+5. **Access the site**
    ```
    http://localhost/isotone/
    ```
+   
+6. **Security** (Important!)
+   - Delete `/install` directory after setup
+   - Or rename: `mv install install.backup`
 
 For detailed setup instructions, see the [Development Setup Guide](docs/development-setup.md).
 
@@ -99,18 +113,21 @@ isotone/
 │   ├── Models/          # Data models
 │   └── Services/        # Business logic
 ├── assets/              # Static assets (CSS, JS, images)
-├── admin/               # Admin panel
+├── admin/               # Admin panel (coming soon)
 ├── config/              # Configuration files
 ├── content/             # User content (gitignored)
 │   ├── uploads/         # Media files
 │   ├── cache/           # Cache files
 │   └── backups/         # Backup files
 ├── docs/                # Documentation
+├── install/             # Installation wizard (delete after setup)
+│   └── index.php        # Web-based installer
 ├── plugins/             # Installed plugins
 ├── scripts/             # Automated/IDE scripts
 ├── storage/             # Logs and temporary files
 ├── themes/              # Installed themes
 ├── vendor/              # Composer dependencies
+├── .env                 # Environment config (create from .env.example)
 ├── index.php            # Main entry point
 ├── .htaccess            # Security & routing
 ├── composer.json        # PHP dependencies

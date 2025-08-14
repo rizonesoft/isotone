@@ -30,20 +30,25 @@ Isotone is a lightweight, modern PHP CMS designed for:
 isotone/
 ├── app/                # Application code
 │   ├── Core/           # Core CMS classes
-│   ├── Http/           # Controllers & Middleware
+│   ├── Commands/       # CLI commands
 │   ├── Models/         # Data models
 │   ├── Services/       # Business logic
 │   └── helpers.php     # Helper functions
+├── admin/              # Admin panel (coming soon)
+├── assets/             # Static assets
 ├── config/             # Configuration files
 ├── content/            # User-generated content
-├── assets/             # Static assets
+├── docs/               # Documentation
+├── install/            # Installation wizard (delete after setup)
+├── plugins/            # Plugin files
+├── scripts/            # Automated/IDE scripts
+├── storage/            # Logs and cache
+├── themes/             # Theme files
+├── vendor/             # Composer dependencies
 ├── index.php           # Entry point
 ├── .htaccess           # URL rewriting & security
-├── themes/             # Theme files
-├── plugins/            # Plugin files
-├── storage/            # Logs and cache
 ├── .env                # Environment config
-└── composer.json      # Dependencies
+└── composer.json       # Dependencies
 ```
 
 ## Creating Your First Page
@@ -75,6 +80,19 @@ private function handleAbout(Request $request): Response
 
 Visit: http://localhost/isotone/about
 
+## Installation Process
+
+### Initial Setup
+
+1. **Clone or download** the Isotone repository
+2. **Install dependencies** with `composer install`
+3. **Configure database** in `.env` file
+4. **Run installation wizard** at http://localhost/isotone/install/
+   - Choose your Super Admin username
+   - Set your email and password
+   - No default credentials - you control everything
+5. **Delete or rename** the `/install` directory after setup for security
+
 ## Working with the Database
 
 ### Setting Up RedBeanPHP
@@ -82,10 +100,11 @@ Visit: http://localhost/isotone/about
 Isotone uses RedBeanPHP for database operations:
 
 ```php
+use Isotone\Services\DatabaseService;
 use RedBeanPHP\R;
 
-// Connect to database
-R::setup('mysql:host=localhost;dbname=isotone', 'root', '');
+// Database is automatically initialized via DatabaseService
+DatabaseService::initialize();
 
 // Create a new record
 $post = R::dispense('post');

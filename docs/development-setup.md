@@ -72,7 +72,7 @@ chmod +x /usr/local/bin/composer
 #### Option A: Git Clone (Recommended)
 ```bash
 cd C:\xampp\htdocs  # Or your web root
-git clone https://github.com/isotone/isotone.git
+git clone https://github.com/rizonesoft/isotone.git
 cd isotone
 ```
 
@@ -117,7 +117,7 @@ This will install all PHP dependencies including:
    # Database (XAMPP defaults)
    DB_HOST=localhost
    DB_PORT=3306
-   DB_DATABASE=isotone
+   DB_DATABASE=isotone_db
    DB_USERNAME=root
    DB_PASSWORD=
    ```
@@ -125,15 +125,27 @@ This will install all PHP dependencies including:
 ### 6. Database Setup
 
 1. Open phpMyAdmin: http://localhost/phpmyadmin
-2. Create a new database named `isotone`
+2. Create a new database named `isotone_db`
 3. Set collation to `utf8mb4_unicode_ci`
 
-### 7. Verify Installation
+### 7. Run Installation Wizard
+
+1. Visit http://localhost/isotone/install/ in your browser
+2. The wizard will check database connection
+3. Choose your Super Admin credentials:
+   - Username (minimum 3 characters)
+   - Email address
+   - Password (minimum 8 characters)
+4. Complete the installation
+5. **Important:** Delete or rename the `/install` directory for security
+
+### 8. Verify Installation
 
 Visit http://localhost/isotone/ in your browser. You should see:
 - ✅ Welcome page with Isotone logo
 - ✅ PHP version check
 - ✅ Composer status
+- ✅ Database connection status
 - ✅ Environment status
 
 ## Troubleshooting
@@ -143,12 +155,13 @@ Visit http://localhost/isotone/ in your browser. You should see:
 1. **Check mod_rewrite is enabled:**
    - Restart Apache after enabling
    
-2. **Verify .htaccess files:**
-   - Ensure `.htaccess` exists in root and public directories
+2. **Verify .htaccess file:**
+   - Ensure `.htaccess` exists in root directory
    - Check Apache allows .htaccess overrides
 
 3. **Try direct access:**
    - Visit http://localhost/isotone/
+   - If you see directory listing, check if index.php exists
    - If this doesn't work, check Apache configuration
 
 ### Composer Not Found
@@ -174,10 +187,14 @@ chmod -R 777 content/uploads
 
 1. Verify MySQL/MariaDB is running
 2. Check credentials in `.env`
-3. Ensure database exists
+3. Ensure database `isotone_db` exists
 4. Test connection:
    ```bash
    mysql -u root -p -e "SHOW DATABASES;"
+   ```
+5. Try the test script:
+   ```
+   http://localhost/isotone/install/test-db.php
    ```
 
 ## Development Tools

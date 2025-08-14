@@ -36,8 +36,10 @@ Isotone CMS is a lightweight PHP content management system in early development.
 - ✅ PSR-4 autoloading and project structure
 - ✅ Composer dependencies installed
 - ✅ Modern UI design system (dark theme with glassmorphism)
-- 🚧 Database layer (RedBeanPHP) - in progress
+- ✅ Database layer (RedBeanPHP) - connected and initialized
+- ✅ Installation wizard for initial setup
 - 🚧 Plugin system - in progress
+- 🚧 Admin panel - in progress
 
 ### Design System
 - **Theme**: Modern dark with electric cyan (#00D9FF) and neon green (#00FF88) accents
@@ -56,9 +58,11 @@ Isotone CMS is a lightweight PHP content management system in early development.
 
 ## Development Environment
 
-- **XAMPP for Windows 11**
-- Web root: `C:\xampp\htdocs\isotone`
+- **XAMPP for Windows 11** (WSL environment)
+- Web root: `/mnt/c/xampp/htdocs/isotone`
 - Access via: `http://localhost/isotone`
+- Database: `isotone_db` (created in phpMyAdmin)
+- Installation: `http://localhost/isotone/install/`
 
 ## Planned Architecture
 
@@ -75,20 +79,31 @@ Isotone CMS is a lightweight PHP content management system in early development.
 - REST API at `/api/v1/`
 - Markdown-native content editing
 
-### Project Structure (Planned)
+### Project Structure (Current)
 ```
 isotone/
 ├── app/             # Core application
 │   ├── Core/        # CMS functionality
-│   ├── Http/        # Controllers, middleware
+│   ├── Commands/    # CLI commands
 │   ├── Models/      # Data models
 │   └── Services/    # Business logic
-├── public/          # Web root
-├── plugins/         # Plugin directory
-├── themes/          # Theme directory
+├── admin/           # Admin panel (coming soon)
+├── assets/          # Static assets (CSS, JS, images)
+├── config/          # Configuration
 ├── content/         # User content
-└── config/          # Configuration
+├── docs/            # Documentation
+├── install/         # Installation wizard (delete after setup)
+├── plugins/         # Plugin directory
+├── scripts/         # Automated/IDE scripts
+├── storage/         # Logs and temp files
+├── themes/          # Theme directory
+├── vendor/          # Composer dependencies
+├── index.php        # Main entry point
+├── .htaccess        # Security & routing
+└── .env             # Environment config
 ```
+
+Note: The `/public` folder was removed to simplify routing. Everything now runs from the root directory.
 
 ## Key Development Commands
 
@@ -153,8 +168,10 @@ composer docs:check
 
 ### Core System
 - `app/Core/Application.php` - Main application class with routing
+- `app/Services/DatabaseService.php` - Database connection management
 - `app/helpers.php` - Global helper functions
-- `public/index.php` - Front controller entry point
+- `index.php` - Front controller entry point (in root)
+- `install/index.php` - Installation wizard
 
 ### Configuration
 - `.env` - Environment variables (copy from .env.example)
@@ -162,13 +179,14 @@ composer docs:check
 
 ## Next Implementation Steps
 
-1. Complete database integration with RedBeanPHP
-2. Implement hook/filter system for plugins
-3. Create basic admin authentication
-4. Build admin dashboard UI
-5. Develop theme system with template hierarchy
-6. Add REST API endpoints
-7. Create CLI tool for common tasks
+1. ~~Complete database integration with RedBeanPHP~~ ✅
+2. ~~Create installation wizard~~ ✅
+3. Implement hook/filter system for plugins
+4. Create basic admin authentication
+5. Build admin dashboard UI
+6. Develop theme system with template hierarchy
+7. Add REST API endpoints
+8. Create CLI tool for common tasks
 
 ## 🤖 Quick LLM Task Reference
 
