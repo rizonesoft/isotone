@@ -251,6 +251,7 @@ try {
                 0 10px 40px rgba(0, 0, 0, 0.5),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
             animation: fadeInUp 0.6s ease-out;
+            overflow: visible;
         }
         
         @keyframes fadeInUp {
@@ -292,6 +293,7 @@ try {
         .installed {
             text-align: center;
         }
+        
         
         .installed .status {
             margin: 2rem 0;
@@ -538,6 +540,18 @@ try {
             flex-shrink: 0;
         }
         
+        /* Logo in corner for already installed page */
+        .logo-corner {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            width: 40px;
+            height: 40px;
+            filter: drop-shadow(0 0 15px rgba(0, 217, 255, 0.5));
+            animation: pulse 2s ease-in-out infinite;
+            z-index: 10;
+        }
+        
         @keyframes pulse {
             0%, 100% { 
                 transform: scale(1);
@@ -578,11 +592,9 @@ try {
     <div class="grid-bg"></div>
     <div class="container">
         <?php if ($isInstalled): ?>
+            <img src="../iso-includes/assets/logo.svg" alt="Isotone" class="logo-corner">
             <div class="installed">
-                <div class="header-logo">
-                    <img src="../iso-includes/assets/logo.svg" alt="Isotone" class="logo-icon">
-                    <h1>Already Installed</h1>
-                </div>
+                <h1>Already Installed</h1>
                 <p class="subtitle">Isotone CMS is already installed on this system.</p>
                 <div class="status info">
                     To reinstall, delete the .isotone-installed file in the root directory.
