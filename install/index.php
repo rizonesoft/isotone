@@ -268,7 +268,6 @@ try {
             font-size: 2.5rem;
             font-weight: 900;
             margin: 0;
-            margin-bottom: 1rem;
             letter-spacing: 0.02em;
             line-height: 1.2;
             background: linear-gradient(135deg, #FFFFFF 0%, #00D9FF 50%, #00FF88 100%);
@@ -279,6 +278,10 @@ try {
             background-size: 200% 200%;
         }
         
+        .header-logo h1 {
+            margin-bottom: 0;
+        }
+        
         @keyframes shimmer {
             0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -287,7 +290,7 @@ try {
         .subtitle {
             color: var(--text-secondary);
             margin-bottom: 2rem;
-            margin-top: -0.5rem;
+            margin-top: 0;
             font-size: 1.1rem;
             line-height: 1.5;
         }
@@ -491,14 +494,22 @@ try {
             opacity: 0.5;
         }
         
+        /* Header with logo and title */
+        .header-logo {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
         /* Logo styling */
         .logo-icon {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             filter: drop-shadow(0 0 20px rgba(0, 217, 255, 0.5));
             animation: pulse 2s ease-in-out infinite;
-            margin: 0 auto 2.5rem;
-            display: block;
+            flex-shrink: 0;
         }
         
         @keyframes pulse {
@@ -542,8 +553,10 @@ try {
     <div class="container">
         <?php if ($isInstalled): ?>
             <div class="installed">
-                <img src="../assets/logo.svg" alt="Isotone" class="logo-icon">
-                <h1>Already Installed</h1>
+                <div class="header-logo">
+                    <img src="../assets/logo.svg" alt="Isotone" class="logo-icon">
+                    <h1>Already Installed</h1>
+                </div>
                 <p class="subtitle">Isotone CMS is already installed on this system.</p>
                 <div class="status info">
                     To reinstall, delete the .isotone-installed file in the root directory.
@@ -555,8 +568,10 @@ try {
             </div>
         <?php elseif ($success): ?>
             <div class="installed">
-                <img src="../assets/logo.svg" alt="Isotone" class="logo-icon">
-                <h1>Installation Complete!</h1>
+                <div class="header-logo">
+                    <img src="../assets/logo.svg" alt="Isotone" class="logo-icon">
+                    <h1>Installation Complete!</h1>
+                </div>
                 <p class="subtitle">Your Isotone CMS is ready to use.</p>
                 <div class="status success">
                     <?php echo htmlspecialchars($message); ?>
@@ -567,8 +582,10 @@ try {
                 </div>
             </div>
         <?php else: ?>
-            <img src="../assets/logo.svg" alt="Isotone" class="logo-icon">
-            <h1>Install Isotone</h1>
+            <div class="header-logo">
+                <img src="../assets/logo.svg" alt="Isotone" class="logo-icon">
+                <h1>Install Isotone</h1>
+            </div>
             <p class="subtitle">Set up your Super Admin account</p>
             
             <div class="db-status">
