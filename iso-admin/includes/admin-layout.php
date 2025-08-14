@@ -338,7 +338,7 @@ function render_icon($icon_name, $class = 'w-5 h-5') {
                     <!-- Main Menu Item -->
                     <a href="<?php echo $item['url']; ?>" 
                        @click="<?php echo !empty($item['submenu']) ? 'open = !open; $event.preventDefault()' : ''; ?>"
-                       class="flex items-center px-4 py-3 hover:bg-gray-700 transition-colors <?php echo $current_page === $key ? 'bg-gray-700 text-cyan-400 border-l-4 border-cyan-400' : ''; ?>">
+                       class="flex items-center px-4 py-2 hover:bg-gray-700 transition-colors <?php echo $current_page === $key ? 'bg-gray-700 text-cyan-400 border-l-4 border-cyan-400' : ''; ?>">
                         <span class="flex-shrink-0"><?php echo render_icon($item['icon']); ?></span>
                         <span x-show="!sidebarCollapsed" class="ml-3"><?php echo $item['title']; ?></span>
                         <?php if (!empty($item['submenu'])): ?>
@@ -353,7 +353,7 @@ function render_icon($icon_name, $class = 'w-5 h-5') {
                     <div x-show="open && !sidebarCollapsed" x-cloak class="bg-gray-900">
                         <?php foreach ($item['submenu'] as $subitem): ?>
                         <a href="<?php echo $subitem['url']; ?>" 
-                           class="block pl-12 pr-4 py-2 text-sm hover:bg-gray-700 transition-colors">
+                           class="block pl-12 pr-4 py-1.5 text-sm hover:bg-gray-700 transition-colors">
                             <?php echo $subitem['title']; ?>
                         </a>
                         <?php endforeach; ?>
