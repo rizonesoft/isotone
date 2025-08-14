@@ -119,7 +119,7 @@ $icon_map = [
     'wrench' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />'
 ];
 
-function render_icon($icon_name, $class = 'w-5 h-5') {
+function render_icon($icon_name, $class = 'w-6 h-6') {
     global $icon_map;
     $path = $icon_map[$icon_name] ?? '';
     return '<svg class="' . $class . '" fill="none" stroke="currentColor" viewBox="0 0 24 24">' . $path . '</svg>';
@@ -341,9 +341,10 @@ function render_icon($icon_name, $class = 'w-5 h-5') {
                     <!-- Main Menu Item -->
                     <a href="<?php echo $item['url']; ?>" 
                        @click="<?php echo !empty($item['submenu']) ? 'open = !open; $event.preventDefault()' : ''; ?>"
-                       class="flex items-center px-4 py-2 hover:bg-gray-700 transition-colors <?php echo $current_page === $key ? 'bg-gray-700 text-cyan-400 border-l-4 border-cyan-400' : ''; ?>">
+                       class="flex items-center py-2 hover:bg-gray-700 transition-colors <?php echo $current_page === $key ? 'bg-gray-700 text-cyan-400 border-l-4 border-cyan-400' : ''; ?>"
+                       :class="sidebarCollapsed ? 'justify-center px-0' : 'px-4'">
                         <span class="flex-shrink-0"><?php echo render_icon($item['icon']); ?></span>
-                        <span x-show="!sidebarCollapsed" class="ml-3"><?php echo $item['title']; ?></span>
+                        <span x-show="!sidebarCollapsed" class="ml-3" x-cloak><?php echo $item['title']; ?></span>
                         <?php if (!empty($item['submenu'])): ?>
                         <svg x-show="!sidebarCollapsed" class="w-4 h-4 ml-auto transition-transform" :class="open && 'rotate-90'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
