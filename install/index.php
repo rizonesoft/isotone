@@ -187,9 +187,9 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Isotone CMS - Installation</title>
-    <link rel="icon" type="image/png" sizes="512x512" href="../assets/images/favicon.png">
-    <link rel="apple-touch-icon" href="../assets/images/favicon.png">
-    <link rel="manifest" href="../manifest.json">
+    <link rel="icon" type="image/png" sizes="512x512" href="../favicon.png">
+    <link rel="apple-touch-icon" href="../favicon.png">
+    <link rel="manifest" href="../site.webmanifest">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -539,7 +539,7 @@ try {
     <div class="container">
         <?php if ($isInstalled): ?>
             <div class="installed">
-                <img src="../assets/images/logo.svg" alt="Isotone" class="logo-icon">
+                <img src="../assets/logo.svg" alt="Isotone" class="logo-icon">
                 <h1>Already Installed</h1>
                 <p class="subtitle">Isotone CMS is already installed on this system.</p>
                 <div class="status info">
@@ -552,7 +552,7 @@ try {
             </div>
         <?php elseif ($success): ?>
             <div class="installed">
-                <img src="../assets/images/logo.svg" alt="Isotone" class="logo-icon">
+                <img src="../assets/logo.svg" alt="Isotone" class="logo-icon">
                 <h1>Installation Complete!</h1>
                 <p class="subtitle">Your Isotone CMS is ready to use.</p>
                 <div class="status success">
