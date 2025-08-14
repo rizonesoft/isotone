@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) and other LLMs when 
 
 ## ⚠️ CRITICAL: This is an LLM-Driven Project
 
-**Isotone CMS is primarily developed by AI assistants. Read the LLM-specific guides FIRST:**
+**Isotone is primarily developed by AI assistants. Read the LLM-specific guides FIRST:**
 - 📖 [`docs/LLM-DEVELOPMENT-GUIDE.md`](docs/LLM-DEVELOPMENT-GUIDE.md) - Essential rules for LLM developers
 - 📏 [`docs/AI-CODING-STANDARDS.md`](docs/AI-CODING-STANDARDS.md) - Coding standards for AI
 - 💬 [`docs/PROMPT-ENGINEERING-GUIDE.md`](docs/PROMPT-ENGINEERING-GUIDE.md) - How to write prompts for this project
@@ -27,7 +27,7 @@ This file provides guidance to Claude Code (claude.ai/code) and other LLMs when 
 
 ## Project Overview
 
-Isotone CMS is a lightweight PHP content management system in early development. It features a WordPress-like plugin system, RedBeanPHP ORM, and is designed for shared hosting compatibility.
+Isotone is a lightweight PHP content management system in early development. It features a WordPress-like plugin system, RedBeanPHP ORM, and is designed for shared hosting compatibility.
 
 ### Key Constraints for LLMs
 - **NO Node.js/npm** - Pure PHP project

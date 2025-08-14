@@ -1,6 +1,6 @@
 <?php
 /**
- * Documentation Auto-Updater for Isotone CMS
+ * Documentation Auto-Updater for Isotone
  * 
  * Automatically generates and updates documentation from code
  * Run: php scripts/update-docs.php
@@ -24,7 +24,7 @@ class DocUpdater
     
     public function run(): void
     {
-        echo "📝 Auto-updating Isotone CMS Documentation...\n\n";
+        echo "📝 Auto-updating Isotone Documentation...\n\n";
         
         $this->updateRoutesDocumentation();
         $this->updateProjectStructure();
@@ -104,7 +104,7 @@ class DocUpdater
         // Save to separate file
         file_put_contents(
             $this->rootPath . '/docs/PROJECT-STRUCTURE.md',
-            "# Isotone CMS Project Structure\n\n" . 
+            "# Isotone Project Structure\n\n" . 
             "*Auto-generated on " . date('Y-m-d H:i:s') . "*\n\n" .
             $structureDocs
         );
@@ -292,7 +292,7 @@ class DocUpdater
      */
     private function generateApiDocumentation(): void
     {
-        $apiDocs = "# Isotone CMS API Reference\n\n";
+        $apiDocs = "# Isotone API Reference\n\n";
         $apiDocs .= "*Auto-generated on " . date('Y-m-d H:i:s') . "*\n\n";
         
         // Scan for API endpoints

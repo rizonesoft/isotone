@@ -1,6 +1,6 @@
 # Isotone Content Directory
 
-This directory contains all user-generated and installable content for Isotone CMS.
+This directory contains all user-generated and installable content for Isotone.
 
 ## Directory Structure
 

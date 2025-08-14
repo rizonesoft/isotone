@@ -1,6 +1,6 @@
 # AI Assistant Version Update Guide
 
-This guide helps AI assistants (like Claude) understand how to handle version updates for Isotone CMS.
+This guide helps AI assistants (like Claude) understand how to handle version updates for Isotone.
 
 ## Understanding User Intent
 

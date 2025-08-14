@@ -1,6 +1,6 @@
 # Development Environment Setup
 
-This guide will help you set up a local development environment for Isotone CMS.
+This guide will help you set up a local development environment for Isotone.
 
 ## Prerequisites
 
@@ -109,7 +109,7 @@ This will install all PHP dependencies including:
 2. Edit `.env` file with your settings:
    ```env
    # Application
-   APP_NAME="Isotone CMS"
+   APP_NAME="Isotone"
    APP_ENV=development
    APP_DEBUG=true
    APP_URL=http://localhost/isotone

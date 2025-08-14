@@ -1,6 +1,6 @@
-# Getting Started with Isotone CMS
+# Getting Started with Isotone
 
-Welcome to Isotone CMS! This guide will help you understand the basics and start building with Isotone.
+Welcome to Isotone! This guide will help you understand the basics and start building with Isotone.
 
 ## Quick Start
 
@@ -432,4 +432,4 @@ tail -f storage/logs/isotone.log
 
 ---
 
-*Happy coding with Isotone CMS!*
+*Happy coding with Isotone!*

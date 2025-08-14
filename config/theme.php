@@ -1,8 +1,8 @@
 <?php
 /**
- * Isotone CMS Theme Configuration
+ * Isotone Theme Configuration
  * 
- * Defines the brand colors and visual identity for Isotone CMS
+ * Defines the brand colors and visual identity for Isotone
  */
 
 return [
@@ -100,7 +100,7 @@ return [
      * Brand Identity
      */
     'brand' => [
-        'name' => 'Isotone CMS',
+        'name' => 'Isotone',
         'tagline' => 'Lightweight. Powerful. Everywhere.',
         'logo_svg' => '/assets/logo.svg',  // SVG logo path
         'favicon' => '/favicon.png',  // Favicon path

@@ -1,6 +1,6 @@
 <?php
 /**
- * Documentation Integrity Checker for Isotone CMS
+ * Documentation Integrity Checker for Isotone
  * 
  * This script ensures all documentation is synchronized with the actual codebase.
  * Run: php scripts/check-docs.php
@@ -21,7 +21,7 @@ class DocChecker
     
     public function run(): int
     {
-        echo "🔍 Checking Isotone CMS Documentation Integrity...\n\n";
+        echo "🔍 Checking Isotone Documentation Integrity...\n\n";
         
         $this->checkReadmeStatus();
         $this->checkFileReferences();

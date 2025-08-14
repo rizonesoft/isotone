@@ -1,6 +1,6 @@
 <?php
 /**
- * Isotone CMS - Database Migration System
+ * Isotone - Database Migration System
  * 
  * @copyright  2025 Rizonetech (Pty) Ltd
  * @license    MIT License
@@ -221,7 +221,7 @@ class Migration
         // Settings table
         $setting = R::dispense('isotone_settings');
         $setting->key = 'site_title';
-        $setting->value = 'Isotone CMS';
+        $setting->value = 'Isotone';
         $setting->type = 'string';
         R::store($setting);
         

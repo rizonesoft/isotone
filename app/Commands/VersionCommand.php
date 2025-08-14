@@ -1,6 +1,6 @@
 <?php
 /**
- * Isotone CMS - Version CLI Command
+ * Isotone - Version CLI Command
  * 
  * @copyright  2025 Rizonetech (Pty) Ltd
  * @license    MIT License
@@ -24,7 +24,7 @@ class VersionCommand
         $info = Version::current();
         
         echo "\n";
-        echo "Isotone CMS " . Version::format() . "\n";
+        echo "Isotone " . Version::format() . "\n";
         echo str_repeat('=', 40) . "\n\n";
         
         echo "Core Version:    " . $info['version'] . "\n";

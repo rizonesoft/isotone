@@ -1,6 +1,6 @@
 <?php
 /**
- * Isotone CMS - Database Service
+ * Isotone - Database Service
  * 
  * @copyright  2025 Rizonetech (Pty) Ltd
  * @license    MIT License
@@ -225,7 +225,7 @@ class DatabaseService
             // Create settings table (RedBean prefers simple names without underscores)
             $setting = R::dispense('isotonesetting');
             $setting->key = 'site_title';
-            $setting->value = 'Isotone CMS';
+            $setting->value = 'Isotone';
             $setting->type = 'string';
             $setting->created_at = date('Y-m-d H:i:s');
             R::store($setting);
@@ -245,7 +245,7 @@ class DatabaseService
             
             // Create content table structure
             $content = R::dispense('isotonecontent');
-            $content->title = 'Welcome to Isotone CMS';
+            $content->title = 'Welcome to Isotone';
             $content->slug = 'welcome';
             $content->content = 'Your lightweight CMS is ready to use!';
             $content->type = 'page';

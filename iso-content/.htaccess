@@ -1,4 +1,4 @@
-# Isotone CMS - iso-content Directory Protection
+# Isotone - iso-content Directory Protection
 
 # Allow access to uploaded files
 <FilesMatch "\.(jpg|jpeg|png|gif|svg|pdf|doc|docx|zip|mp4|mp3)$">

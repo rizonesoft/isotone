@@ -1,7 +1,7 @@
-# GitHub Copilot Instructions for Isotone CMS
+# GitHub Copilot Instructions for Isotone
 
 ## Project Overview
-Isotone CMS is a lightweight PHP content management system designed for shared hosting, developed primarily by AI assistants.
+Isotone is a lightweight PHP content management system designed for shared hosting, developed primarily by AI assistants.
 
 ## Critical Rules for Code Generation
 

@@ -1,4 +1,4 @@
-# Documentation Maintenance System for Isotone CMS
+# Documentation Maintenance System for Isotone
 
 This document defines how we keep ALL documentation synchronized with code changes.
 

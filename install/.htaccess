@@ -1,4 +1,4 @@
-# Isotone CMS Installation Directory Protection
+# Isotone Installation Directory Protection
 
 <IfModule mod_rewrite.c>
     RewriteEngine On

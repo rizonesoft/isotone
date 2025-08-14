@@ -6,7 +6,7 @@
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `APP_NAME` | `"Isotone CMS"` | |
+| `APP_NAME` | `"Isotone"` | |
 | `APP_ENV` | `development` | |
 | `APP_DEBUG` | `true` | |
 | `APP_URL` | `http://localhost/isotone` | |

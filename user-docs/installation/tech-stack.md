@@ -1,6 +1,6 @@
-# Isotone CMS Technology Stack Specification
+# Isotone Technology Stack Specification
 
-> **Document Status:** Planning Phase - This is a technical specification for the planned Isotone CMS implementation.
+> **Document Status:** Planning Phase - This is a technical specification for the planned Isotone implementation.
 
 ## Overview
 

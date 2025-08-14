@@ -1,6 +1,6 @@
 # Quick Start Guide
 
-Get Isotone CMS up and running in 5 minutes!
+Get Isotone up and running in 5 minutes!
 
 ## Prerequisites
 

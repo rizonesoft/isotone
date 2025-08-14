@@ -1,6 +1,6 @@
 # Documentation Structure
 
-Isotone CMS maintains two separate documentation systems for different audiences:
+Isotone maintains two separate documentation systems for different audiences:
 
 ## 📁 `/docs/` - LLM & Development Documentation
 

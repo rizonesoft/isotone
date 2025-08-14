@@ -1,6 +1,6 @@
-# Prompt Engineering Guide for Isotone CMS
+# Prompt Engineering Guide for Isotone
 
-This guide helps humans write effective prompts for LLMs when developing Isotone CMS.
+This guide helps humans write effective prompts for LLMs when developing Isotone.
 
 ## 🎯 Effective Prompt Structure
 
@@ -8,7 +8,7 @@ This guide helps humans write effective prompts for LLMs when developing Isotone
 
 ```
 Task: [Specific action needed]
-Context: [Isotone CMS, PHP 8.3, RedBeanPHP, XAMPP]
+Context: [Isotone, PHP 8.3, RedBeanPHP, XAMPP]
 Requirements:
 - [Specific requirement 1]
 - [Specific requirement 2]
@@ -21,7 +21,7 @@ Constraints:
 ### Example Prompt
 
 ```
-Create a user authentication system for Isotone CMS.
+Create a user authentication system for Isotone.
 
 Requirements:
 - Login/logout functionality
@@ -37,7 +37,7 @@ Use RedBeanPHP for database operations and follow the existing pattern in app/Co
 ### Creating a Feature
 
 ```
-Add [feature name] to Isotone CMS.
+Add [feature name] to Isotone.
 
 The feature should:
 - [Functionality 1]
@@ -54,7 +54,7 @@ Ensure it works with XAMPP and requires no Node.js.
 ### Fixing a Bug
 
 ```
-Fix [describe bug] in Isotone CMS.
+Fix [describe bug] in Isotone.
 
 Current behavior: [what happens now]
 Expected behavior: [what should happen]
@@ -66,7 +66,7 @@ Maintain backward compatibility and test with XAMPP.
 ### Refactoring Code
 
 ```
-Refactor [component/file] in Isotone CMS.
+Refactor [component/file] in Isotone.
 
 Goals:
 - [Improvement 1]
@@ -167,7 +167,7 @@ Claude excels at:
 - Security considerations
 
 ```
-Using your knowledge of secure PHP development, create a file upload system for Isotone CMS with:
+Using your knowledge of secure PHP development, create a file upload system for Isotone with:
 - File type validation
 - Size limits
 - Malware scanning hooks
@@ -184,7 +184,7 @@ GPT-4 excels at:
 - Code generation
 
 ```
-Create an innovative caching system for Isotone CMS that:
+Create an innovative caching system for Isotone that:
 - Works on shared hosting (file-based)
 - Has minimal overhead
 - Supports cache tags
@@ -198,7 +198,7 @@ Be creative but keep it simple and PHP-only.
 For other LLMs, be more explicit:
 
 ```
-You are developing Isotone CMS, a PHP 8.3 project.
+You are developing Isotone, a PHP 8.3 project.
 Key facts:
 - Uses RedBeanPHP for database
 - No Node.js allowed
@@ -235,7 +235,7 @@ Deliverables:
 
 ```
 Bug Report: [Title]
-Environment: Isotone CMS on XAMPP/Windows
+Environment: Isotone on XAMPP/Windows
 
 Steps to Reproduce:
 1. [Step 1]
@@ -254,7 +254,7 @@ Please fix this bug and:
 ### Code Review
 
 ```
-Review this Isotone CMS code for:
+Review this Isotone code for:
 - Security vulnerabilities
 - Performance issues
 - PSR-12 compliance
@@ -340,7 +340,7 @@ Include these keywords for better results:
 ### Context Setters
 
 Start prompts with:
-- "In Isotone CMS..."
+- "In Isotone..."
 - "Following Isotone's patterns..."
 - "Using RedBeanPHP..."
 - "For shared hosting..."

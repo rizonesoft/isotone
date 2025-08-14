@@ -1,6 +1,6 @@
-# Isotone CMS Documentation
+# Isotone Documentation
 
-Welcome to the Isotone CMS documentation! This guide is organized for easy navigation.
+Welcome to the Isotone documentation! This guide is organized for easy navigation.
 
 ## 📚 Documentation Structure
 
@@ -46,7 +46,7 @@ This documentation is intended for:
 - **Site Administrators** - Managing Isotone installations
 - **Developers** - Building plugins, themes, and extensions
 - **API Consumers** - Integrating with Isotone's REST API
-- **Contributors** - Helping improve Isotone CMS
+- **Contributors** - Helping improve Isotone
 
 ## 🔍 Looking for Something Else?
 
@@ -56,6 +56,6 @@ This documentation is intended for:
 
 ## 📝 Documentation Version
 
-This documentation is for **Isotone CMS v0.1.2-alpha**
+This documentation is for **Isotone v0.1.2-alpha**
 
 Last updated: January 2025

@@ -1,6 +1,6 @@
 <?php
 /**
- * Isotone CMS - Changelog Generator
+ * Isotone - Changelog Generator
  * 
  * @copyright  2025 Rizonetech (Pty) Ltd
  * @license    MIT License
@@ -22,7 +22,7 @@ class ChangelogCommand
     {
         $history = Version::getHistory();
         $changelog = "# Changelog\n\n";
-        $changelog .= "All notable changes to Isotone CMS will be documented in this file.\n\n";
+        $changelog .= "All notable changes to Isotone will be documented in this file.\n\n";
         $changelog .= "The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),\n";
         $changelog .= "and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).\n\n";
         

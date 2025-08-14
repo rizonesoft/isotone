@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 /**
- * Isotone CMS - CLI Interface
+ * Isotone - CLI Interface
  * 
  * @copyright  2025 Rizonetech (Pty) Ltd
  * @license    MIT License

@@ -1,6 +1,6 @@
 <?php
 /**
- * Isotone CMS - Version Management System
+ * Isotone - Version Management System
  * 
  * @copyright  2025 Rizonetech (Pty) Ltd
  * @license    MIT License

@@ -1,6 +1,6 @@
-# Isotone CMS Installation
+# Isotone Installation
 
-This directory contains the web-based installation wizard for Isotone CMS.
+This directory contains the web-based installation wizard for Isotone.
 
 ## 🚀 How to Install
 
@@ -19,7 +19,7 @@ This directory contains the web-based installation wizard for Isotone CMS.
    - Confirm your password
 
 4. **Complete installation**
-   - Click "Install Isotone CMS"
+   - Click "Install Isotone"
    - Installation creates:
      - Super Admin user account
      - Initial system settings
@@ -57,7 +57,7 @@ This directory contains the web-based installation wizard for Isotone CMS.
 ## 📝 Default Settings
 
 The installer creates these default settings:
-- Site Title: "Isotone CMS"
+- Site Title: "Isotone"
 - Site Description: "Lightweight. Powerful. Everywhere."
 - Timezone: UTC
 - Date Format: Y-m-d

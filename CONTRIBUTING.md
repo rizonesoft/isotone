@@ -1,6 +1,6 @@
-# Contributing to Isotone CMS
+# Contributing to Isotone
 
-Thank you for your interest in contributing to Isotone CMS! We welcome contributions from both human developers and AI assistants.
+Thank you for your interest in contributing to Isotone! We welcome contributions from both human developers and AI assistants.
 
 ## 🤖 Note for AI/LLM Contributors
 
@@ -266,7 +266,7 @@ By contributing, you agree that your contributions will be licensed under the MI
 - Update your fork's main branch
 - Celebrate! 🎉
 
-Thank you for helping make Isotone CMS better!
+Thank you for helping make Isotone better!
 
 ---
 

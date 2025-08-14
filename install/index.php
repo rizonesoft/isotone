@@ -1,6 +1,6 @@
 <?php
 /**
- * Isotone CMS - Installation Wizard
+ * Isotone - Installation Wizard
  * Sets up initial Super Admin account and database
  */
 
@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$isInstalled) {
                     
                     // Create initial settings
                     $settings = [
-                        'site_title' => 'Isotone CMS',
+                        'site_title' => 'Isotone',
                         'site_description' => 'Lightweight. Powerful. Everywhere.',
                         'admin_email' => $email,
                         'timezone' => 'UTC',
@@ -178,7 +178,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Isotone CMS - Installation</title>
+    <title>Isotone - Installation</title>
     <link rel="icon" type="image/png" sizes="512x512" href="../favicon.png">
     <link rel="apple-touch-icon" href="../favicon.png">
     <link rel="manifest" href="../site.webmanifest">
@@ -236,7 +236,7 @@ try {
             </div>
             <div class="installed">
                 <h2 class="installed-heading">Already Installed</h2>
-                <p class="iso-subtitle">Isotone CMS is already installed on this system.</p>
+                <p class="iso-subtitle">Isotone is already installed on this system.</p>
                 <div class="iso-status iso-status-info">
                     To reinstall, delete the .isotone-installed file in the root directory.
                 </div>
@@ -248,7 +248,7 @@ try {
         <?php elseif ($success): ?>
             <div class="installed">
                 <h1 class="iso-title-md success-title">Installation Complete!</h1>
-                <p class="iso-subtitle">Your Isotone CMS is ready to use.</p>
+                <p class="iso-subtitle">Your Isotone is ready to use.</p>
                 <div class="iso-status iso-status-success">
                     <?php echo htmlspecialchars($message); ?>
                 </div>
@@ -342,7 +342,7 @@ try {
                 </div>
                 
                 <button type="submit" class="iso-btn" <?php echo !$dbConnected ? 'disabled' : ''; ?>>
-                    Install Isotone CMS
+                    Install Isotone
                 </button>
             </form>
             
@@ -368,7 +368,7 @@ try {
                 return false;
             }
             
-            return confirm('Ready to install Isotone CMS with these credentials?');
+            return confirm('Ready to install Isotone with these credentials?');
         }
         
         function testConnection() {

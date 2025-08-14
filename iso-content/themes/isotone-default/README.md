@@ -1,6 +1,6 @@
 # Isotone Default Theme
 
-The default theme for Isotone CMS, featuring a modern dark design with glassmorphism effects.
+The default theme for Isotone, featuring a modern dark design with glassmorphism effects.
 
 ## Features
 
@@ -27,7 +27,7 @@ This theme uses the Isotone CSS architecture. To customize:
 
 ## Requirements
 
-- Isotone CMS 0.1.0 or higher
+- Isotone 0.1.0 or higher
 - PHP 8.2+
 - Modern browser with CSS Grid support
 

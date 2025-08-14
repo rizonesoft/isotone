@@ -68,7 +68,7 @@ class IdeRuleSync
         }
         
         $content = <<<'CURSOR'
-# Cursor IDE Rules for Isotone CMS
+# Cursor IDE Rules for Isotone
 
 ## CRITICAL: This is an LLM-driven PHP project
 
@@ -127,10 +127,10 @@ CURSOR;
         }
         
         $content = <<<'COPILOT'
-# GitHub Copilot Instructions for Isotone CMS
+# GitHub Copilot Instructions for Isotone
 
 ## Project Overview
-Isotone CMS is a lightweight PHP content management system designed for shared hosting, developed primarily by AI assistants.
+Isotone is a lightweight PHP content management system designed for shared hosting, developed primarily by AI assistants.
 
 ## Critical Rules for Code Generation
 

@@ -1,7 +1,7 @@
 {
     "name": "Isotone Default",
     "version": "1.0.0",
-    "description": "The default theme for Isotone CMS with glassmorphism design",
+    "description": "The default theme for Isotone with glassmorphism design",
     "author": "Isotone Team",
     "license": "MIT",
     "minimum_isotone_version": "0.1.0",

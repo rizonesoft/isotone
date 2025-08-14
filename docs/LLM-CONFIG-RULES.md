@@ -2,7 +2,7 @@
 
 ## 🚫 CRITICAL: NO .ENV FILES
 
-**Isotone CMS uses `config.php`, NOT `.env` files.**
+**Isotone uses `config.php`, NOT `.env` files.**
 
 ## Quick Reference for AI/LLMs
 

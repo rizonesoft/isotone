@@ -1,6 +1,6 @@
 # Version Management Guide
 
-This guide explains how to manage versions in Isotone CMS.
+This guide explains how to manage versions in Isotone.
 
 ## Overview
 

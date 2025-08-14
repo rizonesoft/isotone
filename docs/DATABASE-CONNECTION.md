@@ -77,7 +77,7 @@ Password: (leave empty)
 1. New Connection
 2. Connection settings:
    ```
-   Connection Name: Isotone CMS
+   Connection Name: Isotone
    Hostname: 127.0.0.1
    Port: 3306
    Username: root

@@ -61,7 +61,7 @@ if (!defined('ISOTONE_ROOT')) {
     <footer class="iso-footer">
         <div class="iso-container iso-container-lg">
             <div class="iso-footer-content">
-                <p>&copy; <?php echo date('Y'); ?> <?php echo get_site_title(); ?>. Powered by Isotone CMS.</p>
+                <p>&copy; <?php echo date('Y'); ?> <?php echo get_site_title(); ?>. Powered by Isotone.</p>
             </div>
         </div>
     </footer>

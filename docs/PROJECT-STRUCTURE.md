@@ -1,4 +1,4 @@
-# Isotone CMS Project Structure
+# Isotone Project Structure
 
 *Auto-generated on 2025-08-14 11:16:13*
 

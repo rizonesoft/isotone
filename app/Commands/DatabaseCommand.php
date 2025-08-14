@@ -1,6 +1,6 @@
 <?php
 /**
- * Isotone CMS - Database CLI Commands
+ * Isotone - Database CLI Commands
  * 
  * @copyright  2025 Rizonetech (Pty) Ltd
  * @license    MIT License

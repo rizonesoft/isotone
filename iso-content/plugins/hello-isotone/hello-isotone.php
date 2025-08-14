@@ -19,7 +19,7 @@ if (!defined('ISOTONE_ROOT')) {
 function hello_isotone_activate() {
     // Create database tables, set default options, etc.
     add_option('hello_isotone_activated', time());
-    add_option('hello_isotone_message', 'Hello from Isotone CMS!');
+    add_option('hello_isotone_message', 'Hello from Isotone!');
 }
 
 /**
@@ -70,7 +70,7 @@ function hello_isotone_admin_page() {
         echo '<div class="iso-status iso-status-success">Settings saved!</div>';
     }
     
-    $current_message = get_option('hello_isotone_message', 'Hello from Isotone CMS!');
+    $current_message = get_option('hello_isotone_message', 'Hello from Isotone!');
     ?>
     <div class="iso-container iso-container-md">
         <h1 class="iso-title">Hello Isotone Settings</h1>

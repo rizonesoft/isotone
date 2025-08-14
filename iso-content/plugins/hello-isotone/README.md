@@ -1,6 +1,6 @@
 # Hello Isotone Plugin
 
-A simple example plugin demonstrating the Isotone CMS plugin API.
+A simple example plugin demonstrating the Isotone plugin API.
 
 ## Features
 
@@ -17,7 +17,7 @@ This example plugin demonstrates:
 
 ## Installation
 
-1. This plugin comes pre-installed with Isotone CMS
+1. This plugin comes pre-installed with Isotone
 2. Activate it from the Plugins admin page (when available)
 
 ## Usage

@@ -1,6 +1,6 @@
-# Setting Up Isotone CMS on GitHub
+# Setting Up Isotone on GitHub
 
-This guide will help you publish Isotone CMS to GitHub as a public repository.
+This guide will help you publish Isotone to GitHub as a public repository.
 
 ## 📋 Prerequisites
 
@@ -125,7 +125,7 @@ Labels: enhancement, security
 Update README.md to add badges (after pushing):
 
 ```markdown
-# Isotone CMS
+# Isotone
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PHP Version](https://img.shields.io/badge/PHP-%3E%3D8.3-blue)](https://php.net)
@@ -147,12 +147,12 @@ For main branch:
 After pushing:
 1. Go to Releases → Create new release
 2. Tag: `v0.1.0-alpha`
-3. Title: "Isotone CMS v0.1.0 Alpha"
+3. Title: "Isotone v0.1.0 Alpha"
 4. Description:
 ```markdown
 ## 🎉 Initial Alpha Release
 
-First public release of Isotone CMS!
+First public release of Isotone!
 
 ### Features
 - ✅ Basic routing system
@@ -176,7 +176,7 @@ See [Development Setup Guide](docs/DEVELOPMENT-SETUP.md)
 Use this for your GitHub repository description:
 
 ```
-Isotone CMS - A lightweight, AI-developed PHP content management system designed for shared hosting. Features WordPress-like plugins, RedBeanPHP ORM, and no Node.js requirements. Perfect for developers who need a simple, fast CMS that works everywhere.
+Isotone - A lightweight, AI-developed PHP content management system designed for shared hosting. Features WordPress-like plugins, RedBeanPHP ORM, and no Node.js requirements. Perfect for developers who need a simple, fast CMS that works everywhere.
 ```
 
 ## 🌟 After Publishing

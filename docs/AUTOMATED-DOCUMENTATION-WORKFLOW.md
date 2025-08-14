@@ -1,6 +1,6 @@
 # Automated Documentation Workflow
 
-This document explains how Isotone CMS automatically maintains documentation across different triggers.
+This document explains how Isotone automatically maintains documentation across different triggers.
 
 ## Overview
 

@@ -1,10 +1,10 @@
-# Isotone CMS
+# Isotone
 
 > **Project Status:** 🚧 Early Development - Core foundation implemented
 
 ## Why Isotone?
 
-**Isotone** (*/ˈaɪsətoʊn/*) takes its name from the mathematical concept of an isotone (order-preserving) function—a transformation that maintains structure and relationships while allowing for growth and change. Just like its mathematical namesake, Isotone CMS will preserve what matters (simplicity, reliability, compatibility) while transforming how modern content management should work.
+**Isotone** (*/ˈaɪsətoʊn/*) takes its name from the mathematical concept of an isotone (order-preserving) function—a transformation that maintains structure and relationships while allowing for growth and change. Just like its mathematical namesake, Isotone will preserve what matters (simplicity, reliability, compatibility) while transforming how modern content management should work.
 
 In physics, isotonic means "equal tension"—and that's exactly what Isotone aims to bring to web development: perfect balance between power and simplicity, features and performance, flexibility and structure.
 
@@ -222,7 +222,7 @@ composer analyse
 
 ## 🤝 Contributing
 
-We welcome contributions to Isotone CMS!
+We welcome contributions to Isotone!
 
 ### How You Can Help
 
@@ -263,7 +263,7 @@ We'll respond within 48 hours and work with you to understand and resolve the is
 
 ## 📊 Performance Targets
 
-Target benchmarks for Isotone CMS on a $5/month shared hosting plan:
+Target benchmarks for Isotone on a $5/month shared hosting plan:
 
 | Metric | Target | vs WordPress (estimated) |
 |--------|---------|-----------|
@@ -323,7 +323,7 @@ Isotone uses a **modular and reusable CSS system** that eliminates duplication b
 
 <!-- Use modular classes -->
 <div class="iso-container iso-glass">
-    <h1 class="iso-title">Isotone CMS</h1>
+    <h1 class="iso-title">Isotone</h1>
     <button class="iso-btn iso-btn-arrow">Get Started</button>
 </div>
 ```
@@ -343,7 +343,7 @@ Isotone will leverage these excellent open-source projects:
 
 ## 📜 License
 
-Isotone CMS is open-source software licensed under the MIT License.
+Isotone is open-source software licensed under the MIT License.
 
 Copyright © 2025 Rizonetech (Pty) Ltd. All rights reserved.
 
@@ -352,7 +352,7 @@ Copyright © 2025 Rizonetech (Pty) Ltd. All rights reserved.
 While the project is in planning phase, you can:
 - Watch this repository for updates
 - Share your ideas and feedback
-- Help shape the future of Isotone CMS
+- Help shape the future of Isotone
 
 ---
 

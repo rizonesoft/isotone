@@ -1,6 +1,6 @@
 <?php
 /**
- * Isotone CMS Configuration File
+ * Isotone Configuration File
  * 
  * This file contains the basic configuration for your Isotone installation.
  * You should edit this file with your database connection details and other settings.
@@ -133,7 +133,7 @@ if (ENVIRONMENT === 'production') {
 }
 
 // ============================================================================
-// STOP EDITING! Happy publishing with Isotone CMS
+// STOP EDITING! Happy publishing with Isotone
 // ============================================================================
 
 /** Absolute path to the Isotone directory */

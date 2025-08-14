@@ -1,10 +1,10 @@
-# LLM Development Guide for Isotone CMS
+# LLM Development Guide for Isotone
 
-This guide is specifically designed for Large Language Models (LLMs) like Claude, GPT-4, and other AI assistants working on Isotone CMS.
+This guide is specifically designed for Large Language Models (LLMs) like Claude, GPT-4, and other AI assistants working on Isotone.
 
 ## 🤖 Quick Context for LLMs
 
-**Isotone CMS** is a lightweight PHP CMS designed for shared hosting. Key facts:
+**Isotone** is a lightweight PHP CMS designed for shared hosting. Key facts:
 - PHP 8.3+ with PSR standards
 - RedBeanPHP ORM (no migrations needed)
 - WordPress-like hooks/filters

@@ -1,4 +1,4 @@
-# Isotone CMS - iso-includes Directory Protection
+# Isotone - iso-includes Directory Protection
 
 # Allow access to assets, js, css
 <FilesMatch "\.(css|js|jpg|jpeg|png|gif|svg|ico|webp|woff|woff2|ttf|eot)$">

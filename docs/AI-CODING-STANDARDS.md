@@ -1,6 +1,6 @@
-# AI Coding Standards for Isotone CMS
+# AI Coding Standards for Isotone
 
-This document defines coding standards specifically for AI/LLM developers working on Isotone CMS.
+This document defines coding standards specifically for AI/LLM developers working on Isotone.
 
 ## 🎯 Core Principles
 

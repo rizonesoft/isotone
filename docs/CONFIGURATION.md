@@ -1,4 +1,4 @@
-# Isotone CMS Configuration Guide
+# Isotone Configuration Guide
 
 ## Overview
 

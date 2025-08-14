@@ -1,6 +1,6 @@
 <?php
 /**
- * Isotone CMS - Application Core
+ * Isotone - Application Core
  * 
  * @copyright  2025 Rizonetech (Pty) Ltd
  * @license    MIT License
@@ -130,25 +130,25 @@ class Application
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Isotone CMS - Lightweight. Powerful. Everywhere.</title>
+            <title>Isotone - Lightweight. Powerful. Everywhere.</title>
             
             <!-- SEO Meta Tags -->
-            <meta name="description" content="Isotone CMS is a lightweight, powerful PHP content management system designed for shared hosting. Built for developers, optimized for performance, ready for anywhere.">
+            <meta name="description" content="Isotone is a lightweight, powerful PHP content management system designed for shared hosting. Built for developers, optimized for performance, ready for anywhere.">
             <meta name="keywords" content="CMS, PHP, content management, lightweight CMS, shared hosting, RedBeanPHP, open source">
-            <meta name="author" content="Isotone CMS">
+            <meta name="author" content="Isotone">
             <meta name="robots" content="index, follow">
             
             <!-- Open Graph / Facebook -->
             <meta property="og:type" content="website">
-            <meta property="og:title" content="Isotone CMS - Lightweight. Powerful. Everywhere.">
+            <meta property="og:title" content="Isotone - Lightweight. Powerful. Everywhere.">
             <meta property="og:description" content="A modern, high-performance PHP CMS built for the future. Perfect for shared hosting with no Node.js required.">
             <meta property="og:image" content="{$baseUrl}/public/favicon.png">
             <meta property="og:url" content="{$baseUrl}">
-            <meta property="og:site_name" content="Isotone CMS">
+            <meta property="og:site_name" content="Isotone">
             
             <!-- Twitter Card -->
             <meta name="twitter:card" content="summary_large_image">
-            <meta name="twitter:title" content="Isotone CMS - Lightweight. Powerful. Everywhere.">
+            <meta name="twitter:title" content="Isotone - Lightweight. Powerful. Everywhere.">
             <meta name="twitter:description" content="A modern, high-performance PHP CMS built for the future. Perfect for shared hosting.">
             <meta name="twitter:image" content="{$baseUrl}/public/favicon.png">
             
@@ -209,7 +209,7 @@ class Application
                             <path clip-rule="evenodd" d="m12.7071 11.2929c-.3905-.3905-1.0237-.3905-1.4142 0s-.3905 1.0237 0 1.4142 1.0237.3905 1.4142 0 .3905-1.0237 0-1.4142zm-2.82842-1.41422c1.17162-1.17157 3.07102-1.17157 4.24262 0 1.1716 1.17162 1.1716 3.07102 0 4.24262s-3.071 1.1716-4.24262 0c-1.17157-1.1716-1.17157-3.071 0-4.24262z" fill-rule="evenodd"></path>
                         </g>
                     </svg>
-                    <h1 class="iso-title">Isotone CMS</h1>
+                    <h1 class="iso-title">Isotone</h1>
                     <div style="margin-left: 1rem;">$versionBadge</div>
                 </div>
                 <p class="iso-subtitle">Your lightweight CMS is ready to go!</p>
@@ -281,8 +281,8 @@ class Application
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Installation - Isotone CMS</title>
-            <meta name="description" content="Install and configure Isotone CMS on your server.">
+            <title>Installation - Isotone</title>
+            <meta name="description" content="Install and configure Isotone on your server.">
             <meta name="robots" content="noindex, nofollow">
             <meta name="theme-color" content="#0A0E27">
             <!-- Modern favicon setup using PNG -->
@@ -387,8 +387,8 @@ class Application
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Admin Panel - Isotone CMS</title>
-            <meta name="description" content="Manage your Isotone CMS content and settings.">
+            <title>Admin Panel - Isotone</title>
+            <meta name="description" content="Manage your Isotone content and settings.">
             <meta name="robots" content="noindex, nofollow">
             <meta name="theme-color" content="#0A0E27">
             <!-- Modern favicon setup using PNG -->
@@ -508,7 +508,7 @@ class Application
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>404 - Page Not Found | Isotone CMS</title>
+            <title>404 - Page Not Found | Isotone</title>
             <meta name="description" content="The page you're looking for could not be found.">
             <meta name="robots" content="noindex, nofollow">
             <meta name="theme-color" content="#0A0E27">
