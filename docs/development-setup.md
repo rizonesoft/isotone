@@ -148,8 +148,8 @@ Visit http://localhost/isotone/ in your browser. You should see:
    - Check Apache allows .htaccess overrides
 
 3. **Try direct access:**
-   - Visit http://localhost/isotone/public/
-   - If this works, the issue is with URL rewriting
+   - Visit http://localhost/isotone/
+   - If this doesn't work, check Apache configuration
 
 ### Composer Not Found
 

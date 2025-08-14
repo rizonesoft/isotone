@@ -36,9 +36,9 @@ isotone/
 │   └── helpers.php     # Helper functions
 ├── config/             # Configuration files
 ├── content/            # User-generated content
-├── public/             # Web root
-│   ├── index.php       # Entry point
-│   └── .htaccess      # URL rewriting
+├── assets/             # Static assets
+├── index.php           # Entry point
+├── .htaccess           # URL rewriting & security
 ├── themes/             # Theme files
 ├── plugins/            # Plugin files
 ├── storage/            # Logs and cache

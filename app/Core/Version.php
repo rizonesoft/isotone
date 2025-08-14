@@ -243,9 +243,12 @@ class Version
                 );
         }
         
-        // Add stage if provided
+        // Preserve current stage unless explicitly specified
         if ($stage !== null) {
             $newVersion .= '-' . $stage;
+        } elseif ($current['prerelease'] !== null) {
+            // Keep the current stage if no new stage specified
+            $newVersion .= '-' . $current['prerelease'];
         }
         
         // Update version data
@@ -385,16 +388,17 @@ class Version
     public static function getBadge(): string
     {
         $stage = self::getStage();
-        $color = match($stage) {
-            'alpha' => '#FF3366',
-            'beta' => '#FFB700',
-            'rc' => '#00D9FF',
-            default => '#00FF88'
+        $badgeConfig = match($stage) {
+            'alpha' => ['bg' => '#DC2626', 'text' => '#FFFFFF'], // Red background, white text
+            'beta' => ['bg' => '#D97706', 'text' => '#FFFFFF'], // Orange background, white text  
+            'rc' => ['bg' => '#0EA5E9', 'text' => '#FFFFFF'], // Blue background, white text
+            default => ['bg' => '#16A34A', 'text' => '#FFFFFF'] // Green background, white text (stable)
         };
         
         return sprintf(
-            '<span style="background: %s; color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.05em;">%s</span>',
-            $color,
+            '<span style="background: %s; color: %s; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">%s</span>',
+            $badgeConfig['bg'],
+            $badgeConfig['text'],
             strtoupper($stage)
         );
     }

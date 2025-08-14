@@ -214,9 +214,9 @@ All design tokens are defined in `config/theme.php`. When creating UI:
 
 ### Important Files
 - `config/theme.php` - Color palette and design tokens
-- `public/favicon.png` - 512px favicon (auto-scaled by browsers)
-- `public/site.webmanifest` - PWA configuration
-- `public/assets/logo.svg` - Brand logo with gradient
+- `favicon.png` - 512px favicon (auto-scaled by browsers)
+- `site.webmanifest` - PWA configuration
+- `assets/logo.svg` - Brand logo with gradient
 
 ## 🔍 How to Analyze Codebase
 
@@ -238,7 +238,7 @@ When asked to understand or modify code:
    ```
 
 2. **Read in this order:**
-   - Entry point: `public/index.php`
+   - Entry point: `index.php`
    - Bootstrap: `app/Core/Application.php`
    - Routes and handlers
    - Related models/services

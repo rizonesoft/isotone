@@ -19,6 +19,7 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Isotone\Core\Version;
+use Isotone\Services\DatabaseService;
 
 class Application
 {
@@ -119,6 +120,14 @@ class Application
         $isotonerVersion = Version::format();
         $versionBadge = Version::getBadge();
         $versionInfo = Version::current();
+        
+        // Database information
+        $dbStatus = DatabaseService::getStatus();
+        $dbConnected = $dbStatus['connected'];
+        $dbBadgeClass = $dbConnected ? 'badge-success' : 'badge-danger';
+        $dbStatusText = $dbConnected ? 'Connected' : 'Disconnected';
+        $dbError = isset($dbStatus['error']) ? $dbStatus['error'] : 'Connection failed';
+        $dbInfo = $dbConnected ? "({$dbStatus['database']})" : "({$dbError})";
         $nextStep = $composerInstalled 
             ? 'Your development environment is ready!' 
             : 'Next step: Run <code>composer install</code> to download dependencies';
@@ -157,14 +166,14 @@ class Application
             <meta name="theme-color" content="#0A0E27">
             
             <!-- Modern favicon setup using PNG -->
-            <link rel="icon" type="image/png" sizes="512x512" href="/isotone/public/favicon.png">
-            <link rel="icon" type="image/png" sizes="192x192" href="/isotone/public/favicon.png">
-            <link rel="icon" type="image/png" sizes="32x32" href="/isotone/public/favicon.png">
-            <link rel="icon" type="image/png" sizes="16x16" href="/isotone/public/favicon.png">
-            <link rel="apple-touch-icon" href="/isotone/public/favicon.png">
-            <link rel="manifest" href="/isotone/public/site.webmanifest">
+            <link rel="icon" type="image/png" sizes="512x512" href="{$baseUrl}/favicon.png">
+            <link rel="icon" type="image/png" sizes="192x192" href="{$baseUrl}/favicon.png">
+            <link rel="icon" type="image/png" sizes="32x32" href="{$baseUrl}/favicon.png">
+            <link rel="icon" type="image/png" sizes="16x16" href="{$baseUrl}/favicon.png">
+            <link rel="apple-touch-icon" href="{$baseUrl}/favicon.png">
+            <link rel="manifest" href="{$baseUrl}/site.webmanifest">
             <!-- Fallback for older browsers if ICO exists -->
-            <link rel="shortcut icon" href="/isotone/public/favicon.ico">
+            <link rel="shortcut icon" href="{$baseUrl}/favicon.ico">
             <style>
                 * { margin: 0; padding: 0; box-sizing: border-box; }
                 
@@ -195,7 +204,8 @@ class Application
                     justify-content: center;
                     color: var(--text-primary);
                     position: relative;
-                    overflow: hidden;
+                    overflow-x: hidden;
+                    overflow-y: auto;
                     letter-spacing: 0.01em;
                 }
                 
@@ -362,6 +372,25 @@ class Application
                     content: '○';
                 }
                 
+                .badge-danger {
+                    background: rgba(255, 69, 58, 0.1);
+                    color: #FF453A;
+                    border: 1px solid rgba(255, 69, 58, 0.3);
+                    box-shadow: 0 0 20px rgba(255, 69, 58, 0.2);
+                }
+                
+                .badge-danger::before {
+                    content: '✗';
+                    font-weight: bold;
+                }
+                
+                .badge-info {
+                    background: rgba(0, 217, 255, 0.1);
+                    color: var(--accent);
+                    border: 1px solid rgba(0, 217, 255, 0.3);
+                    box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
+                }
+                
                 .btn {
                     display: inline-flex;
                     align-items: center;
@@ -380,7 +409,8 @@ class Application
                         0 4px 20px rgba(0, 217, 255, 0.3),
                         inset 0 1px 0 rgba(255, 255, 255, 0.2);
                     position: relative;
-                    overflow: hidden;
+                    overflow-x: hidden;
+                    overflow-y: auto;
                 }
                 
                 .btn::before {
@@ -421,6 +451,29 @@ class Application
                     letter-spacing: 0.02em;
                 }
                 
+                /* Card Footer */
+                .card-footer {
+                    margin-top: 2rem;
+                    padding-top: 1.5rem;
+                    border-top: 1px solid var(--border);
+                    text-align: center;
+                }
+                
+                .version-info {
+                    color: var(--text-secondary);
+                    font-size: 0.85rem;
+                    font-weight: 500;
+                    letter-spacing: 0.02em;
+                    opacity: 0.8;
+                }
+                
+                .info-text {
+                    color: var(--text-secondary);
+                    font-size: 0.8rem;
+                    font-weight: 400;
+                    opacity: 0.9;
+                }
+                
                 /* Static grid decoration */
                 .grid-bg {
                     position: fixed;
@@ -434,6 +487,51 @@ class Application
                     background-size: 50px 50px;
                     pointer-events: none;
                     opacity: 0.5;
+                }
+                
+                /* Responsive styles for mobile */
+                @media (max-width: 768px) {
+                    body {
+                        padding: 1rem;
+                        min-height: 100vh;
+                        overflow-y: scroll;
+                        -webkit-overflow-scrolling: touch;
+                    }
+                    
+                    .container {
+                        width: 100%;
+                        max-width: 100%;
+                        padding: 2rem 1.5rem;
+                        margin: 1rem 0;
+                    }
+                    
+                    h1 {
+                        font-size: 2rem;
+                    }
+                    
+                    .stats {
+                        grid-template-columns: 1fr;
+                        gap: 0.75rem;
+                    }
+                    
+                    .footer {
+                        padding: 0.75rem;
+                        font-size: 0.75rem;
+                    }
+                }
+                
+                @media (max-width: 480px) {
+                    .container {
+                        padding: 1.5rem 1rem;
+                    }
+                    
+                    h1 {
+                        font-size: 1.75rem;
+                    }
+                    
+                    .subtitle {
+                        font-size: 0.875rem;
+                    }
                 }
             </style>
         </head>
@@ -461,9 +559,6 @@ class Application
                     <div style="margin-left: 1rem;">$versionBadge</div>
                 </div>
                 <p class="subtitle">Your lightweight CMS is ready to go!</p>
-                <div style="text-align: left; margin-bottom: 2rem; color: var(--text-secondary); font-size: 0.9rem;">
-                    Version: $isotonerVersion | PHP {$versionInfo['php_version']}
-                </div>
                 
                 <div class="status">
                     <div class="status-item">
@@ -480,12 +575,21 @@ class Application
                     </div>
                     <div class="status-item">
                         <span>Database</span>
-                        <span class="badge badge-warning">Not configured</span>
+                        <span class="badge {$dbBadgeClass}">{$dbStatusText}</span>
+                    </div>
+                    <div class="status-item">
+                        <span>DB Name</span>
+                        <span class="badge badge-info">{$dbStatus['database']}</span>
                     </div>
                 </div>
                 
                 <p>{$nextStep}</p>
                 <a href="{$baseUrl}/admin" class="btn">Go to Admin</a>
+                
+                <!-- Card Footer with Version -->
+                <div class="card-footer">
+                    <span class="version-info">$isotonerVersion</span>
+                </div>
             </div>
         </body>
         </html>
@@ -496,9 +600,19 @@ class Application
     
     private function getBaseUrl(Request $request): string
     {
+        // Use APP_URL from .env if set
+        $appUrl = env('APP_URL', '');
+        if (!empty($appUrl)) {
+            return rtrim($appUrl, '/');
+        }
+        
+        // Otherwise, build it from the request
         $scheme = $request->getScheme();
         $host = $request->getHttpHost();
         $basePath = rtrim(dirname($request->getScriptName()), '/');
+        
+        // Remove /public from the path if it exists
+        $basePath = preg_replace('#/public$#', '', $basePath);
         
         return $scheme . '://' . $host . $basePath;
     }
@@ -518,14 +632,14 @@ class Application
             <meta name="robots" content="noindex, nofollow">
             <meta name="theme-color" content="#0A0E27">
             <!-- Modern favicon setup using PNG -->
-            <link rel="icon" type="image/png" sizes="512x512" href="/isotone/public/favicon.png">
-            <link rel="icon" type="image/png" sizes="192x192" href="/isotone/public/favicon.png">
-            <link rel="icon" type="image/png" sizes="32x32" href="/isotone/public/favicon.png">
-            <link rel="icon" type="image/png" sizes="16x16" href="/isotone/public/favicon.png">
-            <link rel="apple-touch-icon" href="/isotone/public/favicon.png">
-            <link rel="manifest" href="/isotone/public/site.webmanifest">
+            <link rel="icon" type="image/png" sizes="512x512" href="{$baseUrl}/favicon.png">
+            <link rel="icon" type="image/png" sizes="192x192" href="{$baseUrl}/favicon.png">
+            <link rel="icon" type="image/png" sizes="32x32" href="{$baseUrl}/favicon.png">
+            <link rel="icon" type="image/png" sizes="16x16" href="{$baseUrl}/favicon.png">
+            <link rel="apple-touch-icon" href="{$baseUrl}/favicon.png">
+            <link rel="manifest" href="{$baseUrl}/site.webmanifest">
             <!-- Fallback for older browsers if ICO exists -->
-            <link rel="shortcut icon" href="/isotone/public/favicon.ico">
+            <link rel="shortcut icon" href="{$baseUrl}/favicon.ico">
             <style>
                 * { margin: 0; padding: 0; box-sizing: border-box; }
                 
@@ -624,14 +738,14 @@ class Application
             <meta name="robots" content="noindex, nofollow">
             <meta name="theme-color" content="#0A0E27">
             <!-- Modern favicon setup using PNG -->
-            <link rel="icon" type="image/png" sizes="512x512" href="/isotone/public/favicon.png">
-            <link rel="icon" type="image/png" sizes="192x192" href="/isotone/public/favicon.png">
-            <link rel="icon" type="image/png" sizes="32x32" href="/isotone/public/favicon.png">
-            <link rel="icon" type="image/png" sizes="16x16" href="/isotone/public/favicon.png">
-            <link rel="apple-touch-icon" href="/isotone/public/favicon.png">
-            <link rel="manifest" href="/isotone/public/site.webmanifest">
+            <link rel="icon" type="image/png" sizes="512x512" href="{$baseUrl}/favicon.png">
+            <link rel="icon" type="image/png" sizes="192x192" href="{$baseUrl}/favicon.png">
+            <link rel="icon" type="image/png" sizes="32x32" href="{$baseUrl}/favicon.png">
+            <link rel="icon" type="image/png" sizes="16x16" href="{$baseUrl}/favicon.png">
+            <link rel="apple-touch-icon" href="{$baseUrl}/favicon.png">
+            <link rel="manifest" href="{$baseUrl}/site.webmanifest">
             <!-- Fallback for older browsers if ICO exists -->
-            <link rel="shortcut icon" href="/isotone/public/favicon.ico">
+            <link rel="shortcut icon" href="{$baseUrl}/favicon.ico">
             <style>
                 * { margin: 0; padding: 0; box-sizing: border-box; }
                 
@@ -730,7 +844,9 @@ class Application
     
     private function handle404(): Response
     {
-        $baseUrl = env('APP_URL', '/isotone');
+        // Create a dummy request to get the base URL
+        $request = Request::createFromGlobals();
+        $baseUrl = $this->getBaseUrl($request);
         
         $html = <<<HTML
         <!DOCTYPE html>
@@ -743,14 +859,14 @@ class Application
             <meta name="robots" content="noindex, nofollow">
             <meta name="theme-color" content="#0A0E27">
             <!-- Modern favicon setup using PNG -->
-            <link rel="icon" type="image/png" sizes="512x512" href="/isotone/public/favicon.png">
-            <link rel="icon" type="image/png" sizes="192x192" href="/isotone/public/favicon.png">
-            <link rel="icon" type="image/png" sizes="32x32" href="/isotone/public/favicon.png">
-            <link rel="icon" type="image/png" sizes="16x16" href="/isotone/public/favicon.png">
-            <link rel="apple-touch-icon" href="/isotone/public/favicon.png">
-            <link rel="manifest" href="/isotone/public/site.webmanifest">
+            <link rel="icon" type="image/png" sizes="512x512" href="{$baseUrl}/favicon.png">
+            <link rel="icon" type="image/png" sizes="192x192" href="{$baseUrl}/favicon.png">
+            <link rel="icon" type="image/png" sizes="32x32" href="{$baseUrl}/favicon.png">
+            <link rel="icon" type="image/png" sizes="16x16" href="{$baseUrl}/favicon.png">
+            <link rel="apple-touch-icon" href="{$baseUrl}/favicon.png">
+            <link rel="manifest" href="{$baseUrl}/site.webmanifest">
             <!-- Fallback for older browsers if ICO exists -->
-            <link rel="shortcut icon" href="/isotone/public/favicon.ico">
+            <link rel="shortcut icon" href="{$baseUrl}/favicon.ico">
             <style>
                 * { margin: 0; padding: 0; box-sizing: border-box; }
                 
@@ -777,7 +893,8 @@ class Application
                     justify-content: center;
                     color: var(--text-primary);
                     position: relative;
-                    overflow: hidden;
+                    overflow-x: hidden;
+                    overflow-y: auto;
                     letter-spacing: 0.01em;
                 }
                 
@@ -1005,7 +1122,8 @@ class Application
                         0 4px 20px rgba(0, 217, 255, 0.3),
                         inset 0 1px 0 rgba(255, 255, 255, 0.2);
                     position: relative;
-                    overflow: hidden;
+                    overflow-x: hidden;
+                    overflow-y: auto;
                 }
                 
                 a::before {

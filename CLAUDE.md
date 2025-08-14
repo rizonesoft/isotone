@@ -19,6 +19,7 @@ Isotone CMS is a lightweight PHP content management system in early development.
 - **NO migrations** - RedBeanPHP handles schema
 - **XAMPP/shared hosting** - Must work on basic hosting
 - **PSR-12 standards** - Follow PHP-FIG standards
+- **Security first** - Use .htaccess to protect sensitive files/directories
 
 ## Current Project State
 

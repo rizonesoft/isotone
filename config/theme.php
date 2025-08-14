@@ -102,7 +102,7 @@ return [
     'brand' => [
         'name' => 'Isotone CMS',
         'tagline' => 'Lightweight. Powerful. Everywhere.',
-        'logo_svg' => '/public/assets/logo.svg',  // SVG logo path
+        'logo_svg' => '/assets/logo.svg',  // SVG logo path
         'favicon' => '/favicon.png',  // Favicon path
         'favicon_ico' => '/favicon.ico',  // ICO favicon for legacy support
         'apple_touch_icon' => '/apple-touch-icon.png',  // iOS home screen icon

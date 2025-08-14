@@ -1,16 +1,33 @@
 # Isotone CMS - Root .htaccess
 
 <IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
     RewriteEngine On
     
-    # Prevent access to system directories
-    RewriteRule ^(app|config|content|storage|vendor)/ - [F,L]
+    # Prevent direct access to sensitive directories
+    RewriteRule ^(app|config|content|docs|install|scripts|storage|tests|vendor|public)(/|$) - [F,L]
     
-    # Check if request is not for public directory
-    RewriteCond %{REQUEST_URI} !^/isotone/public/
+    # Prevent access to sensitive files  
+    RewriteRule \.(env|git|md|lock|json)$ - [F,L]
+    RewriteRule ^(composer|phpunit|isotone|CLAUDE|LICENSE|README) - [F,L]
     
-    # Redirect all requests to public/index.php
-    RewriteRule ^(.*)$ public/index.php [QSA,L]
+    # Allow access to assets, admin, and setup directories
+    RewriteCond %{REQUEST_URI} ^/(assets|admin|setup)/
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+    
+    # Redirect trailing slashes if not a folder
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+    
+    # Handle Front Controller
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [QSA,L]
 </IfModule>
 
 # Prevent access to sensitive files

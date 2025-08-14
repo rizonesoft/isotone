@@ -16,8 +16,15 @@ if (php_sapi_name() !== 'cli') {
 // Bootstrap
 require_once __DIR__ . '/vendor/autoload.php';
 
+// Load environment
+if (file_exists(__DIR__ . '/.env')) {
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+    $dotenv->load();
+}
+
 use Isotone\Commands\VersionCommand;
 use Isotone\Commands\ChangelogCommand;
+use Isotone\Commands\DatabaseCommand;
 use Isotone\Core\Version;
 
 // Parse command
@@ -47,6 +54,9 @@ function showHelp(): void
     echo "  version:bump     Bump version number\n";
     echo "  version:set      Set version directly\n";
     echo "  changelog        Generate and save CHANGELOG.md\n";
+    echo "  db:test          Test database connection\n";
+    echo "  db:status        Show database status\n";
+    echo "  db:init          Initialize database schema\n";
     echo "  migrate          Run database migrations\n";
     echo "  migrate:status   Check migration status\n";
     echo "  migrate:rollback Rollback last migration batch\n";
@@ -141,6 +151,18 @@ try {
                 echo "Error: Failed to generate CHANGELOG.md\n";
                 exit(1);
             }
+            break;
+            
+        case 'db:test':
+            DatabaseCommand::test();
+            break;
+            
+        case 'db:status':
+            DatabaseCommand::status();
+            break;
+            
+        case 'db:init':
+            DatabaseCommand::initialize();
             break;
             
         case 'migrate':

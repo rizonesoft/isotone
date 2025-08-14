@@ -1,5 +1,5 @@
 {
-    "current": "0.1.2",
+    "current": "0.1.2-alpha",
     "schema": "1.0.0",
     "codename": "Genesis",
     "release_date": "2025-08-13",
@@ -44,6 +44,14 @@
             ],
             "breaking_changes": [],
             "from_version": "0.1.1"
+        },
+        {
+            "version": "0.1.2-alpha",
+            "date": "2025-08-13",
+            "codename": "Genesis",
+            "features": [],
+            "breaking_changes": [],
+            "from_version": "0.1.2"
         }
     ]
 }

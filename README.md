@@ -95,23 +95,24 @@ For detailed setup instructions, see the [Development Setup Guide](docs/developm
 isotone/
 ├── app/                  # Core application code
 │   ├── Core/            # Core CMS functionality
-│   ├── Http/            # Controllers and middleware
+│   ├── Commands/        # CLI commands
 │   ├── Models/          # Data models
 │   └── Services/        # Business logic
+├── assets/              # Static assets (CSS, JS, images)
+├── admin/               # Admin panel
+├── config/              # Configuration files
 ├── content/             # User content (gitignored)
 │   ├── uploads/         # Media files
 │   ├── cache/           # Cache files
 │   └── backups/         # Backup files
-├── plugins/             # Installed plugins
-├── themes/              # Installed themes
-├── public/              # Web root
-│   ├── index.php        # Front controller
-│   ├── admin/           # Admin assets
-│   └── assets/          # Public assets
-├── config/              # Configuration files
 ├── docs/                # Documentation
-│   └── isotone-tech-stack.md
+├── plugins/             # Installed plugins
+├── scripts/             # Automated/IDE scripts
 ├── storage/             # Logs and temporary files
+├── themes/              # Installed themes
+├── vendor/              # Composer dependencies
+├── index.php            # Main entry point
+├── .htaccess            # Security & routing
 ├── composer.json        # PHP dependencies
 └── isotone              # CLI tool
 ```
