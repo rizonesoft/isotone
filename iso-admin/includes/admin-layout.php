@@ -196,18 +196,22 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
             animation: slideIn 0.3s ease-out;
         }
         
-        /* Subtle pulse animation for logo text */
-        @keyframes pulse-subtle {
+        /* Glassmorphism glow animation */
+        @keyframes glow {
             0%, 100% {
-                opacity: 1;
+                text-shadow: 0 0 20px rgba(0, 217, 255, 0.5),
+                             0 0 40px rgba(0, 217, 255, 0.3),
+                             0 0 60px rgba(0, 217, 255, 0.1);
             }
             50% {
-                opacity: 0.8;
+                text-shadow: 0 0 30px rgba(0, 255, 136, 0.6),
+                             0 0 50px rgba(0, 255, 136, 0.4),
+                             0 0 70px rgba(0, 255, 136, 0.2);
             }
         }
         
-        .animate-pulse-subtle {
-            animation: pulse-subtle 3s ease-in-out infinite;
+        .isotone-glow {
+            animation: glow 3s ease-in-out infinite;
         }
     </style>
     
@@ -234,28 +238,13 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                 </button>
                 
                 <!-- Logo -->
-                <div class="flex items-center space-x-2">
+                <div class="flex items-center space-x-2 group">
                     <!-- Isotone SVG Logo -->
-                    <div class="w-8 h-8 relative group">
+                    <div class="w-8 h-8 relative">
                         <div class="absolute inset-0 bg-gradient-to-r from-cyan-400 to-green-400 rounded-lg opacity-20 group-hover:opacity-30 transition-opacity"></div>
-                        <svg class="w-8 h-8 relative z-10" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="isotone-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#00D9FF;stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:#00FF88;stop-opacity:1" />
-                                </linearGradient>
-                            </defs>
-                            <g fill="url(#isotone-gradient)">
-                                <path d="m16.9499 7.05006c.781.78105 2.0473.78105 2.8284 0 .781-.78105.781-2.04738 0-2.82843-.7811-.78104-2.0474-.78104-2.8284 0-.7811.78105-.7811 2.04738 0 2.82843z"></path>
-                                <path clip-rule="evenodd" d="m18.3641 5.63591c-.3905-.39052-1.0237-.39052-1.4142 0-.3905.39053-.3905 1.02369 0 1.41421.3905.39053 1.0237.39053 1.4142 0 .3905-.39052.3905-1.02368 0-1.41421zm-2.8284-1.41421c1.1715-1.17158 3.071-1.17158 4.2426 0 1.1716 1.17157 1.1716 3.07106 0 4.24264-1.1716 1.17157-3.0711 1.17157-4.2426 0-1.1716-1.17157-1.1716-3.07107 0-4.24264z" fill-rule="evenodd"></path>
-                                <path d="m4.9288 19.0712c.78105.781 2.04738.781 2.82843 0 .78105-.7811.78105-2.0474 0-2.8284-.78105-.7811-2.04738-.7811-2.82843 0-.78104.781-.78104 2.0473 0 2.8284z"></path>
-                                <path clip-rule="evenodd" d="m7.05012 16.9499c-.39052-.3905-1.02368-.3905-1.41421 0-.39052.3905-.39052 1.0237 0 1.4142.39053.3905 1.02369.3905 1.41421 0 .39053-.3905.39053-1.0237 0-1.4142zm-2.82842-1.4142c1.17157-1.1716 3.07106-1.1716 4.24264 0 1.17157 1.1715 1.17157 3.071 0 4.2426s-3.07107 1.1716-4.24264 0c-1.17158-1.1716-1.17158-3.0711 0-4.2426z" fill-rule="evenodd"></path>
-                                <path d="m10.5858 13.4142c.781.7811 2.0474.7811 2.8284 0 .7811-.781.7811-2.0474 0-2.8284-.781-.78106-2.0474-.78106-2.8284 0-.78106.781-.78106 2.0474 0 2.8284z"></path>
-                                <path clip-rule="evenodd" d="m12.7071 11.2929c-.3905-.3905-1.0237-.3905-1.4142 0s-.3905 1.0237 0 1.4142 1.0237.3905 1.4142 0 .3905-1.0237 0-1.4142zm-2.82842-1.41422c1.17162-1.17157 3.07102-1.17157 4.24262 0 1.1716 1.17162 1.1716 3.07102 0 4.24262s-3.071 1.1716-4.24262 0c-1.17157-1.1716-1.17157-3.071 0-4.24262z" fill-rule="evenodd"></path>
-                            </g>
-                        </svg>
+                        <img src="/isotone/iso-includes/assets/logo.svg" alt="Isotone" class="w-8 h-8 relative z-10">
                     </div>
-                    <h2 class="text-xl font-bold bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent animate-pulse-subtle">
+                    <h2 class="text-xl font-bold bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent isotone-glow">
                         Isotone
                     </h2>
                 </div>
