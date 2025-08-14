@@ -561,7 +561,7 @@ try {
         .brand-text {
             font-size: 1.75rem;
             font-weight: 900;
-            letter-spacing: -0.01em;
+            letter-spacing: 0.03em;
             background: linear-gradient(135deg, #FFFFFF 0%, #00D9FF 50%, #00FF88 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
