@@ -282,6 +282,27 @@ try {
             margin-bottom: 0;
         }
         
+        /* Success page specific styles */
+        h1.success-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .installed {
+            text-align: center;
+        }
+        
+        .installed .status {
+            margin: 2rem 0;
+        }
+        
+        .installed .btn {
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+        
         @keyframes shimmer {
             0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -366,9 +387,11 @@ try {
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
             transition: left 0.5s;
+            pointer-events: none;
+            z-index: 1;
         }
         
-        .btn:hover::before:not(:disabled) {
+        .btn:hover::before {
             left: 100%;
         }
         
@@ -383,7 +406,10 @@ try {
             content: '→';
             font-size: 1.2rem;
             margin-left: 0.5rem;
+            position: relative;
+            z-index: 2;
         }
+        
         
         .btn:disabled {
             opacity: 0.5;
@@ -568,10 +594,7 @@ try {
             </div>
         <?php elseif ($success): ?>
             <div class="installed">
-                <div class="header-logo">
-                    <img src="../assets/logo.svg" alt="Isotone" class="logo-icon">
-                    <h1>Installation Complete!</h1>
-                </div>
+                <h1 class="success-title">Installation Complete!</h1>
                 <p class="subtitle">Your Isotone CMS is ready to use.</p>
                 <div class="status success">
                     <?php echo htmlspecialchars($message); ?>
