@@ -1,6 +1,6 @@
 # Isotone CMS Project Structure
 
-*Auto-generated on 2025-08-14 10:52:01*
+*Auto-generated on 2025-08-14 11:16:13*
 
 ## Project Structure
 
@@ -16,6 +16,7 @@
 CHANGELOG.md
 CLAUDE.md
 CONTRIBUTING.md
+NOTES.md
 README.md
 app/
   Commands/
