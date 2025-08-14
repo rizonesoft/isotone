@@ -1,6 +1,6 @@
 # Isotone Project Structure
 
-*Auto-generated on 2025-08-14 11:16:13*
+*Auto-generated on 2025-08-14 18:26:10*
 
 ## Project Structure
 
@@ -69,7 +69,18 @@ install/
   index.php
   test-db.php
 iso-admin/
+  auth.php
+  css/
+  dashboard-new.php
+  includes/
+    admin-header.php
+    admin-layout.php
+    icons.php
   index.php
+  login.php
+  logout.php
+  user-edit.php
+  users.php
 iso-content/
   README.md
   plugins/
@@ -79,6 +90,7 @@ iso-content/
   uploads/
 iso-includes/
   assets/
+  class-user.php
   css/
   js/
   scripts/
@@ -93,6 +105,7 @@ scripts/
   sync-ide-rules.php
   sync-user-docs.php
   update-docs.php
+setup/
 user-docs/
   README.md
   SYNC-NOTE.md
