@@ -575,6 +575,7 @@ try {
             font-size: 1.5rem;
             font-weight: 600;
             color: var(--text-primary);
+            margin-top: 3rem;
             margin-bottom: 1rem;
             letter-spacing: 0.02em;
         }
