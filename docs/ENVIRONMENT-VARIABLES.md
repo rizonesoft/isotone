@@ -12,13 +12,13 @@
 | `APP_URL` | `http://localhost/isotone` | |
 | `APP_KEY` | `*(empty)*` | |
 
-## Database
+## Your IDE should connect using these same settings
 
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `DB_HOST` | `localhost` | |
 | `DB_PORT` | `3306` | |
-| `DB_DATABASE` | `isotone` | |
+| `DB_DATABASE` | `isotone_db` | |
 | `DB_USERNAME` | `root` | |
 | `DB_PASSWORD` | `*(empty)*` | |
 

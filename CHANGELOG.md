@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Optimized documentation update triggers
 - Enhanced CLI version management
 
+## [0.1.2-alpha] - Genesis - 2025-08-13
+
 ## [0.1.1] - Genesis - 2025-08-13
 
 ### Added

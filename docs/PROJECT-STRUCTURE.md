@@ -1,6 +1,6 @@
 # Isotone CMS Project Structure
 
-*Auto-generated on 2025-08-13 22:42:04*
+*Auto-generated on 2025-08-14 00:21:56*
 
 ## Project Structure
 
@@ -19,9 +19,11 @@ CLAUDE.md
 CONTRIBUTING.md
 GITHUB-SETUP.md
 README.md
+admin/
 app/
   Commands/
     ChangelogCommand.php
+    DatabaseCommand.php
     VersionCommand.php
   Core/
     Application.php
@@ -32,7 +34,9 @@ app/
     Middleware/
   Models/
   Services/
+    DatabaseService.php
   helpers.php
+assets/
 composer.json
 config/
   theme.php
@@ -41,6 +45,7 @@ content/
   backups/
   cache/
   uploads/
+database.json
 docs/
   AI-CODING-STANDARDS.md
   AI-SATISFACTION-TRIGGERS.md
@@ -48,6 +53,7 @@ docs/
   API-REFERENCE.md
   AUTOMATED-DOCUMENTATION-WORKFLOW.md
   COMMANDS.md
+  DATABASE-CONNECTION.md
   DOCUMENTATION-MAINTENANCE.md
   ENVIRONMENT-VARIABLES.md
   LLM-DEVELOPMENT-GUIDE.md
@@ -60,13 +66,9 @@ docs/
   isotone-tech-stack.md
 index.php
 plugins/
-public/
-  admin/
-  assets/
-  index.php
 scripts/
+  README.md
   check-docs.php
-  install-hooks.php
   sync-ide-rules.php
   update-docs.php
 storage/
