@@ -211,6 +211,25 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
         .isotone-logo-pulse {
             animation: pulse 2s ease-in-out infinite;
         }
+        
+        /* Shimmer Effect for Text - matching frontend */
+        @keyframes shimmer {
+            0%, 100% { 
+                background-position: 0% 50%; 
+            }
+            50% { 
+                background-position: 100% 50%; 
+            }
+        }
+        
+        .isotone-text-shimmer {
+            background: linear-gradient(135deg, #FFFFFF 0%, #00D9FF 50%, #00FF88 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s ease-in-out infinite;
+            background-size: 200% 200%;
+        }
     </style>
     
     <!-- Favicon -->
@@ -239,7 +258,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                 <div class="flex items-center space-x-2">
                     <!-- Isotone SVG Logo -->
                     <img src="/isotone/iso-includes/assets/logo.svg" alt="Isotone" class="w-8 h-8 isotone-logo-pulse">
-                    <h2 class="text-xl font-bold bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent">
+                    <h2 class="text-xl font-bold isotone-text-shimmer">
                         Isotone
                     </h2>
                 </div>
