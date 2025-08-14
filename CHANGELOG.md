@@ -5,6 +5,27 @@ All notable changes to Isotone will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.5-alpha] - Genesis - 2025-08-14
+
+### Added
+- Complete redesign of landing page with professional layout
+- Rebranded from 'Isotone CMS' to just 'Isotone'
+- Fixed layout issues with body.iso-landing class separation
+- Proper section spacing with 100px padding and 60px spacers
+- Clean hero section with centered content and key stats
+- Replaced emoji icons with proper SVG Heroicons
+- Removed glass-on-glass container issues for better readability
+- Tech stack badges showcasing modern PHP components
+- Development progress bars showing project status
+- Quick start guide with numbered steps
+- Responsive stat grid without wrapping issues
+- Alternating section backgrounds for visual rhythm
+- Improved typography and visual hierarchy
+- RedBeanPHP documentation integration via Context7
+
+### ⚠ BREAKING CHANGES
+- Landing page now uses body.iso-landing instead of body.iso-app class
+
 ## [0.1.4-alpha] - Genesis - 2025-08-14
 
 ### Added
@@ -39,7 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documentation files renamed to ALL CAPS (development-setup.md → DEVELOPMENT-SETUP.md)
 - GITHUB-SETUP.md and DOCS-STRUCTURE.md moved from root to docs/
 
-## [0.1.2-alpha] - Genesis - 2025-08-13
+## [0.1.2] - Genesis - 2025-08-13
 
 ### Added
 - Intelligent documentation automation system
@@ -47,6 +68,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - AI satisfaction detection for auto-commit workflow
 - Optimized documentation update triggers
 - Enhanced CLI version management
+
+## [0.1.2-alpha] - Genesis - 2025-08-13
+
+## [0.1.1] - Genesis - 2025-08-13
+
+### Added
 - Improved version badge text contrast (white text)
 
 ## [0.1.0-alpha] - Genesis - 2025-01-13

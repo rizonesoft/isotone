@@ -101,167 +101,34 @@ class Application
     
     private function handleHome(Request $request): Response
     {
-        // Check if we should show the landing page or development status
-        $showLandingPage = true; // For now, always show landing page
+        // Check if themes are installed
+        $themesDir = $this->basePath . '/themes';
+        $hasThemes = false;
         
-        if ($showLandingPage) {
-            // Include the landing page
+        if (is_dir($themesDir)) {
+            $themeDirs = array_diff(scandir($themesDir), ['.', '..']);
+            foreach ($themeDirs as $dir) {
+                if (is_dir($themesDir . '/' . $dir)) {
+                    $hasThemes = true;
+                    break;
+                }
+            }
+        }
+        
+        if ($hasThemes) {
+            // TODO: Load active theme here
+            // For now, show landing page
+            ob_start();
+            include $this->basePath . '/iso-includes/landing-page.php';
+            $html = ob_get_clean();
+            return new Response($html);
+        } else {
+            // No themes - show landing page
             ob_start();
             include $this->basePath . '/iso-includes/landing-page.php';
             $html = ob_get_clean();
             return new Response($html);
         }
-        
-        // Original development status page (kept for reference)
-        $baseUrl = $this->getBaseUrl($request);
-        $composerInstalled = file_exists($this->basePath . '/vendor/autoload.php');
-        $composerStatus = $composerInstalled ? 'Installed' : 'Not installed';
-        $composerBadgeClass = $composerInstalled ? 'iso-badge-success' : 'iso-badge-warning';
-        
-        // Version information
-        $isotonerVersion = Version::format();
-        $versionBadge = Version::getBadge();
-        $versionInfo = Version::current();
-        
-        // Database information
-        $dbStatus = DatabaseService::getStatus();
-        $dbConnected = $dbStatus['connected'];
-        $dbBadgeClass = $dbConnected ? 'iso-badge-success' : 'iso-badge-danger';
-        $dbStatusText = $dbConnected ? 'Connected' : 'Disconnected';
-        $dbError = isset($dbStatus['error']) ? $dbStatus['error'] : 'Connection failed';
-        $dbInfo = $dbConnected ? "({$dbStatus['database']})" : "({$dbError})";
-        $nextStep = $composerInstalled 
-            ? 'Your development environment is ready!' 
-            : 'Next step: Run <code>composer install</code> to download dependencies';
-        $phpVersion = PHP_VERSION;
-        $environment = ucfirst(defined('ENVIRONMENT') ? ENVIRONMENT : 'development');
-        
-        $html = <<<HTML
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Isotone - Lightweight. Powerful. Everywhere.</title>
-            
-            <!-- SEO Meta Tags -->
-            <meta name="description" content="Isotone is a lightweight, powerful PHP content management system designed for shared hosting. Built for developers, optimized for performance, ready for anywhere.">
-            <meta name="keywords" content="CMS, PHP, content management, lightweight CMS, shared hosting, RedBeanPHP, open source">
-            <meta name="author" content="Isotone">
-            <meta name="robots" content="index, follow">
-            
-            <!-- Open Graph / Facebook -->
-            <meta property="og:type" content="website">
-            <meta property="og:title" content="Isotone - Lightweight. Powerful. Everywhere.">
-            <meta property="og:description" content="A modern, high-performance PHP CMS built for the future. Perfect for shared hosting with no Node.js required.">
-            <meta property="og:image" content="{$baseUrl}/public/favicon.png">
-            <meta property="og:url" content="{$baseUrl}">
-            <meta property="og:site_name" content="Isotone">
-            
-            <!-- Twitter Card -->
-            <meta name="twitter:card" content="summary_large_image">
-            <meta name="twitter:title" content="Isotone - Lightweight. Powerful. Everywhere.">
-            <meta name="twitter:description" content="A modern, high-performance PHP CMS built for the future. Perfect for shared hosting.">
-            <meta name="twitter:image" content="{$baseUrl}/public/favicon.png">
-            
-            <!-- Theme Color -->
-            <meta name="theme-color" content="#0A0E27">
-            
-            <!-- Modern favicon setup using PNG -->
-            <link rel="icon" type="image/png" sizes="512x512" href="{$baseUrl}/favicon.png">
-            <link rel="icon" type="image/png" sizes="192x192" href="{$baseUrl}/favicon.png">
-            <link rel="icon" type="image/png" sizes="32x32" href="{$baseUrl}/favicon.png">
-            <link rel="icon" type="image/png" sizes="16x16" href="{$baseUrl}/favicon.png">
-            <link rel="apple-touch-icon" href="{$baseUrl}/favicon.png">
-            <link rel="manifest" href="{$baseUrl}/site.webmanifest">
-            <!-- Fallback for older browsers if ICO exists -->
-            <link rel="shortcut icon" href="{$baseUrl}/favicon.ico">
-            
-            <!-- Global Isotone CSS -->
-            <link rel="stylesheet" href="{$baseUrl}/iso-includes/css/isotone.css">
-            
-            <style>
-                /* Page-specific badge icons only (not in global CSS) */
-                .iso-badge-success::before {
-                    content: '✓';
-                    font-weight: bold;
-                    margin-right: 0.4rem;
-                }
-                
-                .iso-badge-warning::before {
-                    content: '○';
-                    margin-right: 0.4rem;
-                }
-                
-                .iso-badge-danger::before {
-                    content: '✗';
-                    font-weight: bold;
-                    margin-right: 0.4rem;
-                }
-            </style>
-        </head>
-        <body class="iso-app iso-background">
-            <div class="grid-bg"></div>
-            <div class="iso-container iso-container-md iso-animate-fadeInUp">
-                <div class="iso-header">
-                    <svg class="iso-header-logo" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="isotone-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#00D9FF;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#00FF88;stop-opacity:1" />
-                            </linearGradient>
-                        </defs>
-                        <g fill="url(#isotone-gradient)">
-                            <path clip-rule="evenodd" d="m12.7712 5.04198c-1.2919-.14261-2.598.07714-3.77211.63464-1.17413.55751-2.16993 1.43077-2.87596 2.52206-.70603 1.09128-1.09442 2.35752-1.12171 3.65702s.30761 2.5809.96721 3.7008c.28027.4759.12169 1.0889-.3542 1.3692-.47588.2803-1.08887.1217-1.36914-.3542-.84797-1.4398-1.27851-3.0872-1.24343-4.7578s.5344-3.29848 1.44206-4.70142c.90767-1.40295 2.18787-2.52561 3.69731-3.24233 1.50945-.71673 3.18857-.99923 4.84947-.8159.5489.0606.9448.55473.8842 1.10369-.0606.54895-.5547.94483-1.1037.88424zm5.6143 2.03237c.4759-.28027 1.0889-.12169 1.3691.35419.848 1.43982 1.2785 3.08726 1.2435 4.75776-.0351 1.6706-.5344 3.2985-1.4421 4.7015-.9077 1.4029-2.1879 2.5256-3.6973 3.2423-1.5095.7167-3.1886.9992-4.8495.8159-.5489-.0606-.9448-.5548-.8842-1.1037.0606-.549.5547-.9448 1.1037-.8842 1.2919.1426 2.598-.0772 3.7721-.6347 1.1742-.5575 2.17-1.4308 2.876-2.522.706-1.0913 1.0944-2.3576 1.1217-3.657.0273-1.2995-.3076-2.58095-.9672-3.70091-.2803-.47588-.1217-1.08887.3542-1.36914z" fill-rule="evenodd"></path>
-                            <path d="m16.2428 7.75723c.781.78105 2.0473.78105 2.8284 0 .781-.78105.781-2.04738 0-2.82843-.7811-.78104-2.0474-.78104-2.8284 0-.7811.78105-.7811 2.04738 0 2.82843z"></path>
-                            <path clip-rule="evenodd" d="m18.3641 5.63591c-.3905-.39052-1.0237-.39052-1.4142 0-.3905.39053-.3905 1.02369 0 1.41421.3905.39053 1.0237.39053 1.4142 0 .3905-.39052.3905-1.02368 0-1.41421zm-2.8284-1.41421c1.1715-1.17158 3.071-1.17158 4.2426 0 1.1716 1.17157 1.1716 3.07106 0 4.24264-1.1716 1.17157-3.0711 1.17157-4.2426 0-1.1716-1.17157-1.1716-3.07107 0-4.24264z" fill-rule="evenodd"></path>
-                            <path d="m4.9288 19.0712c.78105.781 2.04738.781 2.82843 0 .78105-.7811.78105-2.0474 0-2.8284-.78105-.7811-2.04738-.7811-2.82843 0-.78104.781-.78104 2.0473 0 2.8284z"></path>
-                            <path clip-rule="evenodd" d="m7.05012 16.9499c-.39052-.3905-1.02368-.3905-1.41421 0-.39052.3905-.39052 1.0237 0 1.4142.39053.3905 1.02369.3905 1.41421 0 .39053-.3905.39053-1.0237 0-1.4142zm-2.82842-1.4142c1.17157-1.1716 3.07106-1.1716 4.24264 0 1.17157 1.1715 1.17157 3.071 0 4.2426s-3.07107 1.1716-4.24264 0c-1.17158-1.1716-1.17158-3.0711 0-4.2426z" fill-rule="evenodd"></path>
-                            <path d="m10.5858 13.4142c.781.7811 2.0474.7811 2.8284 0 .7811-.781.7811-2.0474 0-2.8284-.781-.78106-2.0474-.78106-2.8284 0-.78106.781-.78106 2.0474 0 2.8284z"></path>
-                            <path clip-rule="evenodd" d="m12.7071 11.2929c-.3905-.3905-1.0237-.3905-1.4142 0s-.3905 1.0237 0 1.4142 1.0237.3905 1.4142 0 .3905-1.0237 0-1.4142zm-2.82842-1.41422c1.17162-1.17157 3.07102-1.17157 4.24262 0 1.1716 1.17162 1.1716 3.07102 0 4.24262s-3.071 1.1716-4.24262 0c-1.17157-1.1716-1.17157-3.071 0-4.24262z" fill-rule="evenodd"></path>
-                        </g>
-                    </svg>
-                    <h1 class="iso-title">Isotone</h1>
-                    <div style="margin-left: 1rem;">$versionBadge</div>
-                </div>
-                <p class="iso-subtitle">Your lightweight CMS is ready to go!</p>
-                
-                <div class="iso-status-grid">
-                    <div class="iso-status-item">
-                        <span>PHP Version</span>
-                        <span class="iso-badge iso-badge-success">{$phpVersion}</span>
-                    </div>
-                    <div class="iso-status-item">
-                        <span>Environment</span>
-                        <span class="iso-badge iso-badge-warning">{$environment}</span>
-                    </div>
-                    <div class="iso-status-item">
-                        <span>Composer</span>
-                        <span class="iso-badge {$composerBadgeClass}">{$composerStatus}</span>
-                    </div>
-                    <div class="iso-status-item">
-                        <span>Database</span>
-                        <span class="iso-badge {$dbBadgeClass}">{$dbStatusText}</span>
-                    </div>
-                    <div class="iso-status-item">
-                        <span>DB Name</span>
-                        <span class="iso-badge iso-badge-info">{$dbStatus['database']}</span>
-                    </div>
-                </div>
-                
-                <p>{$nextStep}</p>
-                <a href="{$baseUrl}/iso-admin" class="iso-btn iso-btn-arrow">Go to Admin</a>
-                
-                <!-- Card Footer with Version -->
-                <div class="iso-card-footer">
-                    <span class="iso-version">$isotonerVersion</span>
-                </div>
-            </div>
-        </body>
-        </html>
-        HTML;
-        
-        return new Response($html);
     }
     
     private function getBaseUrl(Request $request): string

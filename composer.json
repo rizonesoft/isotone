@@ -56,6 +56,21 @@
             "@docs:check"
         ],
         "ide:sync": "php scripts/sync-ide-rules.php",
+        "version:patch": [
+            "php isotone version:bump patch alpha",
+            "php isotone changelog",
+            "@docs:all"
+        ],
+        "version:minor": [
+            "php isotone version:bump minor alpha",
+            "php isotone changelog",
+            "@docs:all"
+        ],
+        "version:major": [
+            "php isotone version:bump major alpha",
+            "php isotone changelog",
+            "@docs:all"
+        ],
         "pre-commit": [
             "@docs:check",
             "@check-style"

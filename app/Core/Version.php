@@ -141,7 +141,7 @@ class Version
     /**
      * Get features for a specific version
      */
-    public static function getFeatures(string $version = null): array
+    public static function getFeatures(?string $version = null): array
     {
         $data = self::loadVersionData();
         $version = $version ?? $data['current'];
@@ -165,7 +165,7 @@ class Version
     /**
      * Get semantic version parts
      */
-    public static function parse(string $version = null): array
+    public static function parse(?string $version = null): array
     {
         if ($version === null) {
             $data = self::loadVersionData();
@@ -369,7 +369,7 @@ class Version
     /**
      * Format version for display
      */
-    public static function format(string $version = null, bool $includeCodename = true): string
+    public static function format(?string $version = null, bool $includeCodename = true): string
     {
         $data = self::loadVersionData();
         $version = $version ?? $data['current'];

@@ -46,7 +46,9 @@ Suggested progression:
 - v9.0 - Helios (sun)
 - v10.0 - Zenith (pinnacle)
 
-## Complete Update Workflow
+## ⚠️ MANDATORY Complete Update Workflow
+
+**CRITICAL**: You MUST execute ALL these steps when bumping version:
 
 When a user requests a version update, the AI should:
 
@@ -68,37 +70,34 @@ php isotone version:bump minor beta              # New feature, beta stage
 php isotone version:bump major stable "Phoenix"  # Major release
 ```
 
-### 3. Update Feature List
-
-Edit `config/version.json` to add features for the new version:
-
-```json
-{
-    "version": "0.2.0-beta",
-    "features": [
-        "Added user authentication system",
-        "Implemented role-based permissions",
-        "Created admin dashboard"
-    ]
-}
-```
-
-### 4. Confirm Changes
+### 3. Generate Changelog (MANDATORY)
 
 ```bash
-# Show new version
-php isotone version
-
-# Check what changed
-cat config/version.json
+php isotone changelog
 ```
 
-### 5. Stage for Commit
+### 4. Update All Documentation (MANDATORY)
 
 ```bash
-git add config/version.json
-git commit -m "chore: Bump version to $(php isotone version --short)"
+composer docs:all
 ```
+
+### 5. Verify Everything Updated
+
+```bash
+# Check new version
+cat config/version.json | head -5
+
+# Check changelog was generated
+cat CHANGELOG.md | head -30
+
+# Verify docs updated
+echo "✅ Version bump complete!"
+```
+
+### ⚠️ NEVER SKIP STEPS 3 & 4!
+
+The changelog and documentation MUST be updated every time!
 
 ## UI Version Display
 

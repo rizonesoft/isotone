@@ -21,6 +21,25 @@ When starting a task, always check these files in order:
 4. **`app/helpers.php`** - Available helper functions
 5. **`CLAUDE.md`** - Project-specific instructions
 
+## ⚠️ CRITICAL: Version Bump Process
+
+**MANDATORY**: When user says "bump version" or "update version", you MUST:
+
+```bash
+# 1. Bump the version
+php isotone version:bump [patch|minor|major] alpha
+
+# 2. Generate changelog (NEVER SKIP!)
+php isotone changelog
+
+# 3. Update all docs (NEVER SKIP!)
+composer docs:all
+
+# 4. Report completion with version number
+```
+
+**If you skip steps 2 or 3, the version system is broken!**
+
 ## 🎯 Task-Specific Instructions
 
 ### When Creating a New Feature

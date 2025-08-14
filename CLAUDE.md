@@ -82,6 +82,15 @@ class Database { ... }
 - Update the "Last updated" date when adding notes
 - The file is tracked in git by default (can be ignored if needed)
 
+## ⚠️ VERSION BUMP PROCESS - MANDATORY
+**CRITICAL**: When user asks to "bump version" or "update version", you MUST:
+1. **Bump the version**: `php isotone version:bump [patch|minor|major] alpha`
+2. **Generate changelog**: `php isotone changelog`
+3. **Update all docs**: `composer docs:all`
+4. **Report completion**: Show the new version number and changes
+
+**NEVER** bump version without running ALL these steps!
+
 ## ⚠️ AUTO-COMMIT ON SATISFACTION
 **CRITICAL**: When user says "perfect", "thanks", "good", "excellent", "happy with" - IMMEDIATELY:
 1. Run: `git add -A && git commit -m "description" && git push`

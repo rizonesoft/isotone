@@ -1,6 +1,6 @@
 # Isotone Project Structure
 
-*Auto-generated on 2025-08-14 18:31:32*
+*Auto-generated on 2025-08-14 21:48:20*
 
 ## Project Structure
 
@@ -93,6 +93,7 @@ iso-includes/
   class-user.php
   css/
   js/
+  landing-page.php
   scripts/
 iso-runtime/
   README.md

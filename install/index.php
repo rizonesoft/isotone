@@ -23,6 +23,36 @@ if (file_exists(ISOTONE_ROOT . '/config.php')) {
     require_once ISOTONE_ROOT . '/config.php';
 }
 
+// Get system information for already installed page
+use Isotone\Core\Version;
+if ($isInstalled) {
+    
+    // Version information
+    $isotonerVersion = Version::format();
+    $versionStage = Version::getStage();
+    $versionBadgeClass = match($versionStage) {
+        'alpha' => 'iso-badge-info',
+        'beta' => 'iso-badge-warning',
+        'rc' => 'iso-badge-info',
+        default => 'iso-badge-success'
+    };
+    
+    // Database information
+    $dbStatus = DatabaseService::getStatus();
+    $dbConnected = $dbStatus['connected'];
+    $dbBadgeClass = $dbConnected ? 'iso-badge-success' : 'iso-badge-danger';
+    $dbStatusText = $dbConnected ? 'Connected' : 'Disconnected';
+    
+    // PHP Version
+    $phpVersion = PHP_VERSION;
+    $environment = ucfirst(defined('ENVIRONMENT') ? ENVIRONMENT : 'development');
+    
+    // Composer status
+    $composerInstalled = file_exists(ISOTONE_ROOT . '/vendor/autoload.php');
+    $composerStatus = $composerInstalled ? 'Installed' : 'Not installed';
+    $composerBadgeClass = $composerInstalled ? 'iso-badge-success' : 'iso-badge-warning';
+}
+
 // Handle form submission
 $message = '';
 $error = '';
@@ -228,7 +258,7 @@ try {
 </head>
 <body class="iso-app iso-background">
     <div class="grid-bg"></div>
-    <div class="iso-container iso-container-sm iso-animate-fadeInUp">
+    <div class="iso-container iso-container-md iso-animate-fadeInUp">
         <?php if ($isInstalled): ?>
             <div class="iso-brand-corner">
                 <img src="../iso-includes/assets/logo.svg" alt="Isotone" class="logo">
@@ -237,8 +267,39 @@ try {
             <div class="installed">
                 <h2 class="installed-heading">Already Installed</h2>
                 <p class="iso-subtitle">Isotone is already installed on this system.</p>
+                
+                <!-- System Status Grid -->
+                <div class="iso-status-grid">
+                    <div class="iso-status-item">
+                        <span>Version</span>
+                        <span class="iso-badge <?php echo $versionBadgeClass; ?>"><?php echo $isotonerVersion; ?></span>
+                    </div>
+                    <div class="iso-status-item">
+                        <span>PHP Version</span>
+                        <span class="iso-badge iso-badge-success"><?php echo $phpVersion; ?></span>
+                    </div>
+                    <div class="iso-status-item">
+                        <span>Environment</span>
+                        <span class="iso-badge iso-badge-warning"><?php echo $environment; ?></span>
+                    </div>
+                    <div class="iso-status-item">
+                        <span>Composer</span>
+                        <span class="iso-badge <?php echo $composerBadgeClass; ?>"><?php echo $composerStatus; ?></span>
+                    </div>
+                    <div class="iso-status-item">
+                        <span>Database</span>
+                        <span class="iso-badge <?php echo $dbBadgeClass; ?>"><?php echo $dbStatusText; ?></span>
+                    </div>
+                    <?php if ($dbConnected): ?>
+                    <div class="iso-status-item">
+                        <span>DB Name</span>
+                        <span class="iso-badge iso-badge-info"><?php echo $dbStatus['database']; ?></span>
+                    </div>
+                    <?php endif; ?>
+                </div>
+                
                 <div class="iso-status iso-status-info">
-                    To reinstall, delete the .isotone-installed file in the root directory.
+                    To reinstall, delete the .isotone-installed file in the root directory and refresh this page.
                 </div>
                 <div class="iso-links">
                     <a href="../">Home</a>

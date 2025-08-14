@@ -1,5 +1,5 @@
 {
-    "current": "0.1.4-alpha",
+    "current": "0.1.5-alpha",
     "schema": "1.0.0",
     "codename": "Genesis",
     "release_date": "2025-08-14",
@@ -68,7 +68,7 @@
                 "Enhanced update-docs.php with user-docs and IDE sync integration"
             ],
             "breaking_changes": [
-                "Documentation files renamed to ALL CAPS (development-setup.md → DEVELOPMENT-SETUP.md)",
+                "Documentation files renamed to ALL CAPS (development-setup.md \u2192 DEVELOPMENT-SETUP.md)",
                 "GITHUB-SETUP.md and DOCS-STRUCTURE.md moved from root to docs/"
             ],
             "from_version": "0.1.2-alpha"
@@ -95,6 +95,31 @@
             ],
             "breaking_changes": [],
             "from_version": "0.1.3-alpha"
+        },
+        {
+            "version": "0.1.5-alpha",
+            "date": "2025-08-14",
+            "codename": "Genesis",
+            "features": [
+                "Complete redesign of landing page with professional layout",
+                "Rebranded from 'Isotone CMS' to just 'Isotone'",
+                "Fixed layout issues with body.iso-landing class separation",
+                "Proper section spacing with 100px padding and 60px spacers",
+                "Clean hero section with centered content and key stats",
+                "Replaced emoji icons with proper SVG Heroicons",
+                "Removed glass-on-glass container issues for better readability",
+                "Tech stack badges showcasing modern PHP components",
+                "Development progress bars showing project status",
+                "Quick start guide with numbered steps",
+                "Responsive stat grid without wrapping issues",
+                "Alternating section backgrounds for visual rhythm",
+                "Improved typography and visual hierarchy",
+                "RedBeanPHP documentation integration via Context7"
+            ],
+            "breaking_changes": [
+                "Landing page now uses body.iso-landing instead of body.iso-app class"
+            ],
+            "from_version": "0.1.4-alpha"
         }
     ]
 }
