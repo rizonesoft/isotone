@@ -552,14 +552,14 @@ try {
         }
         
         .brand-corner .logo-corner {
-            width: 35px;
-            height: 35px;
+            width: 45px;
+            height: 45px;
             filter: drop-shadow(0 0 15px rgba(0, 217, 255, 0.5));
             animation: pulse 2s ease-in-out infinite;
         }
         
         .brand-text {
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             font-weight: 900;
             letter-spacing: -0.01em;
             background: linear-gradient(135deg, #FFFFFF 0%, #00D9FF 50%, #00FF88 100%);
@@ -619,12 +619,12 @@ try {
             }
             
             .brand-corner .logo-corner {
-                width: 30px;
-                height: 30px;
+                width: 35px;
+                height: 35px;
             }
             
             .brand-text {
-                font-size: 1.25rem;
+                font-size: 1.5rem;
             }
         }
     </style>
