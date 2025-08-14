@@ -10,6 +10,70 @@ This file provides guidance to Claude Code (claude.ai/code) and other LLMs when 
 - 💬 [`docs/PROMPT-ENGINEERING-GUIDE.md`](docs/PROMPT-ENGINEERING-GUIDE.md) - How to write prompts for this project
 - 🔧 [`docs/LLM-CONFIG-RULES.md`](docs/LLM-CONFIG-RULES.md) - **CRITICAL: Config.php rules (NO .env files!)**
 
+## 🔍 SEARCH BEFORE CREATING - MANDATORY
+
+**CRITICAL**: Before creating ANY new code, styles, or files, you MUST:
+
+1. **SEARCH for existing implementations**:
+   - Use `Grep` to search for similar functionality
+   - Use `Glob` to find related files
+   - Check `/iso-includes/css/` for existing styles
+   - Review similar pages/components that might have reusable code
+
+2. **REUSE over CREATE**:
+   - Found a similar class/function? Extend or modify it
+   - Found similar CSS? Use existing classes
+   - Found a pattern? Follow it consistently
+
+3. **NEVER duplicate**:
+   - Don't create new CSS if it exists in modular files
+   - Don't write new functions if similar ones exist
+   - Don't create new files if existing ones can be extended
+
+**VIOLATION**: Creating duplicate code without searching first is a critical error
+
+## 🗄️ DATABASE OPERATIONS - USE REDBEAN ONLY
+
+**MANDATORY**: ALL database operations MUST use RedBeanPHP. NEVER use PDO, mysqli, or raw SQL directly.
+
+### ✅ ALWAYS Use RedBeanPHP:
+```php
+// CORRECT - Using RedBeanPHP
+use RedBeanPHP\R;
+$user = R::findOne('isotoneuser', 'username = ?', [$username]);
+$post = R::dispense('post');
+R::store($post);
+```
+
+### ❌ NEVER Use Direct Database Access:
+```php
+// WRONG - Direct PDO
+$pdo = new PDO(...);
+$stmt = $pdo->prepare("SELECT * FROM users");
+
+// WRONG - Direct MySQL
+$conn = new mysqli(...);
+$result = $conn->query("SELECT * FROM users");
+
+// WRONG - Creating custom database classes
+class Database { ... }
+```
+
+### RedBeanPHP Naming Rules:
+1. **Table names**: Lowercase, NO underscores (✅ `isotoneuser` ❌ `isotone_user`)
+2. **Column names**: Can use underscores (✅ `created_at`, `last_login`)
+3. **Foreign keys**: Use `tablename_id` pattern
+4. **Link tables**: RedBean creates these automatically for many-to-many
+
+### Why RedBeanPHP:
+- Zero configuration ORM
+- Automatic schema evolution
+- No migrations needed
+- Perfect for shared hosting
+- Consistent with project architecture
+
+**VIOLATION**: Using any database method other than RedBeanPHP is a critical error
+
 ## 📝 NOTES & REMINDERS
 
 **The user has a `NOTES.md` file for saving notes, reminders, and ideas.**
@@ -55,13 +119,35 @@ Isotone is a lightweight PHP content management system in early development. It 
 - Settings columns: `setting_key`, `setting_value`, `setting_type` (avoid MySQL reserved words)
 - User columns: `username`, `email`, `password`, `role`, `status`, `created_at`, `updated_at`
 
-### Design System
+### Design System - CRITICAL SEPARATION
+
+#### 🎨 STYLING ARCHITECTURE - NEVER CONFUSE THESE:
+
+1. **ADMIN PAGES** (`/iso-admin/*`):
+   - **Framework**: Tailwind CSS via CDN
+   - **Style**: Clean, modern, utility-first
+   - **Colors**: Gray-900 background, cyan/green accents
+   - **DO**: Use Tailwind classes (bg-gray-900, text-cyan-400, etc.)
+   - **DON'T**: Use glassmorphism or custom CSS
+
+2. **AUTHENTICATION & FRONTEND** (login, install, public):
+   - **Framework**: Custom modular CSS (`/iso-includes/css/`)
+   - **Style**: Glassmorphism with backdrop-filter effects
+   - **Classes**: `iso-` prefixed (iso-container, iso-btn, iso-title)
+   - **DO**: Use existing modular CSS, search before creating
+   - **DON'T**: Use Tailwind classes or create duplicate CSS
+
+3. **CRITICAL RULES**:
+   - **NEVER** mix Tailwind and custom CSS systems
+   - **NEVER** duplicate existing CSS functionality
+   - **ALWAYS** check which context you're in (admin vs frontend)
+   - **ALWAYS** search `/iso-includes/css/` before creating styles
+   - **ALWAYS** use the appropriate system for the context
+
 - **Theme**: Modern dark with electric cyan (#00D9FF) and neon green (#00FF88) accents
 - **Typography**: Inter font with refined letter spacing (0.01em - 0.08em)
 - **Effects**: Static gradients, glassmorphism, subtle animations
-- **Logo**: Custom SVG with gradient effects, left-aligned header
-- **Favicon**: 512px PNG with web manifest for PWA support
-- **SEO**: Full meta tags, Open Graph, Twitter Cards
+- **Logo**: Custom SVG with gradient effects
 - **Config**: See `config/theme.php` for color palette and design tokens
 
 ### 🎨 CSS Architecture - CRITICAL RULES

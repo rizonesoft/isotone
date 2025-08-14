@@ -261,6 +261,32 @@
     margin-bottom: var(--space-xl);
 }
 
+/* Success Message */
+.success-message {
+    background: rgba(0, 255, 136, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    border-radius: 8px;
+    color: var(--success);
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+}
+
+/* Error Message */
+.error-message {
+    background: rgba(255, 69, 58, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 69, 58, 0.3);
+    border-radius: 8px;
+    color: var(--danger);
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+}
+
 /* Responsive Components */
 @media (max-width: 768px) {
     .iso-title {

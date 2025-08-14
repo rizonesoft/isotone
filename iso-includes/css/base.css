@@ -99,6 +99,8 @@ body {
     letter-spacing: var(--letter-spacing-normal);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 50%, var(--primary) 100%);
+    background-attachment: fixed;
 }
 
 /* Headings */
