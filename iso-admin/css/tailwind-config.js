@@ -6,6 +6,7 @@
 
 // Custom Tailwind configuration
 tailwind.config = {
+    darkMode: 'class', // Enable dark mode with class strategy
     theme: {
         extend: {
             colors: {

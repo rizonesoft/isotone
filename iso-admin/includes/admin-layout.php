@@ -111,7 +111,7 @@ $admin_menu = [
         'url' => '/isotone/iso-admin/development.php',
         'submenu' => [
             ['title' => 'Automation', 'url' => '/isotone/iso-admin/automation.php'],
-            ['title' => 'Hooks Explorer', 'url' => '/isotone/iso-admin/hooks.php'],
+            ['title' => 'Hooks Explorer', 'url' => '/isotone/iso-admin/hooks-explorer.php'],
             ['title' => 'API Testing', 'url' => '/isotone/iso-admin/api-test.php'],
             ['title' => 'Debug Console', 'url' => '/isotone/iso-admin/debug.php'],
             ['title' => 'Documentation', 'url' => '/isotone/iso-admin/docs.php']
@@ -130,7 +130,8 @@ $icon_map = [
     'color-swatch' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />',
     'cog' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />',
     'wrench' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />',
-    'code' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />'
+    'code' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />',
+    'link' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />'
 ];
 
 function render_icon($icon_name, $class = 'w-6 h-6') {
@@ -147,6 +148,33 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $page_title ?? 'Admin'; ?> - Isotone</title>
     
+    <!-- Critical CSS (inline for FOUC prevention - minimal subset) -->
+    <style>
+        [x-cloak] { display: none !important; }
+        .admin-loading { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #111827; z-index: 9999; display: flex; align-items: center; justify-content: center; }
+        .spinner { width: 40px; height: 40px; border: 3px solid #374151; border-top-color: #00d9ff; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+    
+    <!-- Initialize theme before page loads -->
+    <script>
+        // Set dark mode class on HTML element before page renders
+        if (localStorage.getItem('darkMode') === 'false') {
+            document.documentElement.classList.remove('dark');
+        } else {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+    
+    <!-- Preload admin CSS -->
+    <link rel="preload" href="/isotone/iso-admin/css/admin.css" as="style">
+    
+    <!-- Admin CSS -->
+    <link rel="stylesheet" href="/isotone/iso-admin/css/admin.css">
+    
+    <!-- Preload Tailwind to reduce FOUC -->
+    <link rel="preload" href="https://cdn.tailwindcss.com" as="script">
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="/isotone/iso-admin/css/tailwind-config.js"></script>
@@ -157,107 +185,47 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
     <!-- Chart.js for dashboard graphs -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
-    <!-- Custom Admin Styles -->
-    <style>
-        [x-cloak] { display: none !important; }
+    <!-- Failsafe loader removal -->
+    <script>
+        // Remove loader after max 2 seconds even if Alpine fails
+        window.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const loader = document.getElementById('admin-loading');
+                if (loader && !loader.classList.contains('fade-out')) {
+                    loader.classList.add('fade-out');
+                    setTimeout(() => loader.remove(), 300);
+                }
+            }, 2000);
+        });
         
-        /* Sidebar transitions */
-        .sidebar-collapsed {
-            width: 4rem;
-        }
-        
-        .sidebar-expanded {
-            width: 16rem;
-        }
-        
-        /* Smooth transitions */
-        .sidebar-transition {
-            transition: all 0.3s ease;
-        }
-        
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.1);
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: rgba(0, 217, 255, 0.3);
-            border-radius: 3px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 217, 255, 0.5);
-        }
-        
-        /* Toast animations */
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
+        // Also remove loader when Alpine is ready
+        document.addEventListener('alpine:init', function() {
+            const loader = document.getElementById('admin-loading');
+            if (loader) {
+                loader.classList.add('fade-out');
+                setTimeout(() => loader.remove(), 300);
             }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        
-        .toast-enter {
-            animation: slideIn 0.3s ease-out;
-        }
-        
-        /* Pulse Animation for Logo - matching frontend */
-        @keyframes pulse {
-            0%, 100% { 
-                transform: scale(1);
-                filter: drop-shadow(0 0 20px rgba(0, 217, 255, 0.5));
-            }
-            50% { 
-                transform: scale(1.05);
-                filter: drop-shadow(0 0 30px rgba(0, 255, 136, 0.6));
-            }
-        }
-        
-        .isotone-logo-pulse {
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        /* Shimmer Effect for Text - matching frontend */
-        @keyframes shimmer {
-            0%, 100% { 
-                background-position: 0% 50%; 
-            }
-            50% { 
-                background-position: 100% 50%; 
-            }
-        }
-        
-        .isotone-text-shimmer {
-            background: linear-gradient(135deg, #FFFFFF 0%, #00D9FF 50%, #00FF88 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: shimmer 4s ease-in-out infinite;
-            background-size: 200% 200%;
-        }
-    </style>
+        });
+    </script>
+    
     
     <!-- Favicon -->
     <link rel="icon" href="/isotone/favicon.ico">
 </head>
-<body class="h-full bg-gray-900 text-gray-100" 
+<body class="min-h-full dark:bg-gray-900 bg-gray-50 dark:text-gray-100 text-gray-900" 
       x-data="adminApp()" 
       x-init="init()"
       @keydown.cmd.k.prevent="showSearch = true"
       @keydown.ctrl.k.prevent="showSearch = true"
       @keydown.escape="showSearch = false">
 
+    <!-- Loading Overlay -->
+    <div id="admin-loading" class="admin-loading">
+        <div class="spinner"></div>
+    </div>
+
     <!-- Top Admin Bar -->
-    <header class="fixed top-0 left-0 right-0 h-16 bg-gray-800 border-b border-gray-700 z-40">
+    <header class="fixed top-0 left-0 right-0 h-16 dark:bg-gray-800 bg-white dark:border-gray-700 border-gray-200 border-b z-40">
         <div class="h-full px-4 flex items-center justify-between">
             <!-- Left side -->
             <div class="flex items-center space-x-4">
@@ -270,8 +238,10 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                 
                 <!-- Logo -->
                 <div class="flex items-center space-x-2">
-                    <!-- Isotone SVG Logo -->
-                    <img src="/isotone/iso-includes/assets/logo.svg" alt="Isotone" class="w-8 h-8 isotone-logo-pulse">
+                    <!-- Isotone SVG Logo - changes based on theme -->
+                    <img :src="darkMode ? '/isotone/iso-includes/assets/logo.svg' : '/isotone/iso-includes/assets/logo-light.svg'" 
+                         alt="Isotone" 
+                         class="w-8 h-8 isotone-logo-pulse">
                     <h2 class="text-xl font-bold isotone-text-shimmer">
                         Isotone
                     </h2>
@@ -279,13 +249,13 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                 
                 <!-- Quick Actions -->
                 <div class="hidden md:flex items-center space-x-2">
-                    <button class="px-3 py-1.5 bg-cyan-600 hover:bg-cyan-700 rounded text-sm transition-colors flex items-center">
+                    <button class="px-3 py-1.5 bg-cyan-600 hover:bg-cyan-700 text-white rounded text-sm transition-colors flex items-center">
                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                         </svg>
                         New Post
                     </button>
-                    <button class="px-3 py-1.5 bg-gray-700 hover:bg-gray-600 rounded text-sm transition-colors">
+                    <button class="px-3 py-1.5 dark:bg-gray-700 bg-gray-200 dark:hover:bg-gray-600 hover:bg-gray-300 dark:text-white text-gray-900 rounded text-sm transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -297,7 +267,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
             <!-- Right side -->
             <div class="flex items-center space-x-4">
                 <!-- Search -->
-                <button @click="showSearch = true" class="p-2 hover:bg-gray-700 rounded-lg transition-colors">
+                <button @click="showSearch = true" class="p-2 dark:hover:bg-gray-700 hover:bg-gray-200 rounded-lg transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
@@ -305,7 +275,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                 
                 <!-- Notifications -->
                 <div class="relative" x-data="{ open: false }">
-                    <button @click="open = !open" class="relative p-2 hover:bg-gray-700 rounded-lg transition-colors">
+                    <button @click="open = !open" class="relative p-2 dark:hover:bg-gray-700 hover:bg-gray-200 rounded-lg transition-colors">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                         </svg>
@@ -316,13 +286,13 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                     <div x-show="open" 
                          @click.away="open = false"
                          x-cloak
-                         class="absolute right-0 mt-2 w-80 bg-gray-800 rounded-lg shadow-xl border border-gray-700">
+                         class="absolute right-0 mt-2 w-80 dark:bg-gray-800 bg-white rounded-lg shadow-xl dark:border-gray-700 border-gray-200">
                         <div class="p-4">
-                            <h3 class="text-sm font-semibold text-gray-400 mb-2">Notifications</h3>
+                            <h3 class="text-sm font-semibold dark:text-gray-400 text-gray-600 mb-2">Notifications</h3>
                             <div class="space-y-2">
-                                <div class="p-2 hover:bg-gray-700 rounded">
-                                    <p class="text-sm">New user registration</p>
-                                    <p class="text-xs text-gray-500">5 minutes ago</p>
+                                <div class="p-2 dark:hover:bg-gray-700 hover:bg-gray-100 rounded">
+                                    <p class="text-sm dark:text-white text-gray-900">New user registration</p>
+                                    <p class="text-xs dark:text-gray-500 text-gray-500">5 minutes ago</p>
                                 </div>
                             </div>
                         </div>
@@ -330,18 +300,18 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                 </div>
                 
                 <!-- Dark/Light Mode Toggle -->
-                <button @click="darkMode = !darkMode" class="p-2 hover:bg-gray-700 rounded-lg transition-colors">
-                    <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button @click="darkMode = !darkMode" class="p-2 dark:hover:bg-gray-700 hover:bg-gray-200 rounded-lg transition-colors relative w-9 h-9 flex items-center justify-center">
+                    <svg x-show="!darkMode" x-transition class="w-5 h-5 absolute" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                     </svg>
-                    <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg x-show="darkMode" x-transition class="w-5 h-5 absolute" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                     </svg>
                 </button>
                 
                 <!-- User Menu -->
                 <div class="relative" x-data="{ open: false }">
-                    <button @click="open = !open" class="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-lg transition-colors">
+                    <button @click="open = !open" class="flex items-center space-x-2 p-2 dark:hover:bg-gray-700 hover:bg-gray-200 rounded-lg transition-colors">
                         <div class="w-8 h-8 bg-gradient-to-r from-cyan-400 to-green-400 rounded-full flex items-center justify-center text-gray-900 font-semibold">
                             <?php echo strtoupper(substr($current_user ?? 'A', 0, 1)); ?>
                         </div>
@@ -354,12 +324,12 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                     <div x-show="open" 
                          @click.away="open = false"
                          x-cloak
-                         class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-xl border border-gray-700">
+                         class="absolute right-0 mt-2 w-48 dark:bg-gray-800 bg-white rounded-lg shadow-xl dark:border-gray-700 border-gray-200">
                         <div class="py-1">
-                            <a href="/isotone/iso-admin/profile.php" class="block px-4 py-2 text-sm hover:bg-gray-700">Profile</a>
-                            <a href="/isotone/iso-admin/settings.php" class="block px-4 py-2 text-sm hover:bg-gray-700">Settings</a>
-                            <hr class="my-1 border-gray-700">
-                            <a href="/isotone/iso-admin/logout.php" class="block px-4 py-2 text-sm hover:bg-gray-700">Logout</a>
+                            <a href="/isotone/iso-admin/profile.php" class="block px-4 py-2 text-sm dark:hover:bg-gray-700 hover:bg-gray-100 dark:text-white text-gray-900">Profile</a>
+                            <a href="/isotone/iso-admin/settings.php" class="block px-4 py-2 text-sm dark:hover:bg-gray-700 hover:bg-gray-100 dark:text-white text-gray-900">Settings</a>
+                            <hr class="my-1 dark:border-gray-700 border-gray-200">
+                            <a href="/isotone/iso-admin/logout.php" class="block px-4 py-2 text-sm dark:hover:bg-gray-700 hover:bg-gray-100 dark:text-white text-gray-900">Logout</a>
                         </div>
                     </div>
                 </div>
@@ -371,13 +341,13 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
     <div class="flex h-full pt-16">
         <!-- Sidebar -->
         <aside :class="sidebarCollapsed ? 'w-16' : 'w-64'" 
-               class="fixed left-0 top-16 bottom-0 bg-gray-800 border-r border-gray-700 overflow-y-auto overflow-x-hidden sidebar-transition z-30"
+               class="fixed left-0 top-16 bottom-0 dark:bg-gray-800 bg-gray-100 dark:border-gray-700 border-gray-200 border-r overflow-y-auto overflow-x-hidden sidebar-transition z-30"
                x-data="{ collapsed: false }">
             
             <!-- Collapse Toggle -->
             <div class="relative">
                 <button @click="sidebarCollapsed = !sidebarCollapsed" 
-                        class="absolute top-4 w-6 h-6 bg-gray-700 hover:bg-gray-600 rounded-full flex items-center justify-center transition-all z-40"
+                        class="absolute top-4 w-6 h-6 dark:bg-gray-700 bg-gray-400 dark:hover:bg-gray-600 hover:bg-gray-500 text-white rounded-full flex items-center justify-center transition-all z-40"
                         :class="sidebarCollapsed ? 'left-5' : 'right-4'">
                     <svg class="w-4 h-4 transition-transform" :class="sidebarCollapsed && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -392,7 +362,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                     <!-- Main Menu Item -->
                     <a href="<?php echo $item['url']; ?>" 
                        @click="<?php echo !empty($item['submenu']) ? 'open = !open; $event.preventDefault()' : ''; ?>"
-                       class="flex items-center py-2 hover:bg-gray-700 transition-colors <?php echo $current_page === $key ? 'bg-gray-700 text-cyan-400 border-l-4 border-cyan-400' : ''; ?>"
+                       class="flex items-center py-2 dark:hover:bg-gray-700 hover:bg-gray-200 transition-colors <?php echo $current_page === $key ? 'dark:bg-gray-700 bg-gray-200 text-cyan-400 border-l-4 border-cyan-400' : ''; ?>"
                        :class="sidebarCollapsed ? 'justify-center px-0' : 'px-4'">
                         <span class="flex-shrink-0"><?php echo render_icon($item['icon']); ?></span>
                         <span x-show="!sidebarCollapsed" class="ml-3" x-cloak><?php echo $item['title']; ?></span>
@@ -405,10 +375,10 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                     
                     <!-- Submenu -->
                     <?php if (!empty($item['submenu'])): ?>
-                    <div x-show="open && !sidebarCollapsed" x-cloak class="bg-gray-900">
+                    <div x-show="open && !sidebarCollapsed" x-cloak class="dark:bg-gray-900 bg-gray-50">
                         <?php foreach ($item['submenu'] as $subitem): ?>
                         <a href="<?php echo $subitem['url']; ?>" 
-                           class="block pl-12 pr-4 py-1.5 text-sm hover:bg-gray-700 transition-colors">
+                           class="block pl-12 pr-4 py-1.5 text-sm dark:hover:bg-gray-700 hover:bg-gray-200 dark:text-gray-300 text-gray-700 transition-colors">
                             <?php echo $subitem['title']; ?>
                         </a>
                         <?php endforeach; ?>
@@ -422,9 +392,9 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
         <!-- Main Content Area -->
         <main :class="sidebarCollapsed ? 'ml-16' : 'ml-64'" class="flex-1 sidebar-transition">
             <!-- Breadcrumbs -->
-            <div class="px-8 py-4 border-b border-gray-700">
+            <div class="px-8 py-4 border-b dark:border-gray-700 border-gray-200">
                 <nav class="flex items-center space-x-2 text-sm">
-                    <a href="/isotone/iso-admin/" class="text-gray-400 hover:text-gray-200">Dashboard</a>
+                    <a href="/isotone/iso-admin/" class="dark:text-gray-400 text-gray-600 dark:hover:text-gray-200 hover:text-gray-900">Dashboard</a>
                     <?php if (isset($breadcrumbs)): ?>
                         <?php foreach ($breadcrumbs as $crumb): ?>
                         <span class="text-gray-600">/</span>
@@ -450,11 +420,11 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
          x-cloak
          @click.away="showSearch = false"
          class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-start justify-center pt-20">
-        <div class="bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl">
+        <div class="dark:bg-gray-800 bg-white rounded-lg shadow-xl w-full max-w-2xl">
             <div class="p-4">
                 <input type="text" 
                        placeholder="Search everything... (Press ESC to close)"
-                       class="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:border-cyan-500"
+                       class="w-full px-4 py-2 dark:bg-gray-900 bg-gray-50 dark:border-gray-700 border-gray-300 dark:text-white text-gray-900 border rounded-lg focus:outline-none focus:border-cyan-500"
                        x-ref="searchInput"
                        @click.stop
                        x-init="$watch('showSearch', value => value && $nextTick(() => $refs.searchInput.focus()))">
@@ -472,21 +442,39 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                 sidebarCollapsed: localStorage.getItem('sidebarCollapsed') === 'true',
                 darkMode: localStorage.getItem('darkMode') !== 'false',
                 showSearch: false,
+                sidebarOpen: false,
                 
                 init() {
+                    // Remove loading overlay once Alpine is initialized
+                    const loader = document.getElementById('admin-loading');
+                    if (loader) {
+                        setTimeout(() => {
+                            loader.classList.add('fade-out');
+                            setTimeout(() => loader.remove(), 300);
+                        }, 100);
+                    }
+                    
                     // Watch sidebar state
                     this.$watch('sidebarCollapsed', value => {
                         localStorage.setItem('sidebarCollapsed', value);
                     });
                     
-                    // Watch dark mode
+                    // Watch dark mode - only toggle 'dark' class on html element
                     this.$watch('darkMode', value => {
                         localStorage.setItem('darkMode', value);
-                        document.documentElement.classList.toggle('dark', value);
+                        if (value) {
+                            document.documentElement.classList.add('dark');
+                        } else {
+                            document.documentElement.classList.remove('dark');
+                        }
                     });
                     
-                    // Set initial dark mode
-                    document.documentElement.classList.toggle('dark', this.darkMode);
+                    // Set initial dark mode state (already done in head script, but ensure sync)
+                    if (this.darkMode) {
+                        document.documentElement.classList.add('dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                    }
                 }
             }
         }
@@ -511,7 +499,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
             toast.className = `${colors[type]} text-white px-6 py-3 rounded-lg shadow-2xl toast-enter flex items-center`;
             toast.innerHTML = `
                 <span class="mr-3 flex-shrink-0">${icons[type]}</span>
-                <span class="font-semibold">${message}</span>
+                <span>${message}</span>
             `;
             
             document.getElementById('toast-container').appendChild(toast);

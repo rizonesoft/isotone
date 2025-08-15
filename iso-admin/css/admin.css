@@ -1,0 +1,497 @@
+/**
+ * Isotone Admin CSS
+ * Consolidated styles for admin interface
+ * 
+ * @package Isotone
+ * @version 1.0.0
+ */
+
+/* ==========================================================================
+   Base Styles & FOUC Prevention
+   ========================================================================== */
+
+/* Prevent FOUC - Critical Styles */
+html {
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+/* Remove forced backgrounds - let Tailwind handle it */
+
+/* Override Tailwind's h-full to ensure proper background */
+body.min-h-full {
+    min-height: 100vh !important;
+    height: auto !important;
+}
+
+/* Ensure main content area extends full height */
+main {
+    min-height: calc(100vh - 4rem); /* Subtract header height */
+}
+
+/* Layout container background */
+.flex.pt-16 {
+    min-height: calc(100vh - 4rem);
+}
+
+/* Hide Alpine.js elements until loaded */
+[x-cloak] {
+    display: none !important;
+}
+
+/* ==========================================================================
+   Color Utilities (supplements Tailwind)
+   ========================================================================== */
+
+/* Remove forced colors - let Tailwind's dark mode handle it */
+
+.text-white {
+    color: #ffffff;
+}
+
+.text-gray-400 {
+    color: #9ca3af;
+}
+
+.text-cyan-400 {
+    color: #22d3ee;
+}
+
+/* ==========================================================================
+   Loading Overlay
+   ========================================================================== */
+
+.admin-loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #111827;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-loading.fade-out {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #374151;
+    border-top-color: #00d9ff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ==========================================================================
+   Breadcrumb Styles
+   ========================================================================== */
+
+/* Consistent breadcrumb styling across all pages */
+main > div:first-child {
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #374151;
+    background-color: transparent;
+}
+
+/* Breadcrumb text styling */
+main > div:first-child nav {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+
+/* Page content area - ensure consistent padding */
+main > div:last-child {
+    padding: 2rem !important;
+}
+
+/* ==========================================================================
+   Sidebar Styles
+   ========================================================================== */
+
+.sidebar-collapsed {
+    width: 4rem;
+}
+
+.sidebar-expanded {
+    width: 16rem;
+}
+
+.sidebar-transition {
+    transition: all 0.3s ease;
+}
+
+/* ==========================================================================
+   Custom Scrollbar
+   ========================================================================== */
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 217, 255, 0.3);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 217, 255, 0.5);
+}
+
+/* ==========================================================================
+   Toast Notifications
+   ========================================================================== */
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.toast-enter {
+    animation: slideIn 0.3s ease-out;
+}
+
+/* ==========================================================================
+   Logo Animations (matching frontend)
+   ========================================================================== */
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 20px rgba(0, 217, 255, 0.5));
+    }
+    50% {
+        transform: scale(1.05);
+        filter: drop-shadow(0 0 30px rgba(0, 255, 136, 0.6));
+    }
+}
+
+/* Dark mode logo (brighter) */
+.dark .isotone-logo-pulse {
+    animation: pulse 2s ease-in-out infinite;
+    filter: brightness(1);
+}
+
+/* Light mode logo (darker) */
+.isotone-logo-pulse {
+    animation: pulse 2s ease-in-out infinite;
+    filter: brightness(0.7) saturate(1.2);
+}
+
+/* Shimmer Effect for Text */
+@keyframes shimmer {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* Dark mode shimmer (brighter) */
+.dark .isotone-text-shimmer {
+    background: linear-gradient(135deg, #FFFFFF 0%, #00D9FF 50%, #00FF88 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 4s ease-in-out infinite;
+    background-size: 200% 200%;
+}
+
+/* Light mode shimmer (darker) */
+.isotone-text-shimmer {
+    background: linear-gradient(135deg, #1F2937 0%, #0891B2 50%, #059669 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 4s ease-in-out infinite;
+    background-size: 200% 200%;
+}
+
+/* ==========================================================================
+   Collapsible Details Elements
+   ========================================================================== */
+
+details summary {
+    list-style: none;
+    cursor: pointer;
+}
+
+details summary::-webkit-details-marker,
+details summary::marker {
+    display: none;
+}
+
+details > summary:first-of-type {
+    list-style-type: none;
+}
+
+details summary::before {
+    content: '';
+    display: inline-block;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.5rem;
+    background: currentColor;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath fill-rule='evenodd' d='M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z' clip-rule='evenodd'/%3E%3C/svg%3E");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    transition: transform 0.2s;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+}
+
+details[open] summary::before {
+    transform: rotate(90deg);
+}
+
+/* ==========================================================================
+   Hook Badges (Hooks Explorer)
+   ========================================================================== */
+
+.hook-badge {
+    background: linear-gradient(135deg, rgba(31, 41, 55, 0.9), rgba(17, 24, 39, 0.7));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.hook-badge:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Action Badge */
+.hook-badge-action {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.1));
+    border-color: rgba(16, 185, 129, 0.3);
+    color: #10b981;
+}
+
+.hook-badge-action:hover {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(5, 150, 105, 0.2));
+    border-color: rgba(16, 185, 129, 0.5);
+}
+
+/* Filter Badge */
+.hook-badge-filter {
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(245, 158, 11, 0.1));
+    border-color: rgba(251, 191, 36, 0.3);
+    color: #fbbf24;
+}
+
+.hook-badge-filter:hover {
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.3), rgba(245, 158, 11, 0.2));
+    border-color: rgba(251, 191, 36, 0.5);
+}
+
+/* System Badge */
+.hook-badge-system {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.1));
+    border-color: rgba(139, 92, 246, 0.3);
+    color: #a78bfa;
+}
+
+.hook-badge-system:hover {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(124, 58, 237, 0.2));
+    border-color: rgba(139, 92, 246, 0.5);
+}
+
+/* Dynamic Badge */
+.hook-badge-dynamic {
+    background: linear-gradient(135deg, rgba(251, 146, 60, 0.2), rgba(249, 115, 22, 0.1));
+    border-color: rgba(251, 146, 60, 0.3);
+    color: #fb923c;
+}
+
+.hook-badge-dynamic:hover {
+    background: linear-gradient(135deg, rgba(251, 146, 60, 0.3), rgba(249, 115, 22, 0.2));
+    border-color: rgba(251, 146, 60, 0.5);
+}
+
+/* Callbacks Badge */
+.hook-badge-callbacks {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.1));
+    border-color: rgba(59, 130, 246, 0.3);
+    color: #60a5fa;
+}
+
+.hook-badge-callbacks:hover {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(37, 99, 235, 0.2));
+    border-color: rgba(59, 130, 246, 0.5);
+}
+
+/* Implemented/Active Badge */
+.hook-badge-implemented {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(22, 163, 74, 0.1));
+    border-color: rgba(34, 197, 94, 0.3);
+    color: #4ade80;
+}
+
+.hook-badge-implemented:hover {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.3), rgba(22, 163, 74, 0.2));
+    border-color: rgba(34, 197, 94, 0.5);
+}
+
+/* Pending Badge */
+.hook-badge-pending {
+    background: linear-gradient(135deg, rgba(107, 114, 128, 0.2), rgba(75, 85, 99, 0.1));
+    border-color: rgba(107, 114, 128, 0.3);
+    color: #9ca3af;
+}
+
+.hook-badge-pending:hover {
+    background: linear-gradient(135deg, rgba(107, 114, 128, 0.3), rgba(75, 85, 99, 0.2));
+    border-color: rgba(107, 114, 128, 0.5);
+}
+
+/* ==========================================================================
+   Utility Classes
+   ========================================================================== */
+
+.bg-gray-750 {
+    background-color: rgba(55, 65, 81, 0.5);
+}
+
+/* Basic layout utilities */
+.rounded-lg {
+    border-radius: 0.5rem;
+}
+
+.p-4 {
+    padding: 1rem;
+}
+
+.p-6 {
+    padding: 1.5rem;
+}
+
+.grid {
+    display: grid;
+}
+
+.gap-4 {
+    gap: 1rem;
+}
+
+/* ==========================================================================
+   Responsive Utilities
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .sidebar-expanded {
+        width: 100%;
+        position: fixed;
+        z-index: 50;
+    }
+    
+    .sidebar-collapsed {
+        transform: translateX(-100%);
+    }
+}
+
+/* ==========================================================================
+   Terminal Styles (Automation Page)
+   ========================================================================== */
+
+#terminal {
+    background: linear-gradient(180deg, #000000 0%, #0a0a0a 100%);
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+    scrollbar-width: thin;
+    scrollbar-color: #00D9FF #000000;
+}
+
+#terminal::-webkit-scrollbar {
+    width: 8px;
+}
+
+#terminal::-webkit-scrollbar-track {
+    background: #000000;
+}
+
+#terminal::-webkit-scrollbar-thumb {
+    background: #00D9FF;
+    border-radius: 4px;
+}
+
+#terminal::-webkit-scrollbar-thumb:hover {
+    background: #00FF88;
+}
+
+.terminal-command {
+    color: #00D9FF;
+}
+
+.terminal-success {
+    color: #00FF88;
+}
+
+.terminal-error {
+    color: #FF3333;
+}
+
+.terminal-warning {
+    color: #FFAA00;
+}
+
+.terminal-info {
+    color: #888888;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+#terminal-cursor.blinking {
+    animation: blink 1s infinite;
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+    .admin-loading,
+    .sidebar,
+    .toast {
+        display: none !important;
+    }
+    
+    body {
+        background: white;
+        color: black;
+    }
+}

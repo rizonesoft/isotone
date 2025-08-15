@@ -72,16 +72,16 @@ ob_start();
 ?>
 
 <?php if ($message): ?>
-    <div class="mb-6 p-4 rounded-lg <?php echo $messageType === 'success' ? 'bg-green-800 border border-green-600 text-green-200' : 'bg-red-800 border border-red-600 text-red-200'; ?>">
+    <div class="mb-6 p-4 rounded-lg <?php echo $messageType === 'success' ? 'dark:bg-green-800 bg-green-50 dark:border-green-600 border-green-300 dark:text-green-200 text-green-800' : 'dark:bg-red-800 bg-red-50 dark:border-red-600 border-red-300 dark:text-red-200 text-red-800'; ?>">
         <?php echo htmlspecialchars($message); ?>
     </div>
 <?php endif; ?>
 
 <!-- Page Header -->
 <div class="flex justify-between items-center mb-6">
-    <h1 class="text-3xl font-semibold">User Management</h1>
+    <h1 class="text-3xl font-semibold dark:text-white text-gray-900">User Management</h1>
     <a href="/isotone/iso-admin/user-edit.php?action=new" 
-       class="inline-flex items-center px-4 py-2 bg-cyan-600 hover:bg-cyan-700 rounded transition-colors">
+       class="inline-flex items-center px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded transition-colors">
         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
         </svg>
@@ -90,50 +90,50 @@ ob_start();
 </div>
 
 <!-- Users Table -->
-<div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+<div class="dark:bg-gray-800 bg-white rounded-lg dark:border-gray-700 border-gray-200 overflow-hidden">
     <table class="w-full">
-        <thead class="bg-gray-700">
+        <thead class="dark:bg-gray-700 bg-gray-50">
             <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">User</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Email</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Role</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Last Login</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Actions</th>
+                <th class="px-6 py-3 text-left text-xs font-medium dark:text-gray-400 text-gray-600 uppercase tracking-wider">User</th>
+                <th class="px-6 py-3 text-left text-xs font-medium dark:text-gray-400 text-gray-600 uppercase tracking-wider">Email</th>
+                <th class="px-6 py-3 text-left text-xs font-medium dark:text-gray-400 text-gray-600 uppercase tracking-wider">Role</th>
+                <th class="px-6 py-3 text-left text-xs font-medium dark:text-gray-400 text-gray-600 uppercase tracking-wider">Status</th>
+                <th class="px-6 py-3 text-left text-xs font-medium dark:text-gray-400 text-gray-600 uppercase tracking-wider">Last Login</th>
+                <th class="px-6 py-3 text-left text-xs font-medium dark:text-gray-400 text-gray-600 uppercase tracking-wider">Actions</th>
             </tr>
         </thead>
-        <tbody class="divide-y divide-gray-700">
+        <tbody class="divide-y dark:divide-gray-700 divide-gray-200">
             <?php foreach ($users as $user): ?>
-                <tr class="hover:bg-gray-700 transition-colors">
+                <tr class="dark:hover:bg-gray-700 hover:bg-gray-50 transition-colors">
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex items-center">
                             <div class="w-8 h-8 bg-gradient-to-r from-cyan-400 to-green-400 rounded-full flex items-center justify-center text-gray-900 font-semibold mr-3">
                                 <?php echo strtoupper(substr($user['username'], 0, 1)); ?>
                             </div>
                             <div>
-                                <div class="text-sm font-medium"><?php echo htmlspecialchars($user['display_name'] ?? $user['username']); ?></div>
-                                <div class="text-xs text-gray-500">@<?php echo htmlspecialchars($user['username']); ?></div>
+                                <div class="text-sm font-medium dark:text-white text-gray-900"><?php echo htmlspecialchars($user['display_name'] ?? $user['username']); ?></div>
+                                <div class="text-xs dark:text-gray-500 text-gray-500">@<?php echo htmlspecialchars($user['username']); ?></div>
                             </div>
                         </div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm dark:text-gray-300 text-gray-700">
                         <?php echo htmlspecialchars($user['email']); ?>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 py-1 text-xs rounded-full bg-gray-700">
+                        <span class="px-2 py-1 text-xs rounded-full dark:bg-gray-700 bg-gray-200 dark:text-gray-300 text-gray-700">
                             <?php echo ucfirst(str_replace('_', ' ', $user['role'])); ?>
                         </span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <?php if ($user['status'] === 'active'): ?>
-                            <span class="px-2 py-1 text-xs rounded-full bg-green-800 text-green-200">Active</span>
+                            <span class="px-2 py-1 text-xs rounded-full dark:bg-green-800 dark:text-green-200 bg-green-100 text-green-800">Active</span>
                         <?php elseif ($user['status'] === 'inactive'): ?>
-                            <span class="px-2 py-1 text-xs rounded-full bg-yellow-800 text-yellow-200">Inactive</span>
+                            <span class="px-2 py-1 text-xs rounded-full dark:bg-yellow-800 dark:text-yellow-200 bg-yellow-100 text-yellow-800">Inactive</span>
                         <?php else: ?>
-                            <span class="px-2 py-1 text-xs rounded-full bg-red-800 text-red-200">Banned</span>
+                            <span class="px-2 py-1 text-xs rounded-full dark:bg-red-800 dark:text-red-200 bg-red-100 text-red-800">Banned</span>
                         <?php endif; ?>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm dark:text-gray-400 text-gray-600">
                         <?php echo $user['last_login'] ? date('M j, Y', strtotime($user['last_login'])) : 'Never'; ?>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm">
@@ -162,7 +162,7 @@ ob_start();
             
             <?php if (empty($users)): ?>
                 <tr>
-                    <td colspan="6" class="px-6 py-8 text-center text-gray-500">
+                    <td colspan="6" class="px-6 py-8 text-center dark:text-gray-500 text-gray-400">
                         No users found. <a href="/isotone/iso-admin/user-edit.php?action=new" class="text-cyan-400 hover:text-cyan-300">Add the first user</a>
                     </td>
                 </tr>

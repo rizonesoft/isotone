@@ -88,8 +88,8 @@ ob_start();
 <div class="mb-8">
     <div class="flex justify-between items-center">
         <div>
-            <h1 class="text-3xl font-bold text-white">Themes</h1>
-            <p class="text-gray-400 mt-2">Manage your site's appearance with themes</p>
+            <h1 class="text-3xl font-bold dark:text-white text-gray-900">Themes</h1>
+            <p class="dark:text-gray-400 text-gray-600 mt-2">Manage your site's appearance with themes</p>
         </div>
         <button @click="showUploadModal = true" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition flex items-center">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,16 +101,16 @@ ob_start();
 </div>
 
 <?php if ($action_message): ?>
-<div class="mb-6 p-4 rounded-lg <?php echo $action_type === 'success' ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'; ?>">
+<div class="mb-6 p-4 rounded-lg <?php echo $action_type === 'success' ? 'dark:bg-green-900 dark:text-green-200 bg-green-50 text-green-800' : 'dark:bg-red-900 dark:text-red-200 bg-red-50 text-red-800'; ?>">
     <?php echo htmlspecialchars($action_message); ?>
 </div>
 <?php endif; ?>
 
 <!-- Active Theme -->
 <div class="mb-8">
-    <h2 class="text-xl font-semibold text-gray-300 mb-4">Active Theme</h2>
+    <h2 class="text-xl font-semibold dark:text-gray-300 text-gray-700 mb-4">Active Theme</h2>
     <?php if ($active_theme): ?>
-    <div class="bg-gray-800 rounded-lg p-6 border-2 border-cyan-500">
+    <div class="dark:bg-gray-800 bg-white rounded-lg p-6 border-2 border-cyan-500">
         <div class="flex items-start space-x-6">
             <!-- Theme Screenshot -->
             <div class="flex-shrink-0">
@@ -133,10 +133,10 @@ ob_start();
             
             <!-- Theme Info -->
             <div class="flex-1">
-                <h3 class="text-2xl font-bold text-white mb-2"><?php echo htmlspecialchars($active_theme['name']); ?></h3>
-                <p class="text-gray-400 mb-4"><?php echo htmlspecialchars($active_theme['description']); ?></p>
+                <h3 class="text-2xl font-bold dark:text-white text-gray-900 mb-2"><?php echo htmlspecialchars($active_theme['name']); ?></h3>
+                <p class="dark:text-gray-400 text-gray-600 mb-4"><?php echo htmlspecialchars($active_theme['description']); ?></p>
                 
-                <div class="flex items-center space-x-6 text-sm text-gray-500">
+                <div class="flex items-center space-x-6 text-sm dark:text-gray-500 text-gray-500">
                     <span>Version <?php echo htmlspecialchars($active_theme['version']); ?></span>
                     <?php if ($active_theme['author']): ?>
                         <span>By <?php echo htmlspecialchars($active_theme['author']); ?></span>
@@ -144,13 +144,13 @@ ob_start();
                 </div>
                 
                 <div class="mt-4 flex space-x-3">
-                    <a href="/isotone/iso-admin/customize.php" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded transition">
+                    <a href="/isotone/iso-admin/customize.php" class="px-4 py-2 dark:bg-gray-700 bg-gray-200 dark:hover:bg-gray-600 hover:bg-gray-300 dark:text-white text-gray-900 rounded transition">
                         Customize
                     </a>
-                    <a href="/isotone/iso-admin/widgets.php" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded transition">
+                    <a href="/isotone/iso-admin/widgets.php" class="px-4 py-2 dark:bg-gray-700 bg-gray-200 dark:hover:bg-gray-600 hover:bg-gray-300 dark:text-white text-gray-900 rounded transition">
                         Widgets
                     </a>
-                    <a href="/isotone/iso-admin/menus.php" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded transition">
+                    <a href="/isotone/iso-admin/menus.php" class="px-4 py-2 dark:bg-gray-700 bg-gray-200 dark:hover:bg-gray-600 hover:bg-gray-300 dark:text-white text-gray-900 rounded transition">
                         Menus
                     </a>
                 </div>
@@ -162,13 +162,13 @@ ob_start();
 
 <!-- Available Themes -->
 <div>
-    <h2 class="text-xl font-semibold text-gray-300 mb-4">Available Themes</h2>
+    <h2 class="text-xl font-semibold dark:text-gray-300 text-gray-700 mb-4">Available Themes</h2>
     
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         <?php foreach ($themes as $theme): ?>
             <?php if ($theme['slug'] === $active_theme['slug']) continue; ?>
             
-            <div class="bg-gray-800 rounded-lg overflow-hidden hover:shadow-xl transition-shadow" x-data="{ showActions: false }">
+            <div class="dark:bg-gray-800 bg-white rounded-lg overflow-hidden hover:shadow-xl transition-shadow" x-data="{ showActions: false }">
                 <!-- Theme Screenshot -->
                 <div class="relative group">
                     <?php if (file_exists($theme['path'] . '/screenshot.png')): ?>
@@ -206,12 +206,12 @@ ob_start();
                 
                 <!-- Theme Info -->
                 <div class="p-4">
-                    <h3 class="font-semibold text-white mb-1"><?php echo htmlspecialchars($theme['name']); ?></h3>
-                    <p class="text-sm text-gray-400 mb-3 line-clamp-2"><?php echo htmlspecialchars($theme['description']); ?></p>
+                    <h3 class="font-semibold dark:text-white text-gray-900 mb-1"><?php echo htmlspecialchars($theme['name']); ?></h3>
+                    <p class="text-sm dark:text-gray-400 text-gray-600 mb-3 line-clamp-2"><?php echo htmlspecialchars($theme['description']); ?></p>
                     
-                    <div class="flex items-center justify-between text-xs text-gray-500">
+                    <div class="flex items-center justify-between text-xs dark:text-gray-500 text-gray-500">
                         <span>v<?php echo htmlspecialchars($theme['version']); ?></span>
-                        <button @click="showActions = !showActions" class="hover:text-gray-300">
+                        <button @click="showActions = !showActions" class="dark:hover:text-gray-300 hover:text-gray-700">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                             </svg>
@@ -220,11 +220,11 @@ ob_start();
                     
                     <!-- Dropdown Actions -->
                     <div x-show="showActions" @click.away="showActions = false" x-cloak
-                         class="absolute right-4 bottom-12 bg-gray-900 rounded-lg shadow-xl border border-gray-700 py-1 z-10">
+                         class="absolute right-4 bottom-12 dark:bg-gray-900 bg-white rounded-lg shadow-xl dark:border-gray-700 border-gray-200 py-1 z-10">
                         <button onclick="if(confirm('Are you sure you want to delete this theme?')) { 
                                     document.getElementById('delete-<?php echo $theme['slug']; ?>').submit(); 
                                 }"
-                                class="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-800">
+                                class="block w-full text-left px-4 py-2 text-sm text-red-400 dark:hover:bg-gray-800 hover:bg-gray-50">
                             Delete Theme
                         </button>
                     </div>
@@ -239,8 +239,8 @@ ob_start();
         <?php endforeach; ?>
         
         <!-- Add New Theme Card -->
-        <div class="bg-gray-800 rounded-lg overflow-hidden border-2 border-dashed border-gray-700 hover:border-gray-600 transition-colors">
-            <button @click="showUploadModal = true" class="w-full h-full p-8 flex flex-col items-center justify-center text-gray-500 hover:text-gray-400">
+        <div class="dark:bg-gray-800 bg-white rounded-lg overflow-hidden border-2 border-dashed dark:border-gray-700 border-gray-300 dark:hover:border-gray-600 hover:border-gray-400 transition-colors">
+            <button @click="showUploadModal = true" class="w-full h-full p-8 flex flex-col items-center justify-center dark:text-gray-500 text-gray-400 dark:hover:text-gray-400 hover:text-gray-600">
                 <svg class="w-16 h-16 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
@@ -257,28 +257,28 @@ ob_start();
          x-cloak
          @click.away="showUploadModal = false"
          class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-        <div class="bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6" @click.stop>
-            <h3 class="text-xl font-semibold text-white mb-4">Upload Theme</h3>
+        <div class="dark:bg-gray-800 bg-white rounded-lg shadow-xl max-w-md w-full p-6" @click.stop>
+            <h3 class="text-xl font-semibold dark:text-white text-gray-900 mb-4">Upload Theme</h3>
             
             <form method="POST" enctype="multipart/form-data" class="space-y-4">
                 <input type="hidden" name="action" value="upload">
                 
                 <div>
-                    <label class="block text-sm font-medium text-gray-300 mb-2">
+                    <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
                         Choose theme ZIP file
                     </label>
                     <input type="file" 
                            name="theme_zip" 
                            accept=".zip"
                            required
-                           class="w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded-lg text-gray-300 focus:outline-none focus:border-cyan-500">
-                    <p class="mt-1 text-xs text-gray-500">Maximum file size: 10MB</p>
+                           class="w-full px-3 py-2 dark:bg-gray-900 bg-gray-50 dark:border-gray-700 border-gray-300 rounded-lg dark:text-gray-300 text-gray-700 focus:outline-none focus:border-cyan-500">
+                    <p class="mt-1 text-xs dark:text-gray-500 text-gray-500">Maximum file size: 10MB</p>
                 </div>
                 
                 <div class="flex justify-end space-x-3">
                     <button type="button" 
                             @click="showUploadModal = false"
-                            class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded transition">
+                            class="px-4 py-2 dark:bg-gray-700 bg-gray-200 dark:hover:bg-gray-600 hover:bg-gray-300 dark:text-white text-gray-900 rounded transition">
                         Cancel
                     </button>
                     <button type="submit" 
