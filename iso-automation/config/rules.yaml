@@ -2897,3 +2897,272 @@ validation:
         - "user-docs/ for end-user documentation (well organized)"
         - "app/ follows PSR-4 autoloading structure"
         - "iso- prefix for all system directories"
+
+  prompt_engineering:
+    priority: 85
+    enabled: true
+    description: "Prompt engineering guide for effective LLM interaction"
+    
+    effective_structure:
+      basic_template: |
+        Task: [Specific action needed]
+        Context: [Isotone, PHP 8.3, RedBeanPHP, XAMPP]
+        Requirements:
+        - [Specific requirement 1]
+        - [Specific requirement 2]
+        Constraints:
+        - Must work on shared hosting
+        - No Node.js dependencies
+        - Follow PSR-12 standards
+      
+      example_prompt: |
+        Create a user authentication system for Isotone.
+        
+        Requirements:
+        - Login/logout functionality
+        - Password hashing with bcrypt
+        - Session management
+        - Remember me option
+        
+        Use RedBeanPHP for database operations and follow the existing pattern in app/Core/Application.php for routing.
+    
+    task_specific_prompts:
+      feature_creation: |
+        Add [feature name] to Isotone.
+        
+        The feature should:
+        - [Functionality 1]
+        - [Functionality 2]
+        
+        Follow existing patterns in:
+        - Routing: app/Core/Application.php
+        - Models: app/Models/
+        - Helpers: app/helpers.php
+        
+        Ensure it works with XAMPP and requires no Node.js.
+      
+      bug_fixing: |
+        Fix [describe bug] in Isotone.
+        
+        Current behavior: [what happens now]
+        Expected behavior: [what should happen]
+        File location: [if known]
+        
+        Maintain backward compatibility and test with XAMPP.
+      
+      refactoring: |
+        Refactor [component/file] in Isotone.
+        
+        Goals:
+        - [Improvement 1]
+        - [Improvement 2]
+        
+        Constraints:
+        - Maintain all existing functionality
+        - Keep compatible with PHP 8.3
+        - No breaking changes to public APIs
+    
+    optimization_principles:
+      be_specific:
+        good: "Create a plugin that adds social media sharing buttons to posts"
+        bad: "Add social features"
+      
+      provide_context:
+        good: "Using RedBeanPHP, create a model for blog comments with validation"
+        bad: "Make a comment system"
+      
+      set_boundaries:
+        good: "Create a simple contact form using only PHP and HTML, no JavaScript"
+        bad: "Make a contact form"
+      
+      reference_existing:
+        good: "Following the pattern in app/Core/Application.php, add a new route for /api/users"
+        bad: "Add an API endpoint"
+    
+    advanced_techniques:
+      chain_of_thought: |
+        First, analyze the existing authentication system in Isotone.
+        Then, create a two-factor authentication addon that:
+        1. Generates TOTP codes
+        2. Stores backup codes
+        3. Integrates with existing login
+        
+        Show your reasoning for each design decision.
+      
+      few_shot_examples: |
+        Here's how we create routes in Isotone:
+        $this->routes->add('home', new Route('/', ['_controller' => [$this, 'handleHome']]));
+        
+        Now create routes for:
+        - /blog (list posts)
+        - /blog/{slug} (show single post)
+        - /blog/category/{category} (filter by category)
+      
+      structured_output: |
+        Create a user management system. Structure your response as:
+        
+        1. DATABASE SCHEMA (using RedBean conventions)
+        2. MODEL CLASSES (in app/Models/)
+        3. ROUTES (to add to Application.php)
+        4. CONTROLLER METHODS (with full implementation)
+        5. SECURITY CONSIDERATIONS
+      
+      iterative_refinement: |
+        Step 1: Create a basic plugin structure for SEO management
+        Step 2: Add meta tag management
+        Step 3: Implement XML sitemap generation
+        Step 4: Add Open Graph support
+        
+        Complete each step before moving to the next.
+    
+    llm_specific_guidance:
+      claude:
+        strengths:
+          - "Following detailed instructions"
+          - "Maintaining context"
+          - "Security considerations"
+        example: |
+          Using your knowledge of secure PHP development, create a file upload system for Isotone with:
+          - File type validation
+          - Size limits
+          - Malware scanning hooks
+          - Organized storage in iso-content/uploads/
+          
+          Follow Isotone's coding standards and ensure XAMPP compatibility.
+      
+      gpt4:
+        strengths:
+          - "Creative solutions"
+          - "Broad knowledge"
+          - "Code generation"
+        example: |
+          Create an innovative caching system for Isotone that:
+          - Works on shared hosting (file-based)
+          - Has minimal overhead
+          - Supports cache tags
+          - Auto-clears on content updates
+          
+          Be creative but keep it simple and PHP-only.
+      
+      other_llms: |
+        You are developing Isotone, a PHP 8.3 project.
+        Key facts:
+        - Uses RedBeanPHP for database
+        - No Node.js allowed
+        - Must work on shared hosting
+        - Follow PSR-12 standards
+        
+        Task: [Your specific task]
+    
+    templates:
+      feature_development: |
+        Feature: [Name]
+        User Story: As a [role], I want [feature] so that [benefit]
+        
+        Technical Requirements:
+        - PHP 8.3 compatible
+        - Use RedBeanPHP for data
+        - Follow existing patterns in app/Core/
+        - Add routes to Application.php
+        - Include error handling
+        
+        Deliverables:
+        1. Model classes
+        2. Controller methods
+        3. Routes
+        4. Basic UI (if needed)
+        5. Documentation updates
+      
+      bug_fix: |
+        Bug Report: [Title]
+        Environment: Isotone on XAMPP/Windows
+        
+        Steps to Reproduce:
+        1. [Step 1]
+        2. [Step 2]
+        
+        Expected: [What should happen]
+        Actual: [What happens]
+        
+        Please fix this bug and:
+        - Explain the root cause
+        - Implement the fix
+        - Add validation to prevent recurrence
+        - Test on XAMPP
+      
+      code_review: |
+        Review this Isotone code for:
+        - Security vulnerabilities
+        - Performance issues
+        - PSR-12 compliance
+        - Shared hosting compatibility
+        
+        [Paste code here]
+        
+        Provide specific suggestions with code examples.
+    
+    common_pitfalls:
+      avoid_vague:
+        bad: "Make it better"
+        good: "Optimize database queries by implementing eager loading"
+      
+      avoid_assumptions:
+        bad: "Add the usual security"
+        good: "Add CSRF protection, XSS prevention, and SQL injection prevention"
+      
+      avoid_conflicts:
+        bad: "Make it simple but add all enterprise features"
+        good: "Create a minimal viable solution that can be extended later"
+    
+    debugging_prompts: |
+      The code you provided for [feature] has this error:
+      [Error message]
+      
+      File: [filename]
+      Line: [line number]
+      
+      Please:
+      1. Identify the issue
+      2. Provide the corrected code
+      3. Explain what was wrong
+      4. Ensure it works with PHP 8.3 and RedBeanPHP
+    
+    effectiveness_metrics:
+      good_results:
+        - "Working code on first try"
+        - "Follows Isotone patterns"
+        - "No Node.js dependencies"
+        - "Proper error handling"
+        - "Security considered"
+        - "Documentation included"
+      
+      poor_results:
+        - "Multiple iterations needed"
+        - "Uses wrong frameworks"
+        - "Includes npm/webpack"
+        - "Missing error handling"
+        - "Security vulnerabilities"
+        - "No documentation"
+    
+    magic_keywords:
+      - "RedBeanPHP"
+      - "PSR-12"
+      - "shared hosting"
+      - "XAMPP compatible"
+      - "no Node.js"
+      - "WordPress-like hooks"
+      - "PHP 8.3"
+      - "iso_ prefix for hooks"
+    
+    context_setters:
+      - "In Isotone..."
+      - "Following Isotone's patterns..."
+      - "Using RedBeanPHP..."
+      - "For shared hosting..."
+    
+    quality_markers:
+      - "Follow PSR-12 standards"
+      - "Include error handling"
+      - "Add PHPDoc comments"
+      - "Ensure XAMPP compatibility"
+      - "Maintain backward compatibility"
