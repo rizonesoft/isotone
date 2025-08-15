@@ -225,20 +225,9 @@ ob_start();
         </div>
 </div>
 
-<!-- Notification Toast -->
-<div id="toast" class="hidden fixed bottom-4 right-4 bg-gray-800 border border-gray-700 rounded-lg p-4 shadow-lg">
-    <div class="flex items-center">
-        <div id="toast-icon" class="mr-3"></div>
-        <div>
-            <p id="toast-title" class="text-white font-semibold"></p>
-            <p id="toast-message" class="text-gray-400 text-sm"></p>
-        </div>
-    </div>
-</div>
-
 <script>
 function executeTask(task) {
-    showToast('info', 'Executing', `Running ${task}...`);
+    showToast(`Running ${task}...`, 'info');
     
     fetch('automation-ajax.php?action=execute', {
         method: 'POST',
@@ -255,11 +244,12 @@ function executeTask(task) {
     })
     .then(data => {
         if (data.success) {
-            showToast('success', 'Success', `Task ${task} completed successfully`);
-            setTimeout(refreshStatus, 1000);
+            showToast(`Task ${task} completed successfully`, 'success');
+            // TODO: Update UI with AJAX instead of refreshing
+            // setTimeout(refreshStatus, 1000);
         } else {
             const errorMsg = data.error || `Task ${task} failed`;
-            showToast('error', 'Failed', errorMsg);
+            showToast(errorMsg, 'error');
             if (data.output) {
                 console.error('Task output:', data.output);
             }
@@ -267,7 +257,7 @@ function executeTask(task) {
     })
     .catch(error => {
         console.error('Error:', error);
-        showToast('error', 'Error', 'Failed to execute task. Check console for details.');
+        showToast('Failed to execute task. Check console for details.', 'error');
     });
 }
 
@@ -281,41 +271,17 @@ function clearCache() {
     })
     .then(response => response.json())
     .then(data => {
-        showToast('success', 'Cache Cleared', 'All caches have been cleared');
-        setTimeout(refreshStatus, 1000);
+        showToast('All caches have been cleared', 'success');
+        // TODO: Update cache stats with AJAX instead of refreshing
+        // setTimeout(refreshStatus, 1000);
     })
     .catch(error => {
-        showToast('error', 'Error', error.message);
+        showToast(error.message, 'error');
     });
 }
 
 function refreshStatus() {
     location.reload();
-}
-
-function showToast(type, title, message) {
-    const toast = document.getElementById('toast');
-    const icon = document.getElementById('toast-icon');
-    const titleEl = document.getElementById('toast-title');
-    const messageEl = document.getElementById('toast-message');
-    
-    // Set icon based on type
-    if (type === 'success') {
-        icon.innerHTML = '<svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
-    } else if (type === 'error') {
-        icon.innerHTML = '<svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
-    } else {
-        icon.innerHTML = '<svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
-    }
-    
-    titleEl.textContent = title;
-    messageEl.textContent = message;
-    
-    toast.classList.remove('hidden');
-    
-    setTimeout(() => {
-        toast.classList.add('hidden');
-    }, 5000);
 }
 
 // Auto-refresh every 30 seconds
