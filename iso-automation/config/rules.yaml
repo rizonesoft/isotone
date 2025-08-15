@@ -241,34 +241,42 @@ llm_instructions:
     priority: 80
     enabled: true
     context: ["development"]
-    description: "Auto-commit on satisfaction triggers"
-    strong_satisfaction_triggers:
-      - "perfect"
-      - "that's perfect"
-      - "perfect thanks"
-      - "excellent"
-      - "excellent work"
-      - "that's exactly what I wanted"
-      - "great work"
-      - "great job"
-      - "this looks good"
-      - "looks good"
-      - "ship it"
-      - "ready to ship"
-      - "ready to commit"
-      - "commit this"
-      - "let's push this"
-      - "push it"
-      - "happy with this"
-      - "happy with that"
-      - "working perfectly"
-      - "fantastic implementation"
-      - "well done"
-      - "good job"
-      - "awesome"
-      - "amazing"
-      - "love it"
-      - "i love this"
+    description: "Git commit rules - ask first unless explicit satisfaction"
+    
+    commit_permission_rules:
+      default_behavior: "ASK_FIRST"
+      message: "Ready to commit these changes. May I proceed with: git add -A && git commit -m '...' ?"
+      
+      auto_commit_allowed_when:
+        description: "Only auto-commit WITHOUT asking on these EXPLICIT satisfaction signals"
+        triggers:
+          - "perfect"
+          - "that's perfect"
+          - "perfect thanks"
+          - "excellent"
+          - "excellent work"
+          - "ship it"
+          - "commit this"
+          - "push it"
+          - "go ahead and commit"
+          - "yes commit"
+          - "yes push"
+    
+    ask_before_commit_on:
+      description: "Ask for permission before committing on these signals"
+      triggers:
+        - "looks good"
+        - "this looks good"
+        - "happy with this"
+        - "happy with that"
+        - "working perfectly"
+        - "well done"
+        - "good job"
+        - "awesome"
+        - "amazing"
+        - "that's exactly what I wanted"
+        - "great work"
+        - "great job"
     completion_signals:
       - "feature is complete"
       - "implementation finished"
@@ -284,30 +292,49 @@ llm_instructions:
       - "that's an improvement"
       - "getting closer"
     do_not_commit_on:
-      - "can you fix"
-      - "this doesn't work"
-      - "try again"
-      - "almost there"
-      - "bug"
-      - "error"
-      - "issue"
-      - "problem"
+      description: "NEVER commit on these signals"
+      triggers:
+        - "can you fix"
+        - "this doesn't work"
+        - "try again"
+        - "almost there"
+        - "bug"
+        - "error"
+        - "issue"
+        - "problem"
+        - "let me check"
+        - "hold on"
+        - "not yet"
+        - "wait"
+        - "let me review"
+        - "needs more work"
+        - "not quite"
+        - "ask me before committing"
+        - "don't commit yet"
+    
     workflow:
-      - "Detect satisfaction signal in user message"
-      - "Verify work is complete (not WIP)"
-      - "Generate semantic commit message"
-      - "Execute: git add -A"
-      - "Execute: git commit -m 'type: description'"
-      - "Execute: git push"
-      - "Inform user of commit and push"
-    commit_response_template: |
-      Excellent! I've committed and pushed your changes:
+      step1_evaluate: |
+        When changes are complete, evaluate user's message:
+        - Contains explicit satisfaction trigger? → Auto-commit
+        - Contains moderate satisfaction? → Ask permission
+        - Contains negative signal? → Don't commit
+        - Default behavior? → Ask permission
       
-      📝 Commit: {commit_type}: {description}
-      🚀 Pushed to: origin/main
-      📊 Files changed: {file_count} files, {insertions} insertions
+      step2_ask_permission: |
+        Format: "Ready to commit these changes:
+        [Brief description of changes]
+        
+        May I proceed with: git add -A && git commit -m '...' && git push?"
       
-      Your implementation is now live in the repository!
+      step3_wait_for_response: |
+        User says "yes", "go ahead", "commit" → Proceed
+        User says "no", "wait", "not yet" → Don't commit
+        User provides feedback → Make changes first
+    
+    implementation_note: |
+      CRITICAL: The default is now ASK FIRST.
+      Only auto-commit on the most explicit satisfaction signals.
+      This gives users control while still allowing automation.
 
   configuration:
     priority: 75
