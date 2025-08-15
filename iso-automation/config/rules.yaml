@@ -53,16 +53,103 @@ llm_instructions:
   version_management:
     priority: 85
     enabled: true
-    context: ["version", "release"]
-    description: "Version bump process"
-    workflow:
-      - "php isotone version:bump [patch|minor|major] alpha"
-      - "php isotone changelog"
-      - "composer docs:all"
+    context: ["version", "release", "bump", "ship"]
+    description: "Comprehensive version management system"
+    intent_mapping:
+      bug_fixes:
+        triggers: ["fix that bug", "fixed the", "bug fix", "patch"]
+        action: "php isotone version:bump patch"
+        type: "patch"
+      new_features:
+        triggers: ["added", "new feature", "implemented", "created"]
+        action: "php isotone version:bump minor"
+        type: "minor"
+      breaking_changes:
+        triggers: ["breaking change", "api changed", "major update", "incompatible"]
+        action: "php isotone version:bump major"
+        type: "major"
+      beta_release:
+        triggers: ["ready for beta", "beta testing", "go to beta"]
+        action: "php isotone version:bump minor beta"
+        type: "minor"
+        stage: "beta"
+      production_release:
+        triggers: ["ship it", "release 1.0", "production", "go live"]
+        action: "php isotone version:bump major stable"
+        type: "major"
+        stage: "stable"
+    stage_progression:
+      alpha:
+        next: "beta"
+        when: "Core features complete"
+      beta:
+        next: "rc"
+        when: "Testing mostly done"
+      rc:
+        next: "stable"
+        when: "Ready for production"
+      stable:
+        next: "alpha"
+        when: "Starting next major version"
+    codenames:
+      suggested_progression:
+        - "v0.x: Genesis (beginning)"
+        - "v1.0: Phoenix (rebirth/launch)"
+        - "v2.0: Aurora (dawn/light)"
+        - "v3.0: Titan (strength)"
+        - "v4.0: Nebula (expansion)"
+        - "v5.0: Olympus (peak)"
+        - "v6.0: Cosmos (universe)"
+        - "v7.0: Chronos (time)"
+        - "v8.0: Atlas (support)"
+        - "v9.0: Helios (sun)"
+        - "v10.0: Zenith (pinnacle)"
+    mandatory_workflow:
+      - step: "Determine version type (patch/minor/major)"
+        command: "Analyze changes to determine type"
+      - step: "Execute version bump"
+        command: "php isotone version:bump [type] [stage] [codename]"
+      - step: "Generate changelog (MANDATORY)"
+        command: "php isotone changelog"
+      - step: "Update all documentation (MANDATORY)"
+        command: "composer docs:all"
+      - step: "Verify everything updated"
+        commands:
+          - "cat config/version.json | head -5"
+          - "cat CHANGELOG.md | head -30"
+          - "echo '✅ Version bump complete!'"
+    decision_tree: |
+      User mentions version?
+      ├─ Specific version? → Use version:set
+      ├─ What changed?
+      │  ├─ Bug fix → version:bump patch
+      │  ├─ New feature → version:bump minor
+      │  ├─ Breaking change → version:bump major
+      │  └─ Unclear → Ask user
+      ├─ Stage mentioned?
+      │  ├─ beta → Add beta stage
+      │  ├─ RC → Add rc stage
+      │  ├─ release → stable (no stage)
+      │  └─ No → Keep current stage
+      └─ Major version? → Suggest new codename
+    ui_updates:
+      automatic: true
+      description: "UI automatically pulls from config/version.json"
+      locations:
+        - "Landing page: Version::format()"
+        - "API: /api/version endpoint"
+        - "CLI: php isotone version"
+        - "Badge: Version::getBadge()"
     rules:
       - "NEVER bump version without running ALL steps"
-      - "Always update changelog"
-      - "Always regenerate documentation"
+      - "NEVER skip changelog generation (step 3)"
+      - "NEVER skip documentation update (step 4)"
+      - "Always follow SemVer: Major.Minor.Patch"
+      - "Stage progression: alpha → beta → rc → stable"
+      - "Version.json is single source of truth"
+      - "UI updates automatically - no code changes needed"
+      - "Don't manually edit version strings in code"
+      - "Don't skip version numbers"
 
   auto_commit:
     priority: 80
@@ -428,6 +515,54 @@ satisfaction_detection:
       - case: "Waiting for explicit commit command"
         lesson: "Don't wait when satisfaction is clear"
         action: "Auto-commit on clear satisfaction"
+
+version_examples:
+  ai_responses:
+    priority: 50
+    enabled: true
+    description: "Example AI responses for version management"
+    examples:
+      beta_ready:
+        user_says: "We're ready for beta"
+        ai_response: |
+          I'll update the version to beta stage:
+          
+          php isotone version:bump minor beta
+          php isotone changelog
+          composer docs:all
+          
+          This updates from 0.1.0-alpha to 0.2.0-beta.
+      ship_v1:
+        user_says: "Ship version 1.0!"
+        ai_response: |
+          Excellent! Let's release version 1.0:
+          
+          php isotone version:bump major stable "Phoenix"
+          php isotone changelog
+          composer docs:all
+          
+          This creates version 1.0.0 with codename "Phoenix".
+          The landing page and API will automatically show the new version.
+      bug_fix:
+        user_says: "Fixed the login bug"
+        ai_response: |
+          I'll bump the patch version for this bug fix:
+          
+          php isotone version:bump patch
+          php isotone changelog
+          composer docs:all
+          
+          This updates to 0.1.1-alpha.
+      new_feature:
+        user_says: "We added user authentication"
+        ai_response: |
+          I'll bump the minor version for this new feature:
+          
+          php isotone version:bump minor
+          php isotone changelog
+          composer docs:all
+          
+          This updates the minor version for the new authentication feature.
 
 workflows:
   add_feature:
