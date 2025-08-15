@@ -754,6 +754,122 @@ documentation:
       notes:
         path: "NOTES.md"
         purpose: "User notes and reminders"
+  
+  maintenance_system:
+    priority: 85
+    enabled: true
+    description: "Documentation maintenance system and workflows"
+    critical_documents:
+      core_files:
+        - "README.md - Features, status changes, installation"
+        - "CLAUDE.md - New patterns, file changes, rules"
+        - "composer.json - Dependency changes, commands"
+        - "config.sample.php - New configuration constants"
+      development_guides:
+        - "docs/GETTING-STARTED.md - New features, API changes"
+        - "docs/LLM-DEVELOPMENT-GUIDE.md - New patterns, rules for AI"
+        - "docs/AI-CODING-STANDARDS.md - Style changes, new standards"
+      ide_rules:
+        - ".windsurf-rules.md - IDE rule changes (auto-synced)"
+        - ".cursorrules - IDE rule changes (auto-generated)"
+        - ".github/copilot-instructions.md - IDE rule changes (auto-generated)"
+    
+    dddd_process:
+      description: "Document-Driven Development & Deployment"
+      pre_code:
+        - "Update relevant .md files with planned changes"
+        - "Add '🚧 Under Development' badge to features"
+        - "Document expected behavior"
+        - "Create/update examples"
+      during_development:
+        - "Update inline PHPDoc comments"
+        - "Keep CLAUDE.md current with new files/patterns"
+        - "Update config.sample.php with new constants"
+        - "Add to CHANGELOG.md (unreleased section)"
+      post_code:
+        - "Remove '🚧' badges, add '✅'"
+        - "Update all examples to match implementation"
+        - "Verify all referenced files exist"
+        - "Check all code snippets actually work"
+    
+    update_checklist:
+      new_file_added:
+        - "Update CLAUDE.md file list"
+        - "Update project structure in README.md"
+        - "Update GETTING-STARTED.md if user-facing"
+        - "Add to LLM-DEVELOPMENT-GUIDE.md if it's a pattern"
+      new_route_added:
+        - "Document in GETTING-STARTED.md"
+        - "Update API documentation"
+        - "Add example to CLAUDE.md"
+      new_config_added:
+        - "Add to config.sample.php with comment"
+        - "Document in CONFIGURATION guide"
+        - "Update installation instructions"
+      new_dependency_added:
+        - "Update installation requirements"
+        - "Document why it was added"
+        - "Update minimum PHP version if needed"
+      new_database_table:
+        - "Update tech-stack.md schema section"
+        - "Document in model docs"
+        - "Update LLM guide with RedBean pattern"
+      api_change:
+        - "Update all code examples"
+        - "Mark old docs as deprecated"
+        - "Provide migration guide"
+    
+    ide_synchronization:
+      source_of_truth: ".windsurf-rules.md"
+      sync_command: "composer ide:sync"
+      check_command: "composer docs:check"
+      supported_ides:
+        - "Windsurf: .windsurf/rules/development-guide.md"
+        - "Cursor: .cursorrules (auto-generated)"
+        - "GitHub Copilot: .github/copilot-instructions.md"
+        - "VS Code: .vscode/settings.json (manual)"
+    
+    golden_rules:
+      - "No Code Without Docs - Document interface before implementing"
+      - "No PR Without Doc Updates - Every PR must update relevant docs"
+      - "No Release Without Doc Review - Full documentation audit before release"
+      - "No Breaking Changes Without Migration Guide - Always provide upgrade path"
+    
+    llm_prompt_addition: |
+      After implementing this feature:
+      1. Update README.md if feature is user-visible
+      2. Update CLAUDE.md with new patterns/files
+      3. Update GETTING-STARTED.md with examples
+      4. Update config.sample.php with new configuration
+      5. Run: composer docs:check
+    
+    weekly_tasks:
+      monday_review:
+        - "Run composer docs:check"
+        - "Review all TODO/FIXME markers"
+        - "Update README.md feature status"
+        - "Check for stale documentation (>30 days)"
+        - "Verify all examples still work"
+        - "Update CHANGELOG.md"
+      release_checklist:
+        - "Full documentation audit"
+        - "Update version numbers everywhere"
+        - "Generate API documentation"
+        - "Update installation guides"
+        - "Create migration guide if needed"
+    
+    emergency_fixes:
+      immediate: "Add warning badge: ⚠️ Documentation Under Review"
+      within_24_hours: "Fix or remove incorrect information"
+      within_48_hours: "Full audit of related documentation"
+    
+    success_metrics:
+      - "Zero errors from docs:check"
+      - "All examples run without errors"
+      - "No docs older than 60 days without review"
+      - "Every public API is documented"
+      - "Every configuration constant is documented"
+      - "No TODO/FIXME in released versions"
 
 git_standards:
   commit_messages:
