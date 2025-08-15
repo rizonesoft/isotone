@@ -226,14 +226,87 @@ llm_instructions:
   configuration:
     priority: 75
     enabled: true
-    context: ["setup", "configuration"]
-    description: "Configuration system rules"
-    rules:
-      - "NO .env files - use config.php"
-      - "Configuration location: /config.php"
-      - "Template: /config.sample.php"
-      - "NEVER use Dotenv package"
+    context: ["setup", "configuration", "install"]
+    description: "Configuration system rules and setup"
+    setup_workflow:
+      - "Copy config.sample.php to config.php"
+      - "Edit database credentials"
+      - "Set security keys (generate from WordPress salt generator)"
+      - "Configure environment (development/staging/production)"
+      - "Set file permissions (chmod 600 config.php)"
+    required_settings:
+      database:
+        DB_HOST: "Database hostname (usually localhost)"
+        DB_NAME: "Database name"
+        DB_USER: "Database username"
+        DB_PASSWORD: "Database password"
+        DB_PORT: "Database port (default: 3306)"
+        DB_CHARSET: "Character set (default: utf8mb4)"
+        DB_COLLATE: "Collation (default: utf8mb4_unicode_ci)"
+        DB_PREFIX: "Table prefix (default: iso_)"
+      application:
+        SITE_URL: "Site URL (leave empty for auto-detection)"
+        ADMIN_EMAIL: "Administrator email"
+        TIMEZONE: "Default timezone (e.g., UTC)"
+        LANGUAGE: "Default language code (e.g., en)"
+      security:
+        AUTH_KEY: "Authentication key for cookies"
+        SECURE_AUTH_KEY: "Secure authentication key"
+        LOGGED_IN_KEY: "Key for logged-in cookies"
+        NONCE_KEY: "Nonce generation key"
+        AUTH_SALT: "Authentication salt"
+        SECURE_AUTH_SALT: "Secure authentication salt"
+        LOGGED_IN_SALT: "Logged-in cookie salt"
+        NONCE_SALT: "Nonce salt"
+      developer:
+        DEBUG_MODE: "Enable debug mode (true/false)"
+        DEBUG_QUERIES: "Log database queries (true/false)"
+        DISPLAY_ERRORS: "Show PHP errors (true/false)"
+        ERROR_LEVEL: "PHP error reporting level"
+        MAINTENANCE_MODE: "Enable maintenance mode (true/false)"
+        ENVIRONMENT: "Current environment (development/staging/production)"
+    environment_configs:
+      development:
+        DEBUG_MODE: true
+        DISPLAY_ERRORS: true
+        ERROR_LEVEL: "E_ALL"
+      staging:
+        DEBUG_MODE: true
+        DISPLAY_ERRORS: false
+        ERROR_LEVEL: "E_ALL & ~E_NOTICE"
+      production:
+        DEBUG_MODE: false
+        DISPLAY_ERRORS: false
+        ERROR_LEVEL: "E_ERROR | E_WARNING"
+    security_practices:
+      - "Set config.php permissions to 600 (owner read/write only)"
+      - "Never commit config.php to version control"
+      - "Keep secure backup of config.php"
+      - "Use unique security keys (generate from WordPress)"
+      - "For WSL: use 127.0.0.1 instead of localhost"
+    troubleshooting:
+      database_connection:
+        - "Verify credentials in config.php"
+        - "Ensure database exists"
+        - "Check user permissions"
+        - "WSL users: use 127.0.0.1 not localhost"
+      config_not_loading:
+        - "Ensure config.php exists in root"
+        - "Check syntax: php -l config.php"
+        - "Verify file permissions"
+      missing_config:
+        - "Run: cp config.sample.php config.php"
+        - "Or use installation wizard"
+    critical_rules:
+      - "NEVER create or reference .env files"
       - "NEVER suggest environment variables"
+      - "ALWAYS use config.php for all settings"
+      - "ALWAYS access via PHP constants (DB_NAME not $_ENV)"
+      - "NEVER commit config.php to version control"
+      - "NO Dotenv package usage"
+    helper_functions:
+      deprecated: "env() function exists but deprecated"
+      preferred: "Use defined('CONSTANT') ? CONSTANT : 'default'"
 
   project_constraints:
     priority: 70
