@@ -3618,3 +3618,114 @@ validation:
       - "Automated release notes generation"
       - "Version rollback capability"
       - "Update notifications in admin panel"
+
+  notes_system:
+    priority: 95
+    enabled: true
+    description: "User notes and reminders system"
+    file: "NOTES.md"
+    instructions:
+      - "When user says 'save a note' or 'remember this', add to NOTES.md"
+      - "Organize notes under appropriate sections"
+      - "Update 'Last updated' date when adding notes"
+      - "File is tracked in git by default"
+    structure:
+      - "Development notes"
+      - "Todo items"
+      - "Ideas for features"
+      - "Bug reports to investigate"
+      - "Architecture decisions"
+      
+  llm_task_reference:
+    priority: 90
+    enabled: true
+    description: "Quick reference for common LLM tasks"
+    
+    before_starting:
+      - "Read CLAUDE.md completely"
+      - "Check automation system for relevant rules"
+      - "Review existing code patterns in app/Core/"
+      - "Verify changes work with XAMPP"
+      - "Run composer docs:check to ensure docs are current"
+    
+    common_tasks:
+      add_route:
+        - "Edit app/Core/Application.php::initializeRoutes()"
+        - "Add handler method in same class"
+        - "Return Response object with HTML"
+      
+      create_model:
+        - "Add to app/Models/"
+        - "Extend \\RedBeanPHP\\SimpleModel"
+        - "Name as Model_[tablename]"
+      
+      add_plugin:
+        - "Create in iso-content/plugins/[plugin-name]/"
+        - "Use WordPress-style hooks with iso_ prefix"
+        - "No npm/build required"
+      
+      add_theme:
+        - "Create in iso-content/themes/[theme-name]/"
+        - "Include style.css with theme header"
+        - "Use template hierarchy system"
+        - "No npm/build required"
+      
+      work_with_hooks:
+        - "Use add_action() and add_filter()"
+        - "Use iso_ prefix for WordPress equivalents"
+        - "See HOOKS.md for complete reference"
+    
+    never_do:
+      - "Run npm install or any npm command"
+      - "Create database migrations"
+      - "Use Laravel/Symfony full framework patterns"
+      - "Add complex build processes"
+      - "Assume root URL (use /isotone/ path)"
+      - "Commit config.php to git"
+      - "Modify vendor/ directory"
+      - "Create or reference .env files"
+    
+    always_do:
+      - "Follow PSR-12 coding standards"
+      - "Add PHPDoc comments"
+      - "Escape HTML output for security"
+      - "Use RedBeanPHP for all database operations"
+      - "Test on /isotone/ URL path"
+      - "Keep shared hosting compatible"
+      - "Use config.php for all configuration"
+      - "Update documentation when changing code"
+      - "Run composer docs:check before completing"
+      
+  ide_integration:
+    priority: 75
+    enabled: true
+    description: "IDE-specific configuration files"
+    
+    files:
+      windsurf: ".windsurf-rules.md"
+      cursor: ".cursorrules"
+      copilot: ".github/copilot-instructions.md"
+      claude: "CLAUDE.md"
+    
+    purpose: "Provide IDE-specific guidance and rules"
+    note: "CLAUDE.md is the master instruction file for all LLMs"
+    
+  git_workflow:
+    priority: 85
+    enabled: true
+    description: "Git hooks and workflow automation"
+    
+    hooks:
+      pre_commit: "Runs docs:check only"
+      pre_push: "Runs docs:update for version changes"
+    
+    manual_commands:
+      full_update: "composer docs:all"
+      check_docs: "composer docs:check"
+      update_docs: "composer docs:update"
+    
+    commit_best_practices:
+      - "Use conventional commit messages"
+      - "Reference issue numbers when applicable"
+      - "Keep commits atomic and focused"
+      - "Write clear commit descriptions"

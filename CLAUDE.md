@@ -1,485 +1,265 @@
-# CLAUDE.md
+# CLAUDE.md - LLM Master Instruction File
 
-This file provides guidance to Claude Code (claude.ai/code) and other LLMs when working with code in this repository.
+This file provides instructions to Claude Code (claude.ai/code) and other LLMs on how to use the **Isotone Automation System** for all rules, guidelines, and development practices.
 
-## 🚨 CRITICAL BRANDING RULE - NEVER FORGET!
+## 🚨 CRITICAL: Use the Automation System for ALL Rules
 
-**ISOTONE IS THE PRODUCT NAME - NOT "ISOTONE CMS"**
-- ✅ ALWAYS write: "Isotone" 
-- ❌ NEVER write: "Isotone CMS"
-- The rebrand happened in v0.1.5-alpha - we are just "Isotone" now
-- This applies to ALL documentation, code comments, UI text, and communications
-- **VIOLATION**: Using "Isotone CMS" instead of "Isotone" is a critical error
+**DO NOT DUPLICATE RULES HERE** - All rules are managed in the Isotone Automation System at `/iso-automation/config/rules.yaml`
 
-## ⚠️ CRITICAL: This is an LLM-Driven Project
+## 📋 How to Access Rules
 
-**Isotone is primarily developed by AI assistants. Read the LLM-specific guides FIRST:**
-- 📖 [`docs/LLM-DEVELOPMENT-GUIDE.md`](docs/LLM-DEVELOPMENT-GUIDE.md) - Essential rules for LLM developers
-- 📏 [`docs/AI-CODING-STANDARDS.md`](docs/AI-CODING-STANDARDS.md) - Coding standards for AI
-- 💬 [`docs/PROMPT-ENGINEERING-GUIDE.md`](docs/PROMPT-ENGINEERING-GUIDE.md) - How to write prompts for this project
-- 🔧 [`docs/LLM-CONFIG-RULES.md`](docs/LLM-CONFIG-RULES.md) - **CRITICAL: Config.php rules (NO .env files!)**
-
-## 🔍 SEARCH BEFORE CREATING - MANDATORY
-
-**CRITICAL**: Before creating ANY new code, styles, or files, you MUST:
-
-1. **SEARCH for existing implementations**:
-   - Use `Grep` to search for similar functionality
-   - Use `Glob` to find related files
-   - Check `/iso-includes/css/` for existing styles
-   - Review similar pages/components that might have reusable code
-
-2. **REUSE over CREATE**:
-   - Found a similar class/function? Extend or modify it
-   - Found similar CSS? Use existing classes
-   - Found a pattern? Follow it consistently
-
-3. **NEVER duplicate**:
-   - Don't create new CSS if it exists in modular files
-   - Don't write new functions if similar ones exist
-   - Don't create new files if existing ones can be extended
-
-**VIOLATION**: Creating duplicate code without searching first is a critical error
-
-## 🗄️ DATABASE OPERATIONS - USE REDBEAN ONLY
-
-**MANDATORY**: ALL database operations MUST use RedBeanPHP. NEVER use PDO, mysqli, or raw SQL directly.
-
-### ✅ ALWAYS Use RedBeanPHP:
-```php
-// CORRECT - Using RedBeanPHP
-use RedBeanPHP\R;
-$user = R::findOne('isotoneuser', 'username = ?', [$username]);
-$post = R::dispense('post');
-R::store($post);
-```
-
-### ❌ NEVER Use Direct Database Access:
-```php
-// WRONG - Direct PDO
-$pdo = new PDO(...);
-$stmt = $pdo->prepare("SELECT * FROM users");
-
-// WRONG - Direct MySQL
-$conn = new mysqli(...);
-$result = $conn->query("SELECT * FROM users");
-
-// WRONG - Creating custom database classes
-class Database { ... }
-```
-
-### RedBeanPHP Naming Rules:
-1. **Table names**: Lowercase, NO underscores (✅ `isotoneuser` ❌ `isotone_user`)
-2. **Column names**: Can use underscores (✅ `created_at`, `last_login`)
-3. **Foreign keys**: Use `tablename_id` pattern
-4. **Link tables**: RedBean creates these automatically for many-to-many
-
-### Why RedBeanPHP:
-- Zero configuration ORM
-- Automatic schema evolution
-- No migrations needed
-- Perfect for shared hosting
-- Consistent with project architecture
-
-**VIOLATION**: Using any database method other than RedBeanPHP is a critical error
-
-## 📝 NOTES & REMINDERS
-
-**The user has a `NOTES.md` file for saving notes, reminders, and ideas.**
-- When asked to "save a note" or "remember this", add it to NOTES.md
-- Organize notes under the appropriate section
-- Update the "Last updated" date when adding notes
-- The file is tracked in git by default (can be ignored if needed)
-
-## ⚠️ VERSION BUMP PROCESS - MANDATORY
-**CRITICAL**: When user asks to "bump version" or "update version", you MUST:
-1. **Bump the version**: `php isotone version:bump [patch|minor|major] alpha`
-2. **Generate changelog**: `php isotone changelog`
-3. **Update all docs**: `composer docs:all`
-4. **Report completion**: Show the new version number and changes
-
-**NEVER** bump version without running ALL these steps!
-
-## ⚠️ AUTO-COMMIT ON SATISFACTION
-**CRITICAL**: When user says "perfect", "thanks", "good", "excellent", "happy with" - IMMEDIATELY:
-1. Run: `git add -A && git commit -m "description" && git push`
-2. Don't wait for explicit commit command
-3. Common phrases: "That's perfect thanks", "Looks good", "Happy with that"
-4. See `docs/AI-SATISFACTION-TRIGGERS.md` for full list
-
-## Project Overview
-
-Isotone is a lightweight PHP content management system in early development. It features a WordPress-like plugin system, RedBeanPHP ORM, and is designed for shared hosting compatibility.
-
-### Key Constraints for LLMs
-- **NO Node.js/npm** - Pure PHP project
-- **NO build steps** - Direct file editing only  
-- **NO migrations** - RedBeanPHP handles schema
-- **XAMPP/shared hosting** - Must work on basic hosting
-- **PSR-12 standards** - Follow PHP-FIG standards
-- **Security first** - Use .htaccess to protect sensitive files/directories
-- **Hook Naming** - Use `iso_` prefix for WordPress-equivalent hooks (e.g., `iso_head` not `wp_head`)
-
-## Current Project State
-
-**Early Development Phase** - Core foundation implemented:
-- ✅ Basic routing system with Symfony components
-- ✅ Configuration system using `config.php` (WordPress-style)
-- ✅ PSR-4 autoloading and project structure
-- ✅ Composer dependencies installed
-- ✅ Modern UI design system (dark theme with glassmorphism)
-- ✅ Database layer (RedBeanPHP) - connected and initialized
-- ✅ Installation wizard for initial setup
-- 🚧 Plugin system - in progress
-- 🚧 Admin panel - in progress
-
-### Database Notes
-- Tables: `isotonesetting`, `isotoneuser`, `isotonecontent`
-- Settings columns: `setting_key`, `setting_value`, `setting_type` (avoid MySQL reserved words)
-- User columns: `username`, `email`, `password`, `role`, `status`, `created_at`, `updated_at`
-
-### Design System - CRITICAL SEPARATION
-
-#### 🎨 STYLING ARCHITECTURE - NEVER CONFUSE THESE:
-
-1. **ADMIN PAGES** (`/iso-admin/*`):
-   - **Framework**: Tailwind CSS via CDN
-   - **Style**: Clean, modern, utility-first
-   - **Colors**: Gray-900 background, cyan/green accents
-   - **DO**: Use Tailwind classes (bg-gray-900, text-cyan-400, etc.)
-   - **DON'T**: Use glassmorphism or custom CSS
-
-2. **AUTHENTICATION & FRONTEND** (login, install, public):
-   - **Framework**: Custom modular CSS (`/iso-includes/css/`)
-   - **Style**: Glassmorphism with backdrop-filter effects
-   - **Classes**: `iso-` prefixed (iso-container, iso-btn, iso-title)
-   - **DO**: Use existing modular CSS, search before creating
-   - **DON'T**: Use Tailwind classes or create duplicate CSS
-
-3. **CRITICAL RULES**:
-   - **NEVER** mix Tailwind and custom CSS systems
-   - **NEVER** duplicate existing CSS functionality
-   - **ALWAYS** check which context you're in (admin vs frontend)
-   - **ALWAYS** search `/iso-includes/css/` before creating styles
-   - **ALWAYS** use the appropriate system for the context
-
-- **Theme**: Modern dark with electric cyan (#00D9FF) and neon green (#00FF88) accents
-- **Typography**: Inter font with refined letter spacing (0.01em - 0.08em)
-- **Effects**: Static gradients, glassmorphism, subtle animations
-- **Logo**: Custom SVG with gradient effects
-- **Config**: See `config/theme.php` for color palette and design tokens
-
-### 🎨 CSS Architecture - CRITICAL RULES
-
-#### 🚫 NO INLINE CSS POLICY
-**IMPORTANT**: Isotone maintains a strict **NO INLINE CSS** policy. As an LLM/IDE, you MUST:
-
-1. **ALWAYS** search for existing styles in `/iso-includes/css/` before creating new styles
-2. **CHECK** the modular CSS files in this order:
-   - `base.css` - Variables, typography, resets
-   - `layout.css` - Containers, grids, structural elements  
-   - `components.css` - Buttons, forms, badges, UI components
-   - `effects.css` - Animations, glassmorphism, transitions
-3. **EVALUATE** if a new style can be made modular/reusable before creating it
-4. **USE** existing classes with `iso-` prefix (e.g., `iso-container`, `iso-btn`, `iso-title`)
-5. **ONLY** use inline styles for truly page-specific, one-off requirements
-6. **PREFER** creating new classes in the appropriate CSS module over inline styles
-
-#### CSS File Structure
-```
-iso-includes/css/
-├── isotone.css      # Main import file - include this in pages
-├── base.css         # CSS variables, fonts, resets
-├── layout.css       # Page structure, containers, grids
-├── components.css   # Reusable UI components
-└── effects.css      # Animations and visual effects
-```
-
-#### Example Usage
-```html
-<!-- GOOD: Using modular CSS classes -->
-<div class="iso-container iso-glass">
-    <h1 class="iso-title">Welcome</h1>
-    <button class="iso-btn iso-btn-arrow">Continue</button>
-</div>
-
-<!-- BAD: Inline styles (avoid!) -->
-<div style="background: rgba(255,255,255,0.1); padding: 2rem;">
-    <h1 style="color: #00D9FF;">Welcome</h1>
-</div>
-```
-
-### Configuration System - CRITICAL FOR LLMs
-
-#### 🔧 NO .ENV FILES - USE config.php
-**IMPORTANT**: Isotone uses a traditional `config.php` file, NOT .env files.
-
-1. **Configuration location**: `/config.php` in root directory
-2. **Template file**: `/config.sample.php` (tracked in git)
-3. **Actual config**: `/config.php` (ignored by git, contains credentials)
-
-#### When setting up Isotone:
+### 1. **Before ANY Task - Check Relevant Rules**
 ```bash
-cp config.sample.php config.php
-# Then edit config.php with database credentials
+# View all rules in the system
+cat /iso-automation/config/rules.yaml
+
+# Search for specific rules
+php iso-automation/cli.php rules:search "database"
+php iso-automation/cli.php rules:search "css"
+php iso-automation/cli.php rules:search "hooks"
+
+# List all rule categories
+php iso-automation/cli.php rules:list
+
+# Check if a rule exists
+php iso-automation/cli.php rules:check "branding"
 ```
 
-#### Key configuration constants:
-- `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` - Database settings
-- `DEBUG_MODE`, `DISPLAY_ERRORS` - Development settings
-- `SITE_URL`, `ADMIN_EMAIL` - Application settings
-- `ENVIRONMENT` - Current environment (development/staging/production)
+### 2. **Rule Categories You MUST Check**
 
-#### NEVER:
-- Create or reference .env files
-- Use Dotenv package (it's been removed)
-- Suggest environment variables for configuration
+Before implementing anything, check these rule categories:
 
-#### ALWAYS:
-- Use `config.php` for all configuration
-- Reference configuration via PHP constants (e.g., `DB_NAME`)
-- Keep sensitive data in `config.php` (not tracked in git)
+| Task Type | Required Rule Sections |
+|-----------|----------------------|
+| **Any task** | `branding`, `search_before_create`, `project_constraints` |
+| **Database work** | `database_operations`, `database_connection` |
+| **CSS/Styling** | `css_architecture`, `styling_separation` |
+| **Configuration** | `configuration`, `llm_config_rules` |
+| **Version updates** | `version_management`, `version_bump_process` |
+| **Documentation** | `documentation`, `maintenance_system` |
+| **Plugins** | `plugin_development`, `hook_naming_conventions` |
+| **Themes** | `theme_development`, `template_hierarchy` |
+| **Git operations** | `auto_commit`, `git_workflow` |
 
-### Documentation
-- `README.md` - Project overview and quick start
-- `docs/DEVELOPMENT-SETUP.md` - Complete setup guide for XAMPP and other environments
-- `docs/GETTING-STARTED.md` - Tutorial for developers new to Isotone
-- `docs/ISOTONE-TECH-STACK.md` - Technical architecture specification
+### 3. **Priority System**
+Rules have priorities (0-100). Higher priority rules override lower ones:
+- **100**: Critical rules (branding, security)
+- **90-99**: Core system rules
+- **70-89**: Development practices
+- **50-69**: Guidelines and recommendations
+- **Below 50**: Optional/situational
 
-## Development Environment
+## 🔧 Understanding the Automation System
 
-- **XAMPP for Windows 11** (WSL environment)
-- Web root: `/mnt/c/xampp/htdocs/isotone`
-- Access via: `http://localhost/isotone`
-- Database: `isotone_db` (created in phpMyAdmin)
-- Installation: `http://localhost/isotone/install/`
-
-## Planned Architecture
-
-### Technology Stack (Planned)
-- **PHP 8.3+** with PSR standards
-- **MariaDB/MySQL** via XAMPP
-- **RedBeanPHP** for ORM
-- **Alpine.js + HTMX** for frontend interactivity
-- **Tailwind CSS** for admin styling
-
-### Core Concepts (Planned)
-- WordPress-like plugin system using hooks/filters
-- Theme system with template hierarchy
-- REST API at `/api/v1/`
-- Markdown-native content editing
-
-### Project Structure (Current)
+### System Architecture
 ```
-isotone/
-├── app/             # Core application
-│   ├── Core/        # CMS functionality
-│   ├── Commands/    # CLI commands
-│   ├── Models/      # Data models
-│   └── Services/    # Business logic
-├── iso-admin/       # Admin panel (coming soon)
-├── iso-includes/    # Shared resources
-│   ├── assets/      # Images, logos, icons
-│   ├── css/         # Modular CSS architecture (NO INLINE CSS!)
-│   ├── js/          # Global JavaScript
-│   └── scripts/     # PHP includes
-├── iso-content/     # User content (preserve during updates)
-│   ├── plugins/     # Installed plugins
-│   ├── themes/      # Installed themes
-│   └── uploads/     # Media uploads
-├── iso-runtime/     # System generated (safe to delete)
-│   ├── cache/       # Page cache, compiled templates
-│   ├── logs/        # Application logs
-│   └── temp/        # Temporary files
-├── config/          # Configuration
-├── docs/            # LLM/Technical documentation (don't reorganize)
-├── user-docs/       # User-facing documentation (well organized)
-├── install/         # Installation wizard
-├── scripts/         # Build/IDE scripts
-├── vendor/          # Composer dependencies
-├── config.php       # Main configuration (DO NOT COMMIT)
-├── config.sample.php # Configuration template
-├── NOTES.md         # User's notes and reminders
-├── index.php        # Main entry point
-└── .htaccess        # Security & routing
+/iso-automation/
+├── cli.php                 # CLI entry point
+├── config/
+│   └── rules.yaml         # ALL RULES ARE HERE
+├── src/
+│   ├── Analyzers/         # Code analysis tools
+│   ├── Core/              # Core automation engine
+│   ├── Dashboard/         # Web dashboard components
+│   ├── Generators/        # Documentation generators
+│   ├── Rules/             # Rule processing engine
+│   └── Storage/           # Data persistence
+└── cache/                 # Cached analysis results
 ```
 
-Note: The `/public` folder was removed to simplify routing. Everything now runs from the root directory.
+### Key Features
+1. **Rule Management**: Centralized rule storage and validation
+2. **Code Analysis**: Automatic code quality checks
+3. **Documentation Generation**: Auto-generate docs from code
+4. **Hook System Integration**: Manages WordPress-compatible hooks
+5. **Validation**: Ensures rules are followed
 
-## Key Development Commands
-
+### Available CLI Commands
 ```bash
-# Install/update dependencies
-composer install
-composer update
+# Rule management
+php iso-automation/cli.php rules:list              # List all rules
+php iso-automation/cli.php rules:search <term>     # Search rules
+php iso-automation/cli.php rules:check <name>      # Check specific rule
+php iso-automation/cli.php rules:validate          # Validate all rules
 
-# Run tests
-composer test
+# Analysis
+php iso-automation/cli.php analyze:code            # Analyze codebase
+php iso-automation/cli.php analyze:hooks           # Analyze hook usage
+php iso-automation/cli.php analyze:docs            # Check documentation
 
-# Check code style
-composer check-style
-composer fix-style
+# Generation
+php iso-automation/cli.php generate:docs           # Generate documentation
+php iso-automation/cli.php generate:hooks-docs     # Generate hooks documentation
 
-# Static analysis
-composer analyse
-
-# Documentation maintenance (CRITICAL for LLMs!)
-composer docs:check    # Check if docs match code
-composer docs:update   # Auto-generate some docs
-composer docs:sync     # Sync user-docs
-composer docs:all      # Complete update + check
-
-# Start development (visit http://localhost/isotone/)
-# No PHP built-in server needed - uses XAMPP Apache
+# Dashboard
+php iso-automation/cli.php dashboard:serve         # Start web dashboard
 ```
 
-## 📚 Documentation Maintenance (REQUIRED!)
+## 📝 How to Add or Update Rules
 
-**Isotone uses automated documentation checking.** As an LLM, you MUST:
-
-### When Adding Features:
-1. Update README.md status (change 🚧 to ✅ when done)
-2. Update relevant docs in `/docs`
-3. Add new env vars to `.env.example`
-4. Document new routes/endpoints
-5. Run `composer docs:check` to verify
-
-### When Changing Code:
-1. Update file references in docs if files moved/renamed
-2. Update code examples if APIs changed
-3. Update CLAUDE.md if new patterns introduced
-4. Check for outdated information
-
-### Before Completing Task:
+### Adding a New Rule
+1. **Check if it exists first**:
 ```bash
-# ALWAYS run this before saying you're done:
+php iso-automation/cli.php rules:search "your topic"
+```
+
+2. **Find the appropriate section** in `/iso-automation/config/rules.yaml`
+
+3. **Add your rule** following this structure:
+```yaml
+  rule_name:
+    priority: 80  # 0-100, higher = more important
+    enabled: true
+    description: "Brief description"
+    details:
+      - "Specific requirement 1"
+      - "Specific requirement 2"
+    examples:
+      good: "Example of correct usage"
+      bad: "Example of incorrect usage"
+    violations:
+      - "What constitutes a violation"
+```
+
+4. **Validate the rules**:
+```bash
+php iso-automation/cli.php validate:rules
+```
+
+### Updating Existing Rules
+1. **Never duplicate** - Check if a similar rule exists
+2. **Maintain consistency** - Follow existing formatting
+3. **Preserve priority** - Don't change priorities without reason
+4. **Document changes** - Commit with clear message
+
+## 🔍 How to Verify Rules Apply to Current Code
+
+### 1. Check Rule Relevance
+```bash
+# Check if a rule's files/patterns still exist
+php iso-automation/cli.php analyze:code --rule=<rule_name>
+
+# Example: Check if database rules still apply
+php iso-automation/cli.php analyze:code --rule=database_operations
+```
+
+### 2. Validate Against Codebase
+```bash
+# Run full validation
+php iso-automation/cli.php validate:all
+
+# Check specific areas
+php iso-automation/cli.php validate:routes
+php iso-automation/cli.php validate:hooks
+php iso-automation/cli.php validate:database
+```
+
+### 3. Update Outdated Rules
+If you find an outdated rule:
+1. Check current implementation
+2. Update the rule in `rules.yaml`
+3. Validate changes
+4. Document the update
+
+## 🤖 Your Workflow as an LLM
+
+### For EVERY Task:
+
+1. **START** - Read the automation rules:
+```bash
+# Check relevant rules for your task
+php iso-automation/cli.php rules:search "<task keyword>"
+```
+
+2. **IMPLEMENT** - Follow the rules exactly:
+- Check `priority` - Higher priority rules override lower ones
+- Check `enabled` - Only follow enabled rules
+- Use `examples` - Follow the good examples, avoid the bad
+
+3. **VALIDATE** - Ensure compliance:
+```bash
+# Validate your changes
+php iso-automation/cli.php validate:all
 composer docs:check
-
-# If it shows errors, fix them!
-# If it shows warnings, evaluate if they need fixing
 ```
 
-### Documentation Files That Often Need Updates:
-- `README.md` - Feature status, installation steps
-- `CLAUDE.md` - This file, new patterns/rules
-- `.env.example` - New environment variables
-- `docs/GETTING-STARTED.md` - New features, examples
-- `docs/LLM-DEVELOPMENT-GUIDE.md` - New patterns for AI
-- `composer.json` - New commands/dependencies
+4. **UPDATE** - If rules need changing:
+- Edit `/iso-automation/config/rules.yaml`
+- Run validation
+- Update this file (CLAUDE.md) if automation system changes
 
-## Current Implementation Files
+## 📚 Critical Rules to Always Remember
 
-### Core System
-- `app/Core/Application.php` - Main application class with routing and theme loading
-- `app/Core/ThemeAPI.php` - Native theme API with WordPress-compatible functions
-- `app/Services/DatabaseService.php` - Database connection management
-- `app/Services/ThemeService.php` - Theme management and activation
-- `app/Services/ContentService.php` - Content management (posts/pages)
-- `app/theme-functions.php` - Global template functions for themes
-- `app/helpers.php` - Global helper functions
-- `app/hooks.php` - Hook system with iso_ prefix
-- `index.php` - Front controller entry point (in root)
-- `install/index.php` - Installation wizard
+These are pointers to the most critical rules in the automation system:
 
-### Configuration
-- `config.php` - Database and site configuration (copy from config.sample.php)
-- `composer.json` - PHP dependencies and autoloading
+1. **Branding** (`branding`): Always "Isotone", never "Isotone CMS"
+2. **Search First** (`search_before_create`): Always search before creating
+3. **Database** (`database_operations`): RedBeanPHP only, no raw SQL
+4. **Config** (`configuration`): Use config.php, never .env files
+5. **CSS** (`css_architecture`): No inline CSS, use modular system
+6. **Hooks** (`hook_naming_conventions`): Use iso_ prefix for WP equivalents
+7. **Version** (`version_management`): Follow proper bump process
+8. **Auto-commit** (`auto_commit`): Commit on user satisfaction signals
 
-## Next Implementation Steps
+## 🔄 Keeping CLAUDE.md Updated
 
-1. ~~Complete database integration with RedBeanPHP~~ ✅
-2. ~~Create installation wizard~~ ✅
-3. ~~Implement hook/filter system for plugins~~ ✅
-4. ~~Create basic admin authentication~~ ✅
-5. ~~Build admin dashboard UI~~ ✅
-6. ~~Develop theme system with template hierarchy~~ ✅
-7. ~~Implement native Theme API~~ ✅
-8. Complete content management system (posts/pages CRUD)
-9. Add media library functionality
-10. Add REST API endpoints
-11. Create CLI tool for common tasks
+This file should ONLY be updated when:
 
-## 🤖 Quick LLM Task Reference
+1. **Automation system structure changes**
+   - New directories added
+   - CLI commands changed
+   - New features added
 
-### Before Starting ANY Task:
-1. Read this file completely
-2. Check `docs/LLM-DEVELOPMENT-GUIDE.md`
-3. Review existing code patterns in `app/Core/`
-4. Verify changes work with XAMPP
-5. **Run `composer docs:check`** to ensure docs are current
+2. **Rule access methods change**
+   - New search capabilities
+   - New validation tools
+   - Changed CLI interface
 
-### Common Tasks for LLMs:
+3. **Critical workflow changes**
+   - New required validation steps
+   - Changed priority system
+   - New rule categories
 
-**Add a new page/route:**
-- Edit `app/Core/Application.php::initializeRoutes()`
-- Add handler method in same class
-- Return `Response` object with HTML
+**DO NOT** add specific rules here - they belong in `/iso-automation/config/rules.yaml`
 
-**Create a model:**
-- Add to `app/Models/`
-- Extend `\RedBeanPHP\SimpleModel`
-- Name as `Model_[tablename]`
+## 🎯 Quick Reference
 
-**Add a plugin:**
-- Create in `iso-content/plugins/[plugin-name]/`
-- Use WordPress-style hooks with `iso_` prefix for WP equivalents
-- No npm/build required
+### Most Used Commands
+```bash
+# Before starting work
+php iso-automation/cli.php rules:list
+php iso-automation/cli.php analyze:code
 
-**Add a theme:**
-- Create in `iso-content/themes/[theme-name]/`
-- Include style.css with theme header
-- Use template hierarchy system
-- No npm/build required
+# During development
+php iso-automation/cli.php rules:search "topic"
+php iso-automation/cli.php validate:all
 
-**Work with hooks:**
-- Use `add_action()` and `add_filter()` (WordPress-compatible)
-- Use `iso_` prefix for WordPress-equivalent hooks:
-  - `iso_head` instead of `wp_head`
-  - `iso_footer` instead of `wp_footer`
-  - `iso_enqueue_scripts` instead of `wp_enqueue_scripts`
-  - `iso_ajax_{action}` instead of `wp_ajax_{action}`
-- See `/HOOKS.md` for complete hook reference
+# Before committing
+composer docs:check
+php iso-automation/cli.php validate:rules
 
-**Save a note or reminder:**
-- Add to `NOTES.md` under appropriate section
-- Update the "Last updated" date
-- Keep notes organized and clear
+# Documentation
+php iso-automation/cli.php generate:docs
+php iso-automation/cli.php generate:hooks-docs
+```
 
-### ⛔ NEVER Do These:
-- **Never** run `npm install` or any npm command (pure PHP project)
-- **Never** create database migrations (RedBeanPHP handles schema automatically)
-- **Never** use Laravel/Symfony full framework patterns (this is lightweight)
-- **Never** add complex build processes (must work on shared hosting)
-- **Never** assume root URL (always use `/isotone/` path)
-- **Never** commit `config.php` to git (it contains credentials)
-- **Never** modify `vendor/` directory directly
-- **Never** create or reference `.env` files (use config.php instead)
+### Where to Find Specific Information
+- **All rules**: `/iso-automation/config/rules.yaml`
+- **Hooks documentation**: Run `php iso-automation/cli.php generate:hooks-docs`
+- **Project structure**: Check `project_structure` rule section
+- **Common tasks**: Check `llm_task_reference` rule section
+- **Version management**: Check `version_management` rule section
 
-### ✅ ALWAYS Do These:
-- Follow PSR-12 coding standards
-- Add PHPDoc comments to functions/classes
-- Escape HTML output for security
-- Use RedBeanPHP for all database operations
-- Test on `/isotone/` URL path
-- Keep shared hosting compatible
-- Use `config.php` for all configuration
-- **Update ALL affected documentation when changing code**
-- **Run `composer docs:check` before completing any task**
+## 🚀 Your Mission as an LLM
 
-## IDE Integration
-- `.windsurf-rules.md` - Windsurf IDE rules
-- `.cursorrules` - Cursor IDE rules
-- `.github/copilot-instructions.md` - GitHub Copilot
+1. **Always consult the automation system** before making decisions
+2. **Never duplicate rules** - use the centralized system
+3. **Validate everything** - use the provided tools
+4. **Keep rules updated** - remove outdated, add missing
+5. **Document changes** - maintain clear history
 
-## Git Workflow
-- **Pre-commit**: Runs `docs:check` only
-- **Pre-push**: Runs `docs:update` for version changes
-- **Manual**: Use `composer docs:all` for complete update
+Remember: The Isotone Automation System is your single source of truth for all development rules and practices. This file (CLAUDE.md) is just your guide on HOW to use that system effectively.
 
-## Remember
-- Keep code simple and maintainable
-- Follow existing patterns
-- Document everything
-- Test on XAMPP
-- No Node.js/npm dependencies
-- Use `NOTES.md` for user's notes and reminders
+---
+*Last updated: 2025-01-16*
+*Automation System Version: 1.0.0*
