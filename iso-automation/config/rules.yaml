@@ -556,6 +556,76 @@ code_standards:
       - "Hardcoded configuration values"
 
 documentation:
+  organization:
+    priority: 85
+    enabled: true
+    description: "Documentation organization and folder structure"
+    folders:
+      docs:
+        purpose: "AI assistant integration and automated tooling"
+        audience: "LLMs (Claude, Copilot, Cursor), automated scripts, CI/CD"
+        warning: "⚠️ DO NOT REORGANIZE - 95+ hardcoded references"
+        contents:
+          - "LLM-*.md - AI assistant instructions"
+          - "AI-*.md - Coding standards for AI"
+          - "PROMPT-*.md - Prompt engineering guides"
+          - "Technical implementation details"
+          - "Automated workflow documentation"
+        flat_structure: "Required for IDE integrations and automated scripts"
+      
+      user_docs:
+        purpose: "Well-organized documentation for humans"
+        audience: "Developers, administrators, end users"
+        structure:
+          - "installation/ - Setup and deployment"
+          - "configuration/ - Settings and config"
+          - "development/ - Developer guides"
+          - "api/ - API documentation"
+          - "guides/ - User guides"
+        benefits: "Can be reorganized without breaking systems"
+    
+    shared_files:
+      description: "Files maintained in /docs/ and copied to /user-docs/"
+      mappings:
+        - "DEVELOPMENT-SETUP.md → user-docs/installation/development-setup.md"
+        - "GETTING-STARTED.md → user-docs/development/getting-started.md"
+        - "ISOTONE-TECH-STACK.md → user-docs/installation/tech-stack.md"
+        - "CONFIGURATION.md → user-docs/configuration/config-guide.md"
+        - "DATABASE-CONNECTION.md → user-docs/configuration/database.md"
+        - "API-REFERENCE.md → user-docs/development/api-reference.md"
+      workflow: "Always update /docs/ version first, then sync to /user-docs/"
+    
+    update_rules:
+      update_docs_when:
+        - "Adding LLM-specific rules"
+        - "Changing AI coding standards"
+        - "Updating automated workflows"
+        - "Modifying development patterns"
+        - "Updating any shared documentation files"
+      
+      update_user_docs_when:
+        - "Writing user guides (unique to user-docs)"
+        - "Creating tutorials (unique to user-docs)"
+        - "Adding human-specific documentation"
+        - "Improving organization/navigation"
+      
+      update_both_when:
+        - "Shared files change (update /docs/ first, then sync)"
+        - "Major feature additions affect both audiences"
+        - "Configuration changes"
+        - "Installation process updates"
+    
+    llm_guidance:
+      priority: 80
+      enabled: true
+      description: "How LLMs should handle documentation"
+      workflow:
+        - "Check /docs/ for technical/development info"
+        - "Check /user-docs/ for user-facing guides"
+        - "Keep /docs/ references unchanged"
+        - "Feel free to reorganize /user-docs/ as needed"
+      critical: "Never reorganize /docs/ folder - it will break integrations"
+  
   automated_workflow:
     priority: 90
     enabled: true
