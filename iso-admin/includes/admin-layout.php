@@ -102,7 +102,8 @@ $admin_menu = [
             ['title' => 'Import', 'url' => '/isotone/iso-admin/import.php'],
             ['title' => 'Export', 'url' => '/isotone/iso-admin/export.php'],
             ['title' => 'Site Health', 'url' => '/isotone/iso-admin/site-health.php'],
-            ['title' => 'Backup', 'url' => '/isotone/iso-admin/backup.php']
+            ['title' => 'Backup', 'url' => '/isotone/iso-admin/backup.php'],
+            ['title' => 'Automation', 'url' => '/isotone/iso-admin/automation.php']
         ]
     ]
 ];

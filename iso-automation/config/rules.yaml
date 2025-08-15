@@ -1,0 +1,230 @@
+# Isotone Automation Rules
+# Central configuration for all automation and LLM instructions
+# Generated from MD documentation files
+
+llm_instructions:
+  branding:
+    priority: 100
+    enabled: true
+    context: ["*"]
+    description: "Critical branding rules"
+    rules:
+      - "ALWAYS write 'Isotone' not 'Isotone CMS'"
+      - "The rebrand happened in v0.1.5-alpha"
+      - "This applies to ALL documentation, code, and UI"
+    violations:
+      - pattern: "Isotone CMS"
+        severity: "critical"
+        message: "Use 'Isotone' not 'Isotone CMS'"
+
+  search_before_create:
+    priority: 95
+    enabled: true
+    context: ["development"]
+    description: "Search for existing code before creating new"
+    workflow:
+      - "Use Grep to search for similar functionality"
+      - "Use Glob to find related files"
+      - "Check /iso-includes/css/ for existing styles"
+      - "Review similar pages/components"
+    rules:
+      - "REUSE over CREATE"
+      - "Never duplicate existing code"
+      - "Always extend existing components"
+
+  database_operations:
+    priority: 90
+    enabled: true
+    context: ["development"]
+    description: "Database operation rules"
+    rules:
+      - "ALWAYS use RedBeanPHP for database operations"
+      - "NEVER use PDO or mysqli directly"
+      - "Table names: lowercase, no underscores"
+      - "Column names: can use underscores"
+    violations:
+      - pattern: 'new PDO\('
+        severity: "critical"
+        message: "Use RedBeanPHP instead of PDO"
+      - pattern: 'new mysqli\('
+        severity: "critical"
+        message: "Use RedBeanPHP instead of mysqli"
+
+  version_management:
+    priority: 85
+    enabled: true
+    context: ["version", "release"]
+    description: "Version bump process"
+    workflow:
+      - "php isotone version:bump [patch|minor|major] alpha"
+      - "php isotone changelog"
+      - "composer docs:all"
+    rules:
+      - "NEVER bump version without running ALL steps"
+      - "Always update changelog"
+      - "Always regenerate documentation"
+
+  auto_commit:
+    priority: 80
+    enabled: true
+    context: ["development"]
+    description: "Auto-commit on satisfaction triggers"
+    triggers:
+      - "perfect"
+      - "thanks"
+      - "good"
+      - "excellent"
+      - "happy with"
+      - "looks good"
+      - "that's perfect"
+    action: "git add -A && git commit && git push"
+
+  configuration:
+    priority: 75
+    enabled: true
+    context: ["setup", "configuration"]
+    description: "Configuration system rules"
+    rules:
+      - "NO .env files - use config.php"
+      - "Configuration location: /config.php"
+      - "Template: /config.sample.php"
+      - "NEVER use Dotenv package"
+      - "NEVER suggest environment variables"
+
+  project_constraints:
+    priority: 70
+    enabled: true
+    context: ["*"]
+    description: "Core project constraints"
+    rules:
+      - "NO Node.js/npm - Pure PHP project"
+      - "NO build steps - Direct file editing only"
+      - "NO migrations - RedBeanPHP handles schema"
+      - "XAMPP/shared hosting compatible"
+      - "PSR-12 standards"
+      - "Security first - use .htaccess"
+      - "Hook naming: iso_ prefix for WP equivalents"
+
+  css_architecture:
+    priority: 65
+    enabled: true
+    context: ["frontend", "styling"]
+    description: "CSS and styling rules"
+    rules:
+      admin_pages:
+        - "Use Tailwind CSS via CDN"
+        - "Utility-first approach"
+        - "Gray-900 background, cyan/green accents"
+        - "NO glassmorphism in admin"
+      frontend_pages:
+        - "Use custom modular CSS"
+        - "Glassmorphism with backdrop-filter"
+        - "iso- prefixed classes"
+        - "Check /iso-includes/css/ first"
+      general:
+        - "NEVER mix Tailwind and custom CSS"
+        - "NO inline CSS policy"
+        - "Always search existing styles first"
+
+code_standards:
+  php:
+    priority: 90
+    enabled: true
+    validation: true
+    applies_to: ["*.php"]
+    rules:
+      - "PSR-12 coding standard"
+      - "PHPDoc comments required"
+      - "Type hints required"
+      - "Strict types declaration"
+    
+  security:
+    priority: 95
+    enabled: true
+    validation: true
+    applies_to: ["*.php", "*.js"]
+    rules:
+      - "Escape all HTML output"
+      - "Validate all user input"
+      - "Never expose secrets or keys"
+      - "Use prepared statements"
+      - "Implement CSRF protection"
+
+documentation:
+  maintenance:
+    priority: 85
+    enabled: true
+    context: ["documentation"]
+    description: "Documentation maintenance rules"
+    workflow:
+      - "Update README.md status when features complete"
+      - "Update relevant docs in /docs"
+      - "Document new routes/endpoints"
+      - "Run composer docs:check before completing"
+    rules:
+      - "Keep documentation in sync with code"
+      - "Update file references when moved"
+      - "Update code examples when APIs change"
+
+  structure:
+    priority: 80
+    enabled: true
+    description: "Documentation structure"
+    files:
+      claude_md:
+        path: "CLAUDE.md"
+        purpose: "Master LLM instructions"
+        sync_to: [".cursorrules", ".windsurf-rules.md"]
+      readme:
+        path: "README.md"
+        purpose: "Project overview and status"
+      notes:
+        path: "NOTES.md"
+        purpose: "User notes and reminders"
+
+workflows:
+  add_feature:
+    priority: 50
+    description: "Workflow for adding new features"
+    steps:
+      - "Search for existing similar code"
+      - "Create/modify files following patterns"
+      - "Update documentation"
+      - "Run tests if available"
+      - "Run lint and typecheck"
+      - "Update CLAUDE.md if new patterns"
+      - "Run composer docs:check"
+
+  fix_bug:
+    priority: 50
+    description: "Workflow for fixing bugs"
+    steps:
+      - "Reproduce the issue"
+      - "Search for root cause"
+      - "Apply fix following existing patterns"
+      - "Test the fix"
+      - "Update documentation if needed"
+      - "Run composer docs:check"
+
+validation:
+  file_references:
+    priority: 70
+    enabled: true
+    description: "Validate file references in documentation"
+    patterns:
+      - '`([a-zA-Z0-9/_.-]+\.(php|json|md|env|htaccess))`'
+    
+  composer_scripts:
+    priority: 70
+    enabled: true
+    description: "Ensure all composer scripts are documented"
+    
+  routes:
+    priority: 70
+    enabled: true
+    description: "Validate documented routes exist"
+    
+  code_examples:
+    priority: 70
+    enabled: true
+    description: "Validate PHP code examples syntax"

@@ -1,6 +1,6 @@
 # Isotone Project Structure
 
-*Auto-generated on 2025-08-14 23:06:36*
+*Auto-generated on 2025-08-15 09:12:28*
 
 ## Project Structure
 
@@ -29,16 +29,19 @@ app/
     Application.php
     Hook.php
     Migration.php
+    ThemeAPI.php
     Version.php
   Http/
     Controllers/
     Middleware/
   Models/
   Services/
+    ContentService.php
     DatabaseService.php
     ThemeService.php
   helpers.php
   hooks.php
+  theme-functions.php
 composer.json
 config/
   theme.php
@@ -62,6 +65,7 @@ docs/
   GETTING-STARTED.md
   GITHUB-SETUP.md
   HOOK-NAMING-CONVENTIONS.md
+  HOOKS-AUTOMATION.md
   ISOTONE-TECH-STACK.md
   LLM-CONFIG-RULES.md
   LLM-DEVELOPMENT-GUIDE.md
@@ -78,6 +82,7 @@ install/
   test-db.php
 iso-admin/
   auth.php
+  automation.php
   css/
   dashboard-new.php
   includes/
@@ -90,6 +95,18 @@ iso-admin/
   themes.php
   user-edit.php
   users.php
+iso-automation/
+  README.md
+  cache/
+  cli.php
+  config/
+  src/
+    Analyzers/
+    Core/
+    Dashboard/
+    Generators/
+    Rules/
+    Storage/
 iso-content/
   README.md
   plugins/
@@ -112,6 +129,7 @@ iso-runtime/
   temp/
 scripts/
   README.md
+  check-docs-wrapper.php
   check-docs.php
   generate-hooks-docs.php
   sync-ide-rules.php
@@ -121,18 +139,14 @@ setup/
 storage/
   hooks-status.json
 user-docs/
+  .vitepress/
   README.md
-  SYNC-NOTE.md
   api/
-  configuration/
-    config-guide.md
-    database.md
-  development/
-    api-reference.md
-    getting-started.md
-  guides/
-  installation/
-    development-setup.md
-    quick-start.md
-    tech-stack.md
+    theme-api.md
+  developers/
+    themes.md
+  getting-started/
+    installation.md
+  index.md
+  package.json
 ```

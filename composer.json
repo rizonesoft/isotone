@@ -18,6 +18,7 @@
         "monolog/monolog": "^3.0",
         "symfony/http-foundation": "^7.0",
         "symfony/routing": "^7.0",
+        "symfony/yaml": "^7.0",
         "league/commonmark": "^2.4",
         "intervention/image": "^3.0",
         "nesbot/carbon": "^3.0"
@@ -30,7 +31,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Isotone\\": "app/"
+            "Isotone\\": "app/",
+            "Isotone\\Automation\\": "iso-automation/src/"
         },
         "files": [
             "app/helpers.php",
