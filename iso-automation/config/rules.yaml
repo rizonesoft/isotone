@@ -662,6 +662,123 @@ version_examples:
           
           This updates the minor version for the new authentication feature.
 
+development_commands:
+  composer_scripts:
+    priority: 60
+    enabled: true
+    description: "Available composer commands for development"
+    testing:
+      test:
+        command: "composer test"
+        description: "Run all tests"
+      test_unit:
+        command: "composer test:unit"
+        description: "Run unit tests only"
+      test_integration:
+        command: "composer test:integration"
+        description: "Run integration tests"
+    code_quality:
+      analyse:
+        command: "composer analyse"
+        description: "Run static analysis with PHPStan"
+      check_style:
+        command: "composer check-style"
+        description: "Check code style (PSR-12)"
+      fix_style:
+        command: "composer fix-style"
+        description: "Fix code style automatically"
+    documentation:
+      docs_check:
+        command: "composer docs:check"
+        description: "Check documentation integrity"
+      docs_update:
+        command: "composer docs:update"
+        description: "Auto-update documentation"
+      docs_sync:
+        command: "composer docs:sync"
+        description: "Sync user documentation"
+      docs_hooks:
+        command: "composer docs:hooks"
+        description: "Generate hooks documentation"
+      docs_all:
+        command: "composer docs:all"
+        description: "Complete documentation update"
+      ide_sync:
+        command: "composer ide:sync"
+        description: "Sync IDE rules to .windsurf/"
+    version_management:
+      version_patch:
+        command: "composer version:patch"
+        description: "Bump patch version"
+      version_minor:
+        command: "composer version:minor"
+        description: "Bump minor version"
+      version_major:
+        command: "composer version:major"
+        description: "Bump major version"
+    git_hooks:
+      pre_commit:
+        command: "composer pre-commit"
+        description: "Run pre-commit checks"
+      hooks_docs:
+        command: "composer hooks:docs"
+        description: "Generate hooks documentation"
+    usage_notes:
+      - "All composer commands can be run from project root"
+      - "Test commands require PHPUnit installed"
+      - "Style commands use PHP_CodeSniffer"
+      - "Documentation commands are custom scripts"
+      - "Version commands wrap the Isotone CLI"
+  
+  isotone_cli:
+    priority: 60
+    enabled: true
+    description: "Isotone CLI commands"
+    version_commands:
+      version:
+        command: "php isotone version"
+        description: "Show version information"
+      version_check:
+        command: "php isotone version:check"
+        description: "Check system compatibility"
+      version_history:
+        command: "php isotone version:history"
+        description: "Show version history"
+      version_bump:
+        command: "php isotone version:bump [patch|minor|major] [stage]"
+        description: "Bump version number"
+      version_set:
+        command: "php isotone version:set <version>"
+        description: "Set version directly"
+      changelog:
+        command: "php isotone changelog"
+        description: "Generate and save CHANGELOG.md"
+    database_commands:
+      db_test:
+        command: "php isotone db:test"
+        description: "Test database connection"
+      db_status:
+        command: "php isotone db:status"
+        description: "Show database status"
+      db_init:
+        command: "php isotone db:init"
+        description: "Initialize database schema"
+      migrate:
+        command: "php isotone migrate"
+        description: "Run database migrations"
+      migrate_status:
+        command: "php isotone migrate:status"
+        description: "Check migration status"
+    hook_commands:
+      hooks:
+        command: "php isotone hooks"
+        description: "Generate hooks documentation"
+    usage_examples:
+      - "php isotone version - Display current version"
+      - "php isotone version:bump minor beta - Bump to next minor beta"
+      - "php isotone changelog - Generate changelog from version history"
+      - "php isotone db:test - Verify database connectivity"
+
 workflows:
   add_feature:
     priority: 50
