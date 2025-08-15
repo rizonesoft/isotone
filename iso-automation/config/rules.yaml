@@ -69,15 +69,72 @@ llm_instructions:
     enabled: true
     context: ["development"]
     description: "Auto-commit on satisfaction triggers"
-    triggers:
+    strong_satisfaction_triggers:
       - "perfect"
-      - "thanks"
-      - "good"
-      - "excellent"
-      - "happy with"
-      - "looks good"
       - "that's perfect"
-    action: "git add -A && git commit && git push"
+      - "perfect thanks"
+      - "excellent"
+      - "excellent work"
+      - "that's exactly what I wanted"
+      - "great work"
+      - "great job"
+      - "this looks good"
+      - "looks good"
+      - "ship it"
+      - "ready to ship"
+      - "ready to commit"
+      - "commit this"
+      - "let's push this"
+      - "push it"
+      - "happy with this"
+      - "happy with that"
+      - "working perfectly"
+      - "fantastic implementation"
+      - "well done"
+      - "good job"
+      - "awesome"
+      - "amazing"
+      - "love it"
+      - "i love this"
+    completion_signals:
+      - "feature is complete"
+      - "implementation finished"
+      - "that completes"
+      - "we're done with"
+      - "is working"
+      - "solves the problem"
+      - "working as expected"
+    moderate_satisfaction_triggers:
+      - "this is better"
+      - "good improvement"
+      - "much better now"
+      - "that's an improvement"
+      - "getting closer"
+    do_not_commit_on:
+      - "can you fix"
+      - "this doesn't work"
+      - "try again"
+      - "almost there"
+      - "bug"
+      - "error"
+      - "issue"
+      - "problem"
+    workflow:
+      - "Detect satisfaction signal in user message"
+      - "Verify work is complete (not WIP)"
+      - "Generate semantic commit message"
+      - "Execute: git add -A"
+      - "Execute: git commit -m 'type: description'"
+      - "Execute: git push"
+      - "Inform user of commit and push"
+    commit_response_template: |
+      Excellent! I've committed and pushed your changes:
+      
+      📝 Commit: {commit_type}: {description}
+      🚀 Pushed to: origin/main
+      📊 Files changed: {file_count} files, {insertions} insertions
+      
+      Your implementation is now live in the repository!
 
   configuration:
     priority: 75
@@ -314,6 +371,63 @@ git_standards:
       - "Body wrapped at 72 characters"
       - "Explain what and why, not how"
       - "Reference issues when applicable"
+
+satisfaction_detection:
+  context_aware_updates:
+    priority: 75
+    enabled: true
+    description: "Context-aware documentation updates on satisfaction"
+    patterns:
+      api_changes:
+        keywords: ["api", "endpoint", "route", "request", "response"]
+        update_docs: ["API-REFERENCE.md", "ROUTES.md", "examples"]
+      ui_changes:
+        keywords: ["ui", "interface", "design", "layout", "component"]
+        update_docs: ["user guides", "screenshots", "component docs"]
+      cli_changes:
+        keywords: ["command", "cli", "terminal", "console"]
+        update_docs: ["COMMANDS.md", "CLI reference", "help text"]
+      setup_changes:
+        keywords: ["install", "setup", "configuration", "environment"]
+        update_docs: ["DEVELOPMENT-SETUP.md", "config.sample.php", "installation guides"]
+      database_changes:
+        keywords: ["database", "model", "migration", "schema"]
+        update_docs: ["DATABASE-CONNECTION.md", "model docs", "migration guides"]
+    decision_flowchart: |
+      User Message Received
+              ↓
+      Contains satisfaction trigger?
+              ↓ YES
+      Is it about completed work (not a question)?
+              ↓ YES
+      Any blocking keywords present?
+              ↓ NO
+      IMMEDIATELY: git add -A && git commit && git push
+              ↓
+      Inform user: "Changes committed and pushed!"
+    modes:
+      conservative:
+        description: "Only update on explicit satisfaction signals"
+        threshold: "strong_satisfaction_triggers"
+        confirmation_required: true
+      aggressive:
+        description: "Update on moderate satisfaction"
+        threshold: "moderate_satisfaction_triggers"
+        confirmation_required: false
+      auto:
+        description: "Automatically update on any satisfaction signal"
+        threshold: "any_positive_signal"
+        confirmation_required: false
+    lessons_learned:
+      - case: "That's perfect thanks"
+        lesson: "Always scan for satisfaction keywords BEFORE responding"
+        action: "Immediately commit and push on this phrase"
+      - case: "Missing thanks + positive word"
+        lesson: "Strong satisfaction signal - don't miss it"
+        action: "Treat as immediate commit trigger"
+      - case: "Waiting for explicit commit command"
+        lesson: "Don't wait when satisfaction is clear"
+        action: "Auto-commit on clear satisfaction"
 
 workflows:
   add_feature:
