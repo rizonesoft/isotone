@@ -1955,6 +1955,184 @@ tech_stack:
       - "Configure permalinks"
       - "Install starter content (optional)"
 
+llm_development_guide:
+  quick_context:
+    priority: 95
+    enabled: true
+    description: "LLM-specific development guidelines"
+    key_facts:
+      - "PHP 8.3+ with PSR standards"
+      - "RedBeanPHP ORM (no migrations needed)"
+      - "WordPress-compatible hooks with iso_ prefix"
+      - "Runs on XAMPP/shared hosting"
+      - "No Node.js required in production"
+    
+    critical_files:
+      - "config.php - Configuration (NOT .env)"
+      - "app/Core/Application.php - Main application class"
+      - "composer.json - Dependencies and commands"
+      - "app/helpers.php - Helper functions"
+      - "CLAUDE.md - Project instructions"
+  
+  version_bump_process:
+    priority: 95
+    enabled: true
+    description: "MANDATORY version bump workflow"
+    when_user_says: ["bump version", "update version"]
+    required_steps:
+      - "php isotone version:bump [patch|minor|major] alpha"
+      - "php isotone changelog - NEVER SKIP!"
+      - "composer docs:all - NEVER SKIP!"
+      - "Report completion with version number"
+    warning: "If you skip steps 2 or 3, the version system is broken!"
+  
+  task_instructions:
+    priority: 90
+    enabled: true
+    description: "Task-specific development patterns"
+    
+    new_feature:
+      - "Check existing patterns in app/Core/*.php"
+      - "Controllers go in app/Http/Controllers/"
+      - "Models extend RedBeanPHP SimpleModel"
+      - "Services contain business logic"
+    
+    adding_routes:
+      location: "app/Core/Application.php::initializeRoutes()"
+      pattern: |
+        $this->routes->add('route_name', new Route('/path', [
+            '_controller' => [$this, 'handleMethodName']
+        ]));
+    
+    database_work:
+      - "Never create migration files"
+      - "Use RedBean syntax: R::dispense(), R::store()"
+      - "Models are optional in app/Models/"
+      - "Table names: lowercase, no underscores"
+    
+    plugin_creation:
+      structure: "iso-content/plugins/plugin-name/"
+      hooks: "Use iso_ prefix for WP-equivalent hooks"
+      examples:
+        - "add_action('iso_head', 'function')"
+        - "add_action('iso_footer', 'function')"
+        - "add_filter('the_content', 'function')"
+  
+  critical_rules:
+    priority: 95
+    enabled: true
+    description: "Absolute rules for LLM developers"
+    
+    never_do:
+      - "NEVER use npm commands"
+      - "NEVER create database migrations"
+      - "NEVER modify vendor/ directory"
+      - "NEVER commit config.php file"
+      - "NEVER use Laravel/Symfony patterns"
+      - "NEVER assume Node.js is available"
+      - "NEVER create .env files"
+      - "NEVER use $_ENV or getenv()"
+    
+    always_do:
+      - "ALWAYS check existing patterns first"
+      - "ALWAYS use PSR-12 code style"
+      - "ALWAYS escape output to prevent XSS"
+      - "ALWAYS use prepared statements"
+      - "ALWAYS test on /isotone/ URL path"
+      - "ALWAYS preserve backward compatibility"
+      - "ALWAYS update documentation"
+      - "ALWAYS use config.php for configuration"
+  
+  code_templates:
+    priority: 85
+    enabled: true
+    description: "Code generation templates"
+    
+    controller_method: |
+      /**
+       * Handle [description] request
+       * 
+       * @param Request $request
+       * @return Response
+       */
+      private function handleName(Request $request): Response
+      {
+          try {
+              // Logic here
+              return new Response($html);
+          } catch (\Exception $e) {
+              return $this->handleError($e);
+          }
+      }
+    
+    model_class: |
+      <?php
+      declare(strict_types=1);
+      
+      namespace Isotone\Models;
+      use RedBeanPHP\SimpleModel;
+      
+      class ModelName extends SimpleModel
+      {
+          public function method(): string
+          {
+              return $this->bean->property;
+          }
+      }
+    
+    service_class: |
+      <?php
+      declare(strict_types=1);
+      
+      namespace Isotone\Services;
+      
+      class ServiceName
+      {
+          public function method(): void
+          {
+              // Business logic
+          }
+      }
+  
+  documentation_workflow:
+    priority: 90
+    enabled: true
+    description: "Documentation update requirements"
+    
+    before_changes: "composer docs:check"
+    after_changes:
+      - "composer docs:update"
+      - "composer docs:check"
+    
+    fix_requirements:
+      errors: "MUST fix before completing task"
+      warnings: "Should fix if related to your changes"
+    
+    update_matrix:
+      added_route: ["docs/GETTING-STARTED.md", "API docs"]
+      added_config: ["config.sample.php with comment"]
+      added_file: ["CLAUDE.md file list", "project structure"]
+      added_dependency: ["README.md requirements"]
+      added_command: ["composer.json", "documentation"]
+      changed_api: ["All examples using that API"]
+      added_feature: ["README.md status section"]
+  
+  completion_checklist:
+    priority: 85
+    enabled: true
+    description: "Required before completing any task"
+    checks:
+      - "Code follows PSR-12 standard"
+      - "All methods have PHPDoc comments"
+      - "No hardcoded paths (use helpers)"
+      - "Output is escaped for security"
+      - "Changes work with XAMPP setup"
+      - "Documentation is updated"
+      - "composer docs:check passes"
+      - "No Node.js dependencies added"
+      - "Backward compatibility maintained"
+      - "config.php used (not .env)"
+
 getting_started:
   overview:
     priority: 85
