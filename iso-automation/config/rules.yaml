@@ -2133,6 +2133,227 @@ llm_development_guide:
       - "Backward compatibility maintained"
       - "config.php used (not .env)"
 
+plugin_development:
+  structure:
+    priority: 90
+    enabled: true
+    description: "Plugin development guidelines and structure"
+    
+    directory_layout:
+      root: "iso-content/plugins/plugin-name/"
+      required_files:
+        - "plugin-name.php - Main plugin file"
+        - "readme.txt - Plugin documentation"
+        - "uninstall.php - Cleanup on uninstall"
+      
+      directories:
+        - "includes/ - PHP classes"
+        - "admin/ - Admin functionality"
+        - "public/ - Public functionality"
+        - "languages/ - Internationalization"
+        - "assets/ - Images and resources"
+    
+    main_file_header: |
+      /**
+       * Plugin Name: My Awesome Plugin
+       * Plugin URI: https://example.com/plugins/awesome
+       * Description: This plugin does awesome things
+       * Version: 1.0.0
+       * Author: Your Name
+       * Author URI: https://example.com
+       * License: GPL v2 or later
+       * Text Domain: my-awesome-plugin
+       * Domain Path: /languages
+       */
+    
+    activation_hooks:
+      - "register_activation_hook() - Setup on activation"
+      - "register_deactivation_hook() - Cleanup on deactivation"
+      - "register_uninstall_hook() - Complete removal"
+  
+  admin_integration:
+    priority: 85
+    enabled: true
+    description: "Admin panel integration patterns"
+    
+    menu_registration:
+      top_level: "add_menu_page() - Create main menu"
+      submenu: "add_submenu_page() - Add submenu items"
+      existing: "add_options_page() - Add to Settings menu"
+    
+    settings_api:
+      - "register_setting() - Register option group"
+      - "add_settings_section() - Create settings section"
+      - "add_settings_field() - Add individual field"
+      - "Always sanitize input with callbacks"
+      - "Use nonces for security"
+    
+    meta_boxes:
+      - "add_meta_box() - Register meta box"
+      - "Use nonces in forms"
+      - "Check capabilities before saving"
+      - "Sanitize all input data"
+  
+  database_patterns:
+    priority: 85
+    enabled: true
+    description: "Database operations for plugins"
+    
+    redbeanphp_usage:
+      create_table: |
+        // Isotone uses RedBeanPHP - tables created automatically
+        $item = R::dispense('plugindata');
+        $item->user_id = get_current_user_id();
+        $item->data = 'Some data';
+        R::store($item);
+      
+      query_data: |
+        // Find records
+        $items = R::find('plugindata', 'user_id = ?', [$user_id]);
+        
+        // Update
+        $item->data = 'Updated data';
+        R::store($item);
+        
+        // Delete
+        R::trash($item);
+    
+    important_notes:
+      - "Use RedBeanPHP instead of direct SQL"
+      - "Table names: lowercase, no underscores"
+      - "Prefix with plugin name for uniqueness"
+      - "No manual CREATE TABLE needed"
+  
+  ajax_handlers:
+    priority: 80
+    enabled: true
+    description: "AJAX implementation patterns"
+    
+    admin_ajax:
+      hook: "iso_ajax_{action} for logged-in users"
+      example: |
+        add_action('iso_ajax_my_action', 'handle_my_action');
+        function handle_my_action() {
+            check_ajax_referer('my_nonce', 'nonce');
+            if (!current_user_can('manage_options')) {
+                iso_die('Unauthorized');
+            }
+            iso_send_json_success(['message' => 'Success']);
+        }
+    
+    public_ajax:
+      hook: "iso_ajax_nopriv_{action} for non-logged users"
+      example: |
+        add_action('iso_ajax_nopriv_public_action', 'handle_public');
+        add_action('iso_ajax_public_action', 'handle_public');
+    
+    security:
+      - "Always verify nonces"
+      - "Check user capabilities"
+      - "Sanitize all input"
+      - "Use iso_send_json_* functions"
+  
+  shortcodes:
+    priority: 75
+    enabled: true
+    description: "Shortcode implementation"
+    
+    simple_shortcode: |
+      add_shortcode('my_shortcode', 'my_shortcode_handler');
+      function my_shortcode_handler($atts) {
+          $atts = shortcode_atts([
+              'title' => 'Default Title'
+          ], $atts);
+          return esc_html($atts['title']);
+      }
+    
+    enclosing_shortcode: |
+      add_shortcode('my_box', 'my_box_shortcode');
+      function my_box_shortcode($atts, $content = null) {
+          return '<div class="box">' . do_shortcode($content) . '</div>';
+      }
+    
+    best_practices:
+      - "Always escape output"
+      - "Use shortcode_atts() for defaults"
+      - "Process nested shortcodes with do_shortcode()"
+      - "Return content, don't echo"
+  
+  security_practices:
+    priority: 95
+    enabled: true
+    description: "Security best practices for plugins"
+    
+    data_validation:
+      input_sanitization:
+        - "sanitize_text_field() for text"
+        - "sanitize_email() for emails"
+        - "esc_url_raw() for URLs"
+        - "wp_kses_post() for HTML with allowed tags"
+      
+      output_escaping:
+        - "esc_html() for HTML text"
+        - "esc_attr() for attributes"
+        - "esc_url() for URLs"
+        - "esc_js() for JavaScript"
+        - "esc_textarea() for textareas"
+    
+    nonces:
+      create: "iso_nonce_field('action', 'nonce_name')"
+      verify: "iso_verify_nonce($_POST['nonce_name'], 'action')"
+    
+    capabilities:
+      - "Always check current_user_can()"
+      - "Use appropriate capability levels"
+      - "Never trust user input"
+    
+    sql_security:
+      - "Use RedBeanPHP ORM instead of direct SQL"
+      - "If SQL needed, use prepared statements"
+      - "Never concatenate user input into queries"
+  
+  internationalization:
+    priority: 70
+    enabled: true
+    description: "Making plugins translatable"
+    
+    text_domain:
+      - "Load with load_plugin_textdomain()"
+      - "Use consistent text domain throughout"
+      - "Place translations in languages/ directory"
+    
+    translation_functions:
+      - "__() - Return translated string"
+      - "_e() - Echo translated string"
+      - "_n() - Handle plurals"
+      - "_x() - Add context"
+      - "esc_html__() - Escaped translation"
+    
+    javascript_i18n:
+      - "Use iso_localize_script() for JS translations"
+      - "Access via localized object in JavaScript"
+  
+  submission_checklist:
+    priority: 75
+    enabled: true
+    description: "Pre-submission requirements"
+    
+    required:
+      - "Unique and descriptive plugin name"
+      - "Valid plugin header with all fields"
+      - "No PHP errors or warnings"
+      - "Properly prefixed functions and classes"
+      - "Escaped output everywhere"
+      - "Sanitized input everywhere"
+      - "Nonces for all forms"
+      - "Capability checks for all actions"
+      - "Internationalization ready"
+      - "Uninstall routine implemented"
+      - "No hardcoded paths or URLs"
+      - "GPL-compatible license"
+      - "Documentation included"
+      - "Tested on latest Isotone version"
+
 getting_started:
   overview:
     priority: 85
