@@ -397,6 +397,104 @@ code_standards:
       - "Hardcoded configuration values"
 
 documentation:
+  automated_workflow:
+    priority: 90
+    enabled: true
+    description: "Automated documentation maintenance system"
+    triggers:
+      git_hooks:
+        pre_commit:
+          when: "Every git commit"
+          actions:
+            - "Run composer docs:update"
+            - "Run composer ide:sync"
+            - "Stage updated documentation files"
+            - "Run composer docs:check"
+            - "Block commit if documentation has errors"
+          files_updated:
+            - "All documentation in docs/"
+            - "Project structure references"
+            - "API documentation"
+            - "Environment variable documentation"
+            - "Composer command documentation"
+        pre_push:
+          when: "Every git push"
+          actions:
+            - "Detect version.json changes"
+            - "Auto-generate CHANGELOG.md if version changed"
+            - "Stage changelog if updated"
+            - "Final documentation validation"
+            - "Block push if documentation invalid"
+      version_bump:
+        when: "Running php isotone version:bump"
+        actions:
+          - "Update version in config/version.json"
+          - "Generate CHANGELOG.md"
+          - "Run composer docs:update"
+          - "Run composer ide:sync"
+          - "Show commit instructions"
+      ai_satisfaction:
+        when: "User expresses satisfaction"
+        actions:
+          - "Run git add ."
+          - "Create semantic commit message"
+          - "Commit with descriptive message"
+          - "Push to origin/main"
+          - "Report commit and push details"
+    manual_commands:
+      update:
+        command: "composer docs:update"
+        description: "Updates all documentation files"
+        actions:
+          - "Generate API documentation"
+          - "Update project structure references"
+          - "Update environment variables list"
+      check:
+        command: "composer docs:check"
+        description: "Validates documentation integrity"
+        actions:
+          - "Validate file references"
+          - "Check for broken links"
+          - "Validate code syntax in docs"
+          - "Report errors and warnings"
+      sync_ide:
+        command: "composer ide:sync"
+        description: "Sync IDE rules"
+        actions:
+          - "Copy guides to .windsurf/rules/"
+          - "Ensure AI assistants have current context"
+      changelog:
+        command: "php isotone changelog"
+        description: "Generate changelog"
+        actions:
+          - "Generate CHANGELOG.md from version history"
+          - "Format according to Keep a Changelog standard"
+    always_updated:
+      - "README.md: Feature status, installation"
+      - "API Documentation: Endpoints, examples"
+      - "Project Structure: File listings"
+      - "Environment Variables: .env.example"
+      - "Composer Commands: Available scripts"
+      - "Version Information: Current version, changelog"
+    context_specific_updates:
+      api_changes: "API documentation, examples"
+      cli_changes: "CLI reference, command help"
+      database_changes: "Migration guides, model docs"
+      config_changes: "Setup guides, .env docs"
+      ui_changes: "User guides, screenshots"
+    troubleshooting:
+      docs_check_fails:
+        - "Update file paths in documentation"
+        - "Create referenced files or update references"
+        - "Fix PHP/code syntax in examples"
+        - "Update or remove broken links"
+      hooks_not_working:
+        - "Run: php scripts/install-hooks.php"
+        - "Check permissions: chmod +x .git/hooks/pre-*"
+      docs_not_updating:
+        - "Force update: composer docs:update"
+        - "Check changes: git diff docs/"
+        - "Check errors: composer docs:check"
   maintenance:
     priority: 85
     enabled: true
