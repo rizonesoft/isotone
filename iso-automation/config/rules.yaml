@@ -314,6 +314,7 @@ llm_instructions:
     enabled: true
     context: ["setup", "configuration", "install"]
     description: "Configuration system rules and setup"
+    critical_note: "⚠️ Isotone uses config.php NOT .env files - This is by design for shared hosting compatibility"
     setup_workflow:
       - "Copy config.sample.php to config.php"
       - "Edit database credentials"
@@ -351,19 +352,77 @@ llm_instructions:
         ERROR_LEVEL: "PHP error reporting level"
         MAINTENANCE_MODE: "Enable maintenance mode (true/false)"
         ENVIRONMENT: "Current environment (development/staging/production)"
+      cache:
+        CACHE_DRIVER: "Cache driver (file/redis/memcached)"
+        CACHE_PATH: "Path for file cache storage"
+        CACHE_TTL: "Default cache TTL in seconds"
+      session:
+        SESSION_DRIVER: "Session storage driver (file/database)"
+        SESSION_LIFETIME: "Session lifetime in minutes (default: 120)"
+        SESSION_PATH: "Path for file sessions"
+        SESSION_SECURE: "Require HTTPS for cookies (true/false)"
+      logging:
+        LOG_CHANNEL: "Log channel (single/daily/syslog)"
+        LOG_LEVEL: "Minimum log level (debug/info/warning/error)"
+        LOG_PATH: "Path to log files"
+        LOG_DAYS: "Days to keep log files (for daily channel)"
+      mail:
+        MAIL_DRIVER: "Mail driver (smtp/sendmail/mail)"
+        MAIL_HOST: "SMTP host"
+        MAIL_PORT: "SMTP port (25/587/465)"
+        MAIL_USERNAME: "SMTP username"
+        MAIL_PASSWORD: "SMTP password"
+        MAIL_ENCRYPTION: "Encryption type (tls/ssl/none)"
+        MAIL_FROM_ADDRESS: "Default from address"
+        MAIL_FROM_NAME: "Default from name"
+      media:
+        MAX_UPLOAD_SIZE: "Maximum upload size (e.g., 10M)"
+        ALLOWED_FILE_TYPES: "Comma-separated list of allowed extensions"
+        UPLOAD_PATH: "Path to uploads directory"
+        IMAGE_QUALITY: "JPEG quality (1-100)"
+        ENABLE_IMAGE_OPTIMIZATION: "Auto-optimize images (true/false)"
+      advanced_security:
+        BCRYPT_ROUNDS: "Password hashing rounds (default: 10)"
+        JWT_SECRET: "Secret key for JWT tokens"
+        RATE_LIMIT: "API rate limit per minute (default: 60)"
+        CSRF_ENABLED: "Enable CSRF protection (true/false)"
+        XSS_FILTER: "Enable XSS filtering (true/false)"
     environment_configs:
       development:
         DEBUG_MODE: true
         DISPLAY_ERRORS: true
         ERROR_LEVEL: "E_ALL"
+        CACHE_DRIVER: "file"
+        LOG_LEVEL: "debug"
       staging:
         DEBUG_MODE: true
         DISPLAY_ERRORS: false
         ERROR_LEVEL: "E_ALL & ~E_NOTICE"
+        CACHE_DRIVER: "file"
+        LOG_LEVEL: "warning"
       production:
         DEBUG_MODE: false
         DISPLAY_ERRORS: false
-        ERROR_LEVEL: "E_ERROR | E_WARNING"
+        ERROR_LEVEL: "E_ERROR | E_WARNING | E_PARSE"
+        CACHE_DRIVER: "file"
+        LOG_LEVEL: "error"
+        SESSION_SECURE: true
+    configuration_validation:
+      required_constants:
+        - "DB_HOST - Must be defined"
+        - "DB_NAME - Must be defined"
+        - "DB_USER - Must be defined"
+        - "DB_PASSWORD - Can be empty but must be defined"
+      security_checks:
+        - "Ensure all _KEY and _SALT constants are unique"
+        - "Keys should be at least 64 characters"
+        - "Never commit config.php to version control"
+        - "Set file permissions to 600 or 640"
+      common_issues:
+        - "Missing constants cause fatal errors"
+        - "Wrong database credentials show connection error"
+        - "Incorrect permissions prevent reading config"
+        - "Using .env file instead of config.php won't work"
     security_practices:
       - "Set config.php permissions to 600 (owner read/write only)"
       - "Never commit config.php to version control"
