@@ -938,6 +938,146 @@ development_commands:
       - "php isotone changelog - Generate changelog from version history"
       - "php isotone db:test - Verify database connectivity"
 
+development_setup:
+  prerequisites:
+    priority: 80
+    enabled: true
+    description: "Required software for development"
+    required:
+      php: "8.3+ minimum version"
+      mysql: "5.7+ or MariaDB 10.3+"
+      apache: "2.4+ with mod_rewrite enabled"
+      composer: "2.0+ dependency manager"
+    recommended_stacks:
+      windows:
+        - "XAMPP (Recommended) - Includes Apache, MySQL/MariaDB, PHP"
+        - "WAMP - Alternative to XAMPP"
+        - "Laragon - Modern, lightweight alternative"
+      macos:
+        - "MAMP - Simple Apache, MySQL, PHP stack"
+        - "Laravel Valet - Lightweight development environment"
+        - "Homebrew - Install components individually"
+      linux:
+        - "LAMP Stack - Install via package manager"
+        - "Docker - Containerized environment (coming soon)"
+  
+  installation:
+    priority: 80
+    enabled: true
+    description: "Step-by-step installation process"
+    xampp_setup:
+      download: "https://www.apachefriends.org/"
+      install_path: "C:\\xampp (default location)"
+      control_panel: "Start Apache and MySQL services"
+      apache_config:
+        - "Enable: LoadModule rewrite_module modules/mod_rewrite.so"
+        - "Set: AllowOverride All in htdocs Directory block"
+        - "Save httpd.conf and restart Apache"
+    
+    composer_install:
+      windows:
+        - "Download installer from getcomposer.org"
+        - "Run installer, select PHP: C:\\xampp\\php\\php.exe"
+        - "Verify: composer --version"
+      unix:
+        - "curl -sS https://getcomposer.org/installer | php"
+        - "sudo mv composer.phar /usr/local/bin/composer"
+        - "chmod +x /usr/local/bin/composer"
+    
+    project_setup:
+      clone: "git clone https://github.com/rizonesoft/isotone.git"
+      navigate: "cd isotone"
+      dependencies: "composer install"
+      
+    configuration:
+      critical: "⚠️ NO .env FILES - Isotone uses config.php only!"
+      setup:
+        unix: "cp config.sample.php config.php"
+        windows: "copy config.sample.php config.php"
+      edit_config:
+        DB_HOST: "localhost"
+        DB_NAME: "isotone_db"
+        DB_USER: "root"
+        DB_PASSWORD: "'' (empty for XAMPP)"
+        SITE_URL: "http://localhost/isotone"
+        DEBUG_MODE: "true"
+        DISPLAY_ERRORS: "true"
+    
+    database:
+      phpmyadmin: "http://localhost/phpmyadmin"
+      create: "Database name: isotone_db"
+      collation: "utf8mb4_unicode_ci"
+    
+    wizard:
+      url: "http://localhost/isotone/install/"
+      steps:
+        - "Wizard checks database connection"
+        - "Set Super Admin credentials (min 3 chars username)"
+        - "Complete installation"
+        - "⚠️ DELETE or rename /install directory for security"
+    
+    verification:
+      url: "http://localhost/isotone/"
+      expected:
+        - "✅ Welcome page with Isotone logo"
+        - "✅ PHP version check passed"
+        - "✅ Composer dependencies installed"
+        - "✅ Database connection active"
+        - "✅ Environment configured"
+  
+  troubleshooting:
+    priority: 75
+    enabled: true
+    description: "Common issues and solutions"
+    error_404:
+      - "Check mod_rewrite is enabled in Apache"
+      - "Verify .htaccess exists in root directory"
+      - "Ensure AllowOverride All in Apache config"
+      - "Try direct access: http://localhost/isotone/index.php"
+    
+    composer_not_found:
+      windows: "Add to PATH or use: C:\\ProgramData\\ComposerSetup\\bin\\composer"
+      alternative: "Download composer.phar, use: php composer.phar install"
+    
+    permissions_unix:
+      - "chmod -R 755 isotone"
+      - "chmod -R 777 iso-runtime/"
+      - "chmod -R 777 iso-content/uploads/"
+      - "chmod -R 777 iso-content/cache/"
+    
+    database_failed:
+      - "Verify MySQL/MariaDB service is running"
+      - "Check credentials in config.php (NOT .env)"
+      - "Ensure database isotone_db exists"
+      - "Test: mysql -u root -p -e 'SHOW DATABASES;'"
+      - "Try test script: http://localhost/isotone/install/test-db.php"
+  
+  development_tools:
+    priority: 70
+    enabled: true
+    description: "IDE and development tool configuration"
+    vscode_extensions:
+      - "PHP Intelephense - Advanced PHP intelligence"
+      - "PHP Debug - Xdebug integration"
+      - "GitLens - Enhanced Git capabilities"
+      - "Prettier - Code formatting"
+    
+    phpstorm:
+      - "Set PHP interpreter to XAMPP's PHP"
+      - "Configure Composer executable path"
+      - "Enable WordPress code style (similar to Isotone)"
+      - "Set up database connection for SQL support"
+    
+    testing:
+      all_tests: "composer test"
+      with_coverage: "composer test -- --coverage-html coverage"
+      specific: "./vendor/bin/phpunit tests/Unit/ApplicationTest.php"
+    
+    code_quality:
+      check_style: "composer check-style"
+      fix_style: "composer fix-style"
+      analyse: "composer analyse"
+
 workflows:
   add_feature:
     priority: 50
