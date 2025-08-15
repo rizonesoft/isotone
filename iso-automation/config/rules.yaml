@@ -3239,3 +3239,229 @@ validation:
       - "Use Request object for input data"
       - "Follow RESTful conventions for APIs"
       - "Protect admin routes with authentication"
+
+  theme_development:
+    priority: 90
+    enabled: true
+    description: "Complete theme development guide for Isotone"
+    
+    native_api:
+      description: "Isotone provides native Theme API with WordPress-compatible functions"
+      note: "All standard WordPress template functions work out of the box"
+    
+    theme_structure:
+      location: "iso-content/themes/your-theme/"
+      required_files:
+        style.css: "Theme header and metadata (required)"
+        index.php: "Main template file (required)"
+      optional_files:
+        functions.php: "Theme functions and hooks"
+        screenshot.png: "Theme preview (1200x900)"
+      directories:
+        assets: "CSS, JS, and images"
+        templates: "Header, footer, sidebar templates"
+        partials: "Content template parts"
+        includes: "Additional PHP includes"
+    
+    theme_header:
+      file: "style.css"
+      format: |
+        /*
+        Theme Name: My Awesome Theme
+        Theme URI: https://example.com/themes/awesome
+        Author: Your Name
+        Author URI: https://example.com
+        Description: A beautiful theme for Isotone
+        Version: 1.0.0
+        License: GPL v2 or later
+        License URI: https://www.gnu.org/licenses/gpl-2.0.html
+        Text Domain: my-awesome-theme
+        Tags: responsive, dark-mode, modern, blog
+        */
+    
+    essential_hooks:
+      setup:
+        hook: "after_setup_theme"
+        purpose: "Theme initialization and support features"
+        example: |
+          add_action('after_setup_theme', function() {
+              add_theme_support('post-thumbnails');
+              add_theme_support('title-tag');
+              add_theme_support('html5', ['search-form', 'comment-form', 'gallery']);
+              register_nav_menus([
+                  'primary' => __('Primary Menu', 'textdomain'),
+                  'footer' => __('Footer Menu', 'textdomain')
+              ]);
+          });
+      
+      scripts:
+        hook: "iso_enqueue_scripts"
+        purpose: "Enqueue styles and scripts"
+        example: |
+          add_action('iso_enqueue_scripts', function() {
+              iso_enqueue_style('theme-style', get_stylesheet_uri(), [], '1.0.0');
+              iso_enqueue_script('theme-script', get_template_directory_uri() . '/assets/js/main.js', ['jquery'], '1.0.0', true);
+          });
+      
+      head:
+        hook: "iso_head"
+        purpose: "Add custom head elements"
+      
+      footer:
+        hook: "iso_footer"
+        purpose: "Add footer scripts and elements"
+    
+    template_hierarchy:
+      home: "front-page.php → home.php → index.php"
+      single: "single-{post-type}-{slug}.php → single-{post-type}.php → single.php → singular.php → index.php"
+      page: "page-{slug}.php → page-{id}.php → page.php → singular.php → index.php"
+      category: "category-{slug}.php → category-{id}.php → category.php → archive.php → index.php"
+      tag: "tag-{slug}.php → tag-{id}.php → tag.php → archive.php → index.php"
+      author: "author-{nicename}.php → author-{id}.php → author.php → archive.php → index.php"
+      archive: "archive-{post-type}.php → archive.php → index.php"
+      search: "search.php → index.php"
+      404: "404.php → index.php"
+    
+    template_tags:
+      site_info:
+        - "bloginfo('name') - Site title"
+        - "bloginfo('description') - Site tagline"
+        - "bloginfo('url') - Site URL"
+        - "bloginfo('charset') - Charset"
+      
+      urls:
+        - "home_url('/') - Home URL"
+        - "site_url('/') - Site URL"
+        - "admin_url('/') - Admin URL"
+        - "get_template_directory_uri() - Theme URL"
+        - "get_stylesheet_directory_uri() - Child theme URL"
+      
+      content:
+        - "the_title() - Post/page title"
+        - "the_content() - Post/page content"
+        - "the_excerpt() - Post excerpt"
+        - "the_permalink() - Post URL"
+        - "the_time() - Post date"
+        - "the_author() - Post author"
+        - "the_category() - Post categories"
+        - "the_tags() - Post tags"
+      
+      loop_functions:
+        - "have_posts() - Check for posts"
+        - "the_post() - Setup post data"
+        - "the_ID() - Get post ID"
+        - "post_class() - Generate post classes"
+    
+    the_loop:
+      pattern: |
+        if (have_posts()) :
+            while (have_posts()) : the_post();
+                // Display post content
+                get_template_part('template-parts/content', get_post_format());
+            endwhile;
+            the_posts_navigation();
+        else :
+            get_template_part('template-parts/content', 'none');
+        endif;
+    
+    sidebars_widgets:
+      registration: |
+        add_action('widgets_init', function() {
+            register_sidebar([
+                'name' => __('Primary Sidebar', 'textdomain'),
+                'id' => 'sidebar-primary',
+                'description' => __('Main sidebar', 'textdomain'),
+                'before_widget' => '<section id="%1$s" class="widget %2$s">',
+                'after_widget' => '</section>',
+                'before_title' => '<h3 class="widget-title">',
+                'after_title' => '</h3>',
+            ]);
+        });
+      
+      display: |
+        if (is_active_sidebar('sidebar-primary')) :
+            dynamic_sidebar('sidebar-primary');
+        endif;
+    
+    ajax_implementation:
+      javascript: |
+        jQuery.ajax({
+            url: theme_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'load_more_posts',
+                nonce: theme_ajax.nonce,
+                page: 1
+            },
+            success: function(response) {
+                // Handle response
+            }
+        });
+      
+      php_handler: |
+        add_action('iso_ajax_load_more_posts', 'handle_load_more');
+        add_action('iso_ajax_nopriv_load_more_posts', 'handle_load_more');
+        
+        function handle_load_more() {
+            check_ajax_referer('theme_nonce', 'nonce');
+            // Process request
+            wp_send_json_success(['html' => $html]);
+        }
+    
+    security_practices:
+      escaping:
+        - "esc_html() - Escape HTML"
+        - "esc_attr() - Escape attributes"
+        - "esc_url() - Escape URLs"
+        - "esc_js() - Escape JavaScript"
+      
+      sanitization:
+        - "sanitize_text_field() - Clean text input"
+        - "sanitize_email() - Clean email input"
+        - "sanitize_file_name() - Clean filenames"
+      
+      nonces:
+        - "iso_nonce_field() - Create nonce field"
+        - "check_admin_referer() - Verify nonce"
+      
+      capabilities:
+        - "current_user_can() - Check user permissions"
+    
+    performance_optimization:
+      - "Use iso_enqueue_script() for proper script loading"
+      - "Implement transients for expensive operations"
+      - "Optimize database queries with prepare statements"
+      - "Lazy load images and resources"
+      - "Minimize HTTP requests"
+    
+    internationalization:
+      text_domain: |
+        add_action('after_setup_theme', function() {
+            load_theme_textdomain('textdomain', get_template_directory() . '/languages');
+        });
+      
+      translation_functions:
+        - "__() - Return translation"
+        - "_e() - Echo translation"
+        - "_n() - Plural translations"
+        - "_x() - Contextual translation"
+        - "esc_html__() - Escaped translation"
+    
+    submission_checklist:
+      required:
+        - "style.css with complete header"
+        - "index.php main template"
+        - "GPL-compatible license"
+      
+      quality:
+        - "No PHP errors or warnings"
+        - "Properly escaped output"
+        - "Sanitized input"
+        - "Responsive design"
+        - "Accessibility standards"
+      
+      best_practices:
+        - "No hardcoded URLs"
+        - "Internationalization ready"
+        - "Screenshot included (1200x900)"
+        - "Clean uninstall process"
