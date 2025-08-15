@@ -2765,3 +2765,135 @@ validation:
     priority: 70
     enabled: true
     description: "Validate PHP code examples syntax"
+
+  project_structure:
+    priority: 95
+    enabled: true
+    description: "Isotone project structure and directory organization"
+    last_generated: "2025-08-15 09:12:28"
+    
+    directory_structure:
+      root_directories:
+        app:
+          purpose: "Core application code"
+          subdirectories:
+            Commands: "CLI commands for project management"
+            Core: "Core CMS functionality including Application, Hook, ThemeAPI"
+            Http: "HTTP layer (Controllers, Middleware)"
+            Models: "Data models"
+            Services: "Business logic services"
+          files:
+            helpers.php: "Global helper functions"
+            hooks.php: "Hook system implementation"
+            theme-functions.php: "Theme support functions"
+        
+        iso_admin:
+          purpose: "Admin panel interface"
+          files:
+            auth.php: "Authentication handler"
+            automation.php: "Automation dashboard"
+            dashboard-new.php: "Main dashboard"
+            themes.php: "Theme management"
+            users.php: "User management"
+          subdirectories:
+            includes: "Admin includes (header, layout, icons)"
+            css: "Admin-specific styles"
+        
+        iso_automation:
+          purpose: "Automation and rule engine system"
+          subdirectories:
+            config: "Rules and configuration"
+            src: "Source code for analyzers, generators, rules"
+            cache: "Cached automation data"
+        
+        iso_content:
+          purpose: "User-generated content (preserve during updates)"
+          subdirectories:
+            plugins: "Installed plugins"
+            themes: "Installed themes"
+            uploads: "Media uploads"
+        
+        iso_includes:
+          purpose: "Shared resources"
+          subdirectories:
+            assets: "Images, logos, icons"
+            css: "Modular CSS architecture"
+            js: "Global JavaScript"
+            scripts: "PHP includes"
+        
+        iso_runtime:
+          purpose: "System generated files (safe to delete)"
+          subdirectories:
+            cache: "Page cache, compiled templates"
+            logs: "Application logs"
+            temp: "Temporary files"
+        
+        config:
+          purpose: "Configuration files"
+          files:
+            theme.php: "Theme configuration"
+            version.json: "Version tracking"
+        
+        docs:
+          purpose: "Technical/LLM documentation"
+          note: "DO NOT reorganize - used by automation"
+        
+        user_docs:
+          purpose: "User-facing documentation"
+          subdirectories:
+            .vitepress: "Documentation site configuration"
+            api: "API documentation"
+            developers: "Developer guides"
+            getting-started: "Getting started guides"
+        
+        scripts:
+          purpose: "Build and maintenance scripts"
+          files:
+            check-docs.php: "Documentation validation"
+            generate-hooks-docs.php: "Hook documentation generator"
+            sync-ide-rules.php: "IDE rules synchronization"
+            update-docs.php: "Documentation update script"
+        
+        storage:
+          purpose: "Application storage"
+          files:
+            hooks-status.json: "Hook system status tracking"
+    
+    key_files:
+      configuration:
+        config.php: "Main configuration (NOT tracked in git)"
+        config.sample.php: "Configuration template"
+        composer.json: "PHP dependencies and autoloading"
+        
+      documentation:
+        README.md: "Project overview"
+        CLAUDE.md: "LLM instructions"
+        HOOKS.md: "Hook system documentation"
+        NOTES.md: "User notes and reminders"
+        CHANGELOG.md: "Version history"
+        
+      entry_points:
+        index.php: "Main application entry point"
+        isotone: "CLI entry point"
+        
+      ide_integration:
+        .windsurf-rules.md: "Windsurf IDE rules"
+        .claude/settings.local.json: "Claude settings"
+        .github/copilot-instructions.md: "GitHub Copilot instructions"
+    
+    structure_rules:
+      preservation:
+        - "iso-content/ directory preserved during updates"
+        - "config.php never committed to git"
+        - "storage/ contains persistent application data"
+        
+      safe_to_delete:
+        - "iso-runtime/ can be deleted anytime"
+        - "vendor/ regenerated via composer install"
+        - "node_modules/ if accidentally created (not used)"
+        
+      organization:
+        - "docs/ for technical documentation (don't reorganize)"
+        - "user-docs/ for end-user documentation (well organized)"
+        - "app/ follows PSR-4 autoloading structure"
+        - "iso- prefix for all system directories"
