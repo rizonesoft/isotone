@@ -1667,6 +1667,238 @@ hooks_automation:
         - "Add PHPDoc comments above hook calls"
         - "Use @since tag for version tracking"
 
+tech_stack:
+  core_backend:
+    priority: 90
+    enabled: true
+    description: "Isotone technology stack and architecture"
+    
+    php_requirements:
+      version: "8.3+ required"
+      memory: "128MB minimum, 256MB recommended"
+      max_execution: "30 seconds minimum"
+      required_extensions:
+        - "pdo_mysql - Database connectivity"
+        - "gd or imagick - Image processing"
+        - "mbstring - Multi-byte string support"
+        - "json - JSON encoding/decoding"
+        - "zip - Plugin/theme installation"
+        - "curl - External API communications"
+        - "openssl - Security features"
+      
+      psr_standards:
+        - "PSR-3: Logger Interface"
+        - "PSR-4: Autoloading standard"
+        - "PSR-12: Extended coding style"
+        - "PSR-7: HTTP message interfaces"
+        - "PSR-15: HTTP handlers and middleware"
+    
+    composer_dependencies:
+      core:
+        - "gabordemooij/redbean - ORM and database abstraction"
+        - "monolog/monolog - PSR-3 compliant logging"
+        - "symfony/http-foundation - Request/Response handling"
+        - "league/commonmark - Markdown parsing"
+        - "intervention/image - Image manipulation"
+      
+      development:
+        - "phpunit/phpunit - Unit testing"
+        - "squizlabs/php_codesniffer - Code style enforcement"
+        - "phpstan/phpstan - Static analysis"
+  
+  database_layer:
+    priority: 85
+    enabled: true
+    description: "Database configuration and ORM"
+    
+    database_requirements:
+      supported: "MariaDB 10.6+ / MySQL 8.0+"
+      charset: "utf8mb4"
+      collation: "utf8mb4_unicode_ci"
+      engine: "InnoDB"
+      mode: "Strict mode enabled"
+    
+    redbean_orm:
+      implementation:
+        - "Fluid mode during development"
+        - "Frozen mode in production"
+        - "Custom model classes for complex entities"
+        - "Automatic schema generation for plugins"
+      
+      naming_conventions:
+        - "Table names: lowercase, no underscores"
+        - "Column names: can use underscores"
+        - "Foreign keys: tablename_id pattern"
+        - "Link tables: automatic for many-to-many"
+    
+    core_tables:
+      - "isotoneuser - User accounts"
+      - "isotonecontent - Posts and pages"
+      - "isotonesetting - Configuration options"
+      - "isotonemedia - Media library"
+      - "isotonecategory - Categories"
+      - "isotonetag - Tags"
+      - "isotoneplugin - Plugin registry"
+      - "isotonetheme - Theme registry"
+  
+  frontend_technologies:
+    priority: 80
+    enabled: true
+    description: "Frontend stack and UI technologies"
+    
+    admin_interface:
+      css: "Tailwind CSS 3.4+ via CDN"
+      approach: "Utility-first, no build process"
+      customization: "Custom Isotone component library"
+    
+    theme_development:
+      approach: "Framework-agnostic"
+      starter_themes:
+        - "Bootstrap 5 theme - Familiar for developers"
+        - "Tailwind theme - Modern approach"
+        - "Vanilla CSS theme - No framework"
+    
+    javascript_stack:
+      alpine_js:
+        version: "3.x"
+        size: "~15KB minified"
+        use_cases:
+          - "Admin UI interactions"
+          - "Form validations"
+          - "Dynamic content updates"
+          - "Modal/dropdown management"
+      
+      htmx:
+        version: "2.x"
+        size: "~14KB minified"
+        use_cases:
+          - "Inline editing"
+          - "Infinite scroll"
+          - "Form submissions"
+          - "Live search"
+          - "Content polling"
+      
+      optional_libs:
+        - "Sortable.js - Drag and drop"
+        - "Choices.js - Enhanced selects"
+        - "Flatpickr - Date/time picker"
+    
+    icon_system:
+      library: "Lucide Icons"
+      benefits:
+        - "Open source, consistent design"
+        - "Tree-shakeable"
+        - "SVG-based rendering"
+        - "1000+ icons available"
+        - "PHP helper functions"
+  
+  architecture_patterns:
+    priority: 85
+    enabled: true
+    description: "Core architectural patterns"
+    
+    plugin_architecture:
+      hook_system:
+        - "WordPress-compatible with iso_ prefix"
+        - "Action hooks: do_action(), add_action()"
+        - "Filter hooks: apply_filters(), add_filter()"
+      
+      plugin_structure:
+        main_file: "plugin-name.php"
+        directories:
+          - "includes/ - PHP classes"
+          - "assets/ - CSS, JS, images"
+          - "templates/ - View templates"
+          - "languages/ - i18n files"
+    
+    theme_system:
+      template_hierarchy:
+        - "Child theme template"
+        - "Parent theme template"
+        - "Plugin template override"
+        - "Core default template"
+      
+      theme_structure:
+        required_files:
+          - "style.css - Theme metadata"
+          - "functions.php - Theme setup"
+          - "index.php - Main template"
+        
+        template_files:
+          - "single.php - Single post"
+          - "page.php - Page template"
+          - "archive.php - Archive pages"
+          - "partials/ - Reusable components"
+    
+    rest_api:
+      endpoints:
+        - "/api/v1/posts"
+        - "/api/v1/pages"
+        - "/api/v1/media"
+        - "/api/v1/users"
+        - "/api/v1/settings"
+      
+      authentication:
+        - "JWT tokens for stateless auth"
+        - "API keys for server-to-server"
+        - "WordPress-compatible with iso_ hooks"
+  
+  security_features:
+    priority: 90
+    enabled: true
+    description: "Security implementation"
+    
+    core_security:
+      - "CSRF protection on all forms"
+      - "XSS prevention via output escaping"
+      - "SQL injection prevention via prepared statements"
+      - "File upload validation and sanitization"
+      - "Password hashing with PASSWORD_DEFAULT"
+      - "Two-factor authentication support"
+      - "Rate limiting for login attempts"
+      - "Security headers (CSP, X-Frame-Options)"
+    
+    rbac_system:
+      roles:
+        - "Super Admin"
+        - "Administrator"
+        - "Editor"
+        - "Author"
+        - "Contributor"
+        - "Subscriber"
+      
+      capabilities:
+        - "Granular permissions"
+        - "Custom capabilities for plugins"
+        - "Role management interface"
+  
+  deployment:
+    priority: 75
+    enabled: true
+    description: "Deployment requirements and process"
+    
+    minimum_requirements:
+      php: "8.3+"
+      database: "MySQL 5.7+ or MariaDB 10.3+"
+      disk_space: "50MB for core"
+      memory: "128MB PHP memory limit"
+      apache: "mod_rewrite enabled"
+    
+    recommended_environment:
+      - "PHP 8.3+ with OPcache"
+      - "MariaDB 10.6+"
+      - "Redis/Memcached for caching"
+      - "256MB+ PHP memory"
+      - "HTTP/2 support"
+      - "SSL certificate"
+    
+    installation_process:
+      - "Upload files via FTP/SFTP"
+      - "Create database"
+      - "Run web-based installer"
+      - "Configure permalinks"
+      - "Install starter content (optional)"
+
 getting_started:
   overview:
     priority: 85
