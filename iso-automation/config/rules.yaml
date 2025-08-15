@@ -3166,3 +3166,76 @@ validation:
       - "Add PHPDoc comments"
       - "Ensure XAMPP compatibility"
       - "Maintain backward compatibility"
+
+  routing:
+    priority: 80
+    enabled: true
+    description: "Application routing system and available routes"
+    
+    available_routes:
+      home:
+        path: "/"
+        handler: "handleHome"
+        description: "Main landing page"
+      
+      api_version:
+        path: "/api/version"
+        handler: "handleApiVersion"
+        description: "Returns current version information"
+      
+      api_system:
+        path: "/api/system"
+        handler: "handleApiSystem"
+        description: "Returns system status and information"
+      
+      install:
+        path: "/install"
+        handler: "handleInstall"
+        description: "Installation wizard for initial setup"
+      
+      admin:
+        path: "/admin"
+        handler: "handleAdmin"
+        description: "Admin dashboard entry point"
+    
+    route_patterns:
+      static_routes: "Direct path mapping without parameters"
+      dynamic_routes: "Routes with parameters like /blog/{slug}"
+      api_routes: "REST API endpoints under /api/"
+      admin_routes: "Protected admin routes under /admin/"
+    
+    implementation_location:
+      file: "app/Core/Application.php"
+      method: "initializeRoutes()"
+      pattern: |
+        $this->routes->add('route_name', new Route('/path', [
+            '_controller' => [$this, 'handlerMethod']
+        ]));
+    
+    adding_new_routes:
+      steps:
+        - "Open app/Core/Application.php"
+        - "Locate initializeRoutes() method"
+        - "Add new route definition"
+        - "Create corresponding handler method"
+        - "Return Response object from handler"
+      
+      example: |
+        // In initializeRoutes()
+        $this->routes->add('blog', new Route('/blog', [
+            '_controller' => [$this, 'handleBlog']
+        ]));
+        
+        // Handler method
+        public function handleBlog(Request $request): Response
+        {
+            $content = $this->renderView('blog/index');
+            return new Response($content);
+        }
+    
+    route_requirements:
+      - "All routes must have unique names"
+      - "Handlers must return Response objects"
+      - "Use Request object for input data"
+      - "Follow RESTful conventions for APIs"
+      - "Protect admin routes with authentication"
