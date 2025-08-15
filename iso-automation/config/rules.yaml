@@ -1513,6 +1513,160 @@ hook_naming_conventions:
       - "Update all affected code"
       - "Maintain backward compatibility"
 
+hooks_automation:
+  scanning_system:
+    priority: 85
+    enabled: true
+    description: "Automated hook documentation generation system"
+    
+    scan_directories:
+      - "/app - Core application code"
+      - "/iso-admin - Admin panel"
+      - "/iso-content/themes - Installed themes"
+      - "/iso-content/plugins - Installed plugins"
+    
+    detection_targets:
+      - "do_action() calls for action hooks"
+      - "apply_filters() calls for filter hooks"
+      - "PHPDoc comments for documentation"
+      - "Deprecated hooks with @deprecated tag"
+    
+    generated_files:
+      hooks_md:
+        path: "/HOOKS.md"
+        updates:
+          - "Implementation status (✅ for implemented)"
+          - "Discovered Hooks section with all found hooks"
+          - "Statistics (total hooks, progress percentage)"
+          - "File locations where each hook is fired"
+      
+      api_reference:
+        path: "/user-docs/development/api-reference.md"
+        content:
+          - "Complete API reference for developers"
+          - "Categorized by hook type (Actions, Filters)"
+          - "Usage examples for each hook"
+          - "Helper function documentation"
+          - "Isotone-specific iso_* functions"
+      
+      status_file:
+        path: "/storage/hooks-status.json"
+        stores:
+          - "Scan statistics"
+          - "Discovered hooks list"
+          - "Implementation progress"
+  
+  automation_workflow:
+    priority: 80
+    enabled: true
+    description: "Hook documentation workflow integration"
+    
+    manual_generation:
+      command: "php scripts/generate-hooks-docs.php"
+      composer: "composer docs:hooks"
+      
+    automatic_updates:
+      triggers:
+        - "composer docs:all"
+        - "composer docs:update"
+        - "Version bumps (composer version:patch, etc.)"
+        - "Pre-commit hooks if configured"
+    
+    integration:
+      - "Part of update-docs.php workflow"
+      - "Included in documentation maintenance"
+      - "Synced to user-facing docs"
+  
+  features:
+    priority: 75
+    enabled: true
+    description: "Hook automation system features"
+    
+    smart_detection:
+      - "Extracts hook names from do_action() and apply_filters()"
+      - "Parses hook arguments and parameters"
+      - "Finds PHPDoc descriptions"
+      - "Tracks line numbers and file locations"
+    
+    categorization:
+      patterns:
+        - "iso_* - Isotone Core hooks"
+        - "admin_* - Admin hooks"
+        - "init* - Initialization hooks"
+        - "save_* - Data saving hooks"
+        - "the_* - Content display hooks"
+        - "ajax_* - AJAX request hooks"
+        - "rest_* - REST API hooks"
+    
+    status_tracking:
+      - "Marks hooks as ✅ when implemented"
+      - "Shows planned but unimplemented hooks"
+      - "Calculates overall implementation progress"
+      - "Tracks deprecated hooks"
+    
+    developer_output:
+      - "Usage examples for each hook"
+      - "File locations with line numbers"
+      - "Parameter documentation"
+      - "Since version tracking with @since tag"
+  
+  output_statistics:
+    priority: 70
+    enabled: true
+    description: "Hook scanning output and statistics"
+    
+    example_output: |
+      🔍 Scanning for hooks implementation...
+      📝 Updated HOOKS.md
+      📝 Generated user-docs/development/api-reference.md
+      📊 Updated hooks status
+      ✅ Hooks documentation generated successfully!
+      
+      📊 Statistics:
+        Files scanned: 33
+        Actions found: 13
+        Filters found: 3
+        Deprecated hooks: 0
+      
+      📁 Categories:
+        Other: 10 hooks
+        Isotone Core: 6 hooks
+    
+    benefits:
+      - "Always up-to-date documentation"
+      - "No manual maintenance required"
+      - "Developer-friendly with examples"
+      - "Progress tracking at a glance"
+      - "Seamless workflow integration"
+  
+  extending:
+    priority: 65
+    enabled: true
+    description: "Extending the hook automation system"
+    
+    add_scan_directories:
+      - "Edit scripts/generate-hooks-docs.php"
+      - "Add to $scanDirectories array"
+      - "Run composer docs:hooks to regenerate"
+    
+    customize_categorization:
+      - "Edit categorizeHooks() method"
+      - "Add new prefix patterns and categories"
+      - "Regenerate documentation"
+    
+    troubleshooting:
+      no_hooks_found:
+        - "Check standard do_action() and apply_filters() syntax"
+        - "Verify scanning directories exist with PHP files"
+      
+      documentation_not_updating:
+        - "Ensure write permissions on /HOOKS.md"
+        - "Check for PHP errors in generator script"
+      
+      missing_descriptions:
+        - "Add PHPDoc comments above hook calls"
+        - "Use @since tag for version tracking"
+
 getting_started:
   overview:
     priority: 85
