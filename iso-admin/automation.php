@@ -34,22 +34,25 @@ $status = $engine->getStateManager()->getStatus();
 $cacheStats = $engine->getCacheManager()->getStatistics();
 $rules = $engine->getRuleEngine()->getAllRules();
 
-// Page title
-$page_title = 'Automation Dashboard';
+// Page configuration
+$page_title = 'Automation';
+$breadcrumbs = [
+    ['title' => 'Tools'],
+    ['title' => 'Automation']
+];
 
-// Include admin layout
-include 'includes/admin-layout.php';
+// Start output buffering to capture page content
+ob_start();
 ?>
 
-<div class="min-h-screen bg-gray-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="mb-8">
-            <h1 class="text-3xl font-bold text-white">Automation Dashboard</h1>
-            <p class="text-gray-400 mt-2">Monitor and manage Isotone automation systems</p>
-        </div>
+<!-- Page Header -->
+<div class="mb-8">
+    <h1 class="text-3xl font-bold text-white">Automation Dashboard</h1>
+    <p class="text-gray-400 mt-2">Monitor and manage Isotone automation systems</p>
+</div>
 
-        <!-- Status Overview -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<!-- Status Overview -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
                 <div class="flex items-center justify-between">
                     <div>
@@ -220,7 +223,6 @@ include 'includes/admin-layout.php';
                 </div>
             </div>
         </div>
-    </div>
 </div>
 
 <!-- Notification Toast -->
@@ -329,3 +331,11 @@ setInterval(() => {
         });
 }, 30000);
 </script>
+
+<?php
+// Get the buffered content
+$page_content = ob_get_clean();
+
+// Include the admin layout
+require_once __DIR__ . '/includes/admin-layout.php';
+?>
