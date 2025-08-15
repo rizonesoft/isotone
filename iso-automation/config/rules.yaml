@@ -1323,6 +1323,201 @@ development_setup:
       fix_style: "composer fix-style"
       analyse: "composer analyse"
 
+getting_started:
+  overview:
+    priority: 85
+    enabled: true
+    description: "Getting started guide for new developers"
+    what_is_isotone:
+      - "Lightweight, modern PHP CMS"
+      - "Shared hosting compatible - runs anywhere PHP runs"
+      - "Developer-friendly with clean code and modern patterns"
+      - "Fast and efficient performance"
+      - "Extensible with plugin and theme system"
+    
+    core_concepts:
+      - "MVC Architecture - Separation of concerns"
+      - "Hook System - WordPress-compatible with iso_ prefix"
+      - "ORM-based - RedBeanPHP for database abstraction"
+      - "PSR Standards - Modern PHP practices"
+      - "Config-based - Using config.php (NOT .env files)"
+    
+    quick_start:
+      - "Clone or download repository"
+      - "Run: composer install"
+      - "Copy config.sample.php to config.php"
+      - "Configure database credentials in config.php"
+      - "Run installation wizard at /install/"
+      - "Delete or rename /install directory after setup"
+      - "No default credentials - you create admin account"
+  
+  development_basics:
+    priority: 80
+    enabled: true
+    description: "Basic development patterns and examples"
+    
+    routing:
+      location: "app/Core/Application.php"
+      example: |
+        $this->routes->add('about', new Route('/about', [
+            '_controller' => [$this, 'handleAbout']
+        ]));
+      
+    controller_methods:
+      pattern: |
+        private function handleAbout(Request $request): Response
+        {
+            $html = '<h1>About Us</h1>';
+            return new Response($html);
+        }
+    
+    database_operations:
+      setup: "DatabaseService::initialize()"
+      create_record: |
+        $post = R::dispense('post');
+        $post->title = 'Hello World';
+        $post->content = 'This is my first post';
+        R::store($post);
+      find_records: "R::findAll('post', 'ORDER BY created_at DESC')"
+      
+    working_with_settings:
+      table: "isotonesetting"
+      columns:
+        - "setting_key - Avoid MySQL reserved words"
+        - "setting_value - The actual value"
+        - "setting_type - Data type (string/integer/boolean)"
+      get_setting: |
+        $setting = R::findOne('isotonesetting', 'setting_key = ?', ['site_title']);
+        $value = $setting ? $setting->setting_value : 'Default';
+      
+    model_creation:
+      location: "app/Models/"
+      pattern: |
+        namespace Isotone\Models;
+        use RedBeanPHP\SimpleModel;
+        
+        class Post extends SimpleModel
+        {
+            public function getFormattedDate()
+            {
+                return date('F j, Y', strtotime($this->created_at));
+            }
+        }
+  
+  plugin_development:
+    priority: 75
+    enabled: true
+    description: "Plugin development guidelines"
+    structure:
+      location: "iso-content/plugins/plugin-name/"
+      required_files:
+        - "plugin-name.php - Main plugin file"
+        - "README.md - Documentation"
+    
+    plugin_header: |
+      /**
+       * Plugin Name: My Plugin
+       * Description: A sample plugin
+       * Version: 1.0.0
+       * Author: Your Name
+       */
+    
+    hook_usage:
+      - "Use add_action() for actions"
+      - "Use add_filter() for filters"
+      - "Use iso_ prefix for WordPress-equivalent hooks"
+      - "Example: iso_head instead of wp_head"
+    
+    common_hooks:
+      - "init - Plugin initialization"
+      - "iso_head - Add to HTML head"
+      - "iso_footer - Add to HTML footer"
+      - "the_content - Filter post content"
+      - "admin_menu - Add admin menu items"
+  
+  theme_development:
+    priority: 75
+    enabled: true
+    description: "Theme development guidelines"
+    structure:
+      location: "iso-content/themes/theme-name/"
+      required_files:
+        - "index.php - Main template"
+        - "style.css - Theme information and styles"
+        - "functions.php - Theme functions (optional)"
+        - "templates/ - Template parts directory"
+    
+    theme_header: |
+      /*
+      Theme Name: My Theme
+      Description: A custom theme
+      Version: 1.0.0
+      Author: Your Name
+      */
+    
+    template_functions:
+      - "site_title() - Get site title"
+      - "theme_head() - Output head content"
+      - "theme_content() - Output main content"
+      - "theme_footer() - Output footer content"
+    
+    template_hierarchy:
+      - "index.php - Default template"
+      - "page.php - Page template"
+      - "single.php - Single post template"
+      - "archive.php - Archive template"
+      - "404.php - Not found template"
+  
+  best_practices:
+    priority: 70
+    enabled: true
+    description: "Development best practices"
+    
+    psr_standards:
+      - "PSR-4 for autoloading"
+      - "PSR-12 for code style"
+      - "Use proper namespaces"
+      - "Follow naming conventions"
+    
+    security:
+      - "Always escape output with htmlspecialchars()"
+      - "Use prepared statements for database queries"
+      - "Validate all user input"
+      - "Keep dependencies updated"
+      - "Never expose sensitive data"
+    
+    performance:
+      - "Enable caching in production"
+      - "Optimize images before upload"
+      - "Minify CSS/JS in production"
+      - "Use CDN for static assets"
+      - "Implement lazy loading"
+    
+    version_control:
+      - "Commit config.sample.php, NOT config.php"
+      - "Ignore vendor/ directory"
+      - "Use semantic versioning"
+      - "Write clear commit messages"
+      - "Keep feature branches small"
+    
+    configuration:
+      development:
+        DEBUG_MODE: "true"
+        DISPLAY_ERRORS: "true"
+        CACHE_DRIVER: "file"
+      production:
+        DEBUG_MODE: "false"
+        DISPLAY_ERRORS: "false"
+        CACHE_DRIVER: "file or redis"
+    
+    debugging:
+      enable: "Set DEBUG_MODE = true in config.php"
+      tools:
+        - "VarDumper::dump() for variable inspection"
+        - "dd() for dump and die"
+        - "Monolog for logging"
+        - "Check logs in iso-runtime/logs/"
+
 workflows:
   add_feature:
     priority: 50
