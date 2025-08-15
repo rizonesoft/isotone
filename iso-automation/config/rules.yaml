@@ -32,6 +32,92 @@ llm_instructions:
       - "Never duplicate existing code"
       - "Always extend existing components"
 
+  database_connection:
+    priority: 85
+    enabled: true
+    context: ["database", "setup", "configuration"]
+    description: "Database connection configuration and troubleshooting"
+    connection_settings:
+      web_context:
+        host: "127.0.0.1 (converted from localhost)"
+        port: 3306
+        database: "isotone_db"
+        username: "root"
+        password: "empty"
+      wsl_cli_context:
+        host: "Windows host IP (auto-detected)"
+        port: 3306
+        database: "isotone_db"
+        username: "root"
+        password: "empty"
+    ide_configuration:
+      common_settings:
+        host: "localhost or 127.0.0.1"
+        port: 3306
+        database: "isotone_db"
+        username: "root"
+        password: "empty"
+      tools:
+        phpstorm: "jdbc:mysql://localhost:3306/isotone_db"
+        vscode: "MySQL extension by Jun Han"
+        dbeaver: "MySQL connection type"
+        workbench: "Default Schema: isotone_db"
+        tableplus: "MySQL connection"
+        heidisql: "Comes with XAMPP"
+    command_line:
+      windows_xampp: "C:\\xampp\\mysql\\bin\\mysql -u root isotone_db"
+      wsl: "mysql -h 127.0.0.1 -u root isotone_db"
+    redbean_orm:
+      features:
+        - "Creates tables automatically"
+        - "No migrations required for development"
+        - "Lowercase singular table names"
+        - "Convention: isotoneuser, isotonesetting (no underscores)"
+      table_structure:
+        isotonesetting:
+          - "setting_key: Configuration key"
+          - "setting_value: Configuration value"
+          - "setting_type: Data type"
+          - "updated_at: Last update"
+        isotoneuser:
+          - "username: Login name"
+          - "email: User email"
+          - "password: Hashed password"
+          - "role: User role"
+          - "status: Account status"
+          - "created_at: Creation timestamp"
+          - "updated_at: Last update"
+      best_practices:
+        - "Development: freeze = false (auto-modify tables)"
+        - "Production: freeze = true (lock schema)"
+        - "Regular backups via phpMyAdmin"
+        - "Use RedBean conventions for naming"
+    troubleshooting:
+      ide_connection:
+        - "Verify XAMPP MySQL is running"
+        - "Try 127.0.0.1 instead of localhost"
+        - "Check Windows Firewall port 3306"
+        - "Verify MySQL bind-address in my.ini"
+      app_connection:
+        - "Check http://localhost/isotone/"
+        - "Verify isotone_db exists in phpMyAdmin"
+        - "Ensure config.php exists (not config.sample.php)"
+        - "Run installation wizard if needed"
+      wsl_cli:
+        - "Expected to auto-detect Windows IP"
+        - "Use phpMyAdmin for management"
+        - "Application handles WSL detection"
+    quick_reference:
+      web_app: "127.0.0.1:3306/isotone_db"
+      wsl_cli: "Auto-detected Windows IP"
+      ide_tools: "localhost:3306/isotone_db"
+      phpmyadmin: "http://localhost/phpmyadmin"
+    important_notes:
+      - "Config is in config.php, NOT .env files"
+      - "Smart detection only affects PHP application"
+      - "IDEs connect directly to MySQL"
+      - "External tools bypass PHP layer"
+  
   database_operations:
     priority: 90
     enabled: true
