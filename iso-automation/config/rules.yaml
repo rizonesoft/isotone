@@ -1518,6 +1518,154 @@ getting_started:
         - "Monolog for logging"
         - "Check logs in iso-runtime/logs/"
 
+github_setup:
+  repository_creation:
+    priority: 70
+    enabled: true
+    description: "GitHub repository setup and configuration"
+    prerequisites:
+      - "GitHub account created"
+      - "Git installed locally"
+      - "Repository already initialized locally"
+    
+    create_repository:
+      steps:
+        - "Go to GitHub.com and click + → New repository"
+        - "Repository name: isotone or isotone-cms"
+        - "Description: A lightweight PHP CMS designed for shared hosting"
+        - "Visibility: Public"
+        - "DO NOT initialize with README, .gitignore, or license"
+      
+    add_remote:
+      https: "git remote add origin https://github.com/USERNAME/isotone.git"
+      ssh: "git remote add origin git@github.com:USERNAME/isotone.git"
+      verify: "git remote -v"
+      push: "git push -u origin main"
+    
+    repository_settings:
+      general:
+        - "Default branch: main"
+        - "Enable Issues and Discussions"
+        - "Allow squash merging, auto-delete branches"
+      
+      about_section:
+        description: "A lightweight PHP CMS for shared hosting"
+        topics:
+          - "cms"
+          - "php"
+          - "content-management"
+          - "shared-hosting"
+          - "ai-development"
+          - "redbeanphp"
+          - "lightweight"
+      
+      github_pages:
+        source: "Deploy from branch"
+        branch: "main"
+        folder: "/docs"
+  
+  initial_issues:
+    priority: 65
+    enabled: true
+    description: "Initial GitHub issues to guide contributors"
+    
+    database_integration:
+      title: "Complete RedBeanPHP database integration"
+      tasks:
+        - "Create database connection class"
+        - "Implement basic CRUD operations"
+        - "Add model base class"
+        - "Create installation script"
+      labels: ["enhancement", "help wanted"]
+    
+    plugin_system:
+      title: "Build WordPress-like plugin/hook system"
+      tasks:
+        - "Create hook manager"
+        - "Implement add_action()"
+        - "Implement add_filter()"
+        - "Document hook API"
+      labels: ["enhancement", "core"]
+    
+    admin_authentication:
+      title: "Add admin login system"
+      tasks:
+        - "Login form"
+        - "Session management"
+        - "Password hashing"
+        - "Remember me option"
+      labels: ["enhancement", "security"]
+  
+  repository_maintenance:
+    priority: 60
+    enabled: true
+    description: "Repository maintenance and best practices"
+    
+    readme_badges:
+      - "License: MIT badge"
+      - "PHP Version requirement badge"
+      - "PRs Welcome badge"
+      - "Build status badge (when CI/CD added)"
+    
+    branch_protection:
+      main_branch:
+        - "Require pull request reviews"
+        - "Dismiss stale reviews"
+        - "Require status checks"
+        - "Include administrators"
+    
+    release_process:
+      tag_format: "v{major}.{minor}.{patch}[-stage]"
+      stages: ["alpha", "beta", "rc", "stable"]
+      example: "v0.1.0-alpha"
+      release_notes:
+        - "List features added"
+        - "List bugs fixed"
+        - "Breaking changes warning"
+        - "Installation/upgrade instructions"
+    
+    repository_description: |
+      Isotone - A lightweight, AI-developed PHP content management system 
+      designed for shared hosting. Features WordPress-like plugins, 
+      RedBeanPHP ORM, and no Node.js requirements. Perfect for developers 
+      who need a simple, fast CMS that works everywhere.
+  
+  community_engagement:
+    priority: 55
+    enabled: true
+    description: "Community engagement and growth strategies"
+    
+    after_publishing:
+      share:
+        - "Tweet with #OpenSource hashtag"
+        - "Post on r/PHP and r/webdev"
+        - "Share on Dev.to"
+        - "Write launch blog post"
+      
+      contributor_welcome:
+        - "Respond to issues quickly"
+        - "Label issues as 'good first issue'"
+        - "Thank contributors in PRs"
+        - "Add contributors to README"
+      
+      maintain_momentum:
+        - "Regular commits (weekly minimum)"
+        - "Clear roadmap in wiki"
+        - "Active discussions"
+        - "Monthly progress updates"
+    
+    commands_summary:
+      initial_setup:
+        - "git remote add origin https://github.com/USERNAME/isotone.git"
+        - "git push -u origin main"
+      
+      future_pushes: "git push"
+      
+      create_release:
+        - "git tag -a v0.1.0 -m 'Version 0.1.0'"
+        - "git push origin v0.1.0"
+        - "Create release on GitHub UI"
+
 workflows:
   add_feature:
     priority: 50
