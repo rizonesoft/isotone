@@ -1323,6 +1323,196 @@ development_setup:
       fix_style: "composer fix-style"
       analyse: "composer analyse"
 
+hook_naming_conventions:
+  core_principle:
+    priority: 90
+    enabled: true
+    description: "Isotone hook system naming conventions"
+    principle: "Isotone establishes its unique identity while maintaining WordPress familiarity"
+    
+    wordpress_equivalent_hooks:
+      description: "Use iso_ prefix instead of wp_ for WordPress-equivalent hooks"
+      examples:
+        - "wp_head → iso_head"
+        - "wp_footer → iso_footer"
+        - "wp_body_open → iso_body_open"
+        - "wp_loaded → iso_loaded"
+        - "wp_enqueue_scripts → iso_enqueue_scripts"
+        - "wp_ajax_{action} → iso_ajax_{action}"
+        - "wp_ajax_nopriv_{action} → iso_ajax_nopriv_{action}"
+        - "wp_login → iso_login"
+        - "wp_logout → iso_logout"
+        - "wp_die → iso_die"
+        - "wp_mail → iso_mail"
+        - "wp_redirect → iso_redirect"
+        - "wp_handle_upload → iso_handle_upload"
+        - "wp_insert_post → iso_insert_post"
+        - "wp_update_post → iso_update_post"
+        - "wp_delete_post → iso_delete_post"
+        - "wp_insert_user → iso_insert_user"
+        - "wp_update_user → iso_update_user"
+        - "wp_delete_user → iso_delete_user"
+    
+    generic_wordpress_hooks:
+      description: "Hooks without wp_ prefix remain the same"
+      keep_unchanged:
+        - "init - System initialization"
+        - "admin_init - Admin initialization"
+        - "admin_menu - Admin menu setup"
+        - "admin_notices - Admin notifications"
+        - "the_content - Filter post content"
+        - "the_title - Filter post title"
+        - "save_post - Post save action"
+        - "delete_post - Post deletion action"
+        - "user_register - User registration"
+        - "template_redirect - Template redirection"
+        - "after_setup_theme - Theme setup"
+        - "widgets_init - Widget initialization"
+        - "rest_api_init - REST API setup"
+    
+    isotone_specific_hooks:
+      system_hooks: "isotone_{event} (e.g., isotone_core_loaded)"
+      module_hooks: "isotone_{module}_{event} (e.g., isotone_plugin_activated)"
+      admin_hooks: "isotone_admin_{event} (e.g., isotone_admin_dashboard_widgets)"
+      api_hooks: "isotone_api_{event} (e.g., isotone_api_request)"
+  
+  function_naming:
+    priority: 85
+    enabled: true
+    description: "Function naming conventions for hooks"
+    
+    helper_functions:
+      description: "Functions with wp_ prefix use iso_ instead"
+      examples:
+        - "wp_enqueue_script() → iso_enqueue_script()"
+        - "wp_enqueue_style() → iso_enqueue_style()"
+        - "wp_localize_script() → iso_localize_script()"
+        - "wp_create_nonce() → iso_create_nonce()"
+        - "wp_verify_nonce() → iso_verify_nonce()"
+        - "wp_nonce_field() → iso_nonce_field()"
+        - "wp_send_json() → iso_send_json()"
+        - "wp_send_json_success() → iso_send_json_success()"
+        - "wp_send_json_error() → iso_send_json_error()"
+        - "wp_die() → iso_die()"
+        - "wp_redirect() → iso_redirect()"
+        - "wp_safe_redirect() → iso_safe_redirect()"
+        - "wp_script_is() → iso_script_is()"
+        - "wp_style_is() → iso_style_is()"
+    
+    generic_functions:
+      description: "Hook manipulation functions remain the same"
+      unchanged:
+        - "add_action()"
+        - "do_action()"
+        - "add_filter()"
+        - "apply_filters()"
+        - "remove_action()"
+        - "remove_filter()"
+        - "has_action()"
+        - "has_filter()"
+        - "current_action()"
+        - "current_filter()"
+        - "doing_action()"
+        - "doing_filter()"
+        - "did_action()"
+        - "did_filter()"
+  
+  implementation_guidelines:
+    priority: 80
+    enabled: true
+    description: "Guidelines for implementing hooks"
+    
+    for_developers:
+      - "Always use iso_ prefix for WordPress-equivalent functionality"
+      - "Keep generic hook names for non-prefixed WordPress hooks"
+      - "Document new hooks in /HOOKS.md"
+      - "Maintain backward compatibility where possible"
+    
+    for_theme_developers:
+      correct_usage: |
+        // Using Isotone conventions
+        add_action('iso_head', 'my_head_scripts');
+        add_action('iso_footer', 'my_footer_scripts');
+        add_action('iso_enqueue_scripts', 'my_theme_scripts');
+        
+        // Generic hooks (also correct)
+        add_action('init', 'my_init_function');
+        add_action('admin_menu', 'my_admin_menu');
+    
+    for_plugin_developers:
+      ajax_handlers: |
+        add_action('iso_ajax_my_action', 'handle_my_ajax');
+        add_action('iso_ajax_nopriv_my_action', 'handle_public_ajax');
+      
+      enqueue_scripts: |
+        add_action('iso_enqueue_scripts', function() {
+            iso_enqueue_script('my-script', plugin_dir_url(__FILE__) . 'script.js');
+        });
+    
+    backward_compatibility:
+      description: "Provide compatibility aliases for existing WordPress code"
+      example: |
+        if (!function_exists('wp_head')) {
+            function wp_head() {
+                iso_head(); // Calls Isotone equivalent
+            }
+        }
+  
+  migration_guide:
+    priority: 75
+    enabled: true
+    description: "Converting WordPress code to Isotone"
+    
+    replace_wp_hooks: |
+      // WordPress
+      add_action('wp_head', 'my_function');
+      
+      // Isotone
+      add_action('iso_head', 'my_function');
+    
+    replace_wp_functions: |
+      // WordPress
+      wp_enqueue_script('my-script', $url);
+      
+      // Isotone
+      iso_enqueue_script('my-script', $url);
+    
+    keep_generic_unchanged: |
+      // Both WordPress and Isotone
+      add_action('init', 'my_function');
+      add_filter('the_content', 'my_filter');
+    
+    rationale:
+      - "Establishes Isotone's unique identity with iso_ prefix"
+      - "Maintains familiarity for WordPress developers"
+      - "Avoids conflicts with WordPress naming"
+      - "Supports easy migration from WordPress"
+      - "Enables backward compatibility layers"
+  
+  enforcement:
+    priority: 70
+    enabled: true
+    description: "Hook naming enforcement and validation"
+    
+    automated_checks:
+      command: "php isotone hooks:validate"
+      validates:
+        - "Hook naming conventions"
+        - "Documentation in /HOOKS.md"
+        - "PHPDoc comments"
+    
+    code_review_requirements:
+      - "Follow naming conventions"
+      - "Document in /HOOKS.md"
+      - "Include PHPDoc comments"
+      - "Have unit tests"
+    
+    update_process:
+      - "Discuss with core team"
+      - "Update this documentation"
+      - "Update all affected code"
+      - "Maintain backward compatibility"
+
 getting_started:
   overview:
     priority: 85
