@@ -3465,3 +3465,156 @@ validation:
         - "Internationalization ready"
         - "Screenshot included (1200x900)"
         - "Clean uninstall process"
+
+  version_management_guide:
+    priority: 95
+    enabled: true
+    description: "Complete version management system for Isotone"
+    
+    versioning_scheme:
+      format: "MAJOR.MINOR.PATCH[-STAGE]"
+      components:
+        major: "Incompatible API changes"
+        minor: "Backwards-compatible functionality additions"
+        patch: "Backwards-compatible bug fixes"
+        stage: "Optional pre-release identifier (alpha, beta, rc)"
+    
+    version_config:
+      location: "config/version.json"
+      structure: |
+        {
+            "current": "0.1.0-alpha",
+            "schema": "1.0.0",
+            "codename": "Genesis",
+            "release_date": "2025-01-13",
+            "history": [...]
+        }
+    
+    cli_commands:
+      bump_version:
+        patch: "php isotone version:bump patch"
+        minor: "php isotone version:bump minor"
+        major: "php isotone version:bump major"
+        with_stage: "php isotone version:bump minor beta"
+        with_codename: "php isotone version:bump major stable 'Phoenix'"
+      
+      set_version:
+        basic: "php isotone version:set 1.0.0-rc1"
+        with_codename: "php isotone version:set 1.0.0 'Phoenix'"
+      
+      other_commands:
+        generate_changelog: "php isotone changelog"
+        check_version: "php isotone version"
+        check_compatibility: "php isotone version:check"
+    
+    development_stages:
+      alpha: "Early development, major changes expected"
+      beta: "Feature complete, testing phase"
+      rc: "Release Candidate - Final testing before stable"
+      stable: "Production ready (no stage suffix)"
+    
+    codename_theme:
+      description: "Mythological/Celestial naming convention"
+      examples:
+        - "0.1.0 - Genesis"
+        - "1.0.0 - Phoenix"
+        - "2.0.0 - Aurora"
+        - "3.0.0 - Titan"
+    
+    version_history:
+      format: |
+        {
+            "version": "0.1.0-alpha",
+            "date": "2025-01-13",
+            "codename": "Genesis",
+            "features": ["List of new features"],
+            "breaking_changes": ["List of breaking changes"],
+            "fixed": ["List of bug fixes"],
+            "security": ["Security updates"]
+        }
+    
+    api_endpoints:
+      current_version: "GET /api/version"
+      system_info: "GET /api/system"
+      response_example: |
+        {
+            "version": "0.1.0-alpha",
+            "schema": "1.0.0",
+            "codename": "Genesis",
+            "stage": "alpha",
+            "release_date": "2025-01-13",
+            "php_version": "8.3.6",
+            "php_required": "8.3.0"
+        }
+    
+    php_usage:
+      examples: |
+        use Isotone\Core\Version;
+        
+        // Get current version
+        $version = Version::current();
+        
+        // Format for display
+        echo Version::format();  // v0.1.0-alpha (Genesis)
+        
+        // Check version requirements
+        if (Version::meets('1.0.0')) {
+            // Feature available in 1.0.0+
+        }
+        
+        // Get next version number
+        $next = Version::getNextVersion('minor');
+        
+        // Bump version programmatically
+        $newVersion = Version::bump('patch', 'beta', 'Nebula');
+    
+    bump_guidelines:
+      patch: "Bug fixes, security updates, minor improvements"
+      minor: "New features, non-breaking changes"
+      major: "Breaking changes, major rewrites, API changes"
+    
+    prerelease_workflow:
+      - "Development phase: x.y.z-alpha"
+      - "Testing phase: x.y.z-beta"
+      - "Release candidate: x.y.z-rc1, x.y.z-rc2"
+      - "Stable release: x.y.z"
+    
+    commit_workflow:
+      steps:
+        - "Make your changes and commit"
+        - "php isotone version:bump minor"
+        - "git add config/version.json"
+        - "git commit -m 'chore: Bump version to $(php isotone version --short)'"
+        - "git tag v$(php isotone version --short)"
+        - "git push origin main --tags"
+    
+    schema_versioning:
+      purpose: "Track database structure changes"
+      behavior: "Increment when database structure changes"
+      usage: "Used by migration system to determine required updates"
+      note: "Independent from application version"
+    
+    version_display_locations:
+      - "Landing page: Badge next to title"
+      - "CLI: php isotone version"
+      - "API: /api/version endpoint"
+      - "Admin panel footer (when implemented)"
+    
+    troubleshooting:
+      version_not_updating:
+        - "Check file permissions on config/version.json"
+        - "Ensure the file is writable"
+        - "Clear any caches"
+      
+      version_mismatch:
+        - "Check config/version.json is single source of truth"
+        - "Clear opcache if enabled: opcache_reset()"
+        - "Restart web server"
+    
+    planned_enhancements:
+      - "Automatic update checking against GitHub releases"
+      - "Version-specific migration files"
+      - "Plugin compatibility versioning"
+      - "Automated release notes generation"
+      - "Version rollback capability"
+      - "Update notifications in admin panel"
