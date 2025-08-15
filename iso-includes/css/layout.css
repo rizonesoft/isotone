@@ -49,6 +49,8 @@ body.iso-app {
     min-height: 100vh;
     overflow-x: hidden;
     overflow-y: auto;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 50%, var(--primary) 100%);
+    background-attachment: fixed;
 }
 
 /* Container Styles */

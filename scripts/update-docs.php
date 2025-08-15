@@ -346,10 +346,10 @@ class DocUpdater
     {
         echo "Updating hooks documentation...\n";
         
-        // Run the hooks documentation generator
+        // Run the hooks documentation generator using automation system
         $output = [];
         $returnCode = 0;
-        exec('php ' . $this->rootPath . '/scripts/generate-hooks-docs.php', $output, $returnCode);
+        exec('php ' . $this->rootPath . '/iso-automation/cli.php hooks:scan --quiet', $output, $returnCode);
         
         if ($returnCode === 0) {
             $this->updates[] = "HOOKS.md - Updated with discovered hooks";

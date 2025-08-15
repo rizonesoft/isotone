@@ -81,24 +81,43 @@ try {
                 break;
             }
             
-            // Map task names to ensure compatibility
-            $taskMap = [
-                'check:docs' => 'check:docs',
-                'update:docs' => 'update:docs',
-                'generate:hooks' => 'generate:hooks',
-                'sync:ide' => 'sync:ide',
-                'sync:user-docs' => 'sync:user-docs',
-                'validate:rules' => 'validate:rules'
+            // Map task names to composer scripts where applicable
+            $composerMap = [
+                'check:docs' => 'docs:check',
+                'update:docs' => 'docs:update',
+                'sync:user-docs' => 'docs:sync',
+                'sync:ide' => 'ide:sync',
             ];
             
-            if (!isset($taskMap[$task])) {
+            // Tasks that use composer
+            $composerTasks = array_keys($composerMap);
+            
+            // All other tasks use automation CLI directly
+            $automationTasks = [
+                'hooks:scan',
+                'validate:rules', 
+                'cache:clear',
+                'cache:stats',
+                'status',
+                'rules:export'
+            ];
+            
+            $projectDir = dirname(__DIR__);
+            
+            if (in_array($task, $composerTasks)) {
+                // Execute via composer
+                $composerTask = $composerMap[$task];
+                $command = sprintf('cd %s && composer run-script %s 2>&1', escapeshellarg($projectDir), escapeshellarg($composerTask));
+            } elseif (in_array($task, $automationTasks)) {
+                // Execute via automation CLI
+                $cliPath = $projectDir . '/iso-automation/cli.php';
+                
+                // Don't use quiet flag - we want to see the progress
+                $command = sprintf('php %s %s 2>&1', escapeshellarg($cliPath), escapeshellarg($task));
+            } else {
                 echo json_encode(['success' => false, 'error' => 'Unknown task: ' . $task]);
                 break;
             }
-            
-            // Execute task using the CLI directly for better isolation
-            $cliPath = dirname(__DIR__) . '/iso-automation/cli.php';
-            $command = sprintf('php %s %s --quiet 2>&1', escapeshellarg($cliPath), escapeshellarg($task));
             
             $output = [];
             $returnCode = 0;

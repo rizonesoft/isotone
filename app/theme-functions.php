@@ -402,24 +402,28 @@ function load_template($_template_file, $require_once = true) {
 /**
  * Options API Functions
  */
-function get_option($option, $default = false) {
-    // This will integrate with Isotone's settings system
-    // For now, return common defaults
-    $defaults = [
-        'blogname' => 'Isotone',
-        'blogdescription' => 'Modern CMS',
-        'date_format' => 'F j, Y',
-        'time_format' => 'g:i a',
-        'start_of_week' => 1,
-        'timezone_string' => 'UTC',
-    ];
-    
-    return $defaults[$option] ?? $default;
+if (!function_exists('get_option')) {
+    function get_option($option, $default = false) {
+        // This will integrate with Isotone's settings system
+        // For now, return common defaults
+        $defaults = [
+            'blogname' => 'Isotone',
+            'blogdescription' => 'Modern CMS',
+            'date_format' => 'F j, Y',
+            'time_format' => 'g:i a',
+            'start_of_week' => 1,
+            'timezone_string' => 'UTC',
+        ];
+        
+        return $defaults[$option] ?? $default;
+    }
 }
 
-function update_option($option, $value) {
-    // Will integrate with Isotone's settings system
-    return true;
+if (!function_exists('update_option')) {
+    function update_option($option, $value) {
+        // Will integrate with Isotone's settings system
+        return true;
+    }
 }
 
 /**

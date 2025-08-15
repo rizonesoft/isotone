@@ -89,7 +89,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="icon" type="image/png" sizes="16x16" href="/isotone/favicon-16x16.png">
     
 </head>
-<body class="iso-app">
+<body class="iso-app iso-background">
+    <div class="grid-bg"></div>
     <div class="iso-container iso-container-sm">
         <div class="iso-header" style="justify-content: center; margin-bottom: 2rem; gap: 0.5rem;">
             <!-- Isotone Logo -->

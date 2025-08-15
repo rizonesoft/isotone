@@ -95,6 +95,20 @@ php iso-automation/cli.php generate:hooks-docs     # Generate hooks documentatio
 php iso-automation/cli.php dashboard:serve         # Start web dashboard
 ```
 
+### Web-Based Tools
+1. **Automation Dashboard**: `/isotone/iso-admin/automation.php`
+   - View system health and statistics
+   - Execute documentation tasks
+   - Monitor real-time command output
+   - Clear caches and refresh status
+
+2. **Hooks Explorer**: `/isotone/iso-admin/hooks-explorer.php`
+   - Interactive hook documentation browser
+   - Search and filter hooks by name/type
+   - View usage examples and implementation locations
+   - Copy hook names with one click
+   - See real-time registered hooks and callbacks
+
 ## 📝 How to Add or Update Rules
 
 ### Adding a New Rule

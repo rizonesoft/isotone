@@ -1,0 +1,9 @@
+{
+    "generated_at": "2025-08-15 19:42:30",
+    "system_hooks_defined": 58,
+    "system_hooks_implemented": 12,
+    "implementation_coverage": 20.7,
+    "orphan_hooks": 10,
+    "files_scanned": 40,
+    "hooks_found": 22
+}

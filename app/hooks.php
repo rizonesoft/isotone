@@ -621,3 +621,145 @@ if (!function_exists('iso_script_is')) {
         }
     }
 }
+
+// ==================================================================
+// Shortcode Functions (Stubs for compatibility)
+// ==================================================================
+
+if (!function_exists('add_shortcode')) {
+    /**
+     * Add a shortcode handler (stub for compatibility)
+     * 
+     * @param string $tag Shortcode tag to be searched in content
+     * @param callable $callback Hook to run when shortcode is found
+     * @return void
+     */
+    function add_shortcode($tag, $callback) {
+        // TODO: Implement shortcode system
+        // For now, just prevent errors
+    }
+}
+
+if (!function_exists('shortcode_atts')) {
+    /**
+     * Combine user attributes with known attributes (stub for compatibility)
+     * 
+     * @param array $pairs Entire list of supported attributes and their defaults
+     * @param array $atts User defined attributes in shortcode tag
+     * @return array Combined and filtered attribute list
+     */
+    function shortcode_atts($pairs, $atts) {
+        $atts = (array)$atts;
+        $out = [];
+        foreach ($pairs as $name => $default) {
+            if (array_key_exists($name, $atts)) {
+                $out[$name] = $atts[$name];
+            } else {
+                $out[$name] = $default;
+            }
+        }
+        return $out;
+    }
+}
+
+if (!function_exists('get_option')) {
+    /**
+     * Get option value (stub for compatibility)
+     * 
+     * @param string $option Name of option to retrieve
+     * @param mixed $default Default value to return if option doesn't exist
+     * @return mixed Option value
+     */
+    function get_option($option, $default = false) {
+        // Try to get from database if available
+        if (class_exists('\\RedBeanPHP\\R')) {
+            $setting = \RedBeanPHP\R::findOne('isotonesetting', 'setting_key = ?', [$option]);
+            if ($setting) {
+                return $setting->setting_value;
+            }
+        }
+        return $default;
+    }
+}
+
+if (!function_exists('esc_html')) {
+    /**
+     * Escape HTML (stub for compatibility)
+     * 
+     * @param string $text Text to escape
+     * @return string Escaped text
+     */
+    function esc_html($text) {
+        return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+    }
+}
+
+// ==================================================================
+// Admin Menu Functions (Stubs for compatibility)
+// ==================================================================
+
+if (!function_exists('add_menu_page')) {
+    /**
+     * Add a top-level menu page (stub for compatibility)
+     * 
+     * @param string $page_title The text to be displayed in the title tags
+     * @param string $menu_title The text to be used for the menu
+     * @param string $capability The capability required for this menu
+     * @param string $menu_slug The slug name to refer to this menu
+     * @param callable $function The function to be called to output content
+     * @param string $icon_url The URL to the icon to be used
+     * @param int $position The position in the menu order
+     * @return string The resulting page's hook_suffix
+     */
+    function add_menu_page($page_title, $menu_title, $capability, $menu_slug, $function = '', $icon_url = '', $position = null) {
+        // TODO: Implement admin menu system
+        // For now, just prevent errors
+        return $menu_slug;
+    }
+}
+
+if (!function_exists('add_submenu_page')) {
+    /**
+     * Add a submenu page (stub for compatibility)
+     * 
+     * @param string $parent_slug The slug name for the parent menu
+     * @param string $page_title The text to be displayed in the title tags
+     * @param string $menu_title The text to be used for the menu
+     * @param string $capability The capability required for this menu
+     * @param string $menu_slug The slug name to refer to this menu
+     * @param callable $function The function to be called to output content
+     * @return string|false The resulting page's hook_suffix, or false if user lacks capability
+     */
+    function add_submenu_page($parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function = '') {
+        // TODO: Implement admin menu system
+        // For now, just prevent errors
+        return $menu_slug;
+    }
+}
+
+if (!function_exists('register_widget')) {
+    /**
+     * Register a widget (stub for compatibility)
+     * 
+     * @param string|WP_Widget $widget Either a widget class name or an instance of a widget class
+     * @return void
+     */
+    function register_widget($widget) {
+        // TODO: Implement widget system
+        // For now, just prevent errors
+    }
+}
+
+if (!function_exists('register_sidebar')) {
+    /**
+     * Register a sidebar (stub for compatibility)
+     * 
+     * @param array $args Sidebar arguments
+     * @return string Sidebar ID
+     */
+    function register_sidebar($args = []) {
+        // TODO: Implement sidebar system
+        // For now, just prevent errors
+        return isset($args['id']) ? $args['id'] : 'sidebar-' . uniqid();
+    }
+}

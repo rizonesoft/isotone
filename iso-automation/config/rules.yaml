@@ -549,6 +549,48 @@ llm_instructions:
       - "PSR-12 standards"
       - "Security first - use .htaccess"
       - "Hook naming: iso_ prefix for WP equivalents"
+      - "NO new scripts in /scripts directory - Use automation system instead"
+    
+  scripts_directory_deprecated:
+    priority: 95
+    enabled: true
+    description: "Scripts directory migration to automation system"
+    status: "DEPRECATED - Being phased out"
+    instructions:
+      do_not:
+        - "Create new PHP scripts in /scripts directory"
+        - "Add new features as standalone scripts"
+        - "Reference scripts directory for new functionality"
+      
+      instead_use:
+        - "Add commands to /iso-automation/cli.php"
+        - "Create analyzers in /iso-automation/src/Analyzers/"
+        - "Create generators in /iso-automation/src/Generators/"
+        - "Add rules in /iso-automation/config/rules.yaml"
+        - "Use AutomationEngine for all tooling"
+      
+      examples:
+        hook_scanning:
+          old: "php scripts/generate-hooks-docs.php"
+          new: "php iso-automation/cli.php hooks:scan"
+        
+        documentation:
+          old: "php scripts/update-docs.php"  
+          new: "php iso-automation/cli.php docs:update"
+        
+        new_feature:
+          old: "Create scripts/new-feature.php"
+          new: |
+            1. Create /iso-automation/src/Analyzers/NewFeatureAnalyzer.php
+            2. Add command case in /iso-automation/cli.php
+            3. Update composer.json scripts section
+      
+      rationale:
+        - "Centralize all automation in one system"
+        - "Better organization and maintainability"
+        - "Consistent command interface"
+        - "Integrated with rules and validation"
+        - "Single source of truth for tooling"
 
   css_architecture:
     priority: 65
@@ -1508,8 +1550,43 @@ hook_naming_conventions:
     for_developers:
       - "Always use iso_ prefix for WordPress-equivalent functionality"
       - "Keep generic hook names for non-prefixed WordPress hooks"
-      - "Document new hooks in /HOOKS.md"
+      - "View hook documentation in Admin → Development → Hooks Explorer"
       - "Maintain backward compatibility where possible"
+    
+    hook_reference:
+      description: "Where to find hook documentation and explore available hooks"
+      primary_sources:
+        hooks_explorer:
+          location: "/isotone/iso-admin/hooks-explorer.php"
+          description: "Interactive web interface for exploring all hooks"
+          features:
+            - "Search and filter hooks by name or type"
+            - "View documentation and usage examples"
+            - "See implementation locations with line numbers"
+            - "Real-time overview of all registered hooks"
+          access: "Admin Dashboard → Development → Hooks Explorer"
+        
+        hooks_json_files:
+          location: "/storage/hook-stats.json and /storage/hooks-implementation.json"
+          description: "Hook statistics and implementation data stored in JSON files"
+          updates: "Automatically updated via composer docs:hooks or php iso-automation/cli.php hooks:scan"
+          content:
+            - "System hooks defined count"
+            - "Implementation coverage percentage"
+            - "Orphan hooks count"
+            - "Files scanned count"
+            - "Implementation locations for each hook"
+        
+        api_reference:
+          location: "/user-docs/development/api-reference.md"
+          description: "User-facing API documentation"
+          includes: "Hooks categorized by functionality"
+      
+      for_llms:
+        - "Check Hooks Explorer page for live, searchable hook reference"
+        - "Hook stats are stored in JSON files - view in Hooks Explorer"
+        - "Use composer docs:hooks to regenerate documentation"
+        - "Hook data is always current in Hooks Explorer"
     
     for_theme_developers:
       correct_usage: |
@@ -1581,12 +1658,12 @@ hook_naming_conventions:
       command: "php isotone hooks:validate"
       validates:
         - "Hook naming conventions"
-        - "Documentation in /HOOKS.md"
+        - "Documentation in Hooks Explorer"
         - "PHPDoc comments"
     
     code_review_requirements:
       - "Follow naming conventions"
-      - "Document in /HOOKS.md"
+      - "Check documentation in Hooks Explorer"
       - "Include PHPDoc comments"
       - "Have unit tests"
     
@@ -1616,7 +1693,7 @@ hooks_automation:
     
     generated_files:
       hooks_md:
-        path: "/HOOKS.md"
+        path: "/storage/hook-stats.json and /storage/hooks-implementation.json"
         updates:
           - "Implementation status (✅ for implemented)"
           - "Discovered Hooks section with all found hooks"
@@ -1700,7 +1777,7 @@ hooks_automation:
     
     example_output: |
       🔍 Scanning for hooks implementation...
-      📝 Updated HOOKS.md
+      📝 Updated hook statistics in storage/hook-stats.json
       📝 Generated user-docs/development/api-reference.md
       📊 Updated hooks status
       ✅ Hooks documentation generated successfully!
@@ -1743,7 +1820,7 @@ hooks_automation:
         - "Verify scanning directories exist with PHP files"
       
       documentation_not_updating:
-        - "Ensure write permissions on /HOOKS.md"
+        - "Ensure write permissions on /storage/ directory"
         - "Check for PHP errors in generator script"
       
       missing_descriptions:
@@ -2895,7 +2972,7 @@ validation:
       documentation:
         README.md: "Project overview"
         CLAUDE.md: "LLM instructions"
-        HOOKS.md: "Hook system documentation"
+        "Hooks Explorer": "Interactive hook documentation (Admin → Development → Hooks Explorer)"
         NOTES.md: "User notes and reminders"
         CHANGELOG.md: "Version history"
         
@@ -3700,7 +3777,7 @@ validation:
       work_with_hooks:
         - "Use add_action() and add_filter()"
         - "Use iso_ prefix for WordPress equivalents"
-        - "See HOOKS.md for complete reference"
+        - "See Hooks Explorer in admin for complete reference"
     
     never_do:
       - "Run npm install or any npm command"

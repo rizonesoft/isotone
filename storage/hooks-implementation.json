@@ -1,0 +1,648 @@
+{
+    "generated": "2025-08-15 19:42:30",
+    "stats": {
+        "files_scanned": 40,
+        "hooks_found": 22,
+        "system_hooks_total": 58,
+        "system_hooks_implemented": 12,
+        "orphan_hooks": 10
+    },
+    "implementations": {
+        "actions": {
+            "test_action": [
+                {
+                    "file": "app\\Commands\\HooksCommand.php",
+                    "line": 283
+                }
+            ],
+            "priority_test": [
+                {
+                    "file": "app\\Commands\\HooksCommand.php",
+                    "line": 319
+                }
+            ],
+            "remove_test": [
+                {
+                    "file": "app\\Commands\\HooksCommand.php",
+                    "line": 335
+                }
+            ],
+            "current_test": [
+                {
+                    "file": "app\\Commands\\HooksCommand.php",
+                    "line": 349
+                }
+            ],
+            "after_setup_theme": [
+                {
+                    "file": "app\\Core\\Application.php",
+                    "line": 150
+                },
+                {
+                    "file": "iso-admin\\hooks-explorer.php",
+                    "line": 52
+                }
+            ],
+            "init": [
+                {
+                    "file": "app\\Core\\Application.php",
+                    "line": 151
+                },
+                {
+                    "file": "iso-admin\\hooks-explorer.php",
+                    "line": 53
+                }
+            ],
+            "iso_loaded": [
+                {
+                    "file": "app\\Core\\Application.php",
+                    "line": 152
+                }
+            ],
+            "template_redirect": [
+                {
+                    "file": "app\\Core\\Application.php",
+                    "line": 179
+                }
+            ],
+            "shutdown": [
+                {
+                    "file": "app\\Core\\Application.php",
+                    "line": 194
+                }
+            ],
+            "iso_head": [
+                {
+                    "file": "app\\hooks.php",
+                    "line": 356
+                }
+            ],
+            "iso_footer": [
+                {
+                    "file": "app\\hooks.php",
+                    "line": 369
+                }
+            ],
+            "iso_body_open": [
+                {
+                    "file": "app\\hooks.php",
+                    "line": 382
+                },
+                {
+                    "file": "iso-content\/themes\\neutron\\compat.php",
+                    "line": 24
+                }
+            ],
+            "iso_enqueue_scripts": [
+                {
+                    "file": "app\\hooks.php",
+                    "line": 395
+                },
+                {
+                    "file": "iso-admin\\hooks-explorer.php",
+                    "line": 55
+                }
+            ],
+            "widgets_init": [
+                {
+                    "file": "iso-admin\\hooks-explorer.php",
+                    "line": 54
+                }
+            ],
+            "isotone_head": [
+                {
+                    "file": "iso-content\/themes\\isotone-default\\index.php",
+                    "line": 20
+                }
+            ],
+            "isotone_before_content": [
+                {
+                    "file": "iso-content\/themes\\isotone-default\\index.php",
+                    "line": 39
+                }
+            ],
+            "isotone_after_content": [
+                {
+                    "file": "iso-content\/themes\\isotone-default\\index.php",
+                    "line": 57
+                }
+            ],
+            "isotone_footer": [
+                {
+                    "file": "iso-content\/themes\\isotone-default\\index.php",
+                    "line": 69
+                }
+            ],
+            "hello_isotone_loaded": [
+                {
+                    "file": "iso-content\/plugins\\hello-isotone\\hello-isotone.php",
+                    "line": 139
+                }
+            ]
+        },
+        "filters": {
+            "test_filter": [
+                {
+                    "file": "app\\Commands\\HooksCommand.php",
+                    "line": 295
+                }
+            ],
+            "iso_enqueue_style": [
+                {
+                    "file": "app\\hooks.php",
+                    "line": 413
+                }
+            ],
+            "iso_enqueue_script": [
+                {
+                    "file": "app\\hooks.php",
+                    "line": 444
+                }
+            ]
+        }
+    },
+    "system_hooks": {
+        "init": {
+            "type": "action",
+            "description": "Fires after Isotone has finished loading but before any headers are sent",
+            "since": "1.0.0",
+            "implemented": true,
+            "locations": [
+                {
+                    "file": "app\\Core\\Application.php",
+                    "line": 151
+                },
+                {
+                    "file": "iso-admin\\hooks-explorer.php",
+                    "line": 53
+                }
+            ]
+        },
+        "iso_loaded": {
+            "type": "action",
+            "description": "Fires when Isotone core has been fully loaded",
+            "since": "1.0.0",
+            "implemented": true,
+            "locations": [
+                {
+                    "file": "app\\Core\\Application.php",
+                    "line": 152
+                }
+            ]
+        },
+        "after_setup_theme": {
+            "type": "action",
+            "description": "Fires after the theme is loaded",
+            "since": "1.0.0",
+            "implemented": true,
+            "locations": [
+                {
+                    "file": "app\\Core\\Application.php",
+                    "line": 150
+                },
+                {
+                    "file": "iso-admin\\hooks-explorer.php",
+                    "line": 52
+                }
+            ]
+        },
+        "iso_head": {
+            "type": "action",
+            "description": "Fires in the <head> section of the site",
+            "since": "1.0.0",
+            "implemented": true,
+            "locations": [
+                {
+                    "file": "app\\hooks.php",
+                    "line": 356
+                }
+            ]
+        },
+        "iso_footer": {
+            "type": "action",
+            "description": "Fires before the closing <\/body> tag",
+            "since": "1.0.0",
+            "implemented": true,
+            "locations": [
+                {
+                    "file": "app\\hooks.php",
+                    "line": 369
+                }
+            ]
+        },
+        "iso_body_open": {
+            "type": "action",
+            "description": "Fires immediately after the opening <body> tag",
+            "since": "1.0.0",
+            "implemented": true,
+            "locations": [
+                {
+                    "file": "app\\hooks.php",
+                    "line": 382
+                },
+                {
+                    "file": "iso-content\/themes\\neutron\\compat.php",
+                    "line": 24
+                }
+            ]
+        },
+        "iso_enqueue_scripts": {
+            "type": "action",
+            "description": "Fires when scripts and styles should be enqueued",
+            "since": "1.0.0",
+            "implemented": true,
+            "locations": [
+                {
+                    "file": "app\\hooks.php",
+                    "line": 395
+                },
+                {
+                    "file": "iso-admin\\hooks-explorer.php",
+                    "line": 55
+                }
+            ]
+        },
+        "iso_before_content": {
+            "type": "action",
+            "description": "Fires before the main content area",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_after_content": {
+            "type": "action",
+            "description": "Fires after the main content area",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_before_post": {
+            "type": "action",
+            "description": "Fires before a post is displayed",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_after_post": {
+            "type": "action",
+            "description": "Fires after a post is displayed",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "admin_init": {
+            "type": "action",
+            "description": "Fires as an admin screen or script is being initialized",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "admin_menu": {
+            "type": "action",
+            "description": "Fires before the administration menu loads",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "admin_head": {
+            "type": "action",
+            "description": "Fires in the admin <head> section",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "admin_footer": {
+            "type": "action",
+            "description": "Fires in the admin footer",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "admin_dashboard_top": {
+            "type": "action",
+            "description": "Fires at the top of the admin dashboard",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_login": {
+            "type": "action",
+            "description": "Fires when a user logs in",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_logout": {
+            "type": "action",
+            "description": "Fires when a user logs out",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_register_user": {
+            "type": "action",
+            "description": "Fires when a new user registers",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_before_save": {
+            "type": "action",
+            "description": "Fires before data is saved to database",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_after_save": {
+            "type": "action",
+            "description": "Fires after data is saved to database",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_before_delete": {
+            "type": "action",
+            "description": "Fires before data is deleted from database",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_after_delete": {
+            "type": "action",
+            "description": "Fires after data is deleted from database",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_plugin_activation": {
+            "type": "action",
+            "description": "Fires when a plugin is activated",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_plugin_deactivation": {
+            "type": "action",
+            "description": "Fires when a plugin is deactivated",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_plugin_uninstall": {
+            "type": "action",
+            "description": "Fires when a plugin is uninstalled",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_theme_activation": {
+            "type": "action",
+            "description": "Fires when a theme is activated",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_theme_deactivation": {
+            "type": "action",
+            "description": "Fires when a theme is deactivated",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "widgets_init": {
+            "type": "action",
+            "description": "Fires after all default widgets have been registered",
+            "since": "1.0.0",
+            "implemented": true,
+            "locations": [
+                {
+                    "file": "iso-admin\\hooks-explorer.php",
+                    "line": 54
+                }
+            ]
+        },
+        "dynamic_sidebar_before": {
+            "type": "action",
+            "description": "Fires before widgets are rendered in a sidebar",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "dynamic_sidebar_after": {
+            "type": "action",
+            "description": "Fires after widgets are rendered in a sidebar",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_ajax_{action}": {
+            "type": "action",
+            "description": "Fires for authenticated AJAX requests (replace {action} with your action name)",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_ajax_nopriv_{action}": {
+            "type": "action",
+            "description": "Fires for non-authenticated AJAX requests (replace {action} with your action name)",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "rest_api_init": {
+            "type": "action",
+            "description": "Fires when preparing to serve a REST API request",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_rest_before_request": {
+            "type": "action",
+            "description": "Fires before processing a REST request",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_rest_after_request": {
+            "type": "action",
+            "description": "Fires after processing a REST request",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "template_redirect": {
+            "type": "action",
+            "description": "Fires before determining which template to load",
+            "since": "1.0.0",
+            "implemented": true,
+            "locations": [
+                {
+                    "file": "app\\Core\\Application.php",
+                    "line": 179
+                }
+            ]
+        },
+        "iso_before_route": {
+            "type": "action",
+            "description": "Fires before route processing",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_after_route": {
+            "type": "action",
+            "description": "Fires after route processing",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "shutdown": {
+            "type": "action",
+            "description": "Fires just before PHP shuts down execution",
+            "since": "1.0.0",
+            "implemented": true,
+            "locations": [
+                {
+                    "file": "app\\Core\\Application.php",
+                    "line": 194
+                }
+            ]
+        },
+        "the_content": {
+            "type": "filter",
+            "description": "Filters the post content",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "the_title": {
+            "type": "filter",
+            "description": "Filters the post title",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "the_excerpt": {
+            "type": "filter",
+            "description": "Filters the post excerpt",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_site_url": {
+            "type": "filter",
+            "description": "Filters the site URL",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_home_url": {
+            "type": "filter",
+            "description": "Filters the home URL",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_admin_url": {
+            "type": "filter",
+            "description": "Filters the admin URL",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_enqueue_style": {
+            "type": "filter",
+            "description": "Filters style enqueue data before adding",
+            "since": "1.0.0",
+            "implemented": true,
+            "locations": [
+                {
+                    "file": "app\\hooks.php",
+                    "line": 413
+                }
+            ]
+        },
+        "iso_enqueue_script": {
+            "type": "filter",
+            "description": "Filters script enqueue data before adding",
+            "since": "1.0.0",
+            "implemented": true,
+            "locations": [
+                {
+                    "file": "app\\hooks.php",
+                    "line": 444
+                }
+            ]
+        },
+        "iso_query_vars": {
+            "type": "filter",
+            "description": "Filters the query variables",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_request": {
+            "type": "filter",
+            "description": "Filters the request variables",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_template_include": {
+            "type": "filter",
+            "description": "Filters the path of the template to include",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_theme_directory": {
+            "type": "filter",
+            "description": "Filters the active theme directory",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_user_capabilities": {
+            "type": "filter",
+            "description": "Filters user capabilities",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_authentication": {
+            "type": "filter",
+            "description": "Filters authentication result",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_admin_menu_items": {
+            "type": "filter",
+            "description": "Filters admin menu items",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_admin_bar_items": {
+            "type": "filter",
+            "description": "Filters admin bar items",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_option_{option_name}": {
+            "type": "filter",
+            "description": "Filters specific option values (replace {option_name} with option)",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        },
+        "iso_default_settings": {
+            "type": "filter",
+            "description": "Filters default settings",
+            "since": "1.0.0",
+            "implemented": false,
+            "locations": []
+        }
+    }
+}

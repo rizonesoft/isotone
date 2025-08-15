@@ -84,8 +84,15 @@ try {
         case 'generate:hooks':
         case 'hooks:generate':
         case 'docs:hooks':
-            $result = $engine->execute('generate:hooks', $parsedOptions);
-            exit($result ? 0 : 1);
+        case 'hooks:scan':
+            // New hooks:scan command using HooksAnalyzer
+            require_once __DIR__ . '/src/Analyzers/HooksAnalyzer.php';
+            $analyzer = new \Isotone\Automation\Analyzers\HooksAnalyzer();
+            if ($quiet) {
+                $analyzer->setQuiet(true);
+            }
+            $result = $analyzer->analyze();
+            exit(0);
             
         case 'sync:ide':
         case 'ide:sync':
@@ -109,8 +116,32 @@ try {
             
         case 'cache:clear':
             $cacheManager = $engine->getCacheManager();
+            
+            if (!$quiet) {
+                echo "🗑️  Cache Clear Operation\n";
+                echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+                echo "📋 Step 1/3: Analyzing cache directories...\n";
+            }
+            
+            $stats = $cacheManager->getStatistics();
+            $filesBeforeClear = $stats['total_files_cached'];
+            $sizeBeforeClear = $stats['disk_cache_size'];
+            
+            if (!$quiet) {
+                echo "   Found {$filesBeforeClear} cached files (" . formatBytes($sizeBeforeClear) . ")\n\n";
+                echo "🧹 Step 2/3: Clearing cache files...\n";
+            }
+            
             $cacheManager->clearCache();
-            echo "✅ Cache cleared successfully\n";
+            
+            if (!$quiet) {
+                echo "   Cache files removed\n\n";
+                echo "✨ Step 3/3: Verifying cache is empty...\n";
+                $newStats = $cacheManager->getStatistics();
+                echo "   Remaining files: {$newStats['total_files_cached']}\n\n";
+                echo "✅ Cache cleared successfully!\n";
+                echo "   Freed up: " . formatBytes($sizeBeforeClear) . "\n";
+            }
             exit(0);
             
         case 'cache:stats':

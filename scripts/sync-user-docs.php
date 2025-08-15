@@ -12,13 +12,12 @@ class UserDocsSyncer
 {
     private string $rootPath;
     private array $syncMap = [
+        // Currently active documentation files only
         // Source in /docs/ => Destination in /user-docs/
-        'docs/DEVELOPMENT-SETUP.md' => 'user-docs/installation/development-setup.md',
-        'docs/GETTING-STARTED.md' => 'user-docs/development/getting-started.md',
-        'docs/ISOTONE-TECH-STACK.md' => 'user-docs/installation/tech-stack.md',
-        'docs/CONFIGURATION.md' => 'user-docs/configuration/config-guide.md',
-        'docs/DATABASE-CONNECTION.md' => 'user-docs/configuration/database.md',
-        'docs/API-REFERENCE.md' => 'user-docs/development/api-reference.md',
+        'docs/API-REFERENCE.md' => 'user-docs/api/api-reference.md',
+        'docs/COMMANDS.md' => 'user-docs/developers/commands.md',
+        'docs/PROJECT-STRUCTURE.md' => 'user-docs/developers/project-structure.md',
+        'docs/ROUTES.md' => 'user-docs/developers/routes.md',
     ];
     private array $synced = [];
     private array $errors = [];

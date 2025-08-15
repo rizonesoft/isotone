@@ -1,0 +1,148 @@
+/**
+ * Critical CSS for Admin Pages
+ * Inline these styles to prevent FOUC
+ */
+
+/* Base styles to prevent flash */
+html, body {
+    background-color: #111827;
+    color: #f9fafb;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+/* Hide Alpine.js elements until loaded */
+[x-cloak] { 
+    display: none !important; 
+}
+
+/* Prevent layout shift for sidebar */
+.admin-sidebar {
+    width: 16rem;
+    background-color: #1f2937;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    transition: width 0.3s ease;
+}
+
+.admin-sidebar.collapsed {
+    width: 4rem;
+}
+
+/* Main content area */
+.admin-main {
+    margin-left: 16rem;
+    transition: margin-left 0.3s ease;
+    background-color: #111827;
+    min-height: 100vh;
+}
+
+.admin-main.sidebar-collapsed {
+    margin-left: 4rem;
+}
+
+/* Top bar */
+.admin-topbar {
+    background-color: #1f2937;
+    border-bottom: 1px solid #374151;
+    height: 4rem;
+    position: sticky;
+    top: 0;
+    z-index: 40;
+}
+
+/* Card backgrounds */
+.bg-gray-800 {
+    background-color: #1f2937;
+}
+
+.bg-gray-900 {
+    background-color: #111827;
+}
+
+/* Border colors */
+.border-gray-700 {
+    border-color: #374151;
+}
+
+/* Text colors */
+.text-white {
+    color: #ffffff;
+}
+
+.text-gray-400 {
+    color: #9ca3af;
+}
+
+.text-cyan-400 {
+    color: #22d3ee;
+}
+
+/* Loading state */
+.admin-loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #111827;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s ease;
+}
+
+.admin-loading.loaded {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Spinner */
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #374151;
+    border-top-color: #00d9ff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Default button styles */
+.rounded-lg {
+    border-radius: 0.5rem;
+}
+
+.p-4 {
+    padding: 1rem;
+}
+
+.p-6 {
+    padding: 1.5rem;
+}
+
+/* Grid layout */
+.grid {
+    display: grid;
+}
+
+.gap-4 {
+    gap: 1rem;
+}
+
+/* Hide content until styles load */
+.admin-content {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.admin-content.ready {
+    opacity: 1;
+}

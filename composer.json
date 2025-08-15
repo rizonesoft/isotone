@@ -54,14 +54,16 @@
         "docs:check": "php scripts/check-docs.php",
         "docs:update": "php scripts/update-docs.php",
         "docs:sync": "php scripts/sync-user-docs.php",
-        "docs:hooks": "php scripts/generate-hooks-docs.php",
+        "docs:hooks": "php iso-automation/cli.php hooks:scan",
         "docs:all": [
             "@docs:update",
             "@docs:hooks",
             "@docs:check"
         ],
         "hooks:docs": "@docs:hooks",
+        "hooks:scan": "php iso-automation/cli.php hooks:scan",
         "ide:sync": "php scripts/sync-ide-rules.php",
+        "validate:rules": "php iso-automation/cli.php validate:rules",
         "version:patch": [
             "php isotone version:bump patch alpha",
             "php isotone changelog",
