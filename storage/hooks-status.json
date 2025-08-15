@@ -1,0 +1,37 @@
+{
+    "last_scan": "2025-08-14 23:36:42",
+    "stats": {
+        "files_scanned": 37,
+        "total_actions": 18,
+        "total_filters": 3,
+        "total_deprecated": 0
+    },
+    "categories": {
+        "Other": 13,
+        "Initialization": 1,
+        "Isotone Core": 7
+    },
+    "implemented_hooks": [
+        "test_action",
+        "priority_test",
+        "remove_test",
+        "current_test",
+        "after_setup_theme",
+        "init",
+        "iso_loaded",
+        "template_redirect",
+        "shutdown",
+        "iso_head",
+        "iso_footer",
+        "iso_body_open",
+        "iso_enqueue_scripts",
+        "isotone_head",
+        "isotone_before_content",
+        "isotone_after_content",
+        "isotone_footer",
+        "hello_isotone_loaded",
+        "test_filter",
+        "iso_enqueue_style",
+        "iso_enqueue_script"
+    ]
+}

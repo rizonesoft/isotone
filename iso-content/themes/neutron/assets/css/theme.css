@@ -1,0 +1,139 @@
+/**
+ * Neutron Theme - Custom Styles
+ * 
+ * Additional styles that complement Tailwind CSS
+ */
+
+/* Custom Properties */
+:root {
+    --neutron-primary: #00D9FF;
+    --neutron-secondary: #00FF88;
+    --neutron-dark: #0A0E27;
+    --neutron-gradient: linear-gradient(135deg, var(--neutron-primary) 0%, var(--neutron-secondary) 100%);
+}
+
+/* Dark mode custom properties */
+.dark {
+    --neutron-bg: #111827;
+    --neutron-surface: #1F2937;
+    --neutron-border: #374151;
+}
+
+/* Smooth transitions for dark mode */
+* {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+/* Typography improvements */
+body {
+    font-feature-settings: "cv11", "ss01";
+    font-variation-settings: "opsz" 32;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.dark ::-webkit-scrollbar-track {
+    background: #1F2937;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Gradient text utility */
+.gradient-text {
+    background: var(--neutron-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Glass morphism effect */
+.glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .glass {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Animated gradient background */
+.animated-gradient {
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Card hover effects */
+.card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Loading spinner */
+.spinner {
+    border: 3px solid rgba(0, 217, 255, 0.1);
+    border-top-color: var(--neutron-primary);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Focus styles */
+.focus-ring:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.5);
+}
+
+/* Selection color */
+::selection {
+    background-color: var(--neutron-primary);
+    color: white;
+}
+
+::-moz-selection {
+    background-color: var(--neutron-primary);
+    color: white;
+}

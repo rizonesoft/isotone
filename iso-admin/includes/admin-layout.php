@@ -69,14 +69,15 @@ $admin_menu = [
             ['title' => 'Plugin Editor', 'url' => '/isotone/iso-admin/plugin-editor.php']
         ]
     ],
-    'themes' => [
-        'title' => 'Themes',
+    'appearance' => [
+        'title' => 'Appearance',
         'icon' => 'color-swatch',
         'url' => '/isotone/iso-admin/themes.php',
         'submenu' => [
-            ['title' => 'Installed', 'url' => '/isotone/iso-admin/themes.php'],
-            ['title' => 'Add New', 'url' => '/isotone/iso-admin/theme-install.php'],
+            ['title' => 'Themes', 'url' => '/isotone/iso-admin/themes.php'],
             ['title' => 'Customize', 'url' => '/isotone/iso-admin/customize.php'],
+            ['title' => 'Widgets', 'url' => '/isotone/iso-admin/widgets.php'],
+            ['title' => 'Menus', 'url' => '/isotone/iso-admin/menus.php'],
             ['title' => 'Theme Editor', 'url' => '/isotone/iso-admin/theme-editor.php']
         ]
     ],

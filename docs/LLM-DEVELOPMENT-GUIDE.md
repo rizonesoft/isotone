@@ -7,7 +7,7 @@ This guide is specifically designed for Large Language Models (LLMs) like Claude
 **Isotone** is a lightweight PHP CMS designed for shared hosting. Key facts:
 - PHP 8.3+ with PSR standards
 - RedBeanPHP ORM (no migrations needed)
-- WordPress-like hooks/filters
+- WordPress-compatible hooks/filters with `iso_` prefix
 - Runs on XAMPP/shared hosting
 - No Node.js required in production
 
@@ -95,9 +95,11 @@ $this->routes->add('route_name', new Route('/path', [
    └── views/             # Templates
    ```
 
-2. **Use hooks pattern:**
+2. **Use hooks pattern with iso_ prefix for WP equivalents:**
    ```php
-   add_action('isotone_init', 'function_name');
+   add_action('init', 'function_name');           // Generic hook
+   add_action('iso_head', 'add_to_head');         // Not wp_head
+   add_action('iso_footer', 'add_to_footer');     // Not wp_footer
    add_filter('isotone_content', 'filter_function');
    ```
 
@@ -105,7 +107,7 @@ $this->routes->add('route_name', new Route('/path', [
 
 1. **Directory structure:**
    ```
-   themes/theme-name/
+   iso-content/themes/theme-name/
    ├── index.php         # Main template
    ├── style.css        # Theme info + styles
    ├── functions.php    # Theme functions
@@ -363,7 +365,7 @@ If you're unsure:
 
 1. **Check existing similar code** in the project
 2. **Look for patterns** in `app/Core/`
-3. **Follow WordPress conventions** for plugins/hooks
+3. **Follow WordPress conventions** for plugins/hooks but use `iso_` prefix for WP-equivalent hooks
 4. **Keep it simple** - this is lightweight CMS
 5. **Ask for clarification** rather than assume
 

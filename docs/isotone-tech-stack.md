@@ -223,7 +223,7 @@ themes/
 **Authentication:**
 - JWT tokens for stateless auth
 - API keys for server-to-server
-- WordPress-compatible endpoints for migration tools
+- WordPress-compatible endpoints for migration tools (with `iso_` prefix for hooks)
 
 ### Content Management
 

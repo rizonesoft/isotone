@@ -2,6 +2,15 @@
 
 This file provides guidance to Claude Code (claude.ai/code) and other LLMs when working with code in this repository.
 
+## 🚨 CRITICAL BRANDING RULE - NEVER FORGET!
+
+**ISOTONE IS THE PRODUCT NAME - NOT "ISOTONE CMS"**
+- ✅ ALWAYS write: "Isotone" 
+- ❌ NEVER write: "Isotone CMS"
+- The rebrand happened in v0.1.5-alpha - we are just "Isotone" now
+- This applies to ALL documentation, code comments, UI text, and communications
+- **VIOLATION**: Using "Isotone CMS" instead of "Isotone" is a critical error
+
 ## ⚠️ CRITICAL: This is an LLM-Driven Project
 
 **Isotone is primarily developed by AI assistants. Read the LLM-specific guides FIRST:**
@@ -109,6 +118,7 @@ Isotone is a lightweight PHP content management system in early development. It 
 - **XAMPP/shared hosting** - Must work on basic hosting
 - **PSR-12 standards** - Follow PHP-FIG standards
 - **Security first** - Use .htaccess to protect sensitive files/directories
+- **Hook Naming** - Use `iso_` prefix for WordPress-equivalent hooks (e.g., `iso_head` not `wp_head`)
 
 ## Current Project State
 
@@ -360,26 +370,34 @@ composer docs:check
 ## Current Implementation Files
 
 ### Core System
-- `app/Core/Application.php` - Main application class with routing
+- `app/Core/Application.php` - Main application class with routing and theme loading
+- `app/Core/ThemeAPI.php` - Native theme API with WordPress-compatible functions
 - `app/Services/DatabaseService.php` - Database connection management
+- `app/Services/ThemeService.php` - Theme management and activation
+- `app/Services/ContentService.php` - Content management (posts/pages)
+- `app/theme-functions.php` - Global template functions for themes
 - `app/helpers.php` - Global helper functions
+- `app/hooks.php` - Hook system with iso_ prefix
 - `index.php` - Front controller entry point (in root)
 - `install/index.php` - Installation wizard
 
 ### Configuration
-- `.env` - Environment variables (copy from .env.example)
+- `config.php` - Database and site configuration (copy from config.sample.php)
 - `composer.json` - PHP dependencies and autoloading
 
 ## Next Implementation Steps
 
 1. ~~Complete database integration with RedBeanPHP~~ ✅
 2. ~~Create installation wizard~~ ✅
-3. Implement hook/filter system for plugins
-4. Create basic admin authentication
-5. Build admin dashboard UI
-6. Develop theme system with template hierarchy
-7. Add REST API endpoints
-8. Create CLI tool for common tasks
+3. ~~Implement hook/filter system for plugins~~ ✅
+4. ~~Create basic admin authentication~~ ✅
+5. ~~Build admin dashboard UI~~ ✅
+6. ~~Develop theme system with template hierarchy~~ ✅
+7. ~~Implement native Theme API~~ ✅
+8. Complete content management system (posts/pages CRUD)
+9. Add media library functionality
+10. Add REST API endpoints
+11. Create CLI tool for common tasks
 
 ## 🤖 Quick LLM Task Reference
 
@@ -404,7 +422,23 @@ composer docs:check
 
 **Add a plugin:**
 - Create in `iso-content/plugins/[plugin-name]/`
-- Use WordPress-style hooks
+- Use WordPress-style hooks with `iso_` prefix for WP equivalents
+- No npm/build required
+
+**Add a theme:**
+- Create in `iso-content/themes/[theme-name]/`
+- Include style.css with theme header
+- Use template hierarchy system
+- No npm/build required
+
+**Work with hooks:**
+- Use `add_action()` and `add_filter()` (WordPress-compatible)
+- Use `iso_` prefix for WordPress-equivalent hooks:
+  - `iso_head` instead of `wp_head`
+  - `iso_footer` instead of `wp_footer`
+  - `iso_enqueue_scripts` instead of `wp_enqueue_scripts`
+  - `iso_ajax_{action}` instead of `wp_ajax_{action}`
+- See `/HOOKS.md` for complete hook reference
 
 **Save a note or reminder:**
 - Add to `NOTES.md` under appropriate section

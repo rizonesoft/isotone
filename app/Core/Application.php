@@ -19,6 +19,8 @@ use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Isotone\Core\Version;
 use Isotone\Services\DatabaseService;
+use Isotone\Services\ThemeService;
+use Isotone\Core\Hook;
 
 class Application
 {
@@ -101,34 +103,123 @@ class Application
     
     private function handleHome(Request $request): Response
     {
-        // Check if themes are installed
-        $themesDir = $this->basePath . '/themes';
-        $hasThemes = false;
+        // Initialize database if not already done
+        DatabaseService::initialize();
         
-        if (is_dir($themesDir)) {
-            $themeDirs = array_diff(scandir($themesDir), ['.', '..']);
-            foreach ($themeDirs as $dir) {
-                if (is_dir($themesDir . '/' . $dir)) {
-                    $hasThemes = true;
-                    break;
-                }
+        // Load hooks system
+        if (file_exists($this->basePath . '/app/hooks.php')) {
+            require_once $this->basePath . '/app/hooks.php';
+        }
+        
+        // Load theme functions API
+        if (file_exists($this->basePath . '/app/theme-functions.php')) {
+            require_once $this->basePath . '/app/theme-functions.php';
+        }
+        
+        // Initialize theme service
+        $themeService = new ThemeService();
+        $activeTheme = $themeService->getActiveTheme();
+        
+        if ($activeTheme) {
+            // Load theme
+            return $this->loadTheme($activeTheme, $request);
+        } else {
+            // No active theme - show landing page
+            ob_start();
+            include $this->basePath . '/iso-includes/landing-page.php';
+            $html = ob_get_clean();
+            return new Response($html);
+        }
+    }
+    
+    /**
+     * Load and render active theme
+     */
+    private function loadTheme(array $themeInfo, Request $request): Response
+    {
+        $themePath = $themeInfo['path'];
+        
+        // Load theme functions.php if exists
+        $functionsFile = $themePath . '/functions.php';
+        if (file_exists($functionsFile)) {
+            require_once $functionsFile;
+        }
+        
+        // Fire theme initialization hooks
+        if (function_exists('do_action')) {
+            do_action('after_setup_theme');
+            do_action('init');
+            do_action('iso_loaded');
+        }
+        
+        // Check for theme compatibility file
+        $compatFile = $themePath . '/compat.php';
+        if (file_exists($compatFile)) {
+            require_once $compatFile;
+        }
+        
+        // Determine which template to load
+        $template = $this->getTemplate($themePath, $request);
+        
+        if (!file_exists($template)) {
+            // Fallback to index.php
+            $template = $themePath . '/index.php';
+        }
+        
+        // Start output buffering
+        ob_start();
+        
+        // Set up global variables for theme
+        global $isotone_theme, $isotone_request;
+        $isotone_theme = $themeInfo;
+        $isotone_request = $request;
+        
+        // Fire template redirect hook
+        if (function_exists('do_action')) {
+            do_action('template_redirect');
+        }
+        
+        // Include the template
+        if (file_exists($template)) {
+            include $template;
+        } else {
+            echo '<h1>Theme template not found</h1>';
+            echo '<p>The active theme is missing required template files.</p>';
+        }
+        
+        $html = ob_get_clean();
+        
+        // Fire shutdown hooks
+        if (function_exists('do_action')) {
+            do_action('shutdown');
+        }
+        
+        return new Response($html);
+    }
+    
+    /**
+     * Determine which template file to use
+     */
+    private function getTemplate(string $themePath, Request $request): string
+    {
+        $pathInfo = $request->getPathInfo();
+        
+        // Remove /isotone from path if present
+        $pathInfo = preg_replace('#^/isotone#', '', $pathInfo);
+        
+        // Template hierarchy (simplified for now)
+        if ($pathInfo === '/' || $pathInfo === '') {
+            // Check for front-page.php, home.php, then index.php
+            if (file_exists($themePath . '/front-page.php')) {
+                return $themePath . '/front-page.php';
+            }
+            if (file_exists($themePath . '/home.php')) {
+                return $themePath . '/home.php';
             }
         }
         
-        if ($hasThemes) {
-            // TODO: Load active theme here
-            // For now, show landing page
-            ob_start();
-            include $this->basePath . '/iso-includes/landing-page.php';
-            $html = ob_get_clean();
-            return new Response($html);
-        } else {
-            // No themes - show landing page
-            ob_start();
-            include $this->basePath . '/iso-includes/landing-page.php';
-            $html = ob_get_clean();
-            return new Response($html);
-        }
+        // Default to index.php
+        return $themePath . '/index.php';
     }
     
     private function getBaseUrl(Request $request): string

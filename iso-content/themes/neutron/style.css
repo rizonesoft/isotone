@@ -1,0 +1,17 @@
+/*
+Theme Name: Neutron
+Theme URI: https://isotone.tech/themes/neutron
+Author: Isotone Team
+Author URI: https://isotone.tech
+Description: A modern, clean theme for Isotone featuring Tailwind CSS and Heroicons. Neutron provides a responsive, accessible design with dark mode support and extensive customization options.
+Version: 1.0.0
+License: MIT
+License URI: https://opensource.org/licenses/MIT
+Text Domain: neutron
+Tags: responsive, dark-mode, modern, tailwind, heroicons, blog, portfolio
+*/
+
+/* 
+ * This file serves as the theme header for WordPress-style theme detection.
+ * All actual styles are loaded via Tailwind CSS CDN in the theme templates.
+ */

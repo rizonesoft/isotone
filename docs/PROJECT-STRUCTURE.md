@@ -1,6 +1,6 @@
 # Isotone Project Structure
 
-*Auto-generated on 2025-08-14 21:54:42*
+*Auto-generated on 2025-08-14 23:06:36*
 
 ## Project Structure
 
@@ -16,15 +16,18 @@
 CHANGELOG.md
 CLAUDE.md
 CONTRIBUTING.md
+HOOKS.md
 NOTES.md
 README.md
 app/
   Commands/
     ChangelogCommand.php
     DatabaseCommand.php
+    HooksCommand.php
     VersionCommand.php
   Core/
     Application.php
+    Hook.php
     Migration.php
     Version.php
   Http/
@@ -33,7 +36,9 @@ app/
   Models/
   Services/
     DatabaseService.php
+    ThemeService.php
   helpers.php
+  hooks.php
 composer.json
 config/
   theme.php
@@ -56,12 +61,15 @@ docs/
   ENVIRONMENT-VARIABLES.md
   GETTING-STARTED.md
   GITHUB-SETUP.md
+  HOOK-NAMING-CONVENTIONS.md
   ISOTONE-TECH-STACK.md
   LLM-CONFIG-RULES.md
   LLM-DEVELOPMENT-GUIDE.md
+  PLUGIN-DEVELOPER-GUIDE.md
   PROJECT-STRUCTURE.md
   PROMPT-ENGINEERING-GUIDE.md
   ROUTES.md
+  THEME-DEVELOPER-GUIDE.md
   VERSION-MANAGEMENT.md
 index.php
 install/
@@ -79,6 +87,7 @@ iso-admin/
   index.php
   login.php
   logout.php
+  themes.php
   user-edit.php
   users.php
 iso-content/
@@ -87,6 +96,7 @@ iso-content/
     hello-isotone/
   themes/
     isotone-default/
+    neutron/
   uploads/
 iso-includes/
   assets/
@@ -103,10 +113,13 @@ iso-runtime/
 scripts/
   README.md
   check-docs.php
+  generate-hooks-docs.php
   sync-ide-rules.php
   sync-user-docs.php
   update-docs.php
 setup/
+storage/
+  hooks-status.json
 user-docs/
   README.md
   SYNC-NOTE.md

@@ -33,7 +33,8 @@
             "Isotone\\": "app/"
         },
         "files": [
-            "app/helpers.php"
+            "app/helpers.php",
+            "app/hooks.php"
         ]
     },
     "autoload-dev": {
@@ -51,10 +52,13 @@
         "docs:check": "php scripts/check-docs.php",
         "docs:update": "php scripts/update-docs.php",
         "docs:sync": "php scripts/sync-user-docs.php",
+        "docs:hooks": "php scripts/generate-hooks-docs.php",
         "docs:all": [
             "@docs:update",
+            "@docs:hooks",
             "@docs:check"
         ],
+        "hooks:docs": "@docs:hooks",
         "ide:sync": "php scripts/sync-ide-rules.php",
         "version:patch": [
             "php isotone version:bump patch alpha",

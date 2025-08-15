@@ -19,7 +19,7 @@ Isotone is a lightweight, modern PHP CMS designed for:
 ### Core Concepts
 
 1. **MVC Architecture** - Separation of concerns
-2. **Hook System** - WordPress-like actions and filters
+2. **Hook System** - WordPress-compatible actions and filters with `iso_` prefix
 3. **ORM-based** - RedBeanPHP for database abstraction
 4. **PSR Standards** - Modern PHP practices
 5. **Environment-based Config** - Using .env files
@@ -190,12 +190,17 @@ iso-content/plugins/
 namespace MyPlugin;
 
 // Hook into Isotone
-add_action('isotone_init', function() {
+add_action('init', function() {
     // Plugin initialization code
 });
 
+// Use Isotone-specific hooks with iso_ prefix
+add_action('iso_head', function() {
+    echo '<meta name="generator" content="My Plugin">';
+});
+
 // Add a filter
-add_filter('isotone_content', function($content) {
+add_filter('the_content', function($content) {
     return $content . '<p>Added by plugin!</p>';
 });
 ```
@@ -325,11 +330,13 @@ JWT_SECRET=another_generated_key
 
 ```php
 add_action('admin_menu', function() {
-    add_menu_item([
-        'title' => 'My Page',
-        'url' => '/my-page',
-        'icon' => 'dashboard'
-    ]);
+    add_menu_page(
+        'My Page',           // Page title
+        'My Page',           // Menu title
+        'manage_options',    // Capability
+        'my-page',          // Menu slug
+        'my_page_callback'  // Callback function
+    );
 });
 ```
 

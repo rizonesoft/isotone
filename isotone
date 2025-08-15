@@ -25,6 +25,7 @@ if (file_exists(__DIR__ . '/.env')) {
 use Isotone\Commands\VersionCommand;
 use Isotone\Commands\ChangelogCommand;
 use Isotone\Commands\DatabaseCommand;
+use Isotone\Commands\HooksCommand;
 use Isotone\Core\Version;
 
 // Parse command
@@ -60,6 +61,11 @@ function showHelp(): void
     echo "  migrate          Run database migrations\n";
     echo "  migrate:status   Check migration status\n";
     echo "  migrate:rollback Rollback last migration batch\n";
+    echo "  hooks:scan       Scan codebase for hook usage\n";
+    echo "  hooks:docs       Generate hook documentation\n";
+    echo "  hooks:validate   Validate hook implementation\n";
+    echo "  hooks:list       List all registered hooks\n";
+    echo "  hooks:test       Test hook system\n";
     echo "  help             Show this help message\n";
     echo "\n";
     echo "Version bump usage:\n";
@@ -175,6 +181,31 @@ try {
             
         case 'migrate:rollback':
             echo "Migration rollback will be implemented soon.\n";
+            break;
+            
+        case 'hooks:scan':
+            $hooksCmd = new HooksCommand();
+            $hooksCmd->scan();
+            break;
+            
+        case 'hooks:docs':
+            $hooksCmd = new HooksCommand();
+            $hooksCmd->docs();
+            break;
+            
+        case 'hooks:validate':
+            $hooksCmd = new HooksCommand();
+            $hooksCmd->validate();
+            break;
+            
+        case 'hooks:list':
+            $hooksCmd = new HooksCommand();
+            $hooksCmd->list();
+            break;
+            
+        case 'hooks:test':
+            $hooksCmd = new HooksCommand();
+            $hooksCmd->test();
             break;
             
         case 'help':

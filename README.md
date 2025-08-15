@@ -20,7 +20,13 @@ In physics, isotonic means "equal tension"—and that's exactly what Isotone aim
 - **Composer Integration** - Modern PHP dependency management
 - **PSR-12 Compliant** - Clean, standardized code structure
 - **Database Integration** - RedBeanPHP ORM (no migrations needed)
-- **Plugin System** - WordPress-like hooks (add_action, add_filter)
+- **Plugin System** - WordPress-compatible hooks with `iso_` prefix (add_action, add_filter)
+- **Native Theme API** - Complete theming system with WordPress-compatible functions
+  - Template functions (bloginfo, home_url, get_template_directory_uri)
+  - Content loop system (have_posts, the_post, the_title, the_content)
+  - Conditional tags (is_home, is_single, is_page, is_archive)
+  - Template hierarchy and part loading
+  - Theme customization API (theme mods)
 - **Authentication System** - User login with role-based permissions
 - **Modern Admin Interface** - Responsive dashboard with collapsible sidebar
   - Collapsible sidebar with submenus for all sections
@@ -33,9 +39,9 @@ In physics, isotonic means "equal tension"—and that's exactly what Isotone aim
   - Chart.js integration for analytics visualization
 
 ### 🚧 In Development
-- **Content Management** - Posts and pages system
+- **Content Management** - Full posts and pages system with database storage
 - **Media Library** - File upload and management
-- **Theme System** - Customizable frontend themes
+- **Admin Post Editor** - Create and edit content from admin panel
 
 ### 📋 Planned Features
 
@@ -94,7 +100,7 @@ For detailed requirements and technology stack, see [Technology Stack Documentat
    ```
    - Create database in phpMyAdmin (e.g., `isotone_db`)
    - Update `DB_NAME`, `DB_USER`, `DB_PASSWORD` in config.php
-   - Configuration follows standard PHP CMS pattern (like WordPress)
+   - Configuration follows standard PHP CMS pattern
 
 4. **Run installation wizard**
    ```

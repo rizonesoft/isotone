@@ -1,61 +1,99 @@
-# Isotone Documentation
+# Isotone User Documentation
 
-Welcome to the Isotone documentation! This guide is organized for easy navigation.
+This directory contains user-facing documentation for the Isotone CMS.
 
 ## 📚 Documentation Structure
 
-> **Note:** Some documentation is duplicated from `/docs/` for better organization. The primary source files are maintained in `/docs/` for LLM compatibility. If you find discrepancies, the `/docs/` version is authoritative.
+```
+user-docs/
+├── index.md                    # Documentation home
+├── getting-started/            # Installation and setup
+│   ├── installation.md
+│   ├── configuration.md
+│   └── first-steps.md
+├── developers/                 # Developer documentation
+│   ├── themes.md              # Theme development
+│   ├── plugins.md             # Plugin development
+│   ├── hooks.md               # Hooks reference
+│   └── template-functions.md  # Template functions
+├── api/                       # API documentation
+│   ├── theme-api.md
+│   ├── content-api.md
+│   ├── models.md
+│   └── rest.md
+├── guide/                     # User guides
+│   ├── admin.md
+│   ├── content.md
+│   ├── themes.md
+│   └── plugins.md
+└── .vitepress/               # Static site generator config
+    └── config.js
 
-### [Installation](installation/)
-- [System Requirements](installation/requirements.md)
-- [Quick Start Guide](installation/quick-start.md)
-- [Development Setup](installation/development-setup.md)
-- [Production Deployment](installation/production.md)
+```
 
-### [Configuration](configuration/)
-- [Configuration Guide](configuration/config-guide.md)
-- [Database Setup](configuration/database.md)
-- [Security Settings](configuration/security.md)
+## 🚀 Viewing Documentation
 
-### [Development](development/)
-- [Getting Started](development/getting-started.md)
-- [Plugin Development](development/plugins.md)
-- [Theme Development](development/themes.md)
-- [API Reference](development/api-reference.md)
+### Local Development
+The documentation can be viewed directly as Markdown files or served using a static site generator.
 
-### [User Guides](guides/)
-- [Admin Panel](guides/admin-panel.md)
-- [Content Management](guides/content-management.md)
-- [Media Library](guides/media-library.md)
-- [User Management](guides/users.md)
+### Using VitePress (Recommended)
+```bash
+# Install VitePress
+npm install -D vitepress
 
-### [API Documentation](api/)
-- [REST API](api/rest-api.md)
-- [Hooks & Filters](api/hooks.md)
-- [Database Models](api/models.md)
+# Start dev server
+npx vitepress dev user-docs
 
-## 🚀 Quick Links
+# Build static site
+npx vitepress build user-docs
+```
 
-- **First Time?** Start with the [Quick Start Guide](installation/quick-start.md)
-- **Developers:** Check out [Getting Started](development/getting-started.md)
-- **API Users:** See the [REST API Documentation](api/rest-api.md)
+### Using MkDocs
+```bash
+# Install MkDocs
+pip install mkdocs
 
-## 📖 About This Documentation
+# Start dev server
+mkdocs serve
 
-This documentation is intended for:
-- **Site Administrators** - Managing Isotone installations
-- **Developers** - Building plugins, themes, and extensions
-- **API Consumers** - Integrating with Isotone's REST API
-- **Contributors** - Helping improve Isotone
+# Build static site
+mkdocs build
+```
 
-## 🔍 Looking for Something Else?
+### Using Docusaurus
+```bash
+# Install Docusaurus
+npm init docusaurus
 
-- **Technical Architecture:** See [Technology Stack](installation/tech-stack.md)
-- **Contributing:** Check [CONTRIBUTING.md](../CONTRIBUTING.md)
-- **Changelog:** View [CHANGELOG.md](../CHANGELOG.md)
+# Start dev server
+npm start
 
-## 📝 Documentation Version
+# Build static site
+npm run build
+```
 
-This documentation is for **Isotone v0.1.2-alpha**
+## 📝 Documentation Guidelines
 
-Last updated: January 2025
+1. **Keep it Simple**: Write clear, concise documentation
+2. **Use Examples**: Include code examples where relevant
+3. **Stay Organized**: Follow the established structure
+4. **Update Regularly**: Keep docs in sync with code changes
+5. **Test Code**: Ensure all code examples work
+
+## 🔄 Auto-generated Files
+
+Some files are automatically generated:
+- `development/api-reference.md` - Generated from hooks implementation
+- Hook documentation is generated via `composer docs:hooks`
+
+## 🎯 Future Plans
+
+- Deploy to GitHub Pages or Netlify
+- Add search functionality
+- Include video tutorials
+- Multi-language support
+- Interactive examples
+
+## 📄 License
+
+Documentation is licensed under CC BY 4.0. Code examples are MIT licensed.

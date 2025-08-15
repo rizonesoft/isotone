@@ -32,6 +32,7 @@ class DocUpdater
         $this->updateComposerCommands();
         $this->updateFeatureStatus();
         $this->generateApiDocumentation();
+        $this->updateHooksDocumentation();
         
         $this->report();
         
@@ -336,6 +337,34 @@ class DocUpdater
         $content = preg_replace($pattern, $newContent . "\n\n" . $endMarker, $content);
         
         file_put_contents($fullPath, $content);
+    }
+    
+    /**
+     * Update hooks documentation from code
+     */
+    private function updateHooksDocumentation(): void
+    {
+        echo "Updating hooks documentation...\n";
+        
+        // Run the hooks documentation generator
+        $output = [];
+        $returnCode = 0;
+        exec('php ' . $this->rootPath . '/scripts/generate-hooks-docs.php', $output, $returnCode);
+        
+        if ($returnCode === 0) {
+            $this->updates[] = "HOOKS.md - Updated with discovered hooks";
+            $this->updates[] = "user-docs/development/api-reference.md - Generated API reference";
+            
+            // Check if there are any output messages we should show
+            foreach ($output as $line) {
+                if (strpos($line, 'Actions found:') !== false || 
+                    strpos($line, 'Filters found:') !== false) {
+                    echo "  → $line\n";
+                }
+            }
+        } else {
+            echo "⚠️  Warning: Hooks documentation update failed\n";
+        }
     }
     
     /**
