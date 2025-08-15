@@ -315,6 +315,62 @@ llm_instructions:
     context: ["setup", "configuration", "install"]
     description: "Configuration system rules and setup"
     critical_note: "⚠️ Isotone uses config.php NOT .env files - This is by design for shared hosting compatibility"
+    
+    llm_config_rules:
+      absolute_requirements:
+        - "NEVER create or reference .env files"
+        - "NEVER use $_ENV or getenv() functions"
+        - "NEVER suggest vlucas/phpdotenv package"
+        - "ALWAYS use config.php for all configuration"
+        - "ALWAYS reference PHP constants (DB_NAME, etc.)"
+      
+      correct_responses:
+        database_setup: |
+          cp config.sample.php config.php
+          # Edit config.php with your database credentials
+        
+        reading_config: |
+          // Use PHP constants
+          $dbName = DB_NAME;
+          $dbHost = DB_HOST;
+          $debug = DEBUG_MODE;
+      
+      incorrect_responses:
+        never_suggest:
+          - "cp .env.example .env"
+          - "$_ENV['DB_NAME']"
+          - "getenv('DB_HOST')"
+          - "composer require vlucas/phpdotenv"
+      
+      file_locations:
+        correct:
+          - "/config.php - Main configuration (git-ignored)"
+          - "/config.sample.php - Template file (tracked)"
+        incorrect:
+          - "/.env - Does NOT exist"
+          - "/.env.example - Does NOT exist"
+          - "/config/.env - Does NOT exist"
+      
+      user_interaction_templates:
+        how_to_configure: |
+          To configure your database:
+          1. Copy the configuration template:
+             cp config.sample.php config.php
+          2. Edit config.php and update:
+             - DB_HOST: Your database server (usually 'localhost')
+             - DB_NAME: Your database name
+             - DB_USER: Your database username
+             - DB_PASSWORD: Your database password
+          3. Save the file and the installation wizard will connect.
+        
+        where_is_env: |
+          Isotone doesn't use .env files. Configuration is done through 
+          config.php in the root directory, similar to WordPress's wp-config.php.
+        
+        environment_variables: |
+          Isotone uses config.php for all configuration, not environment 
+          variables. This approach is more reliable on shared hosting.
+          Edit the constants in config.php instead.
     setup_workflow:
       - "Copy config.sample.php to config.php"
       - "Edit database credentials"
