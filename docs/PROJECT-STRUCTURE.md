@@ -1,6 +1,6 @@
 # Isotone Project Structure
 
-*Auto-generated on 2025-08-15 13:28:28*
+*Auto-generated on 2025-08-15 21:08:22*
 
 ## Project Structure
 
@@ -15,7 +15,6 @@
 CHANGELOG.md
 CLAUDE.md
 CONTRIBUTING.md
-HOOKS.md
 NOTES.md
 README.md
 app/
@@ -28,6 +27,7 @@ app/
     Application.php
     Hook.php
     Migration.php
+    SystemHooks.php
     ThemeAPI.php
     Version.php
   Http/
@@ -90,6 +90,7 @@ iso-admin/
   automation.php
   css/
   dashboard-new.php
+  hooks-explorer.php
   includes/
     admin-header.php
     admin-layout.php
@@ -141,6 +142,8 @@ scripts/
   update-docs.php
 setup/
 storage/
+  hook-stats.json
+  hooks-implementation.json
   hooks-status.json
 user-docs/
   .vitepress/

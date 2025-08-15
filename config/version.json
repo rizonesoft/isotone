@@ -1,8 +1,8 @@
 {
-    "current": "0.1.5-alpha",
+    "current": "0.1.6-alpha",
     "schema": "1.0.0",
     "codename": "Genesis",
-    "release_date": "2025-08-14",
+    "release_date": "2025-08-15",
     "history": [
         {
             "version": "0.1.0-alpha",
@@ -120,6 +120,14 @@
                 "Landing page now uses body.iso-landing instead of body.iso-app class"
             ],
             "from_version": "0.1.4-alpha"
+        },
+        {
+            "version": "0.1.6-alpha",
+            "date": "2025-08-15",
+            "codename": "Genesis",
+            "features": [],
+            "breaking_changes": [],
+            "from_version": "0.1.5-alpha"
         }
     ]
 }
