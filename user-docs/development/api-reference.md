@@ -1,6 +1,6 @@
 # Isotone Hooks API Reference
 
-> Auto-generated: 2025-08-16 23:42:43
+> Auto-generated: 2025-08-16 22:01:56
 
 ## Overview
 
@@ -16,7 +16,7 @@ add_action('test_action', 'your_callback_function', 10, 1);
 ```
 
 **Fired in:**
-- `app\Commands\HooksCommand.php:283`
+- `app/Commands/HooksCommand.php:283`
 
 ### `priority_test`
 
@@ -26,7 +26,7 @@ add_action('priority_test', 'your_callback_function', 10, 1);
 ```
 
 **Fired in:**
-- `app\Commands\HooksCommand.php:319`
+- `app/Commands/HooksCommand.php:319`
 
 ### `remove_test`
 
@@ -36,7 +36,7 @@ add_action('remove_test', 'your_callback_function', 10, 1);
 ```
 
 **Fired in:**
-- `app\Commands\HooksCommand.php:335`
+- `app/Commands/HooksCommand.php:335`
 
 ### `current_test`
 
@@ -46,7 +46,7 @@ add_action('current_test', 'your_callback_function', 10, 1);
 ```
 
 **Fired in:**
-- `app\Commands\HooksCommand.php:349`
+- `app/Commands/HooksCommand.php:349`
 
 ### `after_setup_theme`
 
@@ -60,8 +60,8 @@ add_action('after_setup_theme', 'your_callback_function', 10, 1);
 ```
 
 **Fired in:**
-- `app\Core\Application.php:150`
-- `iso-admin\hooks-explorer.php:52`
+- `app/Core/Application.php:150`
+- `iso-admin/hooks-explorer.php:52`
 
 ### `init`
 
@@ -75,8 +75,8 @@ add_action('init', 'your_callback_function', 10, 1);
 ```
 
 **Fired in:**
-- `app\Core\Application.php:151`
-- `iso-admin\hooks-explorer.php:53`
+- `app/Core/Application.php:151`
+- `iso-admin/hooks-explorer.php:53`
 
 ### `iso_loaded`
 
@@ -90,7 +90,7 @@ add_action('iso_loaded', 'your_callback_function', 10, 1);
 ```
 
 **Fired in:**
-- `app\Core\Application.php:152`
+- `app/Core/Application.php:152`
 
 ### `template_redirect`
 
@@ -104,7 +104,7 @@ add_action('template_redirect', 'your_callback_function', 10, 1);
 ```
 
 **Fired in:**
-- `app\Core\Application.php:179`
+- `app/Core/Application.php:179`
 
 ### `shutdown`
 
@@ -118,7 +118,7 @@ add_action('shutdown', 'your_callback_function', 10, 1);
 ```
 
 **Fired in:**
-- `app\Core\Application.php:194`
+- `app/Core/Application.php:194`
 
 ### `iso_head`
 
@@ -132,7 +132,7 @@ add_action('iso_head', 'your_callback_function', 10, 1);
 ```
 
 **Fired in:**
-- `app\hooks.php:356`
+- `app/hooks.php:356`
 
 ### `iso_footer`
 
@@ -146,7 +146,7 @@ add_action('iso_footer', 'your_callback_function', 10, 1);
 ```
 
 **Fired in:**
-- `app\hooks.php:369`
+- `app/hooks.php:369`
 
 ### `iso_body_open`
 
@@ -160,8 +160,8 @@ add_action('iso_body_open', 'your_callback_function', 10, 1);
 ```
 
 **Fired in:**
-- `app\hooks.php:382`
-- `iso-content/themes\neutron\compat.php:24`
+- `app/hooks.php:382`
+- `iso-content/themes/neutron/compat.php:24`
 
 ### `iso_enqueue_scripts`
 
@@ -175,8 +175,8 @@ add_action('iso_enqueue_scripts', 'your_callback_function', 10, 1);
 ```
 
 **Fired in:**
-- `app\hooks.php:395`
-- `iso-admin\hooks-explorer.php:55`
+- `app/hooks.php:395`
+- `iso-admin/hooks-explorer.php:55`
 
 ### `widgets_init`
 
@@ -190,7 +190,7 @@ add_action('widgets_init', 'your_callback_function', 10, 1);
 ```
 
 **Fired in:**
-- `iso-admin\hooks-explorer.php:54`
+- `iso-admin/hooks-explorer.php:54`
 
 ### `isotone_head`
 
@@ -200,7 +200,7 @@ add_action('isotone_head', 'your_callback_function', 10, 1);
 ```
 
 **Fired in:**
-- `iso-content/themes\isotone-default\index.php:20`
+- `iso-content/themes/isotone-default/index.php:20`
 
 ### `isotone_before_content`
 
@@ -210,7 +210,7 @@ add_action('isotone_before_content', 'your_callback_function', 10, 1);
 ```
 
 **Fired in:**
-- `iso-content/themes\isotone-default\index.php:39`
+- `iso-content/themes/isotone-default/index.php:39`
 
 ### `isotone_after_content`
 
@@ -220,7 +220,7 @@ add_action('isotone_after_content', 'your_callback_function', 10, 1);
 ```
 
 **Fired in:**
-- `iso-content/themes\isotone-default\index.php:57`
+- `iso-content/themes/isotone-default/index.php:57`
 
 ### `isotone_footer`
 
@@ -230,7 +230,7 @@ add_action('isotone_footer', 'your_callback_function', 10, 1);
 ```
 
 **Fired in:**
-- `iso-content/themes\isotone-default\index.php:69`
+- `iso-content/themes/isotone-default/index.php:69`
 
 ### `hello_isotone_loaded`
 
@@ -240,7 +240,7 @@ add_action('hello_isotone_loaded', 'your_callback_function', 10, 1);
 ```
 
 **Fired in:**
-- `iso-content/plugins\hello-isotone\hello-isotone.php:139`
+- `iso-content/plugins/hello-isotone/hello-isotone.php:139`
 
 ## Filters
 
@@ -252,7 +252,7 @@ add_filter('test_filter', 'your_filter_function', 10, 1);
 ```
 
 **Applied in:**
-- `app\Commands\HooksCommand.php:295`
+- `app/Commands/HooksCommand.php:295`
 
 ### `iso_enqueue_style`
 
@@ -266,7 +266,7 @@ add_filter('iso_enqueue_style', 'your_filter_function', 10, 1);
 ```
 
 **Applied in:**
-- `app\hooks.php:413`
+- `app/hooks.php:413`
 
 ### `iso_enqueue_script`
 
@@ -280,5 +280,5 @@ add_filter('iso_enqueue_script', 'your_filter_function', 10, 1);
 ```
 
 **Applied in:**
-- `app\hooks.php:444`
+- `app/hooks.php:444`
 

@@ -1,5 +1,5 @@
 {
-    "generated": "2025-08-16 23:42:43",
+    "generated": "2025-08-16 22:01:56",
     "stats": {
         "files_scanned": 41,
         "hooks_found": 22,
@@ -11,131 +11,131 @@
         "actions": {
             "test_action": [
                 {
-                    "file": "app\\Commands\\HooksCommand.php",
+                    "file": "app\/Commands\/HooksCommand.php",
                     "line": 283
                 }
             ],
             "priority_test": [
                 {
-                    "file": "app\\Commands\\HooksCommand.php",
+                    "file": "app\/Commands\/HooksCommand.php",
                     "line": 319
                 }
             ],
             "remove_test": [
                 {
-                    "file": "app\\Commands\\HooksCommand.php",
+                    "file": "app\/Commands\/HooksCommand.php",
                     "line": 335
                 }
             ],
             "current_test": [
                 {
-                    "file": "app\\Commands\\HooksCommand.php",
+                    "file": "app\/Commands\/HooksCommand.php",
                     "line": 349
                 }
             ],
             "after_setup_theme": [
                 {
-                    "file": "app\\Core\\Application.php",
+                    "file": "app\/Core\/Application.php",
                     "line": 150
                 },
                 {
-                    "file": "iso-admin\\hooks-explorer.php",
+                    "file": "iso-admin\/hooks-explorer.php",
                     "line": 52
                 }
             ],
             "init": [
                 {
-                    "file": "app\\Core\\Application.php",
+                    "file": "app\/Core\/Application.php",
                     "line": 151
                 },
                 {
-                    "file": "iso-admin\\hooks-explorer.php",
+                    "file": "iso-admin\/hooks-explorer.php",
                     "line": 53
                 }
             ],
             "iso_loaded": [
                 {
-                    "file": "app\\Core\\Application.php",
+                    "file": "app\/Core\/Application.php",
                     "line": 152
                 }
             ],
             "template_redirect": [
                 {
-                    "file": "app\\Core\\Application.php",
+                    "file": "app\/Core\/Application.php",
                     "line": 179
                 }
             ],
             "shutdown": [
                 {
-                    "file": "app\\Core\\Application.php",
+                    "file": "app\/Core\/Application.php",
                     "line": 194
                 }
             ],
             "iso_head": [
                 {
-                    "file": "app\\hooks.php",
+                    "file": "app\/hooks.php",
                     "line": 356
                 }
             ],
             "iso_footer": [
                 {
-                    "file": "app\\hooks.php",
+                    "file": "app\/hooks.php",
                     "line": 369
                 }
             ],
             "iso_body_open": [
                 {
-                    "file": "app\\hooks.php",
+                    "file": "app\/hooks.php",
                     "line": 382
                 },
                 {
-                    "file": "iso-content\/themes\\neutron\\compat.php",
+                    "file": "iso-content\/themes\/neutron\/compat.php",
                     "line": 24
                 }
             ],
             "iso_enqueue_scripts": [
                 {
-                    "file": "app\\hooks.php",
+                    "file": "app\/hooks.php",
                     "line": 395
                 },
                 {
-                    "file": "iso-admin\\hooks-explorer.php",
+                    "file": "iso-admin\/hooks-explorer.php",
                     "line": 55
                 }
             ],
             "widgets_init": [
                 {
-                    "file": "iso-admin\\hooks-explorer.php",
+                    "file": "iso-admin\/hooks-explorer.php",
                     "line": 54
                 }
             ],
             "isotone_head": [
                 {
-                    "file": "iso-content\/themes\\isotone-default\\index.php",
+                    "file": "iso-content\/themes\/isotone-default\/index.php",
                     "line": 20
                 }
             ],
             "isotone_before_content": [
                 {
-                    "file": "iso-content\/themes\\isotone-default\\index.php",
+                    "file": "iso-content\/themes\/isotone-default\/index.php",
                     "line": 39
                 }
             ],
             "isotone_after_content": [
                 {
-                    "file": "iso-content\/themes\\isotone-default\\index.php",
+                    "file": "iso-content\/themes\/isotone-default\/index.php",
                     "line": 57
                 }
             ],
             "isotone_footer": [
                 {
-                    "file": "iso-content\/themes\\isotone-default\\index.php",
+                    "file": "iso-content\/themes\/isotone-default\/index.php",
                     "line": 69
                 }
             ],
             "hello_isotone_loaded": [
                 {
-                    "file": "iso-content\/plugins\\hello-isotone\\hello-isotone.php",
+                    "file": "iso-content\/plugins\/hello-isotone\/hello-isotone.php",
                     "line": 139
                 }
             ]
@@ -143,19 +143,19 @@
         "filters": {
             "test_filter": [
                 {
-                    "file": "app\\Commands\\HooksCommand.php",
+                    "file": "app\/Commands\/HooksCommand.php",
                     "line": 295
                 }
             ],
             "iso_enqueue_style": [
                 {
-                    "file": "app\\hooks.php",
+                    "file": "app\/hooks.php",
                     "line": 413
                 }
             ],
             "iso_enqueue_script": [
                 {
-                    "file": "app\\hooks.php",
+                    "file": "app\/hooks.php",
                     "line": 444
                 }
             ]
@@ -169,11 +169,11 @@
             "implemented": true,
             "locations": [
                 {
-                    "file": "app\\Core\\Application.php",
+                    "file": "app\/Core\/Application.php",
                     "line": 151
                 },
                 {
-                    "file": "iso-admin\\hooks-explorer.php",
+                    "file": "iso-admin\/hooks-explorer.php",
                     "line": 53
                 }
             ]
@@ -185,7 +185,7 @@
             "implemented": true,
             "locations": [
                 {
-                    "file": "app\\Core\\Application.php",
+                    "file": "app\/Core\/Application.php",
                     "line": 152
                 }
             ]
@@ -197,11 +197,11 @@
             "implemented": true,
             "locations": [
                 {
-                    "file": "app\\Core\\Application.php",
+                    "file": "app\/Core\/Application.php",
                     "line": 150
                 },
                 {
-                    "file": "iso-admin\\hooks-explorer.php",
+                    "file": "iso-admin\/hooks-explorer.php",
                     "line": 52
                 }
             ]
@@ -213,7 +213,7 @@
             "implemented": true,
             "locations": [
                 {
-                    "file": "app\\hooks.php",
+                    "file": "app\/hooks.php",
                     "line": 356
                 }
             ]
@@ -225,7 +225,7 @@
             "implemented": true,
             "locations": [
                 {
-                    "file": "app\\hooks.php",
+                    "file": "app\/hooks.php",
                     "line": 369
                 }
             ]
@@ -237,11 +237,11 @@
             "implemented": true,
             "locations": [
                 {
-                    "file": "app\\hooks.php",
+                    "file": "app\/hooks.php",
                     "line": 382
                 },
                 {
-                    "file": "iso-content\/themes\\neutron\\compat.php",
+                    "file": "iso-content\/themes\/neutron\/compat.php",
                     "line": 24
                 }
             ]
@@ -253,11 +253,11 @@
             "implemented": true,
             "locations": [
                 {
-                    "file": "app\\hooks.php",
+                    "file": "app\/hooks.php",
                     "line": 395
                 },
                 {
-                    "file": "iso-admin\\hooks-explorer.php",
+                    "file": "iso-admin\/hooks-explorer.php",
                     "line": 55
                 }
             ]
@@ -416,7 +416,7 @@
             "implemented": true,
             "locations": [
                 {
-                    "file": "iso-admin\\hooks-explorer.php",
+                    "file": "iso-admin\/hooks-explorer.php",
                     "line": 54
                 }
             ]
@@ -477,7 +477,7 @@
             "implemented": true,
             "locations": [
                 {
-                    "file": "app\\Core\\Application.php",
+                    "file": "app\/Core\/Application.php",
                     "line": 179
                 }
             ]
@@ -503,7 +503,7 @@
             "implemented": true,
             "locations": [
                 {
-                    "file": "app\\Core\\Application.php",
+                    "file": "app\/Core\/Application.php",
                     "line": 194
                 }
             ]
@@ -557,7 +557,7 @@
             "implemented": true,
             "locations": [
                 {
-                    "file": "app\\hooks.php",
+                    "file": "app\/hooks.php",
                     "line": 413
                 }
             ]
@@ -569,7 +569,7 @@
             "implemented": true,
             "locations": [
                 {
-                    "file": "app\\hooks.php",
+                    "file": "app\/hooks.php",
                     "line": 444
                 }
             ]

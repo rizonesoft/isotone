@@ -1,6 +1,6 @@
 ## Available Routes
 
-> Auto-generated: 2025-08-16 21:39:38
+> Auto-generated: 2025-08-16 22:01:55
 
 - `/` (home)
 - `/api/version` (api_version)

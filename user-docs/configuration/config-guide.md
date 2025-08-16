@@ -261,3 +261,4 @@ If you encounter configuration issues:
 | `DISPLAY_ERRORS` | `false` | Configuration setting |
 | `DEBUG_MODE` | `true` | Configuration setting |
 | `DISPLAY_ERRORS` | `false` | Configuration setting |
+

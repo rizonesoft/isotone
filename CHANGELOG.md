@@ -5,6 +5,34 @@ All notable changes to Isotone will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.7-alpha] - Genesis - 2025-08-16
+
+### Added
+- Active menu state persistence in admin sidebar
+- Visual indicators for active menu items (cyan borders, dots, bold text)
+- Dynamic documentation UI that generates sections from folder structure
+- IDE rule synchronization with Windsurf support (12,000 char limit handling)
+- Improved documentation validation and auto-update commands
+
+### Changed
+- Unified all documentation in `/user-docs` folder (removed `/docs`)
+- Migrated all script-based functionality to automation module
+- Updated all Composer commands to use automation CLI
+- Redesigned `docs:update` command to work with new user-docs structure
+- Improved URL comparison logic for menu active states
+
+### Removed
+- Entire `/scripts` directory (functionality moved to automation)
+- Database-backed documentation system (now file-based only)
+- Obsolete commands: `docs:sync`, `docs:all`
+- Empty `/setup` directory
+
+### Fixed
+- Dashboard menu item incorrectly staying active on all admin pages
+- Documentation Analyzer return type (now returns boolean)
+- Path references updated for new user-docs structure
+- Admin area TODO added for dark/light mode styling improvements
+
 ## [0.1.6-alpha] - Genesis - 2025-08-15
 
 ### Added
