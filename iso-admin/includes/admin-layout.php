@@ -451,7 +451,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                     <!-- Main Menu Item -->
                     <a href="<?php echo $item['url']; ?>" 
                        @click="<?php echo $has_submenu ? 'open = !open; $event.preventDefault()' : ''; ?>"
-                       class="flex items-center py-2 dark:hover:bg-gray-700 hover:bg-gray-200 transition-colors relative <?php echo $is_active ? 'dark:bg-gray-700 bg-gray-200 text-cyan-400 border-l-4 border-cyan-400 pl-4' : 'border-l-4 border-transparent pl-5'; ?> pr-4"
+                       class="flex items-center py-2 dark:hover:bg-gray-700 hover:bg-gray-200 transition-colors relative border-l-4 pl-4 pr-4 <?php echo $is_active ? 'dark:bg-gray-700 bg-gray-200 text-cyan-400 border-cyan-400' : 'border-transparent'; ?>"
                        :class="sidebarCollapsed ? 'justify-center px-0' : ''">
                         <span class="flex-shrink-0 <?php echo $is_active ? 'text-cyan-400' : ''; ?>"><?php echo render_icon($item['icon']); ?></span>
                         <span x-show="!sidebarCollapsed" class="ml-3 <?php echo $is_active ? 'font-semibold' : ''; ?>" x-cloak><?php echo $item['title']; ?></span>
