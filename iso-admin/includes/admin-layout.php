@@ -8,6 +8,32 @@
 
 // Get current page for active menu highlighting
 $current_page = basename($_SERVER['PHP_SELF'], '.php');
+$current_url = $_SERVER['REQUEST_URI'];
+
+// Function to check if a menu item or its children are active
+function is_menu_active($menu_item, $current_url, $current_page) {
+    // Check main URL
+    if (strpos($current_url, $menu_item['url']) !== false) {
+        return true;
+    }
+    
+    // Check submenu items
+    if (!empty($menu_item['submenu'])) {
+        foreach ($menu_item['submenu'] as $subitem) {
+            if (strpos($current_url, $subitem['url']) !== false) {
+                return true;
+            }
+        }
+    }
+    
+    return false;
+}
+
+// Function to check if a specific URL is active
+function is_url_active($url, $current_url) {
+    // Exact match or current URL contains the menu URL
+    return $current_url === $url || strpos($current_url, $url) !== false;
+}
 
 // Menu structure with submenus
 $admin_menu = [
@@ -369,16 +395,19 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
             
             <!-- Menu -->
             <nav class="mt-16">
-                <?php foreach ($admin_menu as $key => $item): ?>
-                <div x-data="{ open: false }">
+                <?php foreach ($admin_menu as $key => $item): 
+                    $is_active = is_menu_active($item, $current_url, $current_page);
+                    $has_submenu = !empty($item['submenu']);
+                ?>
+                <div x-data="{ open: <?php echo $is_active && $has_submenu ? 'true' : 'false'; ?> }">
                     <!-- Main Menu Item -->
                     <a href="<?php echo $item['url']; ?>" 
-                       @click="<?php echo !empty($item['submenu']) ? 'open = !open; $event.preventDefault()' : ''; ?>"
-                       class="flex items-center py-2 dark:hover:bg-gray-700 hover:bg-gray-200 transition-colors <?php echo $current_page === $key ? 'dark:bg-gray-700 bg-gray-200 text-cyan-400 border-l-4 border-cyan-400' : ''; ?>"
+                       @click="<?php echo $has_submenu ? 'open = !open; $event.preventDefault()' : ''; ?>"
+                       class="flex items-center py-2 dark:hover:bg-gray-700 hover:bg-gray-200 transition-colors relative <?php echo $is_active ? 'dark:bg-gray-700 bg-gray-200 text-cyan-400 border-l-4 border-cyan-400' : ''; ?>"
                        :class="sidebarCollapsed ? 'justify-center px-0' : 'px-4'">
-                        <span class="flex-shrink-0"><?php echo render_icon($item['icon']); ?></span>
-                        <span x-show="!sidebarCollapsed" class="ml-3" x-cloak><?php echo $item['title']; ?></span>
-                        <?php if (!empty($item['submenu'])): ?>
+                        <span class="flex-shrink-0 <?php echo $is_active ? 'text-cyan-400' : ''; ?>"><?php echo render_icon($item['icon']); ?></span>
+                        <span x-show="!sidebarCollapsed" class="ml-3 <?php echo $is_active ? 'font-semibold' : ''; ?>" x-cloak><?php echo $item['title']; ?></span>
+                        <?php if ($has_submenu): ?>
                         <svg x-show="!sidebarCollapsed" class="w-4 h-4 ml-auto transition-transform" :class="open && 'rotate-90'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                         </svg>
@@ -386,11 +415,16 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                     </a>
                     
                     <!-- Submenu -->
-                    <?php if (!empty($item['submenu'])): ?>
+                    <?php if ($has_submenu): ?>
                     <div x-show="open && !sidebarCollapsed" x-cloak class="dark:bg-gray-900 bg-gray-50">
-                        <?php foreach ($item['submenu'] as $subitem): ?>
+                        <?php foreach ($item['submenu'] as $subitem): 
+                            $sub_active = is_url_active($subitem['url'], $current_url);
+                        ?>
                         <a href="<?php echo $subitem['url']; ?>" 
-                           class="block pl-12 pr-4 py-1.5 text-sm dark:hover:bg-gray-700 hover:bg-gray-200 dark:text-gray-300 text-gray-700 transition-colors">
+                           class="block pl-12 pr-4 py-1.5 text-sm dark:hover:bg-gray-700 hover:bg-gray-200 transition-colors relative <?php echo $sub_active ? 'dark:bg-gray-700 bg-gray-200 text-cyan-400 font-semibold' : 'dark:text-gray-300 text-gray-700'; ?>">
+                            <?php if ($sub_active): ?>
+                            <span class="absolute left-7 top-1/2 transform -translate-y-1/2 w-1.5 h-1.5 bg-cyan-400 rounded-full"></span>
+                            <?php endif; ?>
                             <?php echo $subitem['title']; ?>
                         </a>
                         <?php endforeach; ?>
