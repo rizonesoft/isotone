@@ -12,15 +12,43 @@ $current_url = $_SERVER['REQUEST_URI'];
 
 // Function to check if a menu item or its children are active
 function is_menu_active($menu_item, $current_url, $current_page) {
-    // Check main URL
-    if (strpos($current_url, $menu_item['url']) !== false) {
-        return true;
+    // Parse current URL to get the script name
+    $current_parts = parse_url($current_url);
+    $current_path = $current_parts['path'] ?? '';
+    
+    // Parse menu URL
+    $menu_parts = parse_url($menu_item['url']);
+    $menu_path = $menu_parts['path'] ?? '';
+    
+    // Special handling for dashboard (root admin URL)
+    if ($menu_path === '/isotone/iso-admin/' || $menu_path === '/isotone/iso-admin/index.php') {
+        // Only match if we're exactly on the dashboard
+        if ($current_path === '/isotone/iso-admin/' || 
+            $current_path === '/isotone/iso-admin/index.php' ||
+            $current_path === '/isotone/iso-admin/dashboard.php' ||
+            $current_path === '/isotone/iso-admin/dashboard-new.php') {
+            return true;
+        }
+    } else {
+        // For other menu items, check if the URL matches
+        if ($current_path === $menu_path) {
+            return true;
+        }
     }
     
     // Check submenu items
     if (!empty($menu_item['submenu'])) {
         foreach ($menu_item['submenu'] as $subitem) {
-            if (strpos($current_url, $subitem['url']) !== false) {
+            $sub_parts = parse_url($subitem['url']);
+            $sub_path = $sub_parts['path'] ?? '';
+            
+            // Check if current path matches submenu path (considering query strings)
+            if ($current_path === $sub_path) {
+                return true;
+            }
+            
+            // Also check with query string for special cases like documentation sections
+            if ($current_url === $subitem['url']) {
                 return true;
             }
         }
@@ -31,8 +59,28 @@ function is_menu_active($menu_item, $current_url, $current_page) {
 
 // Function to check if a specific URL is active
 function is_url_active($url, $current_url) {
-    // Exact match or current URL contains the menu URL
-    return $current_url === $url || strpos($current_url, $url) !== false;
+    // Parse URLs for more accurate comparison
+    $current_parts = parse_url($current_url);
+    $menu_parts = parse_url($url);
+    
+    $current_path = $current_parts['path'] ?? '';
+    $menu_path = $menu_parts['path'] ?? '';
+    
+    // First check exact match including query strings
+    if ($current_url === $url) {
+        return true;
+    }
+    
+    // Then check path match
+    if ($current_path === $menu_path) {
+        // If the menu URL has query params, check if they match
+        if (isset($menu_parts['query'])) {
+            return isset($current_parts['query']) && $current_parts['query'] === $menu_parts['query'];
+        }
+        return true;
+    }
+    
+    return false;
 }
 
 // Menu structure with submenus
