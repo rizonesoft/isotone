@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.6-alpha] - Genesis - 2025-08-15
 
+### Added
+- Comprehensive dark/light mode support across all admin pages
+- Dark mode variant classes for Tailwind components
+- Light mode optimized logo and title with better contrast
+- Fixed layout jumping issues when switching themes
+- Hooks system refactoring with improved documentation
+- Native Theme API with WordPress-compatible functions
+- Theme service for managing and activating themes
+- Content service for posts and pages management
+- Automated hooks documentation generation
+- Plugin and theme developer guides
+- Hook naming conventions documentation
+- VitePress-powered user documentation site
+
 ## [0.1.5-alpha] - Genesis - 2025-08-14
 
 ### Added

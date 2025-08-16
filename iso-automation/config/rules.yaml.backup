@@ -52,7 +52,7 @@ database:
     rules:
       - "ALWAYS use RedBeanPHP for database operations"
       - "NEVER use PDO or mysqli directly"
-      - "Table names: lowercase, no underscores (user, setting, content, plugin, route, hook)"
+      - "Table names: lowercase, no underscores (isotoneuser, isotonesetting)"
       - "Column names: can use underscores (created_at, last_login)"
       - "Foreign keys: Use tablename_id pattern"
     violations:
@@ -65,7 +65,7 @@ database:
     examples:
       correct: |
         use RedBeanPHP\R;
-        $user = R::findOne('user', 'username = ?', [$username]);
+        $user = R::findOne('isotoneuser', 'username = ?', [$username]);
         $post = R::dispense('post');
         R::store($post);
       incorrect: |
@@ -82,12 +82,11 @@ database:
       username: "root"
       password: "empty"
     wsl_cli_context:
-      host: "172.19.240.1 (Windows host IP from WSL)"
+      host: "Windows host IP (auto-detected)"
       port: 3306
       database: "isotone_db"
       username: "root"
       password: "empty"
-      detection: "ip route | grep default | awk '{print $3}'"
     ide_configuration:
       common_settings:
         host: "localhost or 127.0.0.1"
@@ -108,14 +107,14 @@ database:
       - "Creates tables automatically"
       - "No migrations required for development"
       - "Lowercase singular table names"
-      - "Convention: user, setting, content, plugin, route, hook (no prefixes)"
+      - "Convention: isotoneuser, isotonesetting (no underscores)"
     table_structure:
-      setting:
+      isotonesetting:
         - "setting_key: Configuration key"
         - "setting_value: Configuration value"
         - "setting_type: Data type"
         - "updated_at: Last update"
-      user:
+      isotoneuser:
         - "username: Login name"
         - "email: User email"
         - "password: Hashed password"
@@ -156,13 +155,6 @@ database:
     - "Smart detection only affects PHP application"
     - "IDEs connect directly to MySQL"
     - "External tools bypass PHP layer"
-  
-  wsl_connection_instructions:
-    - "ALWAYS use 172.19.240.1 when connecting from WSL CLI"
-    - "Use mysql -h 172.19.240.1 -u root isotone_db"
-    - "RedBeanPHP connections from WSL should auto-detect this IP"
-    - "Never use localhost or 127.0.0.1 from WSL CLI"
-    - "To find Windows IP: ip route | grep default | awk '{print $3}'"
 
 # ==========================================
 # VERSION MANAGEMENT (Priority 90)
@@ -182,7 +174,7 @@ version_management:
     - step: "Generate changelog (MANDATORY)"
       command: "php isotone changelog"
     - step: "Update all documentation (MANDATORY)"
-      command: "composer docs:update"
+      command: "composer docs:all"
     - step: "Report completion"
       command: "Show the new version number and changes"
   
@@ -340,16 +332,26 @@ documentation:
   
   structure:
     organization:
+      docs_folder:
+        path: "/docs"
+        purpose: "Technical documentation for developers and LLMs"
+        description: "NEVER reorganize - used by automation"
+        contents:
+          - "LLM-DEVELOPMENT-GUIDE.md - Essential for AI developers"
+          - "AI-CODING-STANDARDS.md - Coding standards"
+          - "PROMPT-ENGINEERING-GUIDE.md - Prompt writing"
+          - "PROJECT-STRUCTURE.md - Directory layout"
+          - "API-REFERENCE.md - API documentation"
+          - "HOOKS.md - Hook system reference"
       user_docs_folder:
         path: "/user-docs"
-        purpose: "All documentation (user and developer)"
-        description: "Primary documentation folder - dynamically organized"
+        purpose: "User-facing documentation"
+        description: "Can be reorganized as needed"
         contents:
-          - "getting-started/ - Installation and setup guides"
-          - "configuration/ - Config and database documentation"
-          - "development/ - Developer documentation and API reference"
-          - "api-reference/ - API and theme documentation"
-        note: "The /docs folder was removed - all docs are now in /user-docs"
+          - "Getting started guides"
+          - "API documentation"
+          - "User tutorials"
+          - "Configuration guides"
       key_files:
         - "CLAUDE.md - Master LLM instructions"
         - "README.md - Project overview and status"
@@ -385,7 +387,7 @@ documentation:
   maintenance_rules:
     workflow:
       - "Update README.md status when features complete"
-      - "Update relevant docs in /user-docs"
+      - "Update relevant docs in /docs"
       - "Document new routes/endpoints"
       - "Run composer docs:check before completing"
     rules:
@@ -397,16 +399,22 @@ documentation:
       - "README.md - Feature status, installation steps"
       - "CLAUDE.md - New patterns/rules"
       - "config.sample.php - New config variables"
-      - "user-docs/getting-started/installation.md - Installation steps"
-      - "user-docs/development/getting-started.md - Developer guide"
+      - "docs/GETTING-STARTED.md - New features"
+      - "docs/LLM-DEVELOPMENT-GUIDE.md - New AI patterns"
   
   commands:
     docs_update:
       command: "composer docs:update"
-      description: "Auto-updates documentation from code (routes, config, hooks)"
+      description: "Updates all documentation files"
     docs_check:
       command: "composer docs:check"
-      description: "Validates documentation integrity and references"
+      description: "Validates documentation integrity"
+    docs_sync:
+      command: "composer docs:sync"
+      description: "Sync user documentation"
+    docs_all:
+      command: "composer docs:all"
+      description: "Complete documentation update"
     ide_sync:
       command: "composer ide:sync"
       description: "Sync IDE rules to .windsurf/"
@@ -540,10 +548,11 @@ hook_system:
       command: "php isotone hooks:docs"
       description: "Generate comprehensive hook documentation"
       outputs:
-        - "/storage/hooks-implementation.json - All hooks data"
-        - "/storage/hook-stats.json - Hook statistics"
-        - "/user-docs/development/api-reference.md - API documentation"
-        - "Hook naming conventions follow WordPress standards with iso_ prefix"
+        - "/storage/hooks/hooks.json - All hooks data"
+        - "/storage/hooks/stats.json - Hook statistics"
+        - "/HOOKS.md - Main documentation"
+        - "/docs/HOOK-NAMING-CONVENTIONS.md - Naming guide"
+        - "/user-docs/api/hooks/ - Interactive explorer"
     scanning:
       directories:
         - "/app - Core application hooks"
@@ -572,9 +581,10 @@ hook_system:
       - "Support both iso_ and wp_ prefixes during transition"
       - "Document migration path"
     resources:
-      - "Hook documentation is auto-generated"
-      - "Use iso-admin/hooks-explorer.php for interactive documentation"
-      - "Run php iso-automation/cli.php hooks:scan to generate docs"
+      - "/HOOKS.md - Complete hook reference"
+      - "/docs/HOOK-NAMING-CONVENTIONS.md - Naming rules"
+      - "/docs/PLUGIN-DEVELOPER-GUIDE.md - Plugin hooks"
+      - "/docs/THEME-DEVELOPER-GUIDE.md - Theme hooks"
 
 # ==========================================
 # CSS & STYLING (Priority 80)
@@ -714,14 +724,14 @@ project_structure:
         - "temp/ - Temporary files"
     config:
       description: "Configuration files"
+    docs:
+      description: "LLM/Technical docs (don't reorganize)"
     user_docs:
-      description: "All documentation (unified location)"
+      description: "User-facing docs (well organized)"
     storage:
       description: "Application storage"
       contents:
-        - "hook-stats.json - Hook statistics"
-        - "hooks-implementation.json - Hook implementation data"
-        - "hooks-status.json - Hook system status"
+        - "hooks/ - Hook documentation data"
   
   key_files:
     - "config.php - Main configuration (DO NOT COMMIT)"
@@ -889,7 +899,10 @@ development_commands:
     check_style: "Check code style (PSR-12)"
     fix_style: "Fix code style automatically"
     docs_check: "Check documentation integrity"
-    docs_update: "Auto-update documentation from code"
+    docs_update: "Auto-update documentation"
+    docs_sync: "Sync user documentation"
+    docs_hooks: "Generate hooks documentation"
+    docs_all: "Complete documentation update"
     ide_sync: "Sync IDE rules"
     version_patch: "Bump patch version"
     version_minor: "Bump minor version"
@@ -954,16 +967,6 @@ validation:
   enabled: true
   context: ["validation", "checks"]
   description: "Validation rules and checks"
-  
-  rules_validation:
-    description: "When asked to validate rules, use the CLI command"
-    command: "php isotone rules:validate"
-    triggers:
-      - "validate rules"
-      - "check rules"
-      - "validate and fix rules"
-      - "fix rules"
-    action: "Run the rules:validate CLI command instead of manual checking"
   
   file_references:
     description: "Validate file references in documentation"

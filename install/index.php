@@ -110,11 +110,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$isInstalled) {
                 }
                 
                 // Check if admin already exists
-                $existingAdmin = R::findOne('isotoneuser', 'role = ?', ['superadmin']);
+                $existingAdmin = R::findOne('user', 'role = ?', ['superadmin']);
                 
                 if (!$existingAdmin) {
                     // Create super admin user
-                    $admin = R::dispense('isotoneuser');
+                    $admin = R::dispense('user');
                     $admin->username = $username;
                     $admin->email = $email;
                     $admin->password = password_hash($password, PASSWORD_DEFAULT);
@@ -135,9 +135,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$isInstalled) {
                     ];
                     
                     foreach ($settings as $key => $value) {
-                        $setting = R::findOne('isotonesetting', 'setting_key = ?', [$key]);
+                        $setting = R::findOne('setting', 'setting_key = ?', [$key]);
                         if (!$setting) {
-                            $setting = R::dispense('isotonesetting');
+                            $setting = R::dispense('setting');
                             $setting->setting_key = $key;
                         }
                         $setting->setting_value = $value;

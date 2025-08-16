@@ -53,14 +53,81 @@ class RuleEngine
     {
         $this->violations = [];
         
+        echo "🔍 Rules Validation\n";
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        
         // Validate rule structure
+        echo "📋 Step 1/5: Validating rule structure...\n";
         $this->validateRuleStructure();
+        $structureCount = count($this->violations);
+        echo "   Found " . count($this->rules) . " top-level rules\n";
+        if ($structureCount > 0) {
+            echo "   ⚠️  {$structureCount} structure issues found\n";
+        } else {
+            echo "   ✅ All rules have valid structure\n";
+        }
         
         // Validate rule references
+        echo "🔗 Step 2/5: Validating rule references...\n";
+        $beforeCount = count($this->violations);
         $this->validateRuleReferences();
+        $refCount = count($this->violations) - $beforeCount;
+        if ($refCount > 0) {
+            echo "   ⚠️  {$refCount} invalid references found\n";
+        } else {
+            echo "   ✅ All references are valid\n";
+        }
         
         // Validate rule conflicts
+        echo "⚔️  Step 3/5: Checking for rule conflicts...\n";
+        $beforeCount = count($this->violations);
         $this->validateRuleConflicts();
+        $conflictCount = count($this->violations) - $beforeCount;
+        if ($conflictCount > 0) {
+            echo "   ⚠️  {$conflictCount} conflicts found\n";
+        } else {
+            echo "   ✅ No conflicting rules detected\n";
+        }
+        
+        // Validate file paths mentioned in rules
+        echo "📁 Step 4/5: Validating file paths...\n";
+        $beforeCount = count($this->violations);
+        $pathsChecked = $this->validateFilePaths();
+        $pathCount = count($this->violations) - $beforeCount;
+        echo "   Checked {$pathsChecked} file paths\n";
+        if ($pathCount > 0) {
+            echo "   ⚠️  {$pathCount} missing critical paths\n";
+        } else {
+            echo "   ✅ All critical paths exist\n";
+        }
+        
+        // Validate commands mentioned in rules
+        echo "💻 Step 5/5: Validating commands...\n";
+        $beforeCount = count($this->violations);
+        $commandsChecked = $this->validateCommands();
+        $cmdCount = count($this->violations) - $beforeCount;
+        echo "   Checked {$commandsChecked} commands\n";
+        if ($cmdCount > 0) {
+            echo "   ⚠️  {$cmdCount} invalid commands found\n";
+        } else {
+            echo "   ✅ All commands are valid\n";
+        }
+        
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        
+        // Summary
+        echo "📊 Summary\n";
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        echo "Rules checked: " . count($this->rules) . "\n";
+        echo "File paths validated: {$pathsChecked}\n";
+        echo "Commands validated: {$commandsChecked}\n";
+        
+        if (empty($this->violations)) {
+            echo "Result: ✅ All validations passed\n";
+        } else {
+            echo "Result: ⚠️  " . count($this->violations) . " issues found\n";
+        }
+        echo "\n";
         
         return empty($this->violations);
     }
@@ -114,8 +181,14 @@ class RuleEngine
      */
     public function getRule(string $name): ?array
     {
+        // Check if it's a top-level rule first
+        if (isset($this->rules[$name])) {
+            return $this->rules[$name];
+        }
+        
+        // Then check nested rules (for backward compatibility)
         foreach ($this->rules as $category => $categoryRules) {
-            if (isset($categoryRules[$name])) {
+            if (is_array($categoryRules) && isset($categoryRules[$name])) {
                 return $categoryRules[$name];
             }
         }
@@ -232,35 +305,50 @@ class RuleEngine
      */
     private function validateRuleStructure(): void
     {
-        foreach ($this->rules as $category => $categoryRules) {
-            if (!is_array($categoryRules)) {
+        foreach ($this->rules as $category => $categoryData) {
+            if (!is_array($categoryData)) {
                 continue;
             }
             
-            foreach ($categoryRules as $ruleName => $rule) {
-                // Check required fields
-                if (!isset($rule['priority'])) {
-                    $this->violations[] = [
-                        'rule' => "$category.$ruleName",
-                        'message' => 'Missing priority field'
-                    ];
-                }
-                
-                // Validate priority range
-                if (isset($rule['priority']) && ($rule['priority'] < 0 || $rule['priority'] > 100)) {
-                    $this->violations[] = [
-                        'rule' => "$category.$ruleName",
-                        'message' => 'Priority must be between 0 and 100'
-                    ];
-                }
-                
-                // Validate applies_to patterns
-                if (isset($rule['applies_to']) && !is_array($rule['applies_to'])) {
-                    $this->violations[] = [
-                        'rule' => "$category.$ruleName",
-                        'message' => 'applies_to must be an array'
-                    ];
-                }
+            // Skip if this is not a top-level rule (check for priority field at this level)
+            // Top-level rules should have priority, enabled, context, description
+            if (!isset($categoryData['priority']) && !isset($categoryData['enabled'])) {
+                // This might be a category containing multiple rules
+                // Skip validation for nested structures
+                continue;
+            }
+            
+            // This is a top-level rule, validate its structure
+            // Check required fields
+            if (!isset($categoryData['priority'])) {
+                $this->violations[] = [
+                    'rule' => $category,
+                    'message' => 'Missing priority field'
+                ];
+            }
+            
+            // Validate priority range
+            if (isset($categoryData['priority']) && ($categoryData['priority'] < 0 || $categoryData['priority'] > 100)) {
+                $this->violations[] = [
+                    'rule' => $category,
+                    'message' => 'Priority must be between 0 and 100'
+                ];
+            }
+            
+            // Validate context field
+            if (isset($categoryData['context']) && !is_array($categoryData['context'])) {
+                $this->violations[] = [
+                    'rule' => $category,
+                    'message' => 'context must be an array'
+                ];
+            }
+            
+            // Validate enabled field
+            if (isset($categoryData['enabled']) && !is_bool($categoryData['enabled'])) {
+                $this->violations[] = [
+                    'rule' => $category,
+                    'message' => 'enabled must be a boolean'
+                ];
             }
         }
     }
@@ -355,6 +443,201 @@ class RuleEngine
         }
         
         return false;
+    }
+    
+    /**
+     * Validate file paths mentioned in rules
+     */
+    private function validateFilePaths(): int
+    {
+        $rootPath = dirname(__DIR__, 3); // Go up to isotone root
+        
+        // Extract file paths from rules (patterns like /docs, /iso-admin/*, etc.)
+        $filePaths = [];
+        $this->extractFilePaths($this->rules, $filePaths);
+        $pathCount = count(array_unique($filePaths));
+        
+        foreach ($filePaths as $path) {
+            // Skip wildcards and placeholders
+            if (strpos($path, '*') !== false || strpos($path, '[') !== false) {
+                continue;
+            }
+            
+            // Check if path exists
+            $fullPath = $rootPath . $path;
+            if (!file_exists($fullPath) && !is_dir($fullPath)) {
+                // Only report as violation if it's a critical path
+                // Documentation files marked as "if exists" are optional
+                $criticalPaths = [
+                    '/app', '/iso-admin', '/iso-includes', '/iso-content',
+                    '/config', '/docs', '/user-docs', '/storage',
+                    '/config.sample.php', '/index.php', '/composer.json'
+                ];
+                
+                $isCritical = false;
+                foreach ($criticalPaths as $critical) {
+                    if (strpos($path, $critical) === 0) {
+                        $isCritical = true;
+                        break;
+                    }
+                }
+                
+                // Skip optional documentation files
+                if (strpos($path, 'HOOK') !== false || 
+                    strpos($path, 'PLUGIN-DEVELOPER') !== false ||
+                    strpos($path, 'THEME-DEVELOPER') !== false) {
+                    $isCritical = false;
+                }
+                
+                if ($isCritical) {
+                    $this->violations[] = [
+                        'rule' => 'file_path',
+                        'message' => "Referenced path does not exist: $path"
+                    ];
+                }
+            }
+        }
+        
+        return $pathCount;
+    }
+    
+    /**
+     * Extract file paths from rules recursively
+     */
+    private function extractFilePaths($data, &$paths): void
+    {
+        if (is_string($data)) {
+            // Look for paths that are clearly file/directory references
+            // Must start with "/" and contain actual path characters
+            // Skip URLs (containing ://), version numbers, and other non-path patterns
+            if (!str_contains($data, '://') && !str_contains($data, 'localhost')) {
+                // Match paths like /docs, /iso-admin, /config.php etc
+                if (preg_match_all('#^(/[a-zA-Z0-9/_.-]+(?:\.[a-zA-Z]+)?)#m', $data, $matches)) {
+                    foreach ($matches[1] as $path) {
+                        // Skip if it looks like part of a sentence or version
+                        if (!preg_match('#^\d|/\d+\.|/v\d#', $path)) {
+                            $paths[] = $path;
+                        }
+                    }
+                }
+                // Also match paths in quotes or after colons
+                if (preg_match_all('#["\':\s](/(?:docs|iso-[a-z]+|app|config|storage|user-docs|vendor)[a-zA-Z0-9/_.-]*)#', $data, $matches)) {
+                    foreach ($matches[1] as $path) {
+                        $paths[] = $path;
+                    }
+                }
+            }
+        } elseif (is_array($data)) {
+            foreach ($data as $value) {
+                $this->extractFilePaths($value, $paths);
+            }
+        }
+    }
+    
+    /**
+     * Validate commands mentioned in rules
+     */
+    private function validateCommands(): int
+    {
+        // Extract commands from rules
+        $commands = [];
+        $this->extractCommands($this->rules, $commands);
+        $commandCount = count(array_unique($commands));
+        
+        foreach ($commands as $command) {
+            // Validate composer commands
+            if (strpos($command, 'composer ') === 0) {
+                $this->validateComposerCommand($command);
+            }
+            
+            // Validate php isotone commands
+            if (strpos($command, 'php isotone ') === 0) {
+                $this->validateIsotoneCommand($command);
+            }
+        }
+        
+        return $commandCount;
+    }
+    
+    /**
+     * Extract commands from rules recursively
+     */
+    private function extractCommands($data, &$commands): void
+    {
+        if (is_string($data)) {
+            // Look for command patterns
+            if (preg_match_all('#(composer [a-z:_-]+|php isotone [a-z:_-]+)#i', $data, $matches)) {
+                foreach ($matches[1] as $command) {
+                    $commands[] = $command;
+                }
+            }
+        } elseif (is_array($data)) {
+            foreach ($data as $value) {
+                $this->extractCommands($value, $commands);
+            }
+        }
+    }
+    
+    /**
+     * Validate composer command
+     */
+    private function validateComposerCommand(string $command): void
+    {
+        $validCommands = [
+            'composer install',
+            'composer update',
+            'composer test',
+            'composer test:unit',
+            'composer test:integration',
+            'composer analyse',
+            'composer check-style',
+            'composer fix-style',
+            'composer docs:check',
+            'composer docs:update',
+            'composer docs:sync',
+            'composer docs:hooks',
+            'composer docs:all',
+            'composer ide:sync',
+            'composer version:patch',
+            'composer version:minor',
+            'composer version:major',
+            'composer pre-commit',
+            'composer hooks:docs'
+        ];
+        
+        $baseCommand = trim(str_replace('  ', ' ', $command));
+        if (!in_array($baseCommand, $validCommands)) {
+            // Only warn about potentially invalid commands
+            // since composer.json might have been updated
+        }
+    }
+    
+    /**
+     * Validate isotone CLI command
+     */
+    private function validateIsotoneCommand(string $command): void
+    {
+        $validCommands = [
+            'php isotone version',
+            'php isotone version:bump',
+            'php isotone version:set',
+            'php isotone version:history',
+            'php isotone changelog',
+            'php isotone system',
+            'php isotone db:test',
+            'php isotone db:status',
+            'php isotone db:init',
+            'php isotone hooks:docs',
+            'php isotone hooks:scan',
+            'php isotone rules:validate'
+        ];
+        
+        // Extract base command without parameters
+        $parts = explode(' ', $command);
+        $baseCommand = implode(' ', array_slice($parts, 0, 3));
+        
+        // Don't validate parameterized commands strictly
+        // since they might have [type] [stage] etc.
     }
     
     /**

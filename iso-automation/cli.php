@@ -99,69 +99,149 @@ try {
             $result = $engine->execute('sync:ide', $parsedOptions);
             exit($result ? 0 : 1);
             
-        case 'sync:user-docs':
-        case 'docs:sync':
-            $result = $engine->execute('sync:user-docs', $parsedOptions);
-            exit($result ? 0 : 1);
-            
         case 'validate:rules':
         case 'rules:validate':
             $result = $engine->execute('validate:rules', $parsedOptions);
             exit($result ? 0 : 1);
+            
+        case 'rules:list':
+            $ruleEngine = $engine->getRuleEngine();
+            $rules = $ruleEngine->getAllRules();
+            echo "📋 Isotone Automation Rules\n";
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+            
+            // Group rules by priority
+            $priorityGroups = [];
+            foreach ($rules as $name => $rule) {
+                $priority = $rule['priority'] ?? 50;
+                if (!isset($priorityGroups[$priority])) {
+                    $priorityGroups[$priority] = [];
+                }
+                $priorityGroups[$priority][$name] = $rule;
+            }
+            
+            // Sort by priority (highest first)
+            krsort($priorityGroups);
+            
+            foreach ($priorityGroups as $priority => $group) {
+                echo "Priority $priority:\n";
+                foreach ($group as $name => $rule) {
+                    $status = $rule['enabled'] ?? true ? '✅' : '❌';
+                    $desc = $rule['description'] ?? 'No description';
+                    echo "  $status $name - $desc\n";
+                }
+                echo "\n";
+            }
+            exit(0);
+            
+        case 'rules:search':
+            $searchTerm = $argv[2] ?? '';
+            if (empty($searchTerm)) {
+                echo "❌ Please provide a search term\n";
+                echo "Usage: php iso-automation/cli.php rules:search <term>\n";
+                exit(1);
+            }
+            
+            $ruleEngine = $engine->getRuleEngine();
+            $rules = $ruleEngine->getAllRules();
+            $matches = [];
+            
+            // Search in rule names, descriptions, and content
+            foreach ($rules as $name => $rule) {
+                $searchContent = json_encode($rule);
+                if (stripos($name, $searchTerm) !== false || 
+                    stripos($searchContent, $searchTerm) !== false) {
+                    $matches[$name] = $rule;
+                }
+            }
+            
+            if (empty($matches)) {
+                echo "No rules found matching '$searchTerm'\n";
+            } else {
+                echo "🔍 Rules matching '$searchTerm':\n";
+                echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+                foreach ($matches as $name => $rule) {
+                    $priority = $rule['priority'] ?? 50;
+                    $status = $rule['enabled'] ?? true ? '✅' : '❌';
+                    $desc = $rule['description'] ?? 'No description';
+                    echo "$status [$priority] $name\n";
+                    echo "   $desc\n\n";
+                }
+            }
+            exit(0);
+            
+        case 'rules:check':
+            $ruleName = $argv[2] ?? '';
+            if (empty($ruleName)) {
+                echo "❌ Please provide a rule name\n";
+                echo "Usage: php iso-automation/cli.php rules:check <rule_name>\n";
+                exit(1);
+            }
+            
+            $ruleEngine = $engine->getRuleEngine();
+            $rule = $ruleEngine->getRule($ruleName);
+            
+            if ($rule === null) {
+                echo "❌ Rule '$ruleName' not found\n";
+                exit(1);
+            }
+            
+            echo "📋 Rule: $ruleName\n";
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+            echo "Priority: " . ($rule['priority'] ?? 50) . "\n";
+            echo "Enabled: " . ($rule['enabled'] ?? true ? 'Yes' : 'No') . "\n";
+            echo "Description: " . ($rule['description'] ?? 'No description') . "\n";
+            
+            if (isset($rule['context'])) {
+                echo "Context: " . implode(', ', (array)$rule['context']) . "\n";
+            }
+            
+            if (isset($rule['rules']) && is_array($rule['rules'])) {
+                echo "\n📌 Rules:\n";
+                foreach ($rule['rules'] as $r) {
+                    echo "  • $r\n";
+                }
+            }
+            
+            if (isset($rule['violations']) && is_array($rule['violations'])) {
+                echo "\n⚠️  Violations:\n";
+                foreach ($rule['violations'] as $v) {
+                    if (is_array($v)) {
+                        echo "  • Pattern: " . ($v['pattern'] ?? 'N/A') . "\n";
+                        echo "    Severity: " . ($v['severity'] ?? 'warning') . "\n";
+                        echo "    Message: " . ($v['message'] ?? '') . "\n";
+                    }
+                }
+            }
+            
+            echo "\n";
+            exit(0);
+            
+        case 'rules:export':
+            $format = $parsedOptions['format'] ?? 'yaml';
+            $ruleEngine = $engine->getRuleEngine();
+            $output = $ruleEngine->exportRules($format);
+            
+            if (isset($parsedOptions['output'])) {
+                file_put_contents($parsedOptions['output'], $output);
+                echo "✅ Rules exported to " . $parsedOptions['output'] . "\n";
+            } else {
+                echo $output;
+            }
+            exit(0);
             
         case 'status':
         case 'automation:status':
             $result = $engine->execute('status', $parsedOptions);
             exit($result ? 0 : 1);
             
-        case 'cache:clear':
-            $cacheManager = $engine->getCacheManager();
-            
-            if (!$quiet) {
-                echo "🗑️  Cache Clear Operation\n";
-                echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
-                echo "📋 Step 1/3: Analyzing cache directories...\n";
-            }
-            
-            $stats = $cacheManager->getStatistics();
-            $filesBeforeClear = $stats['total_files_cached'];
-            $sizeBeforeClear = $stats['disk_cache_size'];
-            
-            if (!$quiet) {
-                echo "   Found {$filesBeforeClear} cached files (" . formatBytes($sizeBeforeClear) . ")\n\n";
-                echo "🧹 Step 2/3: Clearing cache files...\n";
-            }
-            
-            $cacheManager->clearCache();
-            
-            if (!$quiet) {
-                echo "   Cache files removed\n\n";
-                echo "✨ Step 3/3: Verifying cache is empty...\n";
-                $newStats = $cacheManager->getStatistics();
-                echo "   Remaining files: {$newStats['total_files_cached']}\n\n";
-                echo "✅ Cache cleared successfully!\n";
-                echo "   Freed up: " . formatBytes($sizeBeforeClear) . "\n";
-            }
-            exit(0);
-            
-        case 'cache:stats':
-            $cacheManager = $engine->getCacheManager();
-            $stats = $cacheManager->getStatistics();
-            
-            echo "📊 Cache Statistics:\n";
-            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-            echo "  Total files cached: {$stats['total_files_cached']}\n";
-            echo "  Memory cache size: {$stats['memory_cache_size']}\n";
-            echo "  Disk cache size: " . formatBytes($stats['disk_cache_size']) . "\n";
-            echo "  Oldest cache: {$stats['oldest_cache']}\n";
-            echo "  Newest cache: {$stats['newest_cache']}\n";
-            exit(0);
             
         case 'rules:export':
             $ruleEngine = $engine->getRuleEngine();
             $format = $parsedOptions['format'] ?? 'yaml';
             echo $ruleEngine->exportRules($format);
             exit(0);
+            
             
         case 'help':
         case '--help':
@@ -200,12 +280,16 @@ function showHelp(): void
     echo "  update:docs         Update documentation from code\n";
     echo "  generate:hooks      Generate hooks documentation\n";
     echo "  sync:ide           Sync IDE rules from CLAUDE.md\n";
-    echo "  sync:user-docs     Sync user documentation\n";
-    echo "  validate:rules     Validate automation rules\n";
-    echo "  status             Show automation status\n";
-    echo "  cache:clear        Clear all caches\n";
-    echo "  cache:stats        Show cache statistics\n";
+    echo "\n";
+    echo "Rules Commands:\n";
+    echo "  rules:list         List all automation rules\n";
+    echo "  rules:search       Search for rules by keyword\n";
+    echo "  rules:check        Show details of a specific rule\n";
+    echo "  rules:validate     Validate all rules\n";
     echo "  rules:export       Export rules (--format=yaml|json|markdown)\n";
+    echo "\n";
+    echo "System Commands:\n";
+    echo "  status             Show automation status\n";
     echo "  help               Show this help message\n";
     echo "\n";
     echo "Options:\n";

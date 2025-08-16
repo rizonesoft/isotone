@@ -48,29 +48,32 @@ class DatabaseService
             if ($is_wsl && php_sapi_name() === 'cli') {
                 // In WSL CLI, try to use Windows host IP
                 if ($configHost === 'localhost' || $configHost === '127.0.0.1') {
-                    // Try to get Windows host IP from resolv.conf
-                    if (file_exists('/etc/resolv.conf')) {
-                        $resolv = file_get_contents('/etc/resolv.conf');
-                        if (preg_match('/nameserver\s+(\d+\.\d+\.\d+\.\d+)/', $resolv, $matches)) {
-                            $host = $matches[1];
-                        } else {
-                            // Fallback to common WSL2 host IPs - try multiple
-                            $fallbackHosts = ['172.19.240.1', '172.17.0.1', '172.26.0.1'];
-                            foreach ($fallbackHosts as $testHost) {
-                                $testDsn = "mysql:host={$testHost};port={$port};charset=utf8mb4";
-                                try {
-                                    $testPdo = new \PDO($testDsn, $username, $password);
-                                    $host = $testHost;
-                                    break;
-                                } catch (\PDOException $e) {
-                                    continue;
-                                }
-                            }
-                            if (!isset($host)) {
-                                $host = '172.19.240.1'; // Default fallback
+                    // Get Windows host IP from default gateway (more reliable than resolv.conf)
+                    $host = null;
+                    
+                    // Method 1: Try to get from ip route (most reliable)
+                    $ipRoute = shell_exec('ip route | grep default | awk \'{print $3}\'');
+                    if ($ipRoute) {
+                        $host = trim($ipRoute);
+                    }
+                    
+                    // Method 2: If that fails, try common WSL2 host IPs
+                    if (!$host) {
+                        $fallbackHosts = ['172.19.240.1', '172.17.0.1', '172.26.0.1'];
+                        foreach ($fallbackHosts as $testHost) {
+                            $testDsn = "mysql:host={$testHost};port={$port};charset=utf8mb4";
+                            try {
+                                $testPdo = new \PDO($testDsn, $username, $password);
+                                $host = $testHost;
+                                break;
+                            } catch (\PDOException $e) {
+                                continue;
                             }
                         }
-                    } else {
+                    }
+                    
+                    // Final fallback
+                    if (!$host) {
                         $host = '172.19.240.1';
                     }
                 } else {
@@ -138,9 +141,9 @@ class DatabaseService
     public static function getStatus(): array
     {
         try {
-            $configHost = env('DB_HOST', 'localhost');
-            $database = env('DB_DATABASE', '');
-            $username = env('DB_USERNAME', '');
+            $configHost = defined('DB_HOST') ? DB_HOST : 'localhost';
+            $database = defined('DB_NAME') ? DB_NAME : '';
+            $username = defined('DB_USER') ? DB_USER : '';
             
             if (!self::initialize()) {
                 return [
@@ -160,13 +163,10 @@ class DatabaseService
             
             if ($is_wsl && php_sapi_name() === 'cli') {
                 if ($configHost === 'localhost' || $configHost === '127.0.0.1') {
-                    if (file_exists('/etc/resolv.conf')) {
-                        $resolv = file_get_contents('/etc/resolv.conf');
-                        if (preg_match('/nameserver\s+(\d+\.\d+\.\d+\.\d+)/', $resolv, $matches)) {
-                            $host = $matches[1] . ' (WSL)';
-                        } else {
-                            $host = '172.19.240.1 (WSL)';
-                        }
+                    // Get Windows host IP from default gateway (more reliable)
+                    $ipRoute = shell_exec('ip route | grep default | awk \'{print $3}\'');
+                    if ($ipRoute) {
+                        $host = trim($ipRoute) . ' (WSL)';
                     } else {
                         $host = '172.19.240.1 (WSL)';
                     }
@@ -203,9 +203,9 @@ class DatabaseService
             return [
                 'connected' => false,
                 'error' => $e->getMessage(),
-                'host' => env('DB_HOST', 'localhost'),
-                'database' => env('DB_DATABASE', ''),
-                'username' => env('DB_USERNAME', '')
+                'host' => defined('DB_HOST') ? DB_HOST : 'localhost',
+                'database' => defined('DB_NAME') ? DB_NAME : '',
+                'username' => defined('DB_USER') ? DB_USER : ''
             ];
         }
     }
@@ -223,7 +223,7 @@ class DatabaseService
             $results = [];
             
             // Create settings table (RedBean prefers simple names without underscores)
-            $setting = R::dispense('isotonesetting');
+            $setting = R::dispense('setting');
             $setting->key = 'site_title';
             $setting->value = 'Isotone';
             $setting->type = 'string';
@@ -232,7 +232,7 @@ class DatabaseService
             $results[] = 'Settings table created';
             
             // Create users table structure
-            $user = R::dispense('isotoneuser');
+            $user = R::dispense('user');
             $user->username = 'admin';
             $user->email = 'admin@example.com';
             $user->password = password_hash('admin123', PASSWORD_DEFAULT);
@@ -244,7 +244,7 @@ class DatabaseService
             $results[] = 'Users table created with admin user';
             
             // Create content table structure
-            $content = R::dispense('isotonecontent');
+            $content = R::dispense('content');
             $content->title = 'Welcome to Isotone';
             $content->slug = 'welcome';
             $content->content = 'Your lightweight CMS is ready to use!';
@@ -259,7 +259,7 @@ class DatabaseService
             return [
                 'success' => true,
                 'results' => $results,
-                'tables_created' => ['isotonesetting', 'isotoneuser', 'isotonecontent']
+                'tables_created' => ['setting', 'user', 'content']
             ];
             
         } catch (Exception $e) {

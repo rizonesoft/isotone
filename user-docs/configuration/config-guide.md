@@ -218,3 +218,46 @@ If you encounter configuration issues:
 2. Review the error logs in `/iso-runtime/logs/`
 3. Ask in the [GitHub Discussions](https://github.com/rizonesoft/isotone/discussions)
 4. Report bugs in [GitHub Issues](https://github.com/rizonesoft/isotone/issues)
+
+## Configuration Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `DB_HOST` | `localhost` | Database host |
+| `DB_NAME` | `database_name_here` | Database name |
+| `DB_USER` | `username_here` | Database username |
+| `DB_PASSWORD` | `password_here` | Database password |
+| `DB_PORT` | `3306` | Configuration setting |
+| `DB_CHARSET` | `utf8mb4` | Configuration setting |
+| `DB_COLLATE` | `utf8mb4_unicode_ci` | Configuration setting |
+| `DB_PREFIX` | `iso_` | Configuration setting |
+| `SITE_URL` | `(empty)` | Configuration setting |
+| `ADMIN_EMAIL` | `your-email@example.com` | Administrator email |
+| `TIMEZONE` | `UTC` | Default timezone |
+| `LANGUAGE` | `en` | Configuration setting |
+| `AUTH_KEY` | `put your unique phrase here` | Configuration setting |
+| `SECURE_AUTH_KEY` | `put your unique phrase here` | Configuration setting |
+| `LOGGED_IN_KEY` | `put your unique phrase here` | Configuration setting |
+| `NONCE_KEY` | `put your unique phrase here` | Configuration setting |
+| `AUTH_SALT` | `put your unique phrase here` | Configuration setting |
+| `SECURE_AUTH_SALT` | `put your unique phrase here` | Configuration setting |
+| `LOGGED_IN_SALT` | `put your unique phrase here` | Configuration setting |
+| `NONCE_SALT` | `put your unique phrase here` | Configuration setting |
+| `DEBUG_MODE` | `true` | Configuration setting |
+| `DEBUG_QUERIES` | `false` | Configuration setting |
+| `DISPLAY_ERRORS` | `true` | Configuration setting |
+| `ERROR_LEVEL` | `E_ALL` | Configuration setting |
+| `MAINTENANCE_MODE` | `false` | Configuration setting |
+| `MEMORY_LIMIT` | `128M` | Configuration setting |
+| `MAX_EXECUTION_TIME` | `30` | Configuration setting |
+| `UPLOAD_MAX_SIZE` | `10M` | Maximum upload size |
+| `SESSION_LIFETIME` | `120` | Session lifetime in minutes |
+| `CACHE_TTL` | `3600` | Configuration setting |
+| `REDIS_ENABLED` | `false` | Configuration setting |
+| `REDIS_HOST` | `127.0.0.1` | Configuration setting |
+| `REDIS_PORT` | `6379` | Configuration setting |
+| `ENVIRONMENT` | `development` | Configuration setting |
+| `DEBUG_MODE` | `false` | Configuration setting |
+| `DISPLAY_ERRORS` | `false` | Configuration setting |
+| `DEBUG_MODE` | `true` | Configuration setting |
+| `DISPLAY_ERRORS` | `false` | Configuration setting |

@@ -52,7 +52,7 @@ class DocumentationAnalyzer
     /**
      * Analyze documentation
      */
-    public function analyze(): AnalysisResult
+    public function analyze(): bool
     {
         $this->errors = [];
         $this->warnings = [];
@@ -74,7 +74,8 @@ class DocumentationAnalyzer
         // Cache results
         $this->cacheResults();
         
-        return new AnalysisResult($this->errors, $this->warnings);
+        // Return true if no errors (warnings are OK)
+        return empty($this->errors);
     }
     
     /**
@@ -154,7 +155,23 @@ class DocumentationAnalyzer
      */
     private function checkFileReferences(): void
     {
-        $docFiles = glob($this->rootPath . '/docs/*.md');
+        // Check user-docs folder instead of docs
+        $docFiles = [];
+        
+        // Get all markdown files from user-docs
+        $userDocsPath = $this->rootPath . '/user-docs';
+        if (is_dir($userDocsPath)) {
+            $iterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($userDocsPath)
+            );
+            foreach ($iterator as $file) {
+                if ($file->isFile() && $file->getExtension() === 'md') {
+                    $docFiles[] = $file->getPathname();
+                }
+            }
+        }
+        
+        // Also check root documentation files
         $docFiles[] = $this->rootPath . '/README.md';
         $docFiles[] = $this->rootPath . '/CLAUDE.md';
         
@@ -265,14 +282,21 @@ class DocumentationAnalyzer
         $composer = json_decode(file_get_contents($composerFile), true);
         $scripts = array_keys($composer['scripts'] ?? []);
         
-        // Check documentation files
+        // Check documentation files in user-docs
         $docsContent = '';
-        $docsContent .= file_get_contents($this->rootPath . '/README.md');
-        if (file_exists($this->rootPath . '/docs/DEVELOPMENT-SETUP.md')) {
-            $docsContent .= file_get_contents($this->rootPath . '/docs/DEVELOPMENT-SETUP.md');
+        if (file_exists($this->rootPath . '/README.md')) {
+            $docsContent .= file_get_contents($this->rootPath . '/README.md');
         }
-        if (file_exists($this->rootPath . '/docs/GETTING-STARTED.md')) {
-            $docsContent .= file_get_contents($this->rootPath . '/docs/GETTING-STARTED.md');
+        
+        // Check user-docs for composer script documentation
+        $commandsDoc = $this->rootPath . '/user-docs/developers-guide/commands.md';
+        if (file_exists($commandsDoc)) {
+            $docsContent .= file_get_contents($commandsDoc);
+        }
+        
+        $gettingStartedDoc = $this->rootPath . '/user-docs/getting-started/installation.md';
+        if (file_exists($gettingStartedDoc)) {
+            $docsContent .= file_get_contents($gettingStartedDoc);
         }
         
         foreach ($scripts as $script) {
@@ -294,21 +318,23 @@ class DocumentationAnalyzer
             return;
         }
         
-        // Expected structure from documentation
+        // Expected structure for Isotone (updated for current structure)
         $expectedDirs = [
             'app/Core',
-            'app/Http/Controllers',
+            'app/Http/Controllers', 
             'app/Http/Middleware',
             'app/Models',
             'app/Services',
             'public',
             'config',
-            'content/uploads',
-            'content/cache',
-            'plugins',
-            'themes',
+            'iso-content/uploads',
+            'iso-content/cache',
+            'iso-content/plugins',
+            'iso-content/themes',
             'storage/logs',
-            'docs'
+            'user-docs',
+            'iso-admin',
+            'iso-automation'
         ];
         
         foreach ($expectedDirs as $dir) {
@@ -365,7 +391,19 @@ class DocumentationAnalyzer
      */
     private function checkCodeExamples(): void
     {
-        $docFiles = glob($this->rootPath . '/docs/*.md');
+        // Check user-docs folder instead of docs
+        $docFiles = [];
+        $userDocsPath = $this->rootPath . '/user-docs';
+        if (is_dir($userDocsPath)) {
+            $iterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($userDocsPath)
+            );
+            foreach ($iterator as $file) {
+                if ($file->isFile() && $file->getExtension() === 'md') {
+                    $docFiles[] = $file->getPathname();
+                }
+            }
+        }
         
         foreach ($docFiles as $docFile) {
             if (!$this->isFileModified($docFile)) {
@@ -404,29 +442,43 @@ class DocumentationAnalyzer
      */
     private function checkTodoMarkers(): void
     {
-        $files = [
-            'README.md',
-            'docs/*.md'
-        ];
+        // Check both root files and user-docs
+        $filesToCheck = [];
         
-        foreach ($files as $pattern) {
-            $matchedFiles = glob($this->rootPath . '/' . $pattern);
-            foreach ($matchedFiles as $file) {
-                if (!$this->isFileModified($file)) {
-                    $this->loadCachedCheck('todo_' . md5($file));
-                    continue;
+        // Add root documentation files
+        $filesToCheck[] = $this->rootPath . '/README.md';
+        $filesToCheck[] = $this->rootPath . '/CLAUDE.md';
+        
+        // Add all user-docs files
+        $userDocsPath = $this->rootPath . '/user-docs';
+        if (is_dir($userDocsPath)) {
+            $iterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($userDocsPath)
+            );
+            foreach ($iterator as $file) {
+                if ($file->isFile() && $file->getExtension() === 'md') {
+                    $filesToCheck[] = $file->getPathname();
                 }
-                
-                $content = file_get_contents($file);
-                $filename = basename($file);
-                
-                if (preg_match_all('/(TODO|FIXME|🚧|XXX)/', $content, $matches)) {
-                    $count = count($matches[0]);
-                    $this->warnings[] = "$filename: Contains $count unfinished markers (TODO/FIXME/🚧)";
-                }
-                
-                $this->cacheCheck('todo_' . md5($file));
             }
+        }
+        
+        foreach ($filesToCheck as $file) {
+            if (!file_exists($file)) continue;
+            
+            if (!$this->isFileModified($file)) {
+                $this->loadCachedCheck('todo_' . md5($file));
+                continue;
+            }
+            
+            $content = file_get_contents($file);
+            $filename = basename($file);
+            
+            if (preg_match_all('/(TODO|FIXME|🚧|XXX)/', $content, $matches)) {
+                $count = count($matches[0]);
+                $this->warnings[] = "$filename: Contains $count unfinished markers (TODO/FIXME/🚧)";
+            }
+            
+            $this->cacheCheck('todo_' . md5($file));
         }
     }
     
@@ -507,8 +559,9 @@ class DocumentationAnalyzer
      */
     private function loadCachedResults(): void
     {
-        $cache = $this->engine->getStateManager()->getState('doc_analysis_cache', []);
-        $this->cachedResults = $cache;
+        // Caching temporarily disabled - StateManager was removed
+        // TODO: Implement file-based caching if needed
+        $this->cachedResults = [];
     }
     
     /**
@@ -516,7 +569,8 @@ class DocumentationAnalyzer
      */
     private function cacheResults(): void
     {
-        $this->engine->getStateManager()->setState('doc_analysis_cache', $this->cachedResults);
+        // Caching temporarily disabled - StateManager was removed
+        // TODO: Implement file-based caching if needed
     }
     
     /**
@@ -547,35 +601,5 @@ class DocumentationAnalyzer
         
         // Store relevant errors/warnings for this check
         // This is a simplified version - in production, track which errors belong to which check
-    }
-}
-
-/**
- * Analysis result class
- */
-class AnalysisResult
-{
-    private array $errors;
-    private array $warnings;
-    
-    public function __construct(array $errors, array $warnings)
-    {
-        $this->errors = $errors;
-        $this->warnings = $warnings;
-    }
-    
-    public function hasErrors(): bool
-    {
-        return !empty($this->errors);
-    }
-    
-    public function getErrors(): array
-    {
-        return $this->errors;
-    }
-    
-    public function getWarnings(): array
-    {
-        return $this->warnings;
     }
 }

@@ -5,7 +5,7 @@ A unified PHP-based automation system that centralizes all automation tasks, imp
 ## Features
 
 ✅ **Centralized Automation Engine** - All automation tasks in one place
-✅ **Performance Optimization** - Incremental file scanning with caching
+✅ **Performance Optimization** - Efficient task execution
 ✅ **State Management** - RedBeanPHP-based central state tracking
 ✅ **Rule Engine** - YAML-based rules with priority and validation
 ✅ **Web Dashboard** - Monitor and manage automation from admin panel
@@ -93,17 +93,11 @@ The original scripts in `/scripts/` are preserved and can still be called direct
 
 ## Performance Improvements
 
-### Before (Original Scripts)
-- Scanned entire codebase on every run
-- No caching mechanism
-- Redundant file parsing
-- Average execution: 5-10 seconds
-
-### After (Automation Module)
-- Incremental scanning (only modified files)
-- Smart caching with checksums
+### Performance Features
+- Efficient task execution
+- Memory cache for runtime data
 - Parallel processing where possible
-- Average execution: 0.5-2 seconds
+- Streamlined execution paths
 
 ## Rule System
 
@@ -129,11 +123,8 @@ Benefits:
 Uses RedBeanPHP for persistent state:
 
 ```php
-// Tables created automatically:
-- automationexecution  # Execution history
-- automationstate     # Persistent state
-- automationcache     # File checksums
-- automationrule      # Rule execution results
+// Table created automatically:
+- automationstate     # Persistent state (last run times, etc.)
 ```
 
 ## Extending the Module

@@ -6,6 +6,30 @@ This file provides instructions to Claude Code (claude.ai/code) and other LLMs o
 
 **DO NOT DUPLICATE RULES HERE** - All rules are managed in the Isotone Automation System at `/iso-automation/config/rules.yaml`
 
+## 🗄️ CRITICAL: Database Connection from WSL
+
+**ALWAYS connect to MySQL from WSL using these methods:**
+
+### Direct MySQL CLI Connection:
+```bash
+# CORRECT - Always use the Windows host IP
+mysql -h 172.19.240.1 -u root isotone_db
+
+# WRONG - Never use these from WSL
+mysql -h localhost -u root isotone_db  # FAILS
+mysql -h 127.0.0.1 -u root isotone_db  # FAILS
+```
+
+### Finding the Windows Host IP:
+```bash
+# Get the Windows host IP from WSL
+ip route | grep default | awk '{print $3}'
+# Usually returns: 172.19.240.1
+```
+
+### RedBeanPHP Connection:
+The DatabaseService automatically detects WSL and uses the correct IP. Do NOT modify this behavior.
+
 ## 📋 How to Access Rules
 
 ### 1. **Before ANY Task - Check Relevant Rules**

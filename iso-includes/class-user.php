@@ -29,7 +29,7 @@ class IsotoneUser {
     public function authenticate($username, $password) {
         try {
             // Find user by username or email
-            $user = R::findOne('isotoneuser', 
+            $user = R::findOne('user', 
                 '(username = ? OR email = ?) AND status = ?', 
                 [$username, $username, 'active']
             );
@@ -60,7 +60,7 @@ class IsotoneUser {
      */
     public function create($data) {
         try {
-            $user = R::dispense('isotoneuser');
+            $user = R::dispense('user');
             
             // Set user properties
             $user->username = $data['username'];
@@ -89,7 +89,7 @@ class IsotoneUser {
      */
     public function update($id, $data) {
         try {
-            $user = R::load('isotoneuser', $id);
+            $user = R::load('user', $id);
             
             if (!$user->id) {
                 return false;
@@ -124,7 +124,7 @@ class IsotoneUser {
      */
     public function getById($id) {
         try {
-            $user = R::load('isotoneuser', $id);
+            $user = R::load('user', $id);
             
             if (!$user->id) {
                 return false;
@@ -147,7 +147,7 @@ class IsotoneUser {
      */
     public function getByUsername($username) {
         try {
-            $user = R::findOne('isotoneuser', 'username = ?', [$username]);
+            $user = R::findOne('user', 'username = ?', [$username]);
             
             if (!$user) {
                 return false;
@@ -185,7 +185,7 @@ class IsotoneUser {
             
             $whereClause = !empty($where) ? implode(' AND ', $where) : '1';
             
-            $users = R::findAll('isotoneuser', $whereClause . ' ORDER BY created_at DESC', $bindings);
+            $users = R::findAll('user', $whereClause . ' ORDER BY created_at DESC', $bindings);
             
             $result = [];
             foreach ($users as $user) {
@@ -209,7 +209,7 @@ class IsotoneUser {
      */
     public function delete($id) {
         try {
-            $user = R::load('isotoneuser', $id);
+            $user = R::load('user', $id);
             
             if (!$user->id) {
                 return false;
@@ -231,7 +231,7 @@ class IsotoneUser {
      */
     public function usernameExists($username) {
         try {
-            $count = R::count('isotoneuser', 'username = ?', [$username]);
+            $count = R::count('user', 'username = ?', [$username]);
             return $count > 0;
         } catch (Exception $e) {
             return false;
@@ -246,7 +246,7 @@ class IsotoneUser {
      */
     public function emailExists($email) {
         try {
-            $count = R::count('isotoneuser', 'email = ?', [$email]);
+            $count = R::count('user', 'email = ?', [$email]);
             return $count > 0;
         } catch (Exception $e) {
             return false;
@@ -262,7 +262,7 @@ class IsotoneUser {
      */
     public function hasRole($userId, $role) {
         try {
-            $user = R::load('isotoneuser', $userId);
+            $user = R::load('user', $userId);
             
             if (!$user->id) {
                 return false;

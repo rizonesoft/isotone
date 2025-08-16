@@ -124,17 +124,17 @@ $posts = R::findAll('post', 'ORDER BY created_at DESC');
 
 ### Working with Settings
 
-Settings are stored in the `isotonesetting` table:
+Settings are stored in the `setting` table:
 
 ```php
 // Get a setting
-$setting = R::findOne('isotonesetting', 'setting_key = ?', ['site_title']);
+$setting = R::findOne('setting', 'setting_key = ?', ['site_title']);
 $siteTitle = $setting ? $setting->setting_value : 'Default Title';
 
 // Update a setting
-$setting = R::findOne('isotonesetting', 'setting_key = ?', ['site_title']);
+$setting = R::findOne('setting', 'setting_key = ?', ['site_title']);
 if (!$setting) {
-    $setting = R::dispense('isotonesetting');
+    $setting = R::dispense('setting');
     $setting->setting_key = 'site_title';
 }
 $setting->setting_value = 'My New Site Title';

@@ -51,9 +51,8 @@
         "analyse": "phpstan analyse app --level=6",
         "check-style": "phpcs app --standard=PSR12",
         "fix-style": "phpcbf app --standard=PSR12",
-        "docs:check": "php scripts/check-docs.php",
-        "docs:update": "php scripts/update-docs.php",
-        "docs:sync": "php scripts/sync-user-docs.php",
+        "docs:check": "php iso-automation/cli.php check:docs",
+        "docs:update": "php iso-automation/cli.php update:docs",
         "docs:hooks": "php iso-automation/cli.php hooks:scan",
         "docs:all": [
             "@docs:update",
@@ -62,7 +61,7 @@
         ],
         "hooks:docs": "@docs:hooks",
         "hooks:scan": "php iso-automation/cli.php hooks:scan",
-        "ide:sync": "php scripts/sync-ide-rules.php",
+        "ide:sync": "php iso-automation/cli.php sync:ide",
         "validate:rules": "php iso-automation/cli.php validate:rules",
         "version:patch": [
             "php isotone version:bump patch alpha",

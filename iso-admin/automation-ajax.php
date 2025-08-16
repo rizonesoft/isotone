@@ -68,7 +68,12 @@ try {
     switch ($action) {
         case 'status':
             ob_clean();
-            $status = $engine->getStateManager()->getStatus();
+            // Return simplified status
+            $status = [
+                'success' => true,
+                'engine' => 'operational',
+                'rules' => count($engine->getRuleEngine()->getAllRules())
+            ];
             echo json_encode($status);
             break;
             
@@ -95,9 +100,7 @@ try {
             // All other tasks use automation CLI directly
             $automationTasks = [
                 'hooks:scan',
-                'validate:rules', 
-                'cache:clear',
-                'cache:stats',
+                'validate:rules',
                 'status',
                 'rules:export'
             ];
@@ -130,17 +133,6 @@ try {
             ]);
             break;
             
-        case 'cache_stats':
-            ob_clean();
-            $stats = $engine->getCacheManager()->getStatistics();
-            echo json_encode($stats);
-            break;
-            
-        case 'clear_cache':
-            ob_clean();
-            $engine->getCacheManager()->clearCache();
-            echo json_encode(['success' => true, 'message' => 'Cache cleared successfully']);
-            break;
             
         default:
             ob_clean();

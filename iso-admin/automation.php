@@ -24,14 +24,11 @@ try {
 }
 
 use Isotone\Automation\Core\AutomationEngine;
-use Exception;
 
 $engine = new AutomationEngine();
 $engine->initialize();
 
 // Get current status
-$status = $engine->getStateManager()->getStatus();
-$cacheStats = $engine->getCacheManager()->getStatistics();
 $rules = $engine->getRuleEngine()->getAllRules();
 
 // Page configuration
@@ -53,53 +50,6 @@ ob_start();
 
 <!-- Status Overview -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="dark:bg-gray-800 bg-white rounded-lg p-6 dark:border-gray-700 border-gray-200 border">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="dark:text-gray-400 text-gray-600 text-sm">Total Executions</p>
-                        <p class="text-2xl font-bold dark:text-white text-gray-900 mt-1">
-                            <?php echo $status['stats']['total_executions']; ?>
-                        </p>
-                    </div>
-                    <div class="text-cyan-400">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="dark:bg-gray-800 bg-white rounded-lg p-6 dark:border-gray-700 border-gray-200 border">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="dark:text-gray-400 text-gray-600 text-sm">Success Rate</p>
-                        <p class="text-2xl font-bold dark:text-white text-gray-900 mt-1">
-                            <?php echo $status['stats']['success_rate']; ?>%
-                        </p>
-                    </div>
-                    <div class="text-green-400">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="dark:bg-gray-800 bg-white rounded-lg p-6 dark:border-gray-700 border-gray-200 border">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="dark:text-gray-400 text-gray-600 text-sm">Avg Execution Time</p>
-                        <p class="text-2xl font-bold dark:text-white text-gray-900 mt-1">
-                            <?php echo $status['stats']['avg_execution_time']; ?>s
-                        </p>
-                    </div>
-                    <div class="text-yellow-400">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- Quick Actions and System Controls -->
@@ -117,7 +67,6 @@ ob_start();
                             <optgroup label="Documentation">
                                 <option value="check:docs">Check Documentation (docs:check)</option>
                                 <option value="update:docs">Update Documentation (docs:update)</option>
-                                <option value="sync:user-docs">Sync User Documentation (docs:sync)</option>
                             </optgroup>
                             <optgroup label="Hooks">
                                 <option value="hooks:scan">Scan & Generate Hooks Documentation</option>
@@ -127,10 +76,6 @@ ob_start();
                             </optgroup>
                             <optgroup label="Validation">
                                 <option value="validate:rules">Validate Automation Rules</option>
-                            </optgroup>
-                            <optgroup label="Cache Management">
-                                <option value="cache:clear">Clear All Caches</option>
-                                <option value="cache:stats">Show Cache Statistics</option>
                             </optgroup>
                             <optgroup label="System">
                                 <option value="status">Show Automation Status</option>
@@ -156,35 +101,35 @@ ob_start();
                     <!-- Total Commands -->
                     <div class="flex items-center justify-between">
                         <span class="dark:text-gray-400 text-gray-600 text-sm">Total Commands</span>
-                        <span class="dark:text-white text-gray-900 font-semibold">11</span>
-                    </div>
-                    
-                    <!-- Success Rate -->
-                    <div class="flex items-center justify-between">
-                        <span class="dark:text-gray-400 text-gray-600 text-sm">Success Rate</span>
-                        <span class="dark:text-white text-gray-900 font-semibold"><?php echo $status['stats']['success_rate']; ?>%</span>
-                    </div>
-                    
-                    <!-- Last Execution -->
-                    <div class="flex items-center justify-between">
-                        <span class="dark:text-gray-400 text-gray-600 text-sm">Last Run</span>
                         <span class="dark:text-white text-gray-900 font-semibold">
                             <?php 
-                            $lastRun = $status['last_execution'] ?? null;
-                            if ($lastRun) {
-                                $time = strtotime($lastRun);
-                                $diff = time() - $time;
-                                if ($diff < 60) {
-                                    echo $diff . 's ago';
-                                } elseif ($diff < 3600) {
-                                    echo round($diff / 60) . 'm ago';
-                                } elseif ($diff < 86400) {
-                                    echo round($diff / 3600) . 'h ago';
+                            // Count available automation commands
+                            $commands = [
+                                'check:docs', 'update:docs', 'generate:hooks',
+                                'sync:ide', 'validate:rules',
+                                'rules:list', 'rules:search', 'rules:check',
+                                'rules:export', 'status'
+                            ];
+                            echo count($commands);
+                            ?>
+                        </span>
+                    </div>
+                    
+                    <!-- System State -->
+                    <div class="flex items-center justify-between">
+                        <span class="dark:text-gray-400 text-gray-600 text-sm">System Status</span>
+                        <span class="dark:text-white text-gray-900 font-semibold">
+                            <?php 
+                            // Check if automation engine initialized successfully
+                            try {
+                                $rulesCount = count($rules);
+                                if ($rulesCount > 0) {
+                                    echo '<span class="text-green-400">● </span>Operational';
                                 } else {
-                                    echo round($diff / 86400) . 'd ago';
+                                    echo '<span class="text-yellow-400">● </span>No Rules';
                                 }
-                            } else {
-                                echo 'Never';
+                            } catch (Exception $e) {
+                                echo '<span class="text-red-400">● </span>Error';
                             }
                             ?>
                         </span>
@@ -229,42 +174,6 @@ ob_start();
             </div>
         </div>
 
-        <!-- Cache Statistics -->
-        <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
-            <h2 class="text-xl font-semibold text-white mb-4">Cache Statistics</h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div>
-                    <p class="text-gray-400 text-sm">Files Cached</p>
-                    <p class="text-lg font-semibold text-white"><?php echo $cacheStats['total_files_cached']; ?></p>
-                </div>
-                <div>
-                    <p class="text-gray-400 text-sm">Memory Cache</p>
-                    <p class="text-lg font-semibold text-white"><?php echo $cacheStats['memory_cache_size']; ?> items</p>
-                </div>
-                <div>
-                    <p class="text-gray-400 text-sm">Disk Usage</p>
-                    <p class="text-lg font-semibold text-white">
-                        <?php 
-                        $bytes = $cacheStats['disk_cache_size'];
-                        $units = ['B', 'KB', 'MB', 'GB'];
-                        $i = 0;
-                        while ($bytes >= 1024 && $i < count($units) - 1) {
-                            $bytes /= 1024;
-                            $i++;
-                        }
-                        echo round($bytes, 2) . ' ' . $units[$i];
-                        ?>
-                    </p>
-                </div>
-                <div>
-                    <p class="text-gray-400 text-sm">Last Updated</p>
-                    <p class="text-lg font-semibold text-white">
-                        <?php echo $cacheStats['newest_cache'] ? date('H:i:s', strtotime($cacheStats['newest_cache'])) : 'Never'; ?>
-                    </p>
-                </div>
-            </div>
-        </div>
-</div>
 
 <script>
 // Terminal functions
@@ -335,12 +244,9 @@ function executeTask(task) {
     const commandMap = {
         'check:docs': 'composer docs:check',
         'update:docs': 'composer docs:update',
-        'sync:user-docs': 'composer docs:sync',
         'hooks:scan': 'php iso-automation/cli.php hooks:scan',
         'sync:ide': 'composer ide:sync',
         'validate:rules': 'php iso-automation/cli.php validate:rules',
-        'cache:clear': 'php iso-automation/cli.php cache:clear',
-        'cache:stats': 'php iso-automation/cli.php cache:stats',
         'status': 'php iso-automation/cli.php status',
         'rules:export': 'php iso-automation/cli.php rules:export'
     };
@@ -422,35 +328,6 @@ function executeTask(task) {
         console.error('Error:', error);
         addToTerminal(`✗ Failed to execute task: ${error.message}`, 'error');
         showToast('Failed to execute task. Check terminal for details.', 'error');
-    });
-}
-
-function clearCache() {
-    if (!confirm('Are you sure you want to clear all caches?')) {
-        return;
-    }
-    
-    // Show command in terminal
-    addToTerminal(`<span class="text-cyan-400">isotone@automation</span>:<span class="text-blue-400">~</span>$ <span class="text-white">php isotone cache:clear</span>`, 'command');
-    
-    fetch('automation-ajax.php?action=clear_cache', {
-        method: 'POST'
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            addToTerminal('Clearing memory cache...', 'info');
-            addToTerminal('Clearing file cache...', 'info');
-            addToTerminal('✓ All caches have been cleared successfully', 'success');
-            showToast('All caches have been cleared', 'success');
-        } else {
-            addToTerminal(`✗ Failed to clear cache: ${data.error || 'Unknown error'}`, 'error');
-            showToast(data.error || 'Failed to clear cache', 'error');
-        }
-    })
-    .catch(error => {
-        addToTerminal(`✗ Failed to clear cache: ${error.message}`, 'error');
-        showToast(error.message, 'error');
     });
 }
 

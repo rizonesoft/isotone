@@ -719,7 +719,6 @@ $wpdb->postmeta = 'iso_postmeta';
 $wpdb->terms = 'iso_terms';
 $wpdb->term_taxonomy = 'iso_term_taxonomy';
 $wpdb->term_relationships = 'iso_term_relationships';
-$wpdb->users = 'iso_users';
 $wpdb->usermeta = 'iso_usermeta';
 $wpdb->options = 'iso_options';
 $wpdb->comments = 'iso_comments';

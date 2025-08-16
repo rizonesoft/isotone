@@ -9,15 +9,11 @@
 
 namespace Isotone\Automation\Core;
 
-use Isotone\Automation\Storage\StateManager;
-use Isotone\Automation\Storage\CacheManager;
 use Isotone\Automation\Rules\RuleEngine;
 use Exception;
 
 class AutomationEngine
 {
-    private StateManager $stateManager;
-    private CacheManager $cacheManager;
     private RuleEngine $ruleEngine;
     private array $analyzers = [];
     private array $generators = [];
@@ -26,8 +22,6 @@ class AutomationEngine
     
     public function __construct()
     {
-        $this->stateManager = new StateManager();
-        $this->cacheManager = new CacheManager();
         $this->ruleEngine = new RuleEngine();
     }
     
@@ -36,8 +30,6 @@ class AutomationEngine
      */
     public function initialize(): void
     {
-        $this->stateManager->initialize();
-        $this->cacheManager->initialize();
         $this->ruleEngine->loadRules();
         
         $this->loadAnalyzers();
@@ -62,19 +54,12 @@ class AutomationEngine
         try {
             $startTime = microtime(true);
             
-            // Record execution start (if database available)
-            $executionId = $this->stateManager->startExecution($task, $options);
-            
-            // Get modified files since last run
-            $modifiedFiles = $this->cacheManager->getModifiedFiles($task);
-            
             // Execute based on task type
             $result = match($task) {
-                'check:docs' => $this->checkDocumentation($modifiedFiles, $options),
-                'update:docs' => $this->updateDocumentation($modifiedFiles, $options),
-                'generate:hooks' => $this->generateHooksDocs($modifiedFiles, $options),
+                'check:docs' => $this->checkDocumentation($options),
+                'update:docs' => $this->updateDocumentation($options),
+                'generate:hooks' => $this->generateHooksDocs($options),
                 'sync:ide' => $this->syncIdeRules($options),
-                'sync:user-docs' => $this->syncUserDocs($options),
                 'validate:rules' => $this->validateRules($options),
                 'status' => $this->showStatus($options),
                 default => throw new Exception("Unknown task: $task")
@@ -82,25 +67,12 @@ class AutomationEngine
             
             $executionTime = microtime(true) - $startTime;
             
-            // Record execution completion (if database available and execution was tracked)
-            if ($executionId > 0) {
-                $this->stateManager->completeExecution($executionId, $result, $executionTime);
-            }
-            
-            // Update cache
-            $this->cacheManager->updateCache($task);
-            
             $this->log(sprintf("Task completed in %.2f seconds", $executionTime));
             
             return $result;
             
         } catch (Exception $e) {
             $this->logError("Task failed: " . $e->getMessage());
-            
-            if (isset($executionId) && $executionId > 0) {
-                $this->stateManager->failExecution($executionId, $e->getMessage());
-            }
-            
             return false;
         }
     }
@@ -108,58 +80,51 @@ class AutomationEngine
     /**
      * Check documentation integrity
      */
-    private function checkDocumentation(array $modifiedFiles, array $options): bool
+    private function checkDocumentation(array $options): bool
     {
-        // Use original script directly for reliability
-        $scriptPath = dirname(dirname(dirname(__DIR__))) . '/scripts/check-docs.php';
-        if (!file_exists($scriptPath)) {
-            $this->logError("check-docs.php script not found at: $scriptPath");
-            return false;
+        require_once dirname(__DIR__) . '/Analyzers/DocumentationAnalyzer.php';
+        
+        $analyzer = new \Isotone\Automation\Analyzers\DocumentationAnalyzer($this);
+        
+        // Run the analysis
+        $result = $analyzer->analyze();
+        
+        // Report if not in quiet mode
+        if (!$this->quietMode) {
+            $analyzer->report();
         }
         
-        // Execute the script as a separate process to avoid exit() affecting our engine
-        $command = 'php ' . escapeshellarg($scriptPath);
-        if ($this->quietMode) {
-            $command .= ' --quiet';
-        }
-        $command .= ' 2>&1';
-        
-        $output = [];
-        $returnCode = 0;
-        exec($command, $output, $returnCode);
-        
-        // Log output if not in quiet mode
-        if (!$this->quietMode && !empty($output)) {
-            foreach ($output as $line) {
-                $this->log($line);
-            }
-        }
-        
-        // Return code 0 means success (no errors, possibly warnings)
-        // Return code 1 means errors found
-        return $returnCode === 0;
+        return $result;
     }
     
     /**
      * Update documentation
      */
-    private function updateDocumentation(array $modifiedFiles, array $options): bool
+    private function updateDocumentation(array $options): bool
     {
-        // Fallback to original script for now
-        $scriptPath = dirname(dirname(__DIR__)) . '/scripts/update-docs.php';
-        if (file_exists($scriptPath)) {
-            ob_start();
-            include $scriptPath;
-            ob_end_clean();
+        // Check if DocUpdater exists, otherwise use DocumentationGenerator
+        $docUpdaterPath = dirname(__DIR__) . '/Generators/DocUpdater.php';
+        if (file_exists($docUpdaterPath)) {
+            require_once $docUpdaterPath;
+            $updater = new \Isotone\Automation\Generators\DocUpdater();
+            $updater->setQuietMode($this->quietMode);
+            return $updater->run();
+        } else {
+            // Fallback to DocumentationGenerator
+            require_once dirname(__DIR__) . '/Generators/DocumentationGenerator.php';
+            $generator = new \Isotone\Automation\Generators\DocumentationGenerator($this);
+            $generator->generate();
+            if (!$this->quietMode) {
+                $generator->report();
+            }
             return true;
         }
-        return false;
     }
     
     /**
      * Generate hooks documentation
      */
-    private function generateHooksDocs(array $modifiedFiles, array $options): bool
+    private function generateHooksDocs(array $options): bool
     {
         // Fallback to original script for now
         $scriptPath = dirname(dirname(__DIR__)) . '/scripts/generate-hooks-docs.php';
@@ -177,31 +142,23 @@ class AutomationEngine
      */
     private function syncIdeRules(array $options): bool
     {
-        // Fallback to original script for now
-        $scriptPath = dirname(dirname(__DIR__)) . '/scripts/sync-ide-rules.php';
-        if (file_exists($scriptPath)) {
-            ob_start();
-            include $scriptPath;
-            ob_end_clean();
+        // Check if IdeRuleSync exists, otherwise use IdeGenerator
+        $ideRuleSyncPath = dirname(__DIR__) . '/Generators/IdeRuleSync.php';
+        if (file_exists($ideRuleSyncPath)) {
+            require_once $ideRuleSyncPath;
+            $sync = new \Isotone\Automation\Generators\IdeRuleSync();
+            $sync->setQuietMode($this->quietMode);
+            return $sync->run();
+        } else {
+            // Fallback to IdeGenerator
+            require_once dirname(__DIR__) . '/Generators/IdeGenerator.php';
+            $generator = new \Isotone\Automation\Generators\IdeGenerator($this);
+            $generator->generate();
+            if (!$this->quietMode) {
+                $generator->report();
+            }
             return true;
         }
-        return false;
-    }
-    
-    /**
-     * Sync user documentation
-     */
-    private function syncUserDocs(array $options): bool
-    {
-        // Fallback to original script for now
-        $scriptPath = dirname(dirname(__DIR__)) . '/scripts/sync-user-docs.php';
-        if (file_exists($scriptPath)) {
-            ob_start();
-            include $scriptPath;
-            ob_end_clean();
-            return true;
-        }
-        return false;
     }
     
     /**
@@ -219,17 +176,32 @@ class AutomationEngine
     }
     
     /**
-     * Show automation status
+     * Show automation status (simplified)
      */
     private function showStatus(array $options): bool
     {
-        $status = $this->stateManager->getStatus();
-        
         if (!$this->quietMode) {
-            $this->displayStatus($status);
+            echo "\n🔍 Isotone Automation Status\n";
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+            
+            echo "\n🔧 System Status:\n";
+            echo "  ✅ Automation Engine: Operational\n";
+            echo "  ✅ Rule Engine: " . count($this->ruleEngine->getAllRules()) . " rules loaded\n";
+            echo "  ✅ Analyzers: " . count($this->analyzers) . " loaded\n";
+            echo "  ✅ Generators: " . count($this->generators) . " loaded\n";
+            
+            echo "\n";
         }
         
         return true;
+    }
+    
+    /**
+     * Get rule engine instance
+     */
+    public function getRuleEngine(): RuleEngine
+    {
+        return $this->ruleEngine;
     }
     
     /**
@@ -275,30 +247,6 @@ class AutomationEngine
     }
     
     /**
-     * Get state manager
-     */
-    public function getStateManager(): StateManager
-    {
-        return $this->stateManager;
-    }
-    
-    /**
-     * Get cache manager
-     */
-    public function getCacheManager(): CacheManager
-    {
-        return $this->cacheManager;
-    }
-    
-    /**
-     * Get rule engine
-     */
-    public function getRuleEngine(): RuleEngine
-    {
-        return $this->ruleEngine;
-    }
-    
-    /**
      * Log a message
      */
     private function log(string $message): void
@@ -328,39 +276,5 @@ class AutomationEngine
         if (!$this->quietMode) {
             echo "❌ $message\n";
         }
-    }
-    
-    /**
-     * Display status information
-     */
-    private function displayStatus(array $status): void
-    {
-        echo "\n🔍 Isotone Automation Status\n";
-        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-        
-        echo "\n📊 Recent Executions:\n";
-        foreach ($status['recent_executions'] as $exec) {
-            $icon = $exec['status'] === 'completed' ? '✅' : '❌';
-            echo sprintf(
-                "%s %s - %s (%.2fs)\n",
-                $icon,
-                $exec['task'],
-                $exec['completed_at'],
-                $exec['execution_time']
-            );
-        }
-        
-        echo "\n📈 Statistics:\n";
-        echo "  Total Executions: {$status['stats']['total_executions']}\n";
-        echo "  Success Rate: {$status['stats']['success_rate']}%\n";
-        echo "  Avg Execution Time: {$status['stats']['avg_execution_time']}s\n";
-        
-        echo "\n🔧 System Health:\n";
-        foreach ($status['health'] as $component => $health) {
-            $icon = $health['status'] === 'healthy' ? '✅' : '⚠️';
-            echo "  $icon $component: {$health['message']}\n";
-        }
-        
-        echo "\n";
     }
 }

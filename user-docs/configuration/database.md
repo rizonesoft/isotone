@@ -175,20 +175,20 @@ This is expected behavior. The application will auto-detect and handle WSL conne
 After running the installation wizard, these tables are created:
 
 ```sql
-isotonesetting    -- System configuration
-isotoneuser       -- User accounts  
-isotonecontent    -- Pages and content (when created)
+setting    -- System configuration
+user       -- User accounts  
+content    -- Pages and content (when created)
 ```
 
 ### Table Structure
 
-**isotonesetting table:**
+**setting table:**
 - `setting_key` - Configuration key name (e.g., 'site_title')
 - `setting_value` - Configuration value
 - `setting_type` - Data type (string, int, boolean, etc.)
 - `updated_at` - Last update timestamp
 
-**isotoneuser table:**
+**user table:**
 - `username` - User login name
 - `email` - User email address
 - `password` - Hashed password
@@ -205,7 +205,7 @@ The application uses RedBeanPHP, which:
 - Creates tables automatically when needed
 - Doesn't require migrations for development
 - Uses convention: lowercase singular table names
-- Table naming: `isotoneuser`, `isotonesetting`, etc. (no underscores)
+- Table naming: `user`, `setting`, `content`, etc. (simple names, no prefixes)
 
 ## Best Practices
 
