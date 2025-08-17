@@ -44,11 +44,21 @@ function is_menu_active($menu_item, $current_url, $current_page) {
             
             // Check if current path matches submenu path (considering query strings)
             if ($current_path === $sub_path) {
+                // Special handling for documentation.php - only Documentation menu should be active
+                if ($sub_path === '/isotone/iso-admin/documentation.php') {
+                    // Only activate if this is the Documentation menu, not other menus
+                    return $menu_item['title'] === 'Documentation';
+                }
                 return true;
             }
             
             // Also check with query string for special cases like documentation sections
             if ($current_url === $subitem['url']) {
+                // Special handling for documentation.php URLs
+                if (strpos($subitem['url'], '/isotone/iso-admin/documentation.php') !== false) {
+                    // Only activate if this is the Documentation menu
+                    return $menu_item['title'] === 'Documentation';
+                }
                 return true;
             }
         }
@@ -385,6 +395,19 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                     </div>
                 </div>
                 
+                <!-- Toni AI Assistant -->
+                <button @click="toniOpen = !toniOpen" 
+                        class="relative p-2 dark:hover:bg-gray-700 hover:bg-gray-200 rounded-lg transition-all group"
+                        title="Toni AI Assistant">
+                    <svg class="w-5 h-5 transition-colors group-hover:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                    </svg>
+                    <span class="absolute top-1 right-1 flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+                    </span>
+                </button>
+                
                 <!-- Dark/Light Mode Toggle -->
                 <button @click="darkMode = !darkMode" class="p-2 dark:hover:bg-gray-700 hover:bg-gray-200 rounded-lg transition-colors relative w-9 h-9 flex items-center justify-center">
                     <svg x-show="!darkMode" x-transition class="w-5 h-5 absolute" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -454,7 +477,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                        class="flex items-center py-2 dark:hover:bg-gray-700 hover:bg-gray-200 transition-colors relative border-l-4 pl-4 pr-4 <?php echo $is_active ? 'dark:bg-gray-700 bg-gray-200 text-cyan-400 border-cyan-400' : 'border-transparent'; ?>"
                        :class="sidebarCollapsed ? 'justify-center px-0' : ''">
                         <span class="flex-shrink-0 <?php echo $is_active ? 'text-cyan-400' : ''; ?>"><?php echo render_icon($item['icon']); ?></span>
-                        <span x-show="!sidebarCollapsed" class="ml-3 <?php echo $is_active ? 'font-semibold' : ''; ?>" x-cloak><?php echo $item['title']; ?></span>
+                        <span x-show="!sidebarCollapsed" class="ml-3" x-cloak><?php echo $item['title']; ?></span>
                         <?php if ($has_submenu): ?>
                         <svg x-show="!sidebarCollapsed" class="w-4 h-4 ml-auto transition-transform" :class="open && 'rotate-90'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -469,7 +492,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                             $sub_active = is_url_active($subitem['url'], $current_url);
                         ?>
                         <a href="<?php echo $subitem['url']; ?>" 
-                           class="block pl-12 pr-4 py-1.5 text-sm dark:hover:bg-gray-700 hover:bg-gray-200 transition-colors relative <?php echo $sub_active ? 'dark:bg-gray-700 bg-gray-200 text-cyan-400 font-semibold' : 'dark:text-gray-300 text-gray-700'; ?>">
+                           class="block pl-12 pr-4 py-1.5 text-sm dark:hover:bg-gray-700 hover:bg-gray-200 transition-colors relative <?php echo $sub_active ? 'dark:bg-gray-700 bg-gray-200 text-cyan-400' : 'dark:text-gray-300 text-gray-700'; ?>">
                             <?php if ($sub_active): ?>
                             <span class="absolute left-7 top-1/2 transform -translate-y-1/2 w-1.5 h-1.5 bg-cyan-400 rounded-full"></span>
                             <?php endif; ?>
@@ -526,6 +549,109 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
         </div>
     </div>
 
+    <!-- Toni AI Assistant Sidebar -->
+    <div x-show="toniOpen" 
+         x-cloak
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="translate-x-full"
+         x-transition:enter-end="translate-x-0"
+         x-transition:leave="transition ease-in duration-300"
+         x-transition:leave-start="translate-x-0"
+         x-transition:leave-end="translate-x-full"
+         class="fixed right-0 top-16 bottom-0 w-96 dark:bg-gray-800 bg-white dark:border-gray-700 border-gray-200 border-l shadow-xl z-40 flex flex-col">
+        
+        <!-- Toni Header -->
+        <div class="p-4 dark:bg-gray-900 bg-gray-50 border-b dark:border-gray-700 border-gray-200 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-r from-cyan-400 to-green-400 rounded-full flex items-center justify-center">
+                    <span class="text-gray-900 font-bold text-lg">T</span>
+                </div>
+                <div>
+                    <h3 class="font-semibold dark:text-white text-gray-900">Toni</h3>
+                    <p class="text-xs dark:text-gray-400 text-gray-600">AI Assistant</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button @click="clearToniChat()" 
+                        class="p-1.5 dark:hover:bg-gray-700 hover:bg-gray-200 rounded transition-colors"
+                        title="Clear conversation">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                </button>
+                <button @click="toniOpen = false" 
+                        class="p-1.5 dark:hover:bg-gray-700 hover:bg-gray-200 rounded transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Chat Messages -->
+        <div id="toni-chat" class="flex-1 overflow-y-auto p-4 space-y-4">
+            <!-- Welcome message if no messages -->
+            <template x-if="toniMessages.length === 0">
+                <div class="text-center py-8">
+                    <div class="w-16 h-16 bg-gradient-to-r from-cyan-400 to-green-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-gray-900 font-bold text-2xl">T</span>
+                    </div>
+                    <h4 class="font-semibold dark:text-white text-gray-900 mb-2">Hi! I'm Toni</h4>
+                    <p class="text-sm dark:text-gray-400 text-gray-600 mb-4">Your AI assistant for Isotone. I can help you with:</p>
+                    <ul class="text-sm dark:text-gray-400 text-gray-600 space-y-1">
+                        <li>• Content creation and management</li>
+                        <li>• Site configuration</li>
+                        <li>• SEO optimization</li>
+                        <li>• Troubleshooting issues</li>
+                        <li>• Best practices and tips</li>
+                    </ul>
+                </div>
+            </template>
+            
+            <!-- Chat messages -->
+            <template x-for="(message, index) in toniMessages" :key="index">
+                <div :class="message.role === 'user' ? 'flex justify-end' : 'flex justify-start'">
+                    <div :class="message.role === 'user' 
+                         ? 'max-w-xs bg-cyan-600 text-white rounded-lg px-4 py-2' 
+                         : 'max-w-xs dark:bg-gray-700 bg-gray-100 dark:text-white text-gray-900 rounded-lg px-4 py-2'">
+                        <p class="text-sm whitespace-pre-wrap" x-text="message.content"></p>
+                    </div>
+                </div>
+            </template>
+            
+            <!-- Loading indicator -->
+            <template x-if="toniLoading">
+                <div class="flex justify-start">
+                    <div class="max-w-xs dark:bg-gray-700 bg-gray-100 rounded-lg px-4 py-2">
+                        <div class="flex space-x-2">
+                            <div class="w-2 h-2 bg-cyan-400 rounded-full animate-bounce" style="animation-delay: 0ms"></div>
+                            <div class="w-2 h-2 bg-cyan-400 rounded-full animate-bounce" style="animation-delay: 150ms"></div>
+                            <div class="w-2 h-2 bg-cyan-400 rounded-full animate-bounce" style="animation-delay: 300ms"></div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+        
+        <!-- Input Area -->
+        <div class="p-4 border-t dark:border-gray-700 border-gray-200">
+            <form @submit.prevent="sendToToni()" class="flex space-x-2">
+                <input type="text" 
+                       x-model="toniMessage"
+                       :disabled="toniLoading"
+                       placeholder="Ask Toni anything..."
+                       class="flex-1 px-4 py-2 dark:bg-gray-900 bg-gray-50 dark:border-gray-700 border-gray-300 dark:text-white text-gray-900 border rounded-lg focus:outline-none focus:border-cyan-500 disabled:opacity-50">
+                <button type="submit" 
+                        :disabled="toniLoading || !toniMessage.trim()"
+                        class="px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
     <!-- Toast Container -->
     <div class="fixed bottom-4 right-4 z-50 space-y-2" id="toast-container"></div>
 
@@ -537,6 +663,10 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                 darkMode: localStorage.getItem('darkMode') !== 'false',
                 showSearch: false,
                 sidebarOpen: false,
+                toniOpen: false,
+                toniMessage: '',
+                toniMessages: [],
+                toniLoading: false,
                 
                 init() {
                     // Remove loading overlay once Alpine is initialized
@@ -568,6 +698,143 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                         document.documentElement.classList.add('dark');
                     } else {
                         document.documentElement.classList.remove('dark');
+                    }
+                    
+                    // Load Toni conversation history when opened
+                    this.$watch('toniOpen', value => {
+                        if (value && this.toniMessages.length === 0) {
+                            this.loadToniHistory();
+                        }
+                    });
+                },
+                
+                // Toni AI methods
+                async sendToToni() {
+                    if (!this.toniMessage.trim()) return;
+                    
+                    const message = this.toniMessage;
+                    this.toniMessage = '';
+                    
+                    // Add user message to chat
+                    this.toniMessages.push({
+                        role: 'user',
+                        content: message,
+                        created_at: new Date().toISOString()
+                    });
+                    
+                    this.toniLoading = true;
+                    
+                    try {
+                        const formData = new FormData();
+                        formData.append('action', 'send');
+                        formData.append('message', message);
+                        
+                        const response = await fetch('/isotone/iso-admin/api/toni.php', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        
+                        const data = await response.json();
+                        
+                        // Show debug info in console if available
+                        if (data.debug) {
+                            console.group('🤖 Toni AI Debug Info');
+                            console.log('Provider:', data.debug.provider);
+                            console.log('API Key Present:', data.debug.openai_api_key_present || data.debug.anthropic_api_key_present || false);
+                            console.log('Model:', data.debug.model || data.debug.selected_model || data.debug.openai_model || data.debug.anthropic_model || 'N/A');
+                            console.log('Max Tokens:', data.debug.max_tokens);
+                            console.log('Context Messages:', data.debug.context_count);
+                            
+                            if (data.debug.error) {
+                                console.error('❌ Error:', data.debug.error);
+                            }
+                            
+                            if (data.debug.api_call_duration) {
+                                console.log('API Call Duration:', data.debug.api_call_duration + 's');
+                                console.log('HTTP Code:', data.debug.http_code);
+                                console.log('Tokens Used:', data.debug.tokens_used);
+                            }
+                            
+                            if (data.debug.curl_error) {
+                                console.error('CURL Error:', data.debug.curl_error);
+                            }
+                            
+                            if (data.debug.api_error) {
+                                console.error('API Error:', data.debug.api_error);
+                                console.error('API Response:', data.debug.api_response);
+                            }
+                            
+                            if (data.debug.fallback_used) {
+                                console.warn('⚠️ Fallback response used (no AI)');
+                            } else if (data.debug.ai_response_received) {
+                                console.log('✅ AI response received successfully');
+                            }
+                            
+                            if (data.debug.api_response_keys) {
+                                console.warn('🔑 API Response Keys:', data.debug.api_response_keys);
+                            }
+                            if (data.debug.raw_response_sample) {
+                                console.warn('📝 Raw Response Sample:', data.debug.raw_response_sample);
+                            }
+                            if (data.debug.full_response) {
+                                console.warn('📄 Full Response:', data.debug.full_response);
+                            }
+                            console.log('Full Debug Object:', data.debug);
+                            console.groupEnd();
+                        }
+                        
+                        if (data.success) {
+                            this.toniMessages.push({
+                                role: 'assistant',
+                                content: data.response,
+                                created_at: new Date().toISOString()
+                            });
+                            
+                            // Scroll to bottom
+                            this.$nextTick(() => {
+                                const chatContainer = document.getElementById('toni-chat');
+                                if (chatContainer) {
+                                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                                }
+                            });
+                        } else {
+                            showToast('Failed to send message to Toni', 'error');
+                        }
+                    } catch (error) {
+                        console.error('Toni error:', error);
+                        showToast('Error communicating with Toni', 'error');
+                    } finally {
+                        this.toniLoading = false;
+                    }
+                },
+                
+                async loadToniHistory() {
+                    try {
+                        const response = await fetch('/isotone/iso-admin/api/toni.php?action=history');
+                        const data = await response.json();
+                        
+                        if (data.success) {
+                            this.toniMessages = data.conversation || [];
+                        }
+                    } catch (error) {
+                        console.error('Failed to load Toni history:', error);
+                    }
+                },
+                
+                async clearToniChat() {
+                    if (!confirm('Clear your conversation with Toni?')) return;
+                    
+                    try {
+                        const response = await fetch('/isotone/iso-admin/api/toni.php?action=clear');
+                        const data = await response.json();
+                        
+                        if (data.success) {
+                            this.toniMessages = [];
+                            showToast('Conversation cleared', 'success');
+                        }
+                    } catch (error) {
+                        console.error('Failed to clear Toni chat:', error);
+                        showToast('Failed to clear conversation', 'error');
                     }
                 }
             }

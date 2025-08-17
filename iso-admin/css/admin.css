@@ -248,6 +248,23 @@ main > div:last-child {
     }
 }
 
+/* Subtle Pulse for Toni Button */
+@keyframes pulse-subtle {
+    0%, 100% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
+
+.animate-pulse-subtle {
+    animation: pulse-subtle 2s ease-in-out infinite;
+    transform-origin: center;
+}
+
 /* Dark mode shimmer (brighter) */
 .dark .isotone-text-shimmer {
     background: linear-gradient(135deg, #FFFFFF 0%, #00D9FF 50%, #00FF88 100%);

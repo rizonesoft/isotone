@@ -71,7 +71,7 @@ class ThemeAPI
         
         // Load from database if available
         if (R::testConnection()) {
-            $settings = R::findAll('setting');
+            $settings = R::findAll('settings');
             foreach ($settings as $setting) {
                 $key = str_replace('site_', '', $setting->setting_key);
                 $this->siteInfo[$key] = $setting->setting_value;
@@ -195,7 +195,7 @@ class ThemeAPI
         if (R::testConnection()) {
             $setting = R::findOne('setting', 'setting_key = ?', ['theme_mod_' . $name]);
             if (!$setting) {
-                $setting = R::dispense('setting');
+                $setting = R::dispense('settings');
                 $setting->setting_key = 'theme_mod_' . $name;
                 $setting->setting_type = 'theme_mod';
             }

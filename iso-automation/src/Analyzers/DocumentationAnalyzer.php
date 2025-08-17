@@ -129,13 +129,13 @@ class DocumentationAnalyzer
         
         // Check completed features
         if (strpos($content, '✅ Basic routing system') !== false) {
-            if (!file_exists($this->rootPath . '/app/Core/Application.php')) {
+            if (!file_exists($this->rootPath . '/iso-core/Core/Application.php')) {
                 $this->errors[] = "README.md: Claims routing system complete but Application.php missing";
             }
         }
         
         if (strpos($content, '✅ Database integration') !== false) {
-            if (!file_exists($this->rootPath . '/app/Core/Database.php')) {
+            if (!file_exists($this->rootPath . '/iso-core/Core/Database.php')) {
                 $this->warnings[] = "README.md: Database marked complete but Database.php not found";
             }
         }
@@ -289,7 +289,7 @@ class DocumentationAnalyzer
         }
         
         // Check user-docs for composer script documentation
-        $commandsDoc = $this->rootPath . '/user-docs/developers-guide/commands.md';
+        $commandsDoc = $this->rootPath . '/user-docs/development/commands.md';
         if (file_exists($commandsDoc)) {
             $docsContent .= file_get_contents($commandsDoc);
         }
@@ -318,23 +318,24 @@ class DocumentationAnalyzer
             return;
         }
         
-        // Expected structure for Isotone (updated for current structure)
+        // Expected structure for Isotone (Service-Oriented Architecture)
         $expectedDirs = [
+            'app/Commands',
             'app/Core',
-            'app/Http/Controllers', 
-            'app/Http/Middleware',
-            'app/Models',
             'app/Services',
-            'public',
             'config',
             'iso-content/uploads',
-            'iso-content/cache',
             'iso-content/plugins',
             'iso-content/themes',
-            'storage/logs',
-            'user-docs',
             'iso-admin',
-            'iso-automation'
+            'iso-admin/api',
+            'iso-admin/includes',
+            'iso-automation',
+            'iso-automation/src',
+            'iso-includes',
+            'iso-runtime',
+            'storage',
+            'user-docs'
         ];
         
         foreach ($expectedDirs as $dir) {
@@ -351,7 +352,7 @@ class DocumentationAnalyzer
      */
     private function checkRoutes(): void
     {
-        $appFile = $this->rootPath . '/app/Core/Application.php';
+        $appFile = $this->rootPath . '/iso-core/Core/Application.php';
         
         if (!$this->isFileModified($appFile)) {
             $this->loadCachedCheck('routes');
@@ -373,7 +374,7 @@ class DocumentationAnalyzer
         }
         
         // Check if documented routes exist
-        $gettingStarted = $this->rootPath . '/docs/GETTING-STARTED.md';
+        $gettingStarted = $this->rootPath . '/user-docs/development/getting-started.md';
         if (file_exists($gettingStarted)) {
             $content = file_get_contents($gettingStarted);
             

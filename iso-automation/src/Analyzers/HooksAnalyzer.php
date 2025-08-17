@@ -115,7 +115,7 @@ class HooksAnalyzer
         }
         
         // Load SystemHooks class if not already loaded
-        $systemHooksFile = $this->rootPath . '/app/Core/SystemHooks.php';
+        $systemHooksFile = $this->rootPath . '/iso-core/Core/SystemHooks.php';
         if (file_exists($systemHooksFile)) {
             require_once $systemHooksFile;
         }

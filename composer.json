@@ -31,12 +31,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Isotone\\": "app/",
+            "Isotone\\": "iso-core/",
             "Isotone\\Automation\\": "iso-automation/src/"
         },
         "files": [
-            "app/helpers.php",
-            "app/hooks.php"
+            "iso-core/helpers.php",
+            "iso-core/hooks.php"
         ]
     },
     "autoload-dev": {
@@ -48,9 +48,9 @@
         "test": "phpunit",
         "test:unit": "phpunit --testsuite Unit",
         "test:integration": "phpunit --testsuite Integration",
-        "analyse": "phpstan analyse app --level=6",
-        "check-style": "phpcs app --standard=PSR12",
-        "fix-style": "phpcbf app --standard=PSR12",
+        "analyse": "phpstan analyse iso-core --level=6",
+        "check-style": "phpcs iso-core --standard=PSR12",
+        "fix-style": "phpcbf iso-core --standard=PSR12",
         "docs:check": "php iso-automation/cli.php check:docs",
         "docs:update": "php iso-automation/cli.php update:docs",
         "docs:hooks": "php iso-automation/cli.php hooks:scan",

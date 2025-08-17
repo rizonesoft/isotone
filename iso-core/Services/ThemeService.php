@@ -122,7 +122,7 @@ class ThemeService
      */
     public function getActiveTheme(): ?array
     {
-        $setting = R::findOne('setting', 'setting_key = ?', [$this->activeThemeOption]);
+        $setting = R::findOne('settings', 'setting_key = ?', [$this->activeThemeOption]);
         
         if (!$setting) {
             // Default to first available theme or neutron if it exists
@@ -165,10 +165,10 @@ class ThemeService
         }
         
         // Save to database
-        $setting = R::findOne('setting', 'setting_key = ?', [$this->activeThemeOption]);
+        $setting = R::findOne('settings', 'setting_key = ?', [$this->activeThemeOption]);
         
         if (!$setting) {
-            $setting = R::dispense('setting');
+            $setting = R::dispense('settings');
             $setting->setting_key = $this->activeThemeOption;
             $setting->setting_type = 'theme';
         }

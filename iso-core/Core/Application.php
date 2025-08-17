@@ -107,13 +107,13 @@ class Application
         DatabaseService::initialize();
         
         // Load hooks system
-        if (file_exists($this->basePath . '/app/hooks.php')) {
-            require_once $this->basePath . '/app/hooks.php';
+        if (file_exists($this->basePath . '/iso-core/hooks.php')) {
+            require_once $this->basePath . '/iso-core/hooks.php';
         }
         
         // Load theme functions API
-        if (file_exists($this->basePath . '/app/theme-functions.php')) {
-            require_once $this->basePath . '/app/theme-functions.php';
+        if (file_exists($this->basePath . '/iso-core/theme-functions.php')) {
+            require_once $this->basePath . '/iso-core/theme-functions.php';
         }
         
         // Initialize theme service

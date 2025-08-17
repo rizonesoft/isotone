@@ -39,6 +39,54 @@ search_before_create:
       severity: "critical"
 
 # ==========================================
+# API DOCUMENTATION CONSULTATION (Priority 92)
+# ==========================================
+
+api_documentation_consultation:
+  priority: 92
+  enabled: true
+  context: ["development", "api", "integration", "third-party"]
+  description: "Always consult Context7 for latest API documentation"
+  rules:
+    - "ALWAYS consult Context7 MCP for API documentation BEFORE implementation"
+    - "Never rely on memory or assumptions about API structures"
+    - "Use mcp__context7__resolve-library-id first to find the library"
+    - "Then use mcp__context7__get-library-docs to get latest documentation"
+  apis_requiring_consultation:
+    - "OpenAI API (GPT models, DALL-E, Whisper)"
+    - "Anthropic API (Claude models)"
+    - "RedBeanPHP (ORM operations)"
+    - "Tailwind CSS (utility classes, configuration)"
+    - "Alpine.js (directives, magic properties)"
+    - "WordPress APIs (hooks, filters, functions)"
+    - "Any third-party service or library"
+  workflow:
+    - "1. Identify the API/library being used"
+    - "2. Call mcp__context7__resolve-library-id with the library name"
+    - "3. Use the returned ID with mcp__context7__get-library-docs"
+    - "4. Review the documentation for current syntax and parameters"
+    - "5. Implement based on the latest documentation"
+  examples:
+    good: |
+      # Working with OpenAI API
+      1. Call: mcp__context7__resolve-library-id("openai")
+      2. Call: mcp__context7__get-library-docs("/openai/openai")
+      3. Review response structure and parameters
+      4. Implement using correct, current API format
+    bad: |
+      # Using remembered API structure
+      1. Directly implement OpenAI call from memory
+      2. Assume GPT-5 uses same parameters as GPT-4
+      3. Skip documentation check
+  violations:
+    - pattern: "Implementing API calls without consulting Context7"
+      severity: "high"
+      message: "Must consult Context7 for API documentation first"
+    - pattern: "Using outdated API parameters or endpoints"
+      severity: "critical"
+      message: "API implementation uses outdated structure"
+
+# ==========================================
 # DATABASE CONFIGURATION (Priority 90)
 # ==========================================
 
@@ -65,7 +113,7 @@ database:
     examples:
       correct: |
         use RedBeanPHP\R;
-        $user = R::findOne('user', 'username = ?', [$username]);
+        $user = R::findOne('users', 'username = ?', [$username]);
         $post = R::dispense('post');
         R::store($post);
       incorrect: |
@@ -546,7 +594,7 @@ hook_system:
         - "Hook naming conventions follow WordPress standards with iso_ prefix"
     scanning:
       directories:
-        - "/app - Core application hooks"
+        - "/iso-core - Core application hooks"
         - "/iso-admin - Admin panel hooks"
         - "/iso-content/themes - Theme hooks"
         - "/iso-content/plugins - Plugin hooks"
@@ -682,17 +730,20 @@ project_structure:
   
   directories:
     app:
-      description: "Core application"
+      description: "Core application (Service-Oriented Architecture)"
       contents:
         - "Core/ - CMS functionality"
         - "Commands/ - CLI commands"
-        - "Models/ - Data models"
-        - "Services/ - Business logic"
+        - "Services/ - Business logic services (NOT MVC)"
+        - "NO Models/ directory - uses RedBeanPHP Active Record"
+        - "NO Controllers/ - direct page routing in iso-admin"
     iso_admin:
-      description: "Admin panel"
+      description: "Admin panel (Direct page routing, not MVC)"
       contents:
-        - "Admin pages and UI"
-        - "Uses Tailwind CSS"
+        - "Individual PHP pages handle own logic"
+        - "api/ - AJAX/REST endpoints"
+        - "includes/ - Shared components (layout, auth)"
+        - "Uses Tailwind CSS + Alpine.js"
     iso_includes:
       description: "Shared resources"
       contents:
@@ -731,6 +782,65 @@ project_structure:
     - ".htaccess - Security & routing"
     - "isotone - CLI tool"
     - "composer.json - Dependencies"
+
+# ==========================================
+# FILE INCLUSION PATTERNS (Priority 75)
+# ==========================================
+
+file_inclusion_patterns:
+  priority: 75
+  enabled: true
+  context: ["development", "php", "admin"]
+  description: "File inclusion and initialization patterns for Isotone"
+  
+  admin_files:
+    pattern: "Standard pattern for admin PHP files"
+    required_includes:
+      - "require_once 'auth.php' - Authentication check (relative path)"
+      - "require_once dirname(__DIR__) . '/config.php' - Configuration"
+      - "require_once dirname(__DIR__) . '/vendor/autoload.php' - Composer autoloader"
+    
+    never_use:
+      - "bootstrap.php - Does not exist in Isotone"
+      - "Namespaces - Isotone does not use PHP namespaces"
+      - "use statements for Isotone classes - Not namespaced"
+    
+    database_init: |
+      // Standard RedBeanPHP initialization
+      if (!R::testConnection()) {
+          $host = defined('DB_HOST') ? DB_HOST : 'localhost';
+          $dbname = defined('DB_NAME') ? DB_NAME : 'isotone_db';
+          $user = defined('DB_USER') ? DB_USER : 'root';
+          $pass = defined('DB_PASSWORD') ? DB_PASSWORD : '';
+          
+          try {
+              R::setup("mysql:host=$host;dbname=$dbname", $user, $pass);
+          } catch (Exception $e) {
+              die('Database connection failed: ' . $e->getMessage());
+          }
+      }
+  
+  service_classes:
+    description: "Service classes in /iso-core/Services/"
+    pattern: "No namespace, use require_once to include"
+    example: |
+      // Including a service class
+      require_once dirname(__DIR__) . '/iso-core/Services/ToniService.php';
+      $service = new ToniService();  // No namespace
+  
+  api_endpoints:
+    pattern: "API files in /iso-admin/api/"
+    includes:
+      - "require_once dirname(__DIR__) . '/auth.php' - Authentication"
+      - "Same database init pattern as admin files"
+  
+  violations:
+    - pattern: "bootstrap.php"
+      severity: "high"
+      message: "Isotone does not use bootstrap.php - use standard includes pattern"
+    - pattern: "namespace Isotone"
+      severity: "high"  
+      message: "Isotone does not use namespaces - use plain classes"
 
 # ==========================================
 # DEVELOPMENT SETUP (Priority 75)
@@ -971,11 +1081,11 @@ validation:
   
   composer_scripts:
     description: "Ensure all composer scripts are documented"
-    check: "All scripts in composer.json must be in COMMANDS.md"
+    check: "All scripts in composer.json must be in /user-docs/development/commands.md"
   
   routes:
     description: "Validate documented routes exist"
-    check: "All routes in ROUTES.md must exist in code"
+    check: "All routes in /user-docs/development/routes.md must exist in code"
   
   code_examples:
     description: "Validate PHP code examples syntax"

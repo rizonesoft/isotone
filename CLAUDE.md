@@ -231,13 +231,14 @@ composer docs:check
 These are pointers to the most critical rules in the automation system:
 
 1. **Branding** (`branding`): Always "Isotone", never "Isotone CMS"
-2. **Search First** (`search_before_create`): Always search before creating
-3. **Database** (`database_operations`): RedBeanPHP only, no raw SQL
-4. **Config** (`configuration`): Use config.php, never .env files
-5. **CSS** (`css_architecture`): No inline CSS, use modular system
-6. **Hooks** (`hook_naming_conventions`): Use iso_ prefix for WP equivalents
-7. **Version** (`version_management`): Follow proper bump process
-8. **Auto-commit** (`auto_commit`): Commit on user satisfaction signals
+2. **API Documentation** (`api_documentation_consultation`): ALWAYS consult Context7 for APIs
+3. **Search First** (`search_before_create`): Always search before creating
+4. **Database** (`database_operations`): RedBeanPHP only, no raw SQL
+5. **Config** (`configuration`): Use config.php, never .env files
+6. **CSS** (`css_architecture`): No inline CSS, use modular system
+7. **Hooks** (`hook_naming_conventions`): Use iso_ prefix for WP equivalents
+8. **Version** (`version_management`): Follow proper bump process
+9. **Auto-commit** (`auto_commit`): Commit on user satisfaction signals
 
 ## 🔄 Keeping CLAUDE.md Updated
 

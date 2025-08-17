@@ -469,8 +469,8 @@ class RuleEngine
                 // Only report as violation if it's a critical path
                 // Documentation files marked as "if exists" are optional
                 $criticalPaths = [
-                    '/app', '/iso-admin', '/iso-includes', '/iso-content',
-                    '/config', '/docs', '/user-docs', '/storage',
+                    '/iso-core', '/iso-admin', '/iso-includes', '/iso-content',
+                    '/config', '/user-docs', '/storage',
                     '/config.sample.php', '/index.php', '/composer.json'
                 ];
                 

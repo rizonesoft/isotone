@@ -141,7 +141,4 @@ if (!defined('ISOTONE_ROOT')) {
     define('ISOTONE_ROOT', dirname(__FILE__));
 }
 
-/** Load the bootstrap file */
-if (file_exists(ISOTONE_ROOT . '/app/bootstrap.php')) {
-    require_once ISOTONE_ROOT . '/app/bootstrap.php';
-}
+/** Note: Isotone uses direct file inclusion pattern, no bootstrap needed */

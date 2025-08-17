@@ -8,7 +8,7 @@
 
 require_once dirname(__DIR__) . '/config.php';
 require_once dirname(__DIR__) . '/vendor/autoload.php';
-require_once dirname(__DIR__) . '/app/Services/ThemeService.php';
+require_once dirname(__DIR__) . '/iso-core/Services/ThemeService.php';
 
 use RedBeanPHP\R;
 use Isotone\Services\ThemeService;

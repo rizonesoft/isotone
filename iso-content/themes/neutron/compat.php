@@ -14,7 +14,7 @@ if (!defined('ABSPATH')) {
     define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 }
 
-// Isotone now provides native theme functions in app/theme-functions.php
+// Isotone now provides native theme functions in iso-core/theme-functions.php
 // Most WordPress-compatible functions are now provided natively by Isotone.
 
 // The iso_body_open function is not yet in the native API, so we provide it here

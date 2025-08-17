@@ -128,13 +128,13 @@ Settings are stored in the `setting` table:
 
 ```php
 // Get a setting
-$setting = R::findOne('setting', 'setting_key = ?', ['site_title']);
+$setting = R::findOne('settings', 'setting_key = ?', ['site_title']);
 $siteTitle = $setting ? $setting->setting_value : 'Default Title';
 
 // Update a setting
-$setting = R::findOne('setting', 'setting_key = ?', ['site_title']);
+$setting = R::findOne('settings', 'setting_key = ?', ['site_title']);
 if (!$setting) {
-    $setting = R::dispense('setting');
+    $setting = R::dispense('settings');
     $setting->setting_key = 'site_title';
 }
 $setting->setting_value = 'My New Site Title';
@@ -361,7 +361,7 @@ if ($request->isMethod('POST')) {
     }
     
     // Process
-    $user = R::dispense('user');
+    $user = R::dispense('users');
     $user->email = $data['email'];
     R::store($user);
     

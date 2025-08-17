@@ -23,14 +23,14 @@ if (!R::testConnection()) {
 $stats = [
     'posts' => R::count('post'),
     'pages' => R::count('page'),
-    'users' => R::count('user'),
+    'users' => R::count('users'),
     'comments' => R::count('comment'),
     'media' => R::count('media')
 ];
 
 // Get recent activity
 $recent_posts = R::findAll('post', 'ORDER BY created_at DESC LIMIT 5');
-$recent_users = R::findAll('user', 'ORDER BY created_at DESC LIMIT 5');
+$recent_users = R::findAll('users', 'ORDER BY created_at DESC LIMIT 5');
 
 // System info
 $system_info = [

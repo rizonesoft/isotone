@@ -1,6 +1,6 @@
 # Isotone Project Structure
 
-*Auto-generated on 2025-08-15 21:10:29*
+*Updated on 2025-08-17 - Reflects Service-Oriented Architecture*
 
 ## Project Structure
 
@@ -17,89 +17,54 @@ CLAUDE.md
 CONTRIBUTING.md
 NOTES.md
 README.md
-app/
-  Commands/
+iso-core/
+  Commands/              # CLI command handlers
     ChangelogCommand.php
     DatabaseCommand.php
     HooksCommand.php
     VersionCommand.php
-  Core/
+  Core/                  # Core CMS functionality
     Application.php
     Hook.php
     Migration.php
     SystemHooks.php
     ThemeAPI.php
     Version.php
-  Http/
-    Controllers/
-    Middleware/
-  Models/
-  Services/
+  Services/              # Business logic services (Service-Oriented Architecture)
     ContentService.php
     DatabaseService.php
     ThemeService.php
-  helpers.php
-  hooks.php
-  theme-functions.php
+    ToniService.php      # AI Assistant service
+  helpers.php            # Global helper functions
+  hooks.php              # WordPress-style hooks system
+  theme-functions.php    # Theme support functions
 composer.json
 config/
   theme.php
   version.json
-config.php
-config.sample.php
-database.json
-docs/
-  API-REFERENCE.md
-  COMMANDS.md
-  PROJECT-STRUCTURE.md
-  ROUTES.md
-  archived/
-    AI-CODING-STANDARDS.md
-    AI-SATISFACTION-TRIGGERS.md
-    AI-VERSION-UPDATE-GUIDE.md
-    API-REFERENCE.md
-    AUTOMATED-DOCUMENTATION-WORKFLOW.md
-    COMMANDS.md
-    CONFIGURATION.md
-    DATABASE-CONNECTION.md
-    DEVELOPMENT-SETUP.md
-    DOCS-STRUCTURE.md
-    DOCUMENTATION-MAINTENANCE.md
-    ENVIRONMENT-VARIABLES.md
-    GETTING-STARTED.md
-    GITHUB-SETUP.md
-    HOOK-NAMING-CONVENTIONS.md
-    HOOKS-AUTOMATION.md
-    ISOTONE-TECH-STACK.md
-    LLM-CONFIG-RULES.md
-    LLM-DEVELOPMENT-GUIDE.md
-    PLUGIN-DEVELOPER-GUIDE.md
-    PROJECT-STRUCTURE.md
-    PROMPT-ENGINEERING-GUIDE.md
-    ROUTES.md
-    THEME-DEVELOPER-GUIDE.md
-    VERSION-MANAGEMENT.md
-index.php
+config.php               # Database configuration (not in git)
+config.sample.php        # Configuration template
+index.php                # Main entry point
 install/
   README.md
   index.php
   test-db.php
-iso-admin/
-  auth.php
-  automation-ajax.php
-  automation.php
-  css/
-  dashboard-new.php
-  hooks-explorer.php
-  includes/
-    admin-header.php
-    admin-layout.php
-    icons.php
-  index.php
+iso-admin/               # Admin interface (Service-Oriented, not MVC)
+  api/                   # API endpoints
+    toni.php            # AI Assistant API
+  auth.php              # Authentication handler
+  automation.php        # Automation dashboard
+  css/                  # Admin styles
+    admin.css
+  dashboard-new.php     # Modern dashboard
+  documentation.php     # Documentation viewer
+  hooks-explorer.php    # Hooks system explorer
+  includes/            # Shared components
+    admin-auth.php
+    admin-layout.php   # Main layout template
   login.php
   logout.php
-  themes.php
-  user-edit.php
+  settings.php         # Settings with tabs (General, APIs, Advanced)
   users.php
 iso-automation/
   README.md
@@ -133,14 +98,6 @@ iso-runtime/
   cache/
   logs/
   temp/
-scripts/
-  README.md
-  check-docs-wrapper.php
-  check-docs.php
-  sync-ide-rules.php
-  sync-user-docs.php
-  update-docs.php
-setup/
 storage/
   hook-stats.json
   hooks-implementation.json
