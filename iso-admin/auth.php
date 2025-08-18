@@ -6,11 +6,26 @@
  * @package Isotone
  */
 
+// Start timing for page load
+if (!defined('ISOTONE_START')) {
+    define('ISOTONE_START', microtime(true));
+}
+
 session_start();
 
 // Load configuration and user class
 require_once dirname(__DIR__) . '/config.php';
 require_once dirname(__DIR__) . '/iso-includes/class-user.php';
+
+// Store original PHP memory limit before changing it
+if (!defined('PHP_ORIGINAL_MEMORY_LIMIT')) {
+    define('PHP_ORIGINAL_MEMORY_LIMIT', ini_get('memory_limit'));
+}
+
+// Ensure memory limit is enforced (already done in index.php, but double-check)
+if (defined('MEMORY_LIMIT')) {
+    @ini_set('memory_limit', MEMORY_LIMIT);
+}
 
 // Check if user is logged in
 if (!isset($_SESSION['isotone_admin_logged_in']) || $_SESSION['isotone_admin_logged_in'] !== true) {

@@ -1,0 +1,90 @@
+/**
+ * Theme Name: Quantum
+ * Theme URI: https://isotone.dev/themes/quantum
+ * Author: Isotone Team
+ * Author URI: https://isotone.dev
+ * Description: A stunning glass morphism theme with particle animations, interactive effects, and modern design. Features include interactive particles, shimmer button effects, sticky navigation, and responsive layouts.
+ * Version: 1.0.0
+ * License: MIT
+ * License URI: https://opensource.org/licenses/MIT
+ * Text Domain: quantum
+ * Tags: glass, morphism, particles, animated, dark, interactive, responsive, modern, premium
+ */
+
+/* Additional theme styles can be added here */
+
+/* Utility classes for glass effects */
+.glass-light {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.glass-medium {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.glass-heavy {
+    background: rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+}
+
+/* Animation utilities */
+.animation-slow * {
+    animation-duration: 1.5s !important;
+    transition-duration: 0.5s !important;
+}
+
+.animation-normal * {
+    animation-duration: 1s !important;
+    transition-duration: 0.3s !important;
+}
+
+.animation-fast * {
+    animation-duration: 0.5s !important;
+    transition-duration: 0.15s !important;
+}
+
+/* Particle effects container */
+.particles-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* Responsive utilities */
+@media (max-width: 640px) {
+    .hero-title {
+        font-size: 3rem !important;
+    }
+    
+    .section {
+        padding: 3rem 1rem !important;
+    }
+    
+    .particles-container {
+        display: none; /* Hide particles on mobile for performance */
+    }
+}
+
+/* Print styles */
+@media print {
+    .gradient-bg,
+    .orb,
+    .particles,
+    .header {
+        display: none !important;
+    }
+    
+    .glass-card {
+        background: white !important;
+        border: 1px solid #ddd !important;
+    }
+}

@@ -1,0 +1,58 @@
+{
+    "name": "Isotone",
+    "version": "1.0.0",
+    "description": "The official Isotone theme featuring glass morphism design, smooth animations, and a modern professional layout",
+    "author": "Isotone",
+    "author_uri": "https://isotone.dev",
+    "theme_uri": "https://isotone.dev/",
+    "license": "MIT",
+    "license_uri": "https://opensource.org/licenses/MIT",
+    "tags": ["official", "glass", "morphism", "professional", "animated", "dark-mode", "responsive", "modern"],
+    "requires": "0.2.0",
+    "tested_up_to": "0.2.0",
+    "php_minimum": "7.4",
+    "text_domain": "isotone",
+    "domain_path": "/languages",
+    "features": {
+        "custom-header": true,
+        "custom-logo": true,
+        "custom-colors": true,
+        "dark-mode": true,
+        "responsive": true,
+        "animations": true,
+        "glass-effects": true
+    },
+    "settings": {
+        "primary_color": "#00D9FF",
+        "secondary_color": "#FF00D4",
+        "accent_color": "#00FF88",
+        "glass_blur": "20px",
+        "glass_opacity": "0.1",
+        "animation_speed": "normal",
+        "gradient_animated": true,
+        "dark_mode_default": "auto"
+    },
+    "templates": {
+        "index": "Main template",
+        "page": "Page template",
+        "single": "Single post template",
+        "archive": "Archive template",
+        "404": "404 error page",
+        "home": "Homepage template"
+    },
+    "menus": {
+        "primary": "Primary Navigation",
+        "footer": "Footer Menu",
+        "social": "Social Media Links"
+    },
+    "widget_areas": {
+        "sidebar": {
+            "name": "Main Sidebar",
+            "description": "Widgets in this area will be shown in the sidebar"
+        },
+        "footer": {
+            "name": "Footer Widgets",
+            "description": "Widgets in this area will be shown in the footer"
+        }
+    }
+}

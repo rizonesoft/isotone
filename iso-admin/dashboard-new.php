@@ -32,13 +32,30 @@ $stats = [
 $recent_posts = R::findAll('post', 'ORDER BY created_at DESC LIMIT 5');
 $recent_users = R::findAll('users', 'ORDER BY created_at DESC LIMIT 5');
 
+// Admin area should use ADMIN_MEMORY_LIMIT (already applied in auth.php)
+// This is just for display purposes
+
+// Calculate database size
+$db_size = 0;
+try {
+    // Get all tables in the database
+    $tables = R::getAll("SHOW TABLE STATUS");
+    foreach ($tables as $table) {
+        $db_size += $table['Data_length'] + $table['Index_length'];
+    }
+    $db_size = round($db_size / 1024 / 1024, 2) . ' MB';
+} catch (Exception $e) {
+    $db_size = 'N/A';
+}
+
 // System info
 $system_info = [
     'php_version' => PHP_VERSION,
-    'memory_usage' => round(memory_get_usage() / 1024 / 1024, 2) . ' MB',
-    'memory_limit' => ini_get('memory_limit'),
+    'memory_usage' => round(memory_get_usage() / 1024 / 1024, 2),
+    'isotone_limit' => defined('MEMORY_LIMIT') ? MEMORY_LIMIT : '256M',
+    'php_original_limit' => defined('PHP_ORIGINAL_MEMORY_LIMIT') ? PHP_ORIGINAL_MEMORY_LIMIT : ini_get('memory_limit'),
     'max_execution_time' => ini_get('max_execution_time') . ' seconds',
-    'database_size' => '0 MB' // Would need a query to get actual size
+    'database_size' => $db_size,
 ];
 
 // Start output buffering for content
@@ -161,23 +178,24 @@ ob_start();
                     <span class="text-sm dark:text-gray-400 text-gray-600">PHP Version</span>
                     <span class="text-sm font-mono dark:text-white text-gray-900"><?php echo $system_info['php_version']; ?></span>
                 </div>
-                <div class="flex justify-between">
-                    <span class="text-sm dark:text-gray-400 text-gray-600">Memory Usage</span>
-                    <span class="text-sm font-mono dark:text-white text-gray-900"><?php echo $system_info['memory_usage']; ?></span>
-                </div>
+                
                 <div class="flex justify-between">
                     <span class="text-sm dark:text-gray-400 text-gray-600">Memory Limit</span>
-                    <span class="text-sm font-mono dark:text-white text-gray-900"><?php echo $system_info['memory_limit']; ?></span>
+                    <span class="text-sm font-mono dark:text-white text-gray-900"><?php echo $system_info['isotone_limit']; ?></span>
                 </div>
                 <div class="flex justify-between">
-                    <span class="text-sm dark:text-gray-400 text-gray-600">Max Execution</span>
-                    <span class="text-sm font-mono dark:text-white text-gray-900"><?php echo $system_info['max_execution_time']; ?></span>
+                    <span class="text-sm dark:text-gray-400 text-gray-600">PHP Memory</span>
+                    <span class="text-sm font-mono dark:text-white text-gray-900"><?php echo $system_info['php_original_limit'] == '-1' ? 'Unlimited' : $system_info['php_original_limit']; ?></span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-sm dark:text-gray-400 text-gray-600">Database Size</span>
+                    <span class="text-sm font-mono dark:text-white text-gray-900"><?php echo $system_info['database_size']; ?></span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-sm dark:text-gray-400 text-gray-600">Automation</span>
+                    <span class="text-sm font-mono dark:text-white text-gray-900">1.0.0</span>
                 </div>
                 
-                <!-- Health Status -->
-                <div class="mt-4 p-3 dark:bg-green-900 dark:bg-opacity-20 bg-green-50 dark:border-green-700 border-green-300 rounded">
-                    <p class="text-sm dark:text-green-400 text-green-700">✓ All systems operational</p>
-                </div>
             </div>
         </div>
         

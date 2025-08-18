@@ -2,25 +2,27 @@
 
 ## Overview
 
-Isotone uses a traditional PHP configuration file (`config.php`) following the pattern established by WordPress and other popular PHP CMS platforms. This approach is familiar to PHP developers and works reliably on all hosting environments.
+Isotone uses a single PHP configuration file (`config.php`) in the root directory for all settings. This approach is familiar to PHP developers, works reliably on all hosting environments, and follows the pattern established by WordPress and other popular PHP CMS platforms.
 
 ## ⚠️ IMPORTANT: No .env Files
 
-**Isotone does NOT use .env files or environment variables.** All configuration is done through `config.php` in the root directory.
+**Isotone does NOT use .env files or environment variables.** All configuration is done through `config.php` in the root directory. This ensures maximum compatibility with shared hosting environments.
 
 ## Initial Setup
 
-### 1. Create Your Configuration File
+### 1. Configuration File Location
 
-```bash
-# Copy the sample configuration
-cp config.sample.php config.php
-
-# Edit with your settings
-nano config.php  # or use your preferred editor
+The configuration file must be located at:
+```
+/isotone/config.php
 ```
 
-### 2. Required Settings
+If it doesn't exist, copy from the sample:
+```bash
+cp config.sample.php config.php
+```
+
+### 2. Required Database Settings
 
 At minimum, you must configure these database settings:
 
@@ -29,7 +31,7 @@ At minimum, you must configure these database settings:
 define('DB_HOST', 'localhost');
 
 /** Database name */
-define('DB_NAME', 'your_database_name');
+define('DB_NAME', 'isotone_db');
 
 /** Database username */
 define('DB_USER', 'your_username');
@@ -43,23 +45,40 @@ define('DB_PASSWORD', 'your_password');
 ### Database Configuration
 
 ```php
-DB_HOST         - Database server hostname (usually 'localhost')
-DB_NAME         - Name of your database
-DB_USER         - Database username
-DB_PASSWORD     - Database password
-DB_PORT         - Database port (default: 3306)
-DB_CHARSET      - Character set (default: 'utf8mb4')
-DB_COLLATE      - Database collation (default: 'utf8mb4_unicode_ci')
-DB_PREFIX       - Table prefix for multiple installations (default: 'iso_')
+// Required settings
+DB_HOST      - Database server hostname (default: 'localhost')
+DB_NAME      - Name of your database (required)
+DB_USER      - Database username (required)
+DB_PASSWORD  - Database password (required)
+
+// Optional settings
+DB_PORT      - Database port (default: 3306)
+DB_CHARSET   - Character set (default: 'utf8mb4')
+DB_COLLATE   - Database collation (default: 'utf8mb4_unicode_ci')
+DB_PREFIX    - Table prefix for multiple installations (default: 'iso_')
 ```
+
+#### Special Note for WSL Users
+
+If you're running Isotone in WSL (Windows Subsystem for Linux), the DatabaseService automatically detects and handles the connection:
+
+- **Automatic detection**: The system automatically finds the Windows host IP
+- **No manual configuration needed**: Just use 'localhost' in config.php
+- **Manual override**: If needed, you can use the Windows host IP directly:
+  ```bash
+  # Find Windows host IP from WSL
+  ip route | grep default | awk '{print $3}'
+  # Usually returns something like: 172.19.240.1
+  ```
 
 ### Application Settings
 
 ```php
-SITE_URL        - Your site URL (leave empty for auto-detection)
-ADMIN_EMAIL     - Administrator email address
-TIMEZONE        - Default timezone (e.g., 'UTC', 'America/New_York')
-LANGUAGE        - Default language code (e.g., 'en')
+SITE_URL     - Your site URL (leave empty for auto-detection)
+ADMIN_EMAIL  - Administrator email address (default: 'admin@example.com')
+TIMEZONE     - Default timezone (default: 'UTC')
+              Examples: 'America/New_York', 'Europe/London', 'Asia/Tokyo'
+LANGUAGE     - Default language code (default: 'en')
 ```
 
 ### Security Settings
@@ -81,11 +100,107 @@ https://api.wordpress.org/secret-key/1.1/salt/
 ### Developer Settings
 
 ```php
-DEBUG_MODE         - Enable/disable debug mode (true/false)
-DEBUG_QUERIES      - Log database queries (true/false)
-DISPLAY_ERRORS     - Show PHP errors (true/false)
-ERROR_LEVEL        - PHP error reporting level (e.g., E_ALL)
-MAINTENANCE_MODE   - Enable maintenance mode (true/false)
+DEBUG_MODE       - Enable/disable debug mode (default: true)
+                  Shows detailed error messages and warnings
+DEBUG_QUERIES    - Log database queries (default: false)
+                  Useful for optimizing database performance
+DISPLAY_ERRORS   - Show PHP errors on screen (default: true)
+                  Should be false in production
+ERROR_LEVEL      - PHP error reporting level (default: E_ALL)
+                  E_ALL | E_ERROR | E_WARNING | E_NOTICE
+MAINTENANCE_MODE - Enable maintenance mode (default: false)
+                  Shows maintenance page to visitors
+```
+
+### Memory Limit - Simple & Effective
+
+Isotone uses a single memory limit that's enforced across the entire system, providing predictable resource usage and protection against runaway scripts.
+
+```php
+MEMORY_LIMIT - System-wide memory limit (default: '256M', yours: '64M')
+```
+
+#### How It Works
+
+1. **Always Enforced**: The limit is always applied, even if PHP has unlimited memory
+2. **Bidirectional**: 
+   - Increases if PHP limit is lower (64M → 256M)
+   - Decreases if PHP limit is higher (512M → 256M)
+   - Enforces even on unlimited (-1) → 256M
+3. **Simple**: One setting controls everything - no confusion
+
+#### Why Enforce Limits?
+
+- **Resource Protection**: Prevents excessive memory consumption
+- **Predictable Usage**: Know exactly how much memory your site can use
+- **Shared Hosting Safety**: Critical for multi-site environments
+- **Runaway Script Prevention**: Stops bad code from consuming all memory
+
+#### Configuration Examples
+
+**Standard Setup:**
+```php
+define('MEMORY_LIMIT', '256M');
+```
+
+**Shared Hosting (Conservative):**
+```php
+define('MEMORY_LIMIT', '128M');
+```
+
+**Dedicated Server (Generous):**
+```php
+define('MEMORY_LIMIT', '512M');
+```
+
+**Development Environment:**
+```php
+define('MEMORY_LIMIT', '1G');
+```
+
+#### What the Dashboard Shows
+
+The System Health widget displays memory configuration:
+
+1. **Memory Configuration**: Shows the enforced limits
+   - **Per-Request Limit**: The maximum memory any single request can use (e.g., 64M)
+   - **PHP Default**: What PHP was originally configured with (often Unlimited)
+   - **Protection Status**: Confirms memory limits are enforced
+
+2. **Why Not Current Usage?**: 
+   - PHP memory is per-request (each page load is separate)
+   - Dashboard can only show its own memory usage (always low ~3-4MB)
+   - Showing this would be misleading as it doesn't represent total site usage
+   - Focus is on the configuration that protects your server
+
+#### Checking Applied Memory Limit
+
+You can verify the memory limit in several ways:
+
+1. **In Admin Dashboard**: The System Health widget shows:
+   - **Per-Request Limit**: The enforced memory limit (e.g., 64M)
+   - **PHP Default**: What PHP originally had configured
+   - **Protection Status**: Confirmation that limits are active
+   
+2. **Via PHP**: Use `ini_get('memory_limit')` to see the enforced limit
+
+3. **Debug method**: Add `var_dump(ini_get('memory_limit'))` to verify enforcement
+
+### Advanced Settings
+
+```php
+MAX_EXECUTION_TIME - Maximum script execution time (default: 30 seconds)
+UPLOAD_MAX_SIZE    - Maximum upload file size (default: '10M')
+SESSION_LIFETIME   - Session lifetime in minutes (default: 120)
+CACHE_TTL         - Cache time-to-live in seconds (default: 3600)
+```
+
+### Redis Configuration (Optional)
+
+```php
+REDIS_ENABLED - Enable Redis caching (default: false)
+REDIS_HOST    - Redis server hostname (default: '127.0.0.1')
+REDIS_PORT    - Redis server port (default: 6379)
 ```
 
 ### Environment-Specific Configuration
@@ -94,89 +209,18 @@ The config file includes automatic environment detection:
 
 ```php
 /** Current environment */
-define('ENVIRONMENT', 'development');  // or 'staging' or 'production'
+define('ENVIRONMENT', 'development');  // 'development' | 'staging' | 'production'
 
 // Automatic overrides based on environment
 if (ENVIRONMENT === 'production') {
-    define('DEBUG_MODE', false);
-    define('DISPLAY_ERRORS', false);
+    // Production overrides (only if not already defined)
+    if (!defined('DEBUG_MODE')) define('DEBUG_MODE', false);
+    if (!defined('DISPLAY_ERRORS')) define('DISPLAY_ERRORS', false);
+} elseif (ENVIRONMENT === 'staging') {
+    // Staging overrides
+    if (!defined('DEBUG_MODE')) define('DEBUG_MODE', true);
+    if (!defined('DISPLAY_ERRORS')) define('DISPLAY_ERRORS', false);
 }
-```
-
-## Security Best Practices
-
-### 1. File Permissions
-
-```bash
-# Set proper permissions for config.php
-chmod 600 config.php  # Read/write for owner only
-```
-
-### 2. Git Ignore
-
-The `config.php` file is automatically ignored by Git to prevent accidental commits of sensitive data.
-
-### 3. Backup Your Configuration
-
-Keep a secure backup of your `config.php` file, especially the database credentials and security keys.
-
-## Troubleshooting
-
-### Database Connection Issues
-
-If you get database connection errors:
-
-1. Verify database credentials in `config.php`
-2. Ensure the database exists
-3. Check that the database user has proper permissions
-4. For WSL users, use `127.0.0.1` instead of `localhost`
-
-### Configuration Not Loading
-
-If settings aren't being applied:
-
-1. Ensure `config.php` exists in the root directory
-2. Check for PHP syntax errors: `php -l config.php`
-3. Verify file permissions allow PHP to read the file
-
-### Missing Configuration File
-
-If `config.php` doesn't exist:
-
-```bash
-# The installation wizard will prompt you to create it
-# Or manually create from the sample:
-cp config.sample.php config.php
-```
-
-## Migration from .env
-
-If you're migrating from an older version that used .env files:
-
-1. Copy your database settings from `.env` to `config.php`
-2. Delete the `.env` file
-3. Remove `vlucas/phpdotenv` dependency: `composer update`
-
-## For Developers and LLMs
-
-### ⚠️ CRITICAL RULES
-
-1. **NEVER** create or reference `.env` files
-2. **NEVER** suggest using environment variables for configuration
-3. **ALWAYS** use `config.php` for all settings
-4. **ALWAYS** access configuration via PHP constants (e.g., `DB_NAME`, not `$_ENV['DB_NAME']`)
-5. **NEVER** commit `config.php` to version control
-
-### Helper Function
-
-The `env()` function still exists for backward compatibility but maps to config constants:
-
-```php
-// This works but is deprecated:
-$dbName = env('DB_NAME', 'default');
-
-// Preferred approach:
-$dbName = defined('DB_NAME') ? DB_NAME : 'default';
 ```
 
 ## Example Configurations
@@ -187,8 +231,30 @@ $dbName = defined('DB_NAME') ? DB_NAME : 'default';
 define('ENVIRONMENT', 'development');
 define('DEBUG_MODE', true);
 define('DISPLAY_ERRORS', true);
+define('ERROR_LEVEL', E_ALL);
+
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'isotone_dev');
+define('DB_USER', 'root');
+define('DB_PASSWORD', '');
+
+define('MEMORY_LIMIT', '512M');
+```
+
+### Shared Hosting
+
+```php
+define('ENVIRONMENT', 'production');
+define('DEBUG_MODE', false);
+define('DISPLAY_ERRORS', false);
+
+define('DB_HOST', 'mysql.yourhost.com');
+define('DB_NAME', 'user123_isotone');
+define('DB_USER', 'user123_dbuser');
+define('DB_PASSWORD', 'strong_password_here');
+
+// Conservative memory limit for shared hosting
+define('MEMORY_LIMIT', '128M');
 ```
 
 ### Production Server
@@ -197,17 +263,164 @@ define('DB_NAME', 'isotone_dev');
 define('ENVIRONMENT', 'production');
 define('DEBUG_MODE', false);
 define('DISPLAY_ERRORS', false);
+define('ERROR_LEVEL', E_ERROR | E_WARNING);
+
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'isotone_prod');
+define('DB_USER', 'isotone_user');
+define('DB_PASSWORD', 'secure_password_here');
+
+define('MEMORY_LIMIT', '256M');
+define('MAX_EXECUTION_TIME', 60);
 ```
 
-### Shared Hosting
+## Security Best Practices
+
+### 1. File Permissions
+
+```bash
+# Set secure permissions for config.php
+chmod 600 config.php  # Read/write for owner only
+
+# Or slightly less restrictive if needed
+chmod 640 config.php  # Read/write for owner, read for group
+```
+
+### 2. Version Control
+
+The `config.php` file is automatically excluded from Git via `.gitignore` to prevent accidental commits of sensitive data.
+
+### 3. Backup Strategy
+
+- Keep secure backups of your `config.php` file
+- Store backups separately from your code
+- Include database credentials and security keys
+- Test restore procedures regularly
+
+### 4. Security Keys
+
+- Generate unique keys for each installation
+- Never reuse keys between sites
+- Regenerate if you suspect compromise
+- Use the WordPress salt generator for strong keys
+
+## Troubleshooting
+
+### Database Connection Issues
+
+If you get database connection errors:
+
+1. **Verify credentials**: Check DB_HOST, DB_NAME, DB_USER, DB_PASSWORD
+2. **Check database exists**: Ensure the database has been created
+3. **Verify permissions**: User must have ALL privileges on the database
+4. **WSL users**: The system auto-detects WSL, but you can manually specify the Windows host IP if needed
+
+### Memory Limit Issues
+
+If you encounter memory exhaustion:
+
+1. **Check current limit**: Look at System Health widget in admin dashboard
+2. **Increase limit**: Adjust MEMORY_LIMIT in config.php
+3. **Verify application**: Check if new limit is applied (may require PHP restart)
+4. **Server restrictions**: Some hosts limit maximum memory regardless of settings
+
+**Important Note:**
+Isotone enforces its memory limit even if PHP has unlimited memory. This provides:
+- Predictable resource usage
+- Protection against runaway scripts
+- Consistent behavior across environments
+
+### Configuration Not Loading
+
+If settings aren't being applied:
+
+1. **File location**: Ensure `config.php` is in the root directory
+2. **Syntax check**: Run `php -l config.php` to check for errors
+3. **Permissions**: Verify PHP can read the file
+4. **Cache clearing**: Some settings may be cached - clear cache after changes
+
+## Configuration Variables Reference
+
+| Variable | Type | Default | Description |
+|----------|------|---------|-------------|
+| **Database Settings** ||||
+| `DB_HOST` | string | `'localhost'` | Database server hostname |
+| `DB_NAME` | string | (required) | Database name |
+| `DB_USER` | string | (required) | Database username |
+| `DB_PASSWORD` | string | (required) | Database password |
+| `DB_PORT` | int | `3306` | Database server port |
+| `DB_CHARSET` | string | `'utf8mb4'` | Database character set |
+| `DB_COLLATE` | string | `'utf8mb4_unicode_ci'` | Database collation |
+| `DB_PREFIX` | string | `'iso_'` | Table prefix |
+| **Application Settings** ||||
+| `SITE_URL` | string | `''` (auto-detect) | Site URL |
+| `ADMIN_EMAIL` | string | `'admin@example.com'` | Administrator email |
+| `TIMEZONE` | string | `'UTC'` | Default timezone |
+| `LANGUAGE` | string | `'en'` | Default language |
+| **Security Keys** ||||
+| `AUTH_KEY` | string | (required) | Authentication key |
+| `SECURE_AUTH_KEY` | string | (required) | Secure auth key |
+| `LOGGED_IN_KEY` | string | (required) | Logged-in key |
+| `NONCE_KEY` | string | (required) | Nonce key |
+| `AUTH_SALT` | string | (required) | Auth salt |
+| `SECURE_AUTH_SALT` | string | (required) | Secure auth salt |
+| `LOGGED_IN_SALT` | string | (required) | Logged-in salt |
+| `NONCE_SALT` | string | (required) | Nonce salt |
+| **Developer Settings** ||||
+| `DEBUG_MODE` | bool | `true` | Enable debug mode |
+| `DEBUG_QUERIES` | bool | `false` | Log queries |
+| `DISPLAY_ERRORS` | bool | `true` | Display errors |
+| `ERROR_LEVEL` | int | `E_ALL` | Error reporting level |
+| `MAINTENANCE_MODE` | bool | `false` | Maintenance mode |
+| **Performance Settings** ||||
+| `MEMORY_LIMIT` | string | `'256M'` | System-wide memory limit |
+| `MAX_EXECUTION_TIME` | int | `30` | Max execution seconds |
+| `UPLOAD_MAX_SIZE` | string | `'10M'` | Max upload size |
+| `SESSION_LIFETIME` | int | `120` | Session lifetime (minutes) |
+| `CACHE_TTL` | int | `3600` | Cache TTL (seconds) |
+| **Redis Settings** ||||
+| `REDIS_ENABLED` | bool | `false` | Enable Redis |
+| `REDIS_HOST` | string | `'127.0.0.1'` | Redis host |
+| `REDIS_PORT` | int | `6379` | Redis port |
+| **Environment** ||||
+| `ENVIRONMENT` | string | `'development'` | Current environment |
+
+## For Developers and LLMs
+
+### ⚠️ CRITICAL RULES
+
+1. **NEVER** create or reference `.env` files
+2. **NEVER** suggest using environment variables for configuration
+3. **ALWAYS** use `config.php` for all settings
+4. **ALWAYS** access configuration via PHP constants (e.g., `DB_NAME`, not `$_ENV['DB_NAME']`)
+5. **NEVER** commit `config.php` to version control
+6. **ALWAYS** define constants with `define()` function
+7. **CHECK** if constant is defined before accessing: `defined('CONSTANT_NAME')`
+
+### Loading Configuration
+
+Configuration is automatically loaded by `index.php`:
 
 ```php
-define('DB_HOST', 'mysql.yourhost.com');
-define('DB_NAME', 'user123_isotone');
-define('DB_USER', 'user123_dbuser');
-define('DB_PASSWORD', 'strong_password_here');
+// Configuration is loaded early in index.php
+if (file_exists(ISOTONE_ROOT . '/config.php')) {
+    require_once ISOTONE_ROOT . '/config.php';
+}
+```
+
+### Accessing Configuration Values
+
+```php
+// Check if defined first
+if (defined('DB_NAME')) {
+    $database = DB_NAME;
+}
+
+// With default value
+$memory = defined('MEMORY_LIMIT') ? MEMORY_LIMIT : '128M';
+
+// Admin area detection
+$is_admin = strpos($_SERVER['REQUEST_URI'] ?? '', '/iso-admin/') !== false;
 ```
 
 ## Support
@@ -215,50 +428,12 @@ define('DB_PASSWORD', 'strong_password_here');
 If you encounter configuration issues:
 
 1. Check this documentation first
-2. Review the error logs in `/iso-runtime/logs/`
-3. Ask in the [GitHub Discussions](https://github.com/rizonesoft/isotone/discussions)
-4. Report bugs in [GitHub Issues](https://github.com/rizonesoft/isotone/issues)
+2. Review error logs in `/iso-runtime/logs/`
+3. Search existing [GitHub Issues](https://github.com/rizonesoft/isotone/issues)
+4. Ask in [GitHub Discussions](https://github.com/rizonesoft/isotone/discussions)
+5. Report bugs with configuration details (excluding passwords)
 
-## Configuration Variables
+---
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `DB_HOST` | `localhost` | Database host |
-| `DB_NAME` | `database_name_here` | Database name |
-| `DB_USER` | `username_here` | Database username |
-| `DB_PASSWORD` | `password_here` | Database password |
-| `DB_PORT` | `3306` | Configuration setting |
-| `DB_CHARSET` | `utf8mb4` | Configuration setting |
-| `DB_COLLATE` | `utf8mb4_unicode_ci` | Configuration setting |
-| `DB_PREFIX` | `iso_` | Configuration setting |
-| `SITE_URL` | `(empty)` | Configuration setting |
-| `ADMIN_EMAIL` | `your-email@example.com` | Administrator email |
-| `TIMEZONE` | `UTC` | Default timezone |
-| `LANGUAGE` | `en` | Configuration setting |
-| `AUTH_KEY` | `put your unique phrase here` | Configuration setting |
-| `SECURE_AUTH_KEY` | `put your unique phrase here` | Configuration setting |
-| `LOGGED_IN_KEY` | `put your unique phrase here` | Configuration setting |
-| `NONCE_KEY` | `put your unique phrase here` | Configuration setting |
-| `AUTH_SALT` | `put your unique phrase here` | Configuration setting |
-| `SECURE_AUTH_SALT` | `put your unique phrase here` | Configuration setting |
-| `LOGGED_IN_SALT` | `put your unique phrase here` | Configuration setting |
-| `NONCE_SALT` | `put your unique phrase here` | Configuration setting |
-| `DEBUG_MODE` | `true` | Configuration setting |
-| `DEBUG_QUERIES` | `false` | Configuration setting |
-| `DISPLAY_ERRORS` | `true` | Configuration setting |
-| `ERROR_LEVEL` | `E_ALL` | Configuration setting |
-| `MAINTENANCE_MODE` | `false` | Configuration setting |
-| `MEMORY_LIMIT` | `128M` | Configuration setting |
-| `MAX_EXECUTION_TIME` | `30` | Configuration setting |
-| `UPLOAD_MAX_SIZE` | `10M` | Maximum upload size |
-| `SESSION_LIFETIME` | `120` | Session lifetime in minutes |
-| `CACHE_TTL` | `3600` | Configuration setting |
-| `REDIS_ENABLED` | `false` | Configuration setting |
-| `REDIS_HOST` | `127.0.0.1` | Configuration setting |
-| `REDIS_PORT` | `6379` | Configuration setting |
-| `ENVIRONMENT` | `development` | Configuration setting |
-| `DEBUG_MODE` | `false` | Configuration setting |
-| `DISPLAY_ERRORS` | `false` | Configuration setting |
-| `DEBUG_MODE` | `true` | Configuration setting |
-| `DISPLAY_ERRORS` | `false` | Configuration setting |
-
+*Last updated: January 2025*
+*Isotone Version: 0.1.2-alpha*

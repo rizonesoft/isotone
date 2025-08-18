@@ -6,7 +6,11 @@
  * Central entry point for all automation tasks
  * 
  * @package Isotone\Automation
+ * @version 1.0.0
  */
+
+// Define automation system version
+define('AUTOMATION_VERSION', '1.0.0');
 
 // Check if running from CLI
 if (php_sapi_name() !== 'cli') {
@@ -263,6 +267,12 @@ try {
             $tailwind = new \Isotone\Automation\Commands\TailwindCommand($engine);
             exit($tailwind->status());
             
+        case 'version':
+        case '--version':
+        case '-v':
+            echo "Isotone Automation System v" . AUTOMATION_VERSION . "\n";
+            exit(0);
+            
         case 'help':
         case '--help':
         case '-h':
@@ -292,6 +302,7 @@ function showHelp(): void
     echo "\n";
     echo "╔═══════════════════════════════════════╗\n";
     echo "║     Isotone Automation Module         ║\n";
+    echo "║            Version " . str_pad(AUTOMATION_VERSION, 19, ' ', STR_PAD_BOTH) . " ║\n";
     echo "╚═══════════════════════════════════════╝\n";
     echo "\n";
     echo "Usage: php iso-automation/cli.php <command> [options]\n\n";
@@ -316,6 +327,7 @@ function showHelp(): void
     echo "\n";
     echo "System Commands:\n";
     echo "  status             Show automation status\n";
+    echo "  version            Show automation system version\n";
     echo "  help               Show this help message\n";
     echo "\n";
     echo "Options:\n";

@@ -223,12 +223,12 @@ documentation_accuracy:
       - "Copying documentation from other projects"
       - "Using placeholder URLs in production docs"
     examples:
-      wrong: "Run 'composer docs:update' to update docs"  # Command was removed
-      right: "Manually update documentation as needed"
-      wrong: "Configure in .env file"  # Isotone uses config.php
-      right: "Configure in config.php file"
-      wrong: "http://localhost/isotone/"  # Hardcoded URL
-      right: "{your-domain}/isotone/"  # Placeholder URL
+      - wrong: "Run 'composer docs:update' to update docs"  # Command was removed
+        right: "Manually update documentation as needed"
+      - wrong: "Configure in .env file"  # Isotone uses config.php
+        right: "Configure in config.php file"
+      - wrong: "http://localhost/isotone/"  # Hardcoded URL
+        right: "{your-domain}/isotone/"  # Placeholder URL
   
   accuracy_checklist:
     installation_guides:

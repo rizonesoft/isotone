@@ -144,7 +144,7 @@ $ai_functions = [
             </div>
             
             <!-- Charts Container -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Token Usage Chart -->
                 <div class="dark:bg-gray-800/50 bg-gray-50 rounded-lg p-4">
                     <h4 class="text-sm font-semibold dark:text-gray-300 text-gray-700 mb-4">Token Usage Over Time</h4>
@@ -158,6 +158,14 @@ $ai_functions = [
                     <h4 class="text-sm font-semibold dark:text-gray-300 text-gray-700 mb-4">Cost by Model</h4>
                     <div style="height: 250px; position: relative;">
                         <canvas id="costByModelChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Usage by Module Pie Chart -->
+                <div class="dark:bg-gray-800/50 bg-gray-50 rounded-lg p-4">
+                    <h4 class="text-sm font-semibold dark:text-gray-300 text-gray-700 mb-4">Usage by Module</h4>
+                    <div style="height: 250px; position: relative;">
+                        <canvas id="usageByModuleChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -470,19 +478,41 @@ function tokenUsageMonitor() {
         chartData: [],
         tokenChart: null,
         costChart: null,
+        usageChart: null,
         
         async init() {
             // Prevent duplicate initialization
             if (this.initialized) return;
             this.initialized = true;
             
+            // Wait for Chart.js to load
+            if (typeof Chart === 'undefined') {
+                // Wait a bit and try again
+                setTimeout(() => this.init(), 100);
+                this.initialized = false; // Reset so we can try again
+                return;
+            }
+            
             await this.fetchUsageData();
+            
+            // Set up auto-refresh every 30 seconds when on API tab
+            this.refreshInterval = setInterval(() => {
+                if (this.$root.activeTab === 'api') {
+                    this.fetchUsageData();
+                }
+            }, 30000);
             
             // Cleanup on tab switch
             this.$watch('$root.activeTab', (newTab) => {
                 if (newTab !== 'api' && this.refreshInterval) {
                     clearInterval(this.refreshInterval);
                     this.refreshInterval = null;
+                } else if (newTab === 'api' && !this.refreshInterval) {
+                    // Re-fetch when switching back to API tab
+                    this.fetchUsageData();
+                    this.refreshInterval = setInterval(() => {
+                        this.fetchUsageData();
+                    }, 30000);
                 }
             });
         },
@@ -543,6 +573,12 @@ function tokenUsageMonitor() {
             // Check if Chart.js is loaded
             if (typeof Chart === 'undefined') {
                 console.error('Chart.js not loaded');
+                return;
+            }
+            
+            // Check if we have data to display
+            if (!data || !data.chart_data || data.chart_data.length === 0) {
+                console.log('No chart data available');
                 return;
             }
             
@@ -712,6 +748,71 @@ function tokenUsageMonitor() {
                                     const label = context.label || '';
                                     const value = '$' + context.parsed.toFixed(4);
                                     return label + ': ' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Prepare usage by module chart data (pie chart)
+            // For now, we'll use the same data as cost but show token counts
+            const moduleNames = [];
+            const moduleTotals = [];
+            const moduleColors = {
+                'gpt-5-nano': '#06B6D4',  // Cyan
+                'gpt-5-mini': '#8B5CF6',  // Purple
+                'gpt-5': '#F59E0B'        // Orange
+            };
+            
+            data.summary_by_model.forEach(model => {
+                moduleNames.push(model.model);
+                moduleTotals.push(parseInt(model.total_tokens));
+            });
+            
+            // Update or create usage by module chart
+            const usageCanvas = document.getElementById('usageByModuleChart');
+            if (!usageCanvas) return;
+            
+            const usageCtx = usageCanvas.getContext('2d');
+            
+            if (this.usageChart) {
+                this.usageChart.destroy();
+            }
+            
+            this.usageChart = new Chart(usageCtx, {
+                type: 'pie',
+                data: {
+                    labels: moduleNames,
+                    datasets: [{
+                        label: 'Tokens by Model',
+                        data: moduleTotals,
+                        backgroundColor: moduleNames.map(name => moduleColors[name] || '#6B7280'),
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        duration: 750
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: textColor,
+                                padding: 15
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed.toLocaleString() + ' tokens';
+                                    const percentage = ((context.parsed / context.dataset.data.reduce((a, b) => a + b, 0)) * 100).toFixed(1);
+                                    return label + ': ' + value + ' (' + percentage + '%)';
                                 }
                             }
                         }

@@ -1,0 +1,74 @@
+/**
+ * Theme Name: Glassmorphic
+ * Theme URI: https://isotone.dev/themes/glassmorphic
+ * Author: Isotone
+ * Author URI: https://isotone.dev
+ * Description: A modern glass morphism theme with frosted glass effects, vibrant gradients, and smooth animations. Features include customizable blur intensity, animated backgrounds, dark mode support, and responsive design.
+ * Version: 1.0.0
+ * License: MIT
+ * License URI: https://opensource.org/licenses/MIT
+ * Text Domain: glassmorphic
+ * Tags: glass, morphism, blur, gradient, animated, dark-mode, responsive, modern
+ */
+
+/* Additional theme styles can be added here */
+
+/* Utility classes for glass effects */
+.glass-light {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.glass-medium {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.glass-heavy {
+    background: rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+}
+
+/* Animation utilities */
+.animation-slow * {
+    animation-duration: 1.5s !important;
+    transition-duration: 0.5s !important;
+}
+
+.animation-normal * {
+    animation-duration: 1s !important;
+    transition-duration: 0.3s !important;
+}
+
+.animation-fast * {
+    animation-duration: 0.5s !important;
+    transition-duration: 0.15s !important;
+}
+
+/* Responsive utilities */
+@media (max-width: 640px) {
+    .hero-title {
+        font-size: 3rem !important;
+    }
+    
+    .section {
+        padding: 3rem 1rem !important;
+    }
+}
+
+/* Print styles */
+@media print {
+    .gradient-bg,
+    .orb,
+    .header {
+        display: none !important;
+    }
+    
+    .glass-card {
+        background: white !important;
+        border: 1px solid #ddd !important;
+    }
+}

@@ -500,7 +500,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
         </aside>
 
         <!-- Main Content Area -->
-        <main :class="sidebarCollapsed ? 'ml-16' : 'ml-64'" class="flex-1 sidebar-transition">
+        <main :class="sidebarCollapsed ? 'ml-16' : 'ml-64'" class="flex-1 sidebar-transition flex flex-col">
             <!-- Breadcrumbs -->
             <div class="px-8 py-4 border-b dark:border-gray-700 border-gray-200">
                 <nav class="flex items-center space-x-2 text-sm">
@@ -518,9 +518,94 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                 </nav>
             </div>
             
-            <!-- Page Content -->
-            <div class="p-8">
+            <!-- Page Content (grows to fill space) -->
+            <div class="flex-1 p-8 overflow-y-auto">
                 <?php echo $page_content ?? ''; ?>
+            </div>
+            
+            <!-- Footer (sticky at bottom) -->
+            <div class="border-t dark:border-gray-700 border-gray-200 py-2 px-8 dark:bg-gray-800 bg-white mt-auto">
+                <div class="flex items-center justify-between">
+                    <!-- Left: Copyright and Version -->
+                    <div class="flex items-center space-x-3">
+                        <span class="text-sm dark:text-gray-500 text-gray-600">
+                            © <?php echo date('Y'); ?> Isotone
+                        </span>
+                        <?php 
+                        // Get version from config.php comment
+                        $version = '0.1.2-alpha'; // Default
+                        $config_path = dirname(dirname(__DIR__)) . '/config.php';
+                        if (file_exists($config_path)) {
+                            $config_file = file_get_contents($config_path);
+                            if (preg_match('/@version\s+(.+)/', $config_file, $matches)) {
+                                $version = trim($matches[1]);
+                            }
+                        }
+                        ?>
+                        <span class="text-sm dark:text-gray-500 text-gray-600">
+                            v<?php echo $version; ?>
+                        </span>
+                    </div>
+                    
+                    <!-- Right: Performance Metrics -->
+                    <div class="flex items-center space-x-4 text-sm">
+                        <?php
+                        $memory_usage = round(memory_get_usage() / 1024 / 1024, 2);
+                        $memory_peak = round(memory_get_peak_usage() / 1024 / 1024, 2);
+                        $page_time = defined('ISOTONE_START') ? round((microtime(true) - ISOTONE_START) * 1000, 0) : 0;
+                        $memory_percent = defined('MEMORY_LIMIT') ? 
+                            round(($memory_usage / (intval(MEMORY_LIMIT) ?: 128)) * 100, 0) : 0;
+                        
+                        // Database queries count (if available)
+                        $db_queries = 0; // This would need to be tracked by RedBeanPHP
+                        
+                        // Determine speed icon and color for page load time
+                        // TEST VALUES: Under 50ms = fast, Over 50ms = slow
+                        // PRODUCTION VALUES: Under 200ms = fast, Over 200ms = slow
+                        $speed_threshold = 200; // Change to 200 for production
+                        $is_fast = $page_time <= $speed_threshold;
+                        ?>
+                        
+                        <!-- Page Load Time -->
+                        <div class="flex items-center space-x-2">
+                            <?php if ($is_fast): ?>
+                            <!-- Lightning bolt for fast load -->
+                            <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                            <?php else: ?>
+                            <!-- Snail icon for slow load -->
+                            <svg class="w-5 h-5 text-orange-400" fill="currentColor" viewBox="0 0 32 32">
+                                <path d="m28.875 10.1455a4.078 4.078 0 0 0 -2.4616-.9845 11.1233 11.1233 0 0 1 1.9528-3.6581.75.75 0 1 0 -1.1123-1.0058 13.417 13.417 0 0 0 -2.44 4.7158c-.0192.0043-.0387.0084-.0578.013a5.9737 5.9737 0 0 1 -.1117-2.682.75.75 0 1 0 -1.4482-.3886 7.743 7.743 0 0 0 .1874 3.7592 8.407 8.407 0 0 0 -1.84 2.6319c1.2172 3.3262.2151 6.7139-2.7575 9.32-1.1279 1.9942-3.6938 3.2276-6.6308 3.2276a8.3546 8.3546 0 0 1 -6.2015-2.345c-.5862.1851-1.1462.3583-1.6515.511a2.8251 2.8251 0 0 0 -2.0523 2.74 1.7522 1.7522 0 0 0 1.75 1.75h15.06c5.5063 0 7.8711-5.166 8.2475-10 .229-2.8623 1.0806-3.6406 1.6445-4.1553a1.8687 1.8687 0 0 0 .798-1.4347 2.746 2.746 0 0 0 -.875-2.0145z"></path>
+                                <path d="m20.1191 13.0215c-.78-3.1232-4.3364-5.2783-7.3051-5.1914a8.2492 8.2492 0 0 0 -6.6778 3.7793 8.5592 8.5592 0 0 0 -.5468 8.042 6.4508 6.4508 0 0 0 4.5888 3.7786 5.3028 5.3028 0 0 0 4.4253-.9817 5.8793 5.8793 0 0 0 1.6765-2.3057 5.2523 5.2523 0 0 0 -.8452-4.73 2.7761 2.7761 0 0 0 -2.6529-1.1416 2.1829 2.1829 0 0 0 -2.0766 2.4228c.0737.9786.6533 1.8057 1.2646 1.8057a.75.75 0 0 1 0 1.5c-1.436 0-2.6225-1.373-2.7607-3.1924a3.65 3.65 0 0 1 3.3476-4.0185 4.2155 4.2155 0 0 1 4.0562 1.6953c2.3586 2.5813.96 6.4135.932 6.47a8.1556 8.1556 0 0 0 2.5741-7.9324z"></path>
+                            </svg>
+                            <?php endif; ?>
+                            <span class="<?php echo $is_fast ? 'dark:text-green-400 text-green-600' : 'dark:text-orange-400 text-orange-600'; ?>">
+                                <?php echo $page_time; ?>ms
+                            </span>
+                        </div>
+                        
+                        <!-- Memory Usage -->
+                        <div class="flex items-center space-x-2">
+                            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                            </svg>
+                            <span class="dark:text-gray-400 text-gray-600"><?php echo $memory_usage; ?>MB</span>
+                            <?php if ($memory_percent > 0): ?>
+                            <span class="dark:text-gray-600 text-gray-500">(<?php echo $memory_percent; ?>%)</span>
+                            <?php endif; ?>
+                        </div>
+                        
+                        <!-- Peak Memory -->
+                        <div class="flex items-center space-x-2">
+                            <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                            <span class="dark:text-gray-400 text-gray-600">Peak: <?php echo $memory_peak; ?>MB</span>
+                        </div>
+                        
+                    </div>
+                </div>
             </div>
         </main>
     </div>
