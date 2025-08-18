@@ -1,99 +1,80 @@
-# Isotone User Documentation
+# Isotone Documentation
 
-This directory contains user-facing documentation for the Isotone CMS.
+> Comprehensive documentation for the Isotone CMS
 
-## 📚 Documentation Structure
+## Documentation Categories
 
-```
-user-docs/
-├── index.md                    # Documentation home
-├── getting-started/            # Installation and setup
-│   ├── installation.md
-│   ├── configuration.md
-│   └── first-steps.md
-├── developers/                 # Developer documentation
-│   ├── themes.md              # Theme development
-│   ├── plugins.md             # Plugin development
-│   ├── hooks.md               # Hooks reference
-│   └── template-functions.md  # Template functions
-├── api/                       # API documentation
-│   ├── theme-api.md
-│   ├── content-api.md
-│   ├── models.md
-│   └── rest.md
-├── guide/                     # User guides
-│   ├── admin.md
-│   ├── content.md
-│   ├── themes.md
-│   └── plugins.md
-└── .vitepress/               # Static site generator config
-    └── config.js
+### [Getting Started](./getting-started/)
 
-```
+Installation, quick start guides, and initial setup
 
-## 🚀 Viewing Documentation
+**Key Topics:**
+- [Installation](./getting-started/installation.md)
 
-### Local Development
-The documentation can be viewed directly as Markdown files or served using a static site generator.
+### [Configuration](./configuration/)
 
-### Using VitePress (Recommended)
-```bash
-# Install VitePress
-npm install -D vitepress
+System settings, database, and environment configuration
 
-# Start dev server
-npx vitepress dev user-docs
+**Key Topics:**
+- [Config Guide](./configuration/config-guide.md)
+- [Database](./configuration/database.md)
+- [Environment](./configuration/environment.md)
 
-# Build static site
-npx vitepress build user-docs
-```
+### [Development](./development/)
 
-### Using MkDocs
-```bash
-# Install MkDocs
-pip install mkdocs
+Developer guides, API reference, and best practices
 
-# Start dev server
-mkdocs serve
+**Key Topics:**
+- [Getting Started](./development/getting-started.md)
+- [Project Structure](./development/project-structure.md)
+- [Commands](./development/commands.md)
 
-# Build static site
-mkdocs build
-```
+### [API Reference](./api-reference/)
 
-### Using Docusaurus
-```bash
-# Install Docusaurus
-npm init docusaurus
+Complete API documentation and endpoints
 
-# Start dev server
-npm start
+**Key Topics:**
+- [Overview](./api-reference/overview.md)
+- [Authentication](./api-reference/authentication.md)
+- [Endpoints](./api-reference/endpoints.md)
 
-# Build static site
-npm run build
-```
+### [Automation](./automation/)
 
-## 📝 Documentation Guidelines
+Automation system, rules, and workflows
 
-1. **Keep it Simple**: Write clear, concise documentation
-2. **Use Examples**: Include code examples where relevant
-3. **Stay Organized**: Follow the established structure
-4. **Update Regularly**: Keep docs in sync with code changes
-5. **Test Code**: Ensure all code examples work
+**Key Topics:**
+- [Automation Guide](./automation/automation-guide.md)
+- [Rules](./automation/rules.md)
+- [Workflows](./automation/workflows.md)
 
-## 🔄 Auto-generated Files
+### [Toni AI Assistant](./toni/)
 
-Some files are automatically generated:
-- `development/api-reference.md` - Generated from hooks implementation
-- Hook documentation is generated via `composer docs:hooks`
+AI-powered development assistant documentation
 
-## 🎯 Future Plans
+**Key Topics:**
+- [Toni Overview](./toni/toni-overview.md)
+- [Toni Setup](./toni/toni-setup.md)
+- [Toni Usage](./toni/toni-usage.md)
 
-- Deploy to GitHub Pages or Netlify
-- Add search functionality
-- Include video tutorials
-- Multi-language support
-- Interactive examples
+### [Troubleshooting](./troubleshooting/)
 
-## 📄 License
+Common issues, solutions, and FAQs
 
-Documentation is licensed under CC BY 4.0. Code examples are MIT licensed.
+**Key Topics:**
+- [Common Issues](./troubleshooting/common-issues.md)
+- [Faq](./troubleshooting/faq.md)
+- [Error Reference](./troubleshooting/error-reference.md)
+
+## Quick Start
+
+1. **New to Isotone?** Start with [Installation](./getting-started/installation.md)
+2. **Developers**: Check out [Development Guide](./development/getting-started.md)
+3. **Need help?** See [Troubleshooting](./troubleshooting/common-issues.md)
+
+## Documentation System
+
+This documentation uses a structured category system with automatic discovery of markdown files. For more information, see the [Documentation System Guide](./development/documentation-system.md).
+
+---
+
+*Documentation updated: 2025-08-18 16:00:43*

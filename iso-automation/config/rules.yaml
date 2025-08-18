@@ -107,6 +107,177 @@ api_documentation_consultation:
       message: "API implementation uses outdated structure"
 
 # ==========================================
+# RULE MANAGEMENT (Priority 90)
+# ==========================================
+
+rule_management:
+  priority: 90
+  enabled: true
+  context: ["rules", "automation", "maintenance"]
+  description: "Rules for managing the rules.yaml file itself"
+  
+  before_modifying_rules:
+    mandatory_checks:
+      - "Search for existing related rules using grep or search"
+      - "Check for duplicate or overlapping rule definitions"
+      - "Verify no other rules reference the rule being removed"
+      - "Ensure rule names are unique across the file"
+    
+  when_adding_rules:
+    workflow:
+      - "Search for similar rules: grep -i 'keyword' rules.yaml"
+      - "Check if functionality already covered elsewhere"
+      - "Consolidate with existing rules if overlap exists"
+      - "Use appropriate priority (higher = more important)"
+      - "Add to correct section based on category"
+    rules:
+      - "NEVER duplicate existing rules"
+      - "ALWAYS check for related rules first"
+      - "Consolidate overlapping rules into single entries"
+      - "Use clear, descriptive rule names"
+  
+  when_removing_functionality:
+    workflow:
+      - "Remove the functionality from code/commands"
+      - "Search rules.yaml for ALL references to removed feature"
+      - "Update or remove all rule references"
+      - "Check for indirect references (workflows, commands, etc.)"
+    rules:
+      - "ALWAYS remove rules for deleted features"
+      - "Update all references when removing rules"
+      - "Check nested references in workflows and commands"
+  
+  when_updating_rules:
+    workflow:
+      - "Search for all occurrences of the rule or feature"
+      - "Update ALL references consistently"
+      - "Verify no broken references remain"
+      - "Test that rules still make sense after updates"
+    rules:
+      - "Maintain consistency across all references"
+      - "Update examples if behavior changes"
+      - "Update violations if patterns change"
+  
+  rule_organization:
+    - "Group related rules in same section"
+    - "Use comments to separate major sections"
+    - "Maintain priority order within sections"
+    - "Keep rule names descriptive and searchable"
+    - "Document the purpose of each rule clearly"
+  
+  common_mistakes_to_avoid:
+    - "Adding duplicate rules without searching first"
+    - "Leaving orphaned references after removing features"
+    - "Creating overlapping rules in different sections"
+    - "Forgetting to update workflows when commands change"
+    - "Not checking for indirect references in nested structures"
+
+# ==========================================
+# DOCUMENTATION ACCURACY (Priority 90)
+# ==========================================
+
+documentation_accuracy:
+  priority: 90
+  enabled: true
+  context: ["documentation", "user-docs", "public-docs", "guides"]
+  description: "Critical rules for ensuring documentation accuracy and factual correctness"
+  
+  before_writing_documentation:
+    mandatory_verification:
+      - "Read actual code files to verify behavior"
+      - "Test commands and features before documenting"
+      - "Check file paths and directory structures exist"
+      - "Verify configuration options against actual config files"
+      - "Test installation steps in clean environment if possible"
+    
+  verification_workflow:
+    step_1_code_verification:
+      - "Use Read tool to examine actual implementation"
+      - "Use Grep to find all references and usages"
+      - "Check function signatures and parameters"
+      - "Verify class names, methods, and properties"
+      - "Confirm file locations and paths are correct"
+    step_2_command_verification:
+      - "Run commands with --help to verify syntax"
+      - "Test commands to confirm they work as described"
+      - "Check composer.json for actual script definitions"
+      - "Verify CLI tools exist and function correctly"
+    step_3_internet_verification:
+      - "Use WebSearch/WebFetch for external dependencies"
+      - "Verify third-party API documentation is current"
+      - "Check version numbers and compatibility"
+      - "Confirm external URLs are valid and accessible"
+    step_4_cross_reference:
+      - "Compare with existing documentation for consistency"
+      - "Check README.md for conflicting information"
+      - "Verify against config.sample.php for settings"
+      - "Ensure examples match actual codebase patterns"
+  
+  common_documentation_errors:
+    to_avoid:
+      - "Documenting features that don't exist"
+      - "Using outdated command syntax"
+      - "Referencing removed or renamed files"
+      - "Providing incorrect file paths"
+      - "Assuming functionality without verification"
+      - "Copying documentation from other projects"
+      - "Using placeholder URLs in production docs"
+    examples:
+      wrong: "Run 'composer docs:update' to update docs"  # Command was removed
+      right: "Manually update documentation as needed"
+      wrong: "Configure in .env file"  # Isotone uses config.php
+      right: "Configure in config.php file"
+      wrong: "http://localhost/isotone/"  # Hardcoded URL
+      right: "{your-domain}/isotone/"  # Placeholder URL
+  
+  accuracy_checklist:
+    installation_guides:
+      - "Test every command in sequence"
+      - "Verify system requirements are accurate"
+      - "Check database setup instructions work"
+      - "Confirm configuration steps are complete"
+      - "Test the final result actually works"
+    api_documentation:
+      - "Verify endpoints against actual routes"
+      - "Test request/response formats"
+      - "Confirm authentication requirements"
+      - "Check error codes and messages"
+    configuration_docs:
+      - "List only actual config options"
+      - "Verify default values are correct"
+      - "Test that examples work"
+      - "Check required vs optional settings"
+    feature_guides:
+      - "Ensure features actually exist in code"
+      - "Test the documented workflow"
+      - "Verify UI elements and locations"
+      - "Check menu items and navigation paths"
+  
+  rules:
+    - "NEVER document features without verifying they exist"
+    - "ALWAYS test commands before documenting them"
+    - "DOUBLE-CHECK file paths and directory structures"
+    - "TRIPLE-CHECK installation and setup instructions"
+    - "FACT-CHECK against codebase for every claim"
+    - "VERIFY external references with WebSearch/WebFetch"
+    - "TEST documented examples to ensure they work"
+    - "UPDATE documentation when code changes"
+  
+  violations:
+    - pattern: "Documenting non-existent features"
+      severity: "critical"
+      message: "Documentation references features that don't exist in codebase"
+    - pattern: "Incorrect command syntax"
+      severity: "high"
+      message: "Command documentation doesn't match actual implementation"
+    - pattern: "Wrong file paths"
+      severity: "high"
+      message: "Documentation contains incorrect file or directory paths"
+    - pattern: "Untested installation steps"
+      severity: "critical"
+      message: "Installation guide contains untested or non-working steps"
+
+# ==========================================
 # DATABASE CONFIGURATION (Priority 90)
 # ==========================================
 
@@ -249,8 +420,8 @@ version_management:
       command: "php isotone version:bump [type] [stage] [codename]"
     - step: "Generate changelog (MANDATORY)"
       command: "php isotone changelog"
-    - step: "Update all documentation (MANDATORY)"
-      command: "composer docs:update"
+    - step: "Update relevant documentation manually"
+      command: "Edit documentation files as needed"
     - step: "Report completion"
       command: "Show the new version number and changes"
   
@@ -430,11 +601,8 @@ documentation:
         pre_commit:
           when: "Every git commit"
           actions:
-            - "Run composer docs:update"
             - "Run composer ide:sync"
-            - "Stage updated documentation files"
-            - "Run composer docs:check"
-            - "Block commit if documentation has errors"
+            - "Stage updated documentation files if manually edited"
         pre_push:
           when: "Every git push"
           actions:
@@ -447,7 +615,7 @@ documentation:
         actions:
           - "Update version in config/version.json"
           - "Generate CHANGELOG.md"
-          - "Run composer docs:update"
+          - "Update documentation manually if needed"
           - "Run composer ide:sync"
   
   maintenance_rules:
@@ -455,12 +623,12 @@ documentation:
       - "Update README.md status when features complete"
       - "Update relevant docs in /user-docs"
       - "Document new routes/endpoints"
-      - "Run composer docs:check before completing"
+      - "Review documentation for accuracy"
     rules:
       - "Keep documentation in sync with code"
       - "Update file references when moved"
       - "Update code examples when APIs change"
-      - "ALWAYS run composer docs:check before saying task is done"
+      - "ALWAYS review documentation changes before saying task is done"
     files_requiring_updates:
       - "README.md - Feature status, installation steps"
       - "CLAUDE.md - New patterns/rules"
@@ -469,12 +637,9 @@ documentation:
       - "user-docs/development/getting-started.md - Developer guide"
   
   commands:
-    docs_update:
-      command: "composer docs:update"
-      description: "Auto-updates documentation from code (routes, config, hooks)"
-    docs_check:
-      command: "composer docs:check"
-      description: "Validates documentation integrity and references"
+    docs_hooks:
+      command: "composer docs:hooks"
+      description: "Generates hooks documentation from code"
     ide_sync:
       command: "composer ide:sync"
       description: "Sync IDE rules to .windsurf/"
@@ -534,8 +699,7 @@ llm_development:
   
   before_completing_task:
     mandatory:
-      - "Run composer docs:check"
-      - "Fix any documentation errors"
+      - "Review documentation changes"
       - "Update relevant documentation"
       - "Test on XAMPP environment"
       - "Verify shared hosting compatibility"
@@ -624,7 +788,7 @@ hook_system:
         - "add_action() registrations"
         - "add_filter() registrations"
     workflow_integration:
-      - "Runs automatically with composer docs:update"
+      - "Run manually with composer docs:hooks"
       - "Part of pre-commit hooks"
       - "Updates on version bumps"
   
@@ -1076,8 +1240,7 @@ development_commands:
     analyse: "Run static analysis with PHPStan"
     check_style: "Check code style (PSR-12)"
     fix_style: "Fix code style automatically"
-    docs_check: "Check documentation integrity"
-    docs_update: "Auto-update documentation from code"
+    docs_hooks: "Generate hooks documentation from code"
     ide_sync: "Sync IDE rules"
     version_patch: "Bump patch version"
     version_minor: "Bump minor version"
@@ -1111,7 +1274,7 @@ workflows:
       - "Create feature branch"
       - "Implement feature"
       - "Update documentation"
-      - "Run composer docs:check"
+      - "Review documentation"
       - "Test thoroughly"
       - "Create pull request"
   

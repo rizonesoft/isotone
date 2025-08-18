@@ -231,11 +231,12 @@ class DocumentationAnalyzer
             $exampleVars = $matches[1];
         }
         
-        // Find all env() calls in PHP files (only if app directory modified)
-        if ($this->isDirectoryModified($this->rootPath . '/app')) {
+        // Find all env() calls in PHP files (only if app directory exists and modified)
+        $appPath = $this->rootPath . '/app';
+        if (is_dir($appPath) && $this->isDirectoryModified($appPath)) {
             $usedVars = [];
             $iterator = new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator($this->rootPath . '/app')
+                new RecursiveDirectoryIterator($appPath)
             );
             
             foreach ($iterator as $file) {

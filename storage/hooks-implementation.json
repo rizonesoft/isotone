@@ -1,43 +1,15 @@
 {
-    "generated": "2025-08-16 22:01:56",
+    "generated": "2025-08-18 17:14:25",
     "stats": {
-        "files_scanned": 41,
-        "hooks_found": 22,
+        "files_scanned": 36,
+        "hooks_found": 10,
         "system_hooks_total": 58,
-        "system_hooks_implemented": 12,
-        "orphan_hooks": 10
+        "system_hooks_implemented": 5,
+        "orphan_hooks": 5
     },
     "implementations": {
         "actions": {
-            "test_action": [
-                {
-                    "file": "app\/Commands\/HooksCommand.php",
-                    "line": 283
-                }
-            ],
-            "priority_test": [
-                {
-                    "file": "app\/Commands\/HooksCommand.php",
-                    "line": 319
-                }
-            ],
-            "remove_test": [
-                {
-                    "file": "app\/Commands\/HooksCommand.php",
-                    "line": 335
-                }
-            ],
-            "current_test": [
-                {
-                    "file": "app\/Commands\/HooksCommand.php",
-                    "line": 349
-                }
-            ],
             "after_setup_theme": [
-                {
-                    "file": "app\/Core\/Application.php",
-                    "line": 150
-                },
                 {
                     "file": "iso-admin\/hooks-explorer.php",
                     "line": 52
@@ -45,68 +17,20 @@
             ],
             "init": [
                 {
-                    "file": "app\/Core\/Application.php",
-                    "line": 151
-                },
-                {
                     "file": "iso-admin\/hooks-explorer.php",
                     "line": 53
-                }
-            ],
-            "iso_loaded": [
-                {
-                    "file": "app\/Core\/Application.php",
-                    "line": 152
-                }
-            ],
-            "template_redirect": [
-                {
-                    "file": "app\/Core\/Application.php",
-                    "line": 179
-                }
-            ],
-            "shutdown": [
-                {
-                    "file": "app\/Core\/Application.php",
-                    "line": 194
-                }
-            ],
-            "iso_head": [
-                {
-                    "file": "app\/hooks.php",
-                    "line": 356
-                }
-            ],
-            "iso_footer": [
-                {
-                    "file": "app\/hooks.php",
-                    "line": 369
-                }
-            ],
-            "iso_body_open": [
-                {
-                    "file": "app\/hooks.php",
-                    "line": 382
-                },
-                {
-                    "file": "iso-content\/themes\/neutron\/compat.php",
-                    "line": 24
-                }
-            ],
-            "iso_enqueue_scripts": [
-                {
-                    "file": "app\/hooks.php",
-                    "line": 395
-                },
-                {
-                    "file": "iso-admin\/hooks-explorer.php",
-                    "line": 55
                 }
             ],
             "widgets_init": [
                 {
                     "file": "iso-admin\/hooks-explorer.php",
                     "line": 54
+                }
+            ],
+            "iso_enqueue_scripts": [
+                {
+                    "file": "iso-admin\/hooks-explorer.php",
+                    "line": 55
                 }
             ],
             "isotone_head": [
@@ -133,6 +57,12 @@
                     "line": 69
                 }
             ],
+            "iso_body_open": [
+                {
+                    "file": "iso-content\/themes\/neutron\/compat.php",
+                    "line": 24
+                }
+            ],
             "hello_isotone_loaded": [
                 {
                     "file": "iso-content\/plugins\/hello-isotone\/hello-isotone.php",
@@ -140,26 +70,7 @@
                 }
             ]
         },
-        "filters": {
-            "test_filter": [
-                {
-                    "file": "app\/Commands\/HooksCommand.php",
-                    "line": 295
-                }
-            ],
-            "iso_enqueue_style": [
-                {
-                    "file": "app\/hooks.php",
-                    "line": 413
-                }
-            ],
-            "iso_enqueue_script": [
-                {
-                    "file": "app\/hooks.php",
-                    "line": 444
-                }
-            ]
-        }
+        "filters": []
     },
     "system_hooks": {
         "init": {
@@ -168,10 +79,6 @@
             "since": "1.0.0",
             "implemented": true,
             "locations": [
-                {
-                    "file": "app\/Core\/Application.php",
-                    "line": 151
-                },
                 {
                     "file": "iso-admin\/hooks-explorer.php",
                     "line": 53
@@ -182,13 +89,8 @@
             "type": "action",
             "description": "Fires when Isotone core has been fully loaded",
             "since": "1.0.0",
-            "implemented": true,
-            "locations": [
-                {
-                    "file": "app\/Core\/Application.php",
-                    "line": 152
-                }
-            ]
+            "implemented": false,
+            "locations": []
         },
         "after_setup_theme": {
             "type": "action",
@@ -196,10 +98,6 @@
             "since": "1.0.0",
             "implemented": true,
             "locations": [
-                {
-                    "file": "app\/Core\/Application.php",
-                    "line": 150
-                },
                 {
                     "file": "iso-admin\/hooks-explorer.php",
                     "line": 52
@@ -210,25 +108,15 @@
             "type": "action",
             "description": "Fires in the <head> section of the site",
             "since": "1.0.0",
-            "implemented": true,
-            "locations": [
-                {
-                    "file": "app\/hooks.php",
-                    "line": 356
-                }
-            ]
+            "implemented": false,
+            "locations": []
         },
         "iso_footer": {
             "type": "action",
             "description": "Fires before the closing <\/body> tag",
             "since": "1.0.0",
-            "implemented": true,
-            "locations": [
-                {
-                    "file": "app\/hooks.php",
-                    "line": 369
-                }
-            ]
+            "implemented": false,
+            "locations": []
         },
         "iso_body_open": {
             "type": "action",
@@ -236,10 +124,6 @@
             "since": "1.0.0",
             "implemented": true,
             "locations": [
-                {
-                    "file": "app\/hooks.php",
-                    "line": 382
-                },
                 {
                     "file": "iso-content\/themes\/neutron\/compat.php",
                     "line": 24
@@ -252,10 +136,6 @@
             "since": "1.0.0",
             "implemented": true,
             "locations": [
-                {
-                    "file": "app\/hooks.php",
-                    "line": 395
-                },
                 {
                     "file": "iso-admin\/hooks-explorer.php",
                     "line": 55
@@ -474,13 +354,8 @@
             "type": "action",
             "description": "Fires before determining which template to load",
             "since": "1.0.0",
-            "implemented": true,
-            "locations": [
-                {
-                    "file": "app\/Core\/Application.php",
-                    "line": 179
-                }
-            ]
+            "implemented": false,
+            "locations": []
         },
         "iso_before_route": {
             "type": "action",
@@ -500,13 +375,8 @@
             "type": "action",
             "description": "Fires just before PHP shuts down execution",
             "since": "1.0.0",
-            "implemented": true,
-            "locations": [
-                {
-                    "file": "app\/Core\/Application.php",
-                    "line": 194
-                }
-            ]
+            "implemented": false,
+            "locations": []
         },
         "the_content": {
             "type": "filter",
@@ -554,25 +424,15 @@
             "type": "filter",
             "description": "Filters style enqueue data before adding",
             "since": "1.0.0",
-            "implemented": true,
-            "locations": [
-                {
-                    "file": "app\/hooks.php",
-                    "line": 413
-                }
-            ]
+            "implemented": false,
+            "locations": []
         },
         "iso_enqueue_script": {
             "type": "filter",
             "description": "Filters script enqueue data before adding",
             "since": "1.0.0",
-            "implemented": true,
-            "locations": [
-                {
-                    "file": "app\/hooks.php",
-                    "line": 444
-                }
-            ]
+            "implemented": false,
+            "locations": []
         },
         "iso_query_vars": {
             "type": "filter",

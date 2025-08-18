@@ -51,35 +51,24 @@
         "analyse": "phpstan analyse iso-core --level=6",
         "check-style": "phpcs iso-core --standard=PSR12",
         "fix-style": "phpcbf iso-core --standard=PSR12",
-        "docs:check": "php iso-automation/cli.php check:docs",
-        "docs:update": "php iso-automation/cli.php update:docs",
         "docs:hooks": "php iso-automation/cli.php hooks:scan",
-        "docs:all": [
-            "@docs:update",
-            "@docs:hooks",
-            "@docs:check"
-        ],
         "hooks:docs": "@docs:hooks",
         "hooks:scan": "php iso-automation/cli.php hooks:scan",
         "ide:sync": "php iso-automation/cli.php sync:ide",
         "validate:rules": "php iso-automation/cli.php validate:rules",
         "version:patch": [
             "php isotone version:bump patch alpha",
-            "php isotone changelog",
-            "@docs:all"
+            "php isotone changelog"
         ],
         "version:minor": [
             "php isotone version:bump minor alpha",
-            "php isotone changelog",
-            "@docs:all"
+            "php isotone changelog"
         ],
         "version:major": [
             "php isotone version:bump major alpha",
-            "php isotone changelog",
-            "@docs:all"
+            "php isotone changelog"
         ],
         "pre-commit": [
-            "@docs:check",
             "@check-style"
         ],
         "tailwind:build": "php iso-automation/cli.php tailwind:build",

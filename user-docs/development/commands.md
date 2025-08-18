@@ -199,3 +199,488 @@ Many of these commands are also available through the web-based Automation Dashb
 
 ---
 *Last updated: 2025-01-18*
+
+## Composer Commands
+
+> Auto-generated on 2025-08-18 16:00:43
+
+### Testing
+
+#### `composer test`
+
+```bash
+phpunit
+```
+
+#### `composer test:unit`
+
+```bash
+phpunit --testsuite Unit
+```
+
+#### `composer test:integration`
+
+```bash
+phpunit --testsuite Integration
+```
+
+#### `composer analyse`
+
+```bash
+phpstan analyse iso-core --level=6
+```
+
+#### `composer check-style`
+
+```bash
+phpcs iso-core --standard=PSR12
+```
+
+#### `composer fix-style`
+
+```bash
+phpcbf iso-core --standard=PSR12
+```
+
+### Documentation
+
+#### `composer docs:check`
+
+```bash
+php iso-automation/cli.php check:docs
+```
+
+#### `composer docs:update`
+
+```bash
+php iso-automation/cli.php update:docs
+```
+
+#### `composer docs:hooks`
+
+```bash
+php iso-automation/cli.php hooks:scan
+```
+
+#### `composer docs:all`
+
+Runs the following commands in sequence:
+1. `@docs:update`
+1. `@docs:hooks`
+1. `@docs:check`
+
+#### `composer hooks:docs`
+
+```bash
+@docs:hooks
+```
+
+#### `composer hooks:scan`
+
+```bash
+php iso-automation/cli.php hooks:scan
+```
+
+### IDE & Development
+
+#### `composer ide:sync`
+
+```bash
+php iso-automation/cli.php sync:ide
+```
+
+#### `composer validate:rules`
+
+```bash
+php iso-automation/cli.php validate:rules
+```
+
+### Version Management
+
+#### `composer version:patch`
+
+Runs the following commands in sequence:
+1. `php isotone version:bump patch alpha`
+1. `php isotone changelog`
+1. `@docs:all`
+
+#### `composer version:minor`
+
+Runs the following commands in sequence:
+1. `php isotone version:bump minor alpha`
+1. `php isotone changelog`
+1. `@docs:all`
+
+#### `composer version:major`
+
+Runs the following commands in sequence:
+1. `php isotone version:bump major alpha`
+1. `php isotone changelog`
+1. `@docs:all`
+
+### Other
+
+#### `composer pre-commit`
+
+Runs the following commands in sequence:
+1. `@docs:check`
+1. `@check-style`
+
+### Tailwind CSS
+
+#### `composer tailwind:build`
+
+```bash
+php iso-automation/cli.php tailwind:build
+```
+
+#### `composer tailwind:watch`
+
+```bash
+php iso-automation/cli.php tailwind:watch
+```
+
+#### `composer tailwind:minify`
+
+```bash
+php iso-automation/cli.php tailwind:minify
+```
+
+#### `composer tailwind:install`
+
+```bash
+php iso-automation/cli.php tailwind:install
+```
+
+#### `composer tailwind:update`
+
+```bash
+php iso-automation/cli.php tailwind:update
+```
+
+#### `composer tailwind:status`
+
+```bash
+php iso-automation/cli.php tailwind:status
+```
+
+## Testing
+
+#### `composer test`
+
+```bash
+phpunit
+```
+
+#### `composer test:unit`
+
+```bash
+phpunit --testsuite Unit
+```
+
+#### `composer test:integration`
+
+```bash
+phpunit --testsuite Integration
+```
+
+#### `composer analyse`
+
+```bash
+phpstan analyse iso-core --level=6
+```
+
+#### `composer check-style`
+
+```bash
+phpcs iso-core --standard=PSR12
+```
+
+#### `composer fix-style`
+
+```bash
+phpcbf iso-core --standard=PSR12
+```
+
+### Documentation
+
+#### `composer docs:check`
+
+```bash
+php iso-automation/cli.php check:docs
+```
+
+#### `composer docs:update`
+
+```bash
+php iso-automation/cli.php update:docs
+```
+
+#### `composer docs:hooks`
+
+```bash
+php iso-automation/cli.php hooks:scan
+```
+
+#### `composer docs:all`
+
+Runs the following commands in sequence:
+1. `@docs:update`
+1. `@docs:hooks`
+1. `@docs:check`
+
+#### `composer hooks:docs`
+
+```bash
+@docs:hooks
+```
+
+#### `composer hooks:scan`
+
+```bash
+php iso-automation/cli.php hooks:scan
+```
+
+### IDE & Development
+
+#### `composer ide:sync`
+
+```bash
+php iso-automation/cli.php sync:ide
+```
+
+#### `composer validate:rules`
+
+```bash
+php iso-automation/cli.php validate:rules
+```
+
+### Version Management
+
+#### `composer version:patch`
+
+Runs the following commands in sequence:
+1. `php isotone version:bump patch alpha`
+1. `php isotone changelog`
+1. `@docs:all`
+
+#### `composer version:minor`
+
+Runs the following commands in sequence:
+1. `php isotone version:bump minor alpha`
+1. `php isotone changelog`
+1. `@docs:all`
+
+#### `composer version:major`
+
+Runs the following commands in sequence:
+1. `php isotone version:bump major alpha`
+1. `php isotone changelog`
+1. `@docs:all`
+
+### Other
+
+#### `composer pre-commit`
+
+Runs the following commands in sequence:
+1. `@docs:check`
+1. `@check-style`
+
+### Tailwind CSS
+
+#### `composer tailwind:build`
+
+```bash
+php iso-automation/cli.php tailwind:build
+```
+
+#### `composer tailwind:watch`
+
+```bash
+php iso-automation/cli.php tailwind:watch
+```
+
+#### `composer tailwind:minify`
+
+```bash
+php iso-automation/cli.php tailwind:minify
+```
+
+#### `composer tailwind:install`
+
+```bash
+php iso-automation/cli.php tailwind:install
+```
+
+#### `composer tailwind:update`
+
+```bash
+php iso-automation/cli.php tailwind:update
+```
+
+#### `composer tailwind:status`
+
+```bash
+php iso-automation/cli.php tailwind:status
+```
+
+## Testing
+
+#### `composer test`
+
+```bash
+phpunit
+```
+
+#### `composer test:unit`
+
+```bash
+phpunit --testsuite Unit
+```
+
+#### `composer test:integration`
+
+```bash
+phpunit --testsuite Integration
+```
+
+#### `composer analyse`
+
+```bash
+phpstan analyse iso-core --level=6
+```
+
+#### `composer check-style`
+
+```bash
+phpcs iso-core --standard=PSR12
+```
+
+#### `composer fix-style`
+
+```bash
+phpcbf iso-core --standard=PSR12
+```
+
+### Documentation
+
+#### `composer docs:check`
+
+```bash
+php iso-automation/cli.php check:docs
+```
+
+#### `composer docs:update`
+
+```bash
+php iso-automation/cli.php update:docs
+```
+
+#### `composer docs:hooks`
+
+```bash
+php iso-automation/cli.php hooks:scan
+```
+
+#### `composer docs:all`
+
+Runs the following commands in sequence:
+1. `@docs:update`
+1. `@docs:hooks`
+1. `@docs:check`
+
+#### `composer hooks:docs`
+
+```bash
+@docs:hooks
+```
+
+#### `composer hooks:scan`
+
+```bash
+php iso-automation/cli.php hooks:scan
+```
+
+### IDE & Development
+
+#### `composer ide:sync`
+
+```bash
+php iso-automation/cli.php sync:ide
+```
+
+#### `composer validate:rules`
+
+```bash
+php iso-automation/cli.php validate:rules
+```
+
+### Version Management
+
+#### `composer version:patch`
+
+Runs the following commands in sequence:
+1. `php isotone version:bump patch alpha`
+1. `php isotone changelog`
+1. `@docs:all`
+
+#### `composer version:minor`
+
+Runs the following commands in sequence:
+1. `php isotone version:bump minor alpha`
+1. `php isotone changelog`
+1. `@docs:all`
+
+#### `composer version:major`
+
+Runs the following commands in sequence:
+1. `php isotone version:bump major alpha`
+1. `php isotone changelog`
+1. `@docs:all`
+
+### Other
+
+#### `composer pre-commit`
+
+Runs the following commands in sequence:
+1. `@docs:check`
+1. `@check-style`
+
+### Tailwind CSS
+
+#### `composer tailwind:build`
+
+```bash
+php iso-automation/cli.php tailwind:build
+```
+
+#### `composer tailwind:watch`
+
+```bash
+php iso-automation/cli.php tailwind:watch
+```
+
+#### `composer tailwind:minify`
+
+```bash
+php iso-automation/cli.php tailwind:minify
+```
+
+#### `composer tailwind:install`
+
+```bash
+php iso-automation/cli.php tailwind:install
+```
+
+#### `composer tailwind:update`
+
+```bash
+php iso-automation/cli.php tailwind:update
+```
+
+#### `composer tailwind:status`
+
+```bash
+php iso-automation/cli.php tailwind:status
+```
+

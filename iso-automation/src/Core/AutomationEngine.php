@@ -56,8 +56,6 @@ class AutomationEngine
             
             // Execute based on task type
             $result = match($task) {
-                'check:docs' => $this->checkDocumentation($options),
-                'update:docs' => $this->updateDocumentation($options),
                 'generate:hooks' => $this->generateHooksDocs($options),
                 'sync:ide' => $this->syncIdeRules($options),
                 'validate:rules' => $this->validateRules($options),
@@ -77,49 +75,6 @@ class AutomationEngine
         }
     }
     
-    /**
-     * Check documentation integrity
-     */
-    private function checkDocumentation(array $options): bool
-    {
-        require_once dirname(__DIR__) . '/Analyzers/DocumentationAnalyzer.php';
-        
-        $analyzer = new \Isotone\Automation\Analyzers\DocumentationAnalyzer($this);
-        
-        // Run the analysis
-        $result = $analyzer->analyze();
-        
-        // Report if not in quiet mode
-        if (!$this->quietMode) {
-            $analyzer->report();
-        }
-        
-        return $result;
-    }
-    
-    /**
-     * Update documentation
-     */
-    private function updateDocumentation(array $options): bool
-    {
-        // Check if DocUpdater exists, otherwise use DocumentationGenerator
-        $docUpdaterPath = dirname(__DIR__) . '/Generators/DocUpdater.php';
-        if (file_exists($docUpdaterPath)) {
-            require_once $docUpdaterPath;
-            $updater = new \Isotone\Automation\Generators\DocUpdater();
-            $updater->setQuietMode($this->quietMode);
-            return $updater->run();
-        } else {
-            // Fallback to DocumentationGenerator
-            require_once dirname(__DIR__) . '/Generators/DocumentationGenerator.php';
-            $generator = new \Isotone\Automation\Generators\DocumentationGenerator($this);
-            $generator->generate();
-            if (!$this->quietMode) {
-                $generator->report();
-            }
-            return true;
-        }
-    }
     
     /**
      * Generate hooks documentation

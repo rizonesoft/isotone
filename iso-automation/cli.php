@@ -71,16 +71,6 @@ try {
     
     // Handle commands
     switch ($command) {
-        case 'check:docs':
-        case 'docs:check':
-            $result = $engine->execute('check:docs', $parsedOptions);
-            exit($result ? 0 : 1);
-            
-        case 'update:docs':
-        case 'docs:update':
-            $result = $engine->execute('update:docs', $parsedOptions);
-            exit($result ? 0 : 1);
-            
         case 'generate:hooks':
         case 'hooks:generate':
         case 'docs:hooks':
@@ -306,8 +296,6 @@ function showHelp(): void
     echo "\n";
     echo "Usage: php iso-automation/cli.php <command> [options]\n\n";
     echo "Commands:\n";
-    echo "  check:docs          Check documentation integrity\n";
-    echo "  update:docs         Update documentation from code\n";
     echo "  generate:hooks      Generate hooks documentation\n";
     echo "  sync:ide           Sync IDE rules from CLAUDE.md\n";
     echo "\n";
@@ -335,8 +323,8 @@ function showHelp(): void
     echo "  --debug            Show debug information\n";
     echo "\n";
     echo "Examples:\n";
-    echo "  php iso-automation/cli.php check:docs\n";
-    echo "  php iso-automation/cli.php update:docs --quiet\n";
+    echo "  php iso-automation/cli.php generate:hooks\n";
+    echo "  php iso-automation/cli.php rules:list\n";
     echo "  php iso-automation/cli.php rules:export --format=markdown\n";
     echo "\n";
 }

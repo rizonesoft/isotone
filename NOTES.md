@@ -3,6 +3,8 @@
 ## 📝 Quick Notes
 <!-- Add quick notes and thoughts here -->
 
+### Quick Prompts
+
 ---
 
 ## 🔔 Reminders

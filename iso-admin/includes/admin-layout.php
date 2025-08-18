@@ -189,17 +189,6 @@ $admin_menu = [
             ['title' => 'Backup', 'url' => '/isotone/iso-admin/backup.php']
         ]
     ],
-    'documentation' => [
-        'title' => 'Documentation',
-        'icon' => 'book-open',
-        'url' => '/isotone/iso-admin/documentation.php',
-        'submenu' => [
-            ['title' => 'Getting Started', 'url' => '/isotone/iso-admin/documentation.php?section=getting-started'],
-            ['title' => 'Configuration', 'url' => '/isotone/iso-admin/documentation.php?section=configuration'],
-            ['title' => 'API Reference', 'url' => '/isotone/iso-admin/documentation.php?section=api'],
-            ['title' => 'Developer Guide', 'url' => '/isotone/iso-admin/documentation.php?section=developers']
-        ]
-    ],
     'development' => [
         'title' => 'Development',
         'icon' => 'code',
@@ -211,6 +200,11 @@ $admin_menu = [
             ['title' => 'Debug Console', 'url' => '/isotone/iso-admin/debug.php'],
             ['title' => 'Developer Docs', 'url' => '/isotone/iso-admin/documentation.php?section=developers']
         ]
+    ],
+    'documentation' => [
+        'title' => 'Documentation',
+        'icon' => 'book-open',
+        'url' => '/isotone/iso-admin/documentation.php'
     ]
 ];
 
