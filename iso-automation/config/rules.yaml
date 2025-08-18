@@ -6,6 +6,26 @@
 # CRITICAL RULES (Priority 95-100)
 # ==========================================
 
+gpt5_exists:
+  priority: 100
+  enabled: true
+  context: ["*"]
+  description: "GPT-5 models exist and are available via OpenAI API"
+  rules:
+    - "GPT-5, GPT-5-mini, and GPT-5-nano are real, available models from OpenAI"
+    - "The /v1/responses endpoint is the correct API endpoint for GPT-5"
+    - "GPT-5 supports vision with input_text and input_image content types"
+    - "NEVER assume GPT-5 doesn't exist - it was released and is production-ready"
+    - "The Responses API with reasoning_effort and verbosity parameters is correct"
+    - "Do NOT revert GPT-5 code to GPT-4 or older models"
+  violations:
+    - pattern: "GPT-5 doesn't exist"
+      severity: "critical"
+      message: "GPT-5 exists and is available"
+    - pattern: "gpt-4-vision"
+      severity: "critical"
+      message: "Use GPT-5 models, not GPT-4"
+
 branding:
   priority: 100
   enabled: true
@@ -673,6 +693,64 @@ css_architecture:
     - "ALWAYS check which context you're in"
     - "ALWAYS search /iso-includes/css/ first"
     - "ALWAYS use appropriate system for context"
+
+alpine_loading_rules:
+  priority: 85
+  enabled: true
+  context: ["frontend", "javascript", "admin", "ui"]
+  description: "Critical Alpine.js loading rules to prevent dark mode breakage"
+  
+  loading_requirements:
+    - "Alpine.js MUST be loaded at the END of the body tag"
+    - "Alpine.js MUST be loaded AFTER all JavaScript functions are defined"
+    - "Alpine.js MUST use the defer attribute"
+    - "NEVER load Alpine.js in the <head> section"
+    - "NEVER load Alpine.js before adminApp() function is defined"
+  
+  correct_placement:
+    location: "Just before closing </body> tag"
+    example: |
+      <!-- All other scripts and functions defined above -->
+      <script>
+        function adminApp() {
+          // ... app logic ...
+        }
+      </script>
+      
+      <!-- Alpine.js - Load LAST after all functions are defined -->
+      <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+      </body>
+  
+  dark_mode_requirements:
+    - "adminApp() function MUST be defined before Alpine loads"
+    - "darkMode property MUST be initialized from localStorage"
+    - "Document class manipulation MUST use document.documentElement"
+    - "Tailwind config MUST have darkMode: 'class' set"
+  
+  violations:
+    - pattern: '<head>.*alpinejs.*</head>'
+      severity: "critical"
+      message: "Alpine.js loaded in head - will break dark mode! Move to end of body."
+    - pattern: 'alpinejs.*function adminApp'
+      severity: "critical"
+      message: "Alpine.js loaded before adminApp() - will break functionality!"
+    - pattern: 'Alpine.start().*function adminApp'
+      severity: "critical"
+      message: "Alpine starting before functions defined - will fail!"
+  
+  testing_checklist:
+    - "Verify dark mode toggle works"
+    - "Check browser console for Alpine errors"
+    - "Ensure localStorage persistence works"
+    - "Test x-data bindings are functional"
+    - "Confirm Alpine devtools shows components"
+  
+  common_mistakes:
+    - "Loading Alpine in head with defer - still executes too early"
+    - "Using module scripts that change load order"
+    - "Forgetting to define functions before Alpine loads"
+    - "Loading Alpine multiple times"
+    - "Not setting darkMode: 'class' in Tailwind config"
 
 # ==========================================
 # CONFIGURATION SYSTEM (Priority 80)

@@ -1,0 +1,745 @@
+<?php
+/**
+ * General Settings Page
+ */
+
+// Check authentication
+require_once 'auth.php';
+
+// Load configuration and database
+require_once dirname(__DIR__) . '/config.php';
+require_once dirname(__DIR__) . '/vendor/autoload.php';
+
+use RedBeanPHP\R;
+
+// Initialize database connection
+if (!R::testConnection()) {
+    $host = defined('DB_HOST') ? DB_HOST : 'localhost';
+    $dbname = defined('DB_NAME') ? DB_NAME : 'isotone_db';
+    $user = defined('DB_USER') ? DB_USER : 'root';
+    $pass = defined('DB_PASSWORD') ? DB_PASSWORD : '';
+    
+    try {
+        R::setup("mysql:host=$host;dbname=$dbname", $user, $pass);
+    } catch (Exception $e) {
+        die('Database connection failed: ' . $e->getMessage());
+    }
+}
+
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $tab = $_POST['tab'] ?? 'general';
+    $response = ['success' => false, 'message' => ''];
+    
+    try {
+        switch ($tab) {
+            case 'general':
+                $settings = [
+                    'site_title' => $_POST['site_title'] ?? '',
+                    'site_tagline' => $_POST['site_tagline'] ?? '',
+                    'site_url' => $_POST['site_url'] ?? '',
+                    'admin_email' => $_POST['admin_email'] ?? '',
+                    'timezone' => $_POST['timezone'] ?? 'UTC',
+                    'date_format' => $_POST['date_format'] ?? 'Y-m-d',
+                    'time_format' => $_POST['time_format'] ?? 'H:i:s',
+                    'week_starts_on' => $_POST['week_starts_on'] ?? '1',
+                    'language' => $_POST['language'] ?? 'en_US'
+                ];
+                break;
+                
+            case 'api':
+                $settings = [
+                    // AI API Credentials
+                    'openai_api_key' => $_POST['openai_api_key'] ?? '',
+                    'openai_org_id' => $_POST['openai_org_id'] ?? '',
+                    
+                    // Function-based Model Selection
+                    'toni_chat_model' => $_POST['toni_chat_model'] ?? 'gpt-5-nano',
+                    'toni_chat_reasoning_effort' => $_POST['toni_chat_reasoning_effort'] ?? 'minimal',
+                    'toni_chat_verbosity' => $_POST['toni_chat_verbosity'] ?? 'medium',
+                    
+                    // Advanced AI Settings
+                    'toni_timeout' => $_POST['toni_timeout'] ?? '30',
+                    
+                    // Analytics Settings
+                    'analytics_provider' => $_POST['analytics_provider'] ?? 'none',
+                    'google_analytics_id' => $_POST['google_analytics_id'] ?? '',
+                    'matomo_url' => $_POST['matomo_url'] ?? '',
+                    'matomo_site_id' => $_POST['matomo_site_id'] ?? ''
+                ];
+                break;
+                
+            case 'smtp':
+                $settings = [
+                    'mail_method' => $_POST['mail_method'] ?? 'mail',
+                    'smtp_host' => $_POST['smtp_host'] ?? '',
+                    'smtp_port' => $_POST['smtp_port'] ?? '587',
+                    'smtp_username' => $_POST['smtp_username'] ?? '',
+                    'smtp_password' => $_POST['smtp_password'] ?? '',
+                    'smtp_encryption' => $_POST['smtp_encryption'] ?? 'tls',
+                    'smtp_from_email' => $_POST['smtp_from_email'] ?? '',
+                    'smtp_from_name' => $_POST['smtp_from_name'] ?? '',
+                    'email_footer' => $_POST['email_footer'] ?? ''
+                ];
+                break;
+                
+            case 'advanced':
+                $settings = [
+                    'debug_mode' => isset($_POST['debug_mode']) ? '1' : '0',
+                    'maintenance_mode' => isset($_POST['maintenance_mode']) ? '1' : '0',
+                    'cache_enabled' => isset($_POST['cache_enabled']) ? '1' : '0',
+                    'cache_ttl' => $_POST['cache_ttl'] ?? '3600',
+                    'max_upload_size' => $_POST['max_upload_size'] ?? '10',
+                    'allowed_file_types' => $_POST['allowed_file_types'] ?? 'jpg,jpeg,png,gif,pdf,doc,docx',
+                    'posts_per_page' => $_POST['posts_per_page'] ?? '10',
+                    'comments_enabled' => isset($_POST['comments_enabled']) ? '1' : '0',
+                    'comments_moderation' => isset($_POST['comments_moderation']) ? '1' : '0',
+                    'user_registration' => isset($_POST['user_registration']) ? '1' : '0',
+                    'default_user_role' => $_POST['default_user_role'] ?? 'subscriber'
+                ];
+                break;
+        }
+        
+        // Save settings to database
+        foreach ($settings as $key => $value) {
+            $setting = R::findOne('settings', 'setting_key = ?', [$key]);
+            if (!$setting) {
+                $setting = R::dispense('settings');
+                $setting->setting_key = $key;
+            }
+            $setting->setting_value = $value;
+            $setting->updated_at = date('Y-m-d H:i:s');
+            R::store($setting);
+        }
+        
+        $response['success'] = true;
+        $response['message'] = 'Settings saved successfully!';
+        
+    } catch (Exception $e) {
+        $response['message'] = 'Error saving settings: ' . $e->getMessage();
+    }
+    
+    // Return JSON response for AJAX requests
+    if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+        header('Content-Type: application/json');
+        echo json_encode($response);
+        exit;
+    }
+}
+
+// Load existing settings
+$allSettings = R::findAll('settings');
+$settings = [];
+foreach ($allSettings as $setting) {
+    $settings[$setting->setting_key] = $setting->setting_value;
+}
+
+// Get default values
+function getSetting($key, $default = '') {
+    global $settings;
+    return $settings[$key] ?? $default;
+}
+
+// Start output buffering for content
+ob_start();
+?>
+
+<div x-data="settingsPage()" x-init="init()">
+    <!-- Page Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold dark:text-white text-gray-900">Settings</h1>
+        <p class="mt-2 text-sm dark:text-gray-400 text-gray-600">Configure your site settings and preferences</p>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="border-b dark:border-gray-700 border-gray-200 mb-6">
+        <nav class="-mb-px flex space-x-8">
+            <button @click="activeTab = 'general'"
+                    :class="activeTab === 'general' 
+                        ? 'border-cyan-500 text-cyan-600 dark:text-cyan-400' 
+                        : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 hover:border-gray-300'"
+                    class="py-2 px-1 border-b-2 font-medium text-sm transition-colors">
+                General
+            </button>
+            <button @click="activeTab = 'api'"
+                    :class="activeTab === 'api' 
+                        ? 'border-cyan-500 text-cyan-600 dark:text-cyan-400' 
+                        : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 hover:border-gray-300'"
+                    class="py-2 px-1 border-b-2 font-medium text-sm transition-colors">
+                API
+            </button>
+            <button @click="activeTab = 'smtp'"
+                    :class="activeTab === 'smtp' 
+                        ? 'border-cyan-500 text-cyan-600 dark:text-cyan-400' 
+                        : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 hover:border-gray-300'"
+                    class="py-2 px-1 border-b-2 font-medium text-sm transition-colors">
+                SMTP
+            </button>
+            <button @click="activeTab = 'advanced'"
+                    :class="activeTab === 'advanced' 
+                        ? 'border-cyan-500 text-cyan-600 dark:text-cyan-400' 
+                        : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 hover:border-gray-300'"
+                    class="py-2 px-1 border-b-2 font-medium text-sm transition-colors">
+                Advanced
+            </button>
+        </nav>
+    </div>
+
+    <!-- Settings Forms -->
+    <div class="dark:bg-gray-800 bg-white rounded-lg shadow-sm">
+        <form @submit.prevent="saveSettings" class="p-6">
+            <!-- General Tab -->
+            <?php include __DIR__ . '/includes/settings-tab-general.php'; ?>
+                    <div class="sm:col-span-2 lg:col-span-2">
+                        <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
+                            Site Title
+                        </label>
+                        <input type="text" 
+                               name="site_title" 
+                               value="<?php echo htmlspecialchars(getSetting('site_title', 'Isotone')); ?>"
+                               class="w-full px-4 py-2 dark:bg-gray-900 bg-gray-50 dark:border-gray-700 border-gray-300 dark:text-white text-gray-900 border rounded-lg focus:outline-none focus:border-cyan-500">
+                    </div>
+
+                    <!-- Admin Email -->
+                    <div>
+                        <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
+                            Admin Email
+                        </label>
+                        <input type="email" 
+                               name="admin_email" 
+                               value="<?php echo htmlspecialchars(getSetting('admin_email', '')); ?>"
+                               class="w-full px-4 py-2 dark:bg-gray-900 bg-gray-50 dark:border-gray-700 border-gray-300 dark:text-white text-gray-900 border rounded-lg focus:outline-none focus:border-cyan-500">
+                    </div>
+
+                    <!-- Site Tagline -->
+                    <div class="sm:col-span-2 lg:col-span-3">
+                        <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
+                            Site Tagline
+                        </label>
+                        <input type="text" 
+                               name="site_tagline" 
+                               value="<?php echo htmlspecialchars(getSetting('site_tagline', 'Just another Isotone site')); ?>"
+                               class="w-full px-4 py-2 dark:bg-gray-900 bg-gray-50 dark:border-gray-700 border-gray-300 dark:text-white text-gray-900 border rounded-lg focus:outline-none focus:border-cyan-500">
+                    </div>
+
+                    <!-- Site URL -->
+                    <div class="sm:col-span-2 lg:col-span-2">
+                        <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
+                            Site URL
+                        </label>
+                        <input type="url" 
+                               name="site_url" 
+                               value="<?php echo htmlspecialchars(getSetting('site_url', 'http://localhost/isotone')); ?>"
+                               class="w-full px-4 py-2 dark:bg-gray-900 bg-gray-50 dark:border-gray-700 border-gray-300 dark:text-white text-gray-900 border rounded-lg focus:outline-none focus:border-cyan-500">
+                    </div>
+
+                    <!-- Language -->
+                    <div>
+                        <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
+                            Language
+                        </label>
+                        <select name="language" 
+                                class="w-full px-4 py-2 dark:bg-gray-900 bg-gray-50 dark:border-gray-700 border-gray-300 dark:text-white text-gray-900 border rounded-lg focus:outline-none focus:border-cyan-500">
+                            <?php
+                            $languages = [
+                                'en_US' => 'English (US)',
+                                'en_GB' => 'English (UK)',
+                                'es_ES' => 'Spanish',
+                                'fr_FR' => 'French',
+                                'de_DE' => 'German',
+                                'it_IT' => 'Italian',
+                                'pt_BR' => 'Portuguese (Brazil)',
+                                'zh_CN' => 'Chinese (Simplified)',
+                                'ja_JP' => 'Japanese'
+                            ];
+                            $current_lang = getSetting('language', 'en_US');
+                            foreach ($languages as $code => $name) {
+                                $selected = ($code === $current_lang) ? 'selected' : '';
+                                echo "<option value=\"$code\" $selected>$name</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <!-- Timezone -->
+                    <div>
+                        <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
+                            Timezone
+                        </label>
+                        <select name="timezone" 
+                                class="w-full px-4 py-2 dark:bg-gray-900 bg-gray-50 dark:border-gray-700 border-gray-300 dark:text-white text-gray-900 border rounded-lg focus:outline-none focus:border-cyan-500">
+                            <?php
+                            $timezones = timezone_identifiers_list();
+                            $current_tz = getSetting('timezone', 'UTC');
+                            foreach ($timezones as $tz) {
+                                $selected = ($tz === $current_tz) ? 'selected' : '';
+                                echo "<option value=\"$tz\" $selected>$tz</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <!-- Date Format -->
+                    <div>
+                        <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
+                            Date Format
+                        </label>
+                        <select name="date_format" 
+                                class="w-full px-4 py-2 dark:bg-gray-900 bg-gray-50 dark:border-gray-700 border-gray-300 dark:text-white text-gray-900 border rounded-lg focus:outline-none focus:border-cyan-500">
+                            <?php
+                            $formats = [
+                                'Y-m-d' => date('Y-m-d') . ' (Y-m-d)',
+                                'd/m/Y' => date('d/m/Y') . ' (d/m/Y)',
+                                'm/d/Y' => date('m/d/Y') . ' (m/d/Y)',
+                                'F j, Y' => date('F j, Y') . ' (F j, Y)',
+                                'j F Y' => date('j F Y') . ' (j F Y)'
+                            ];
+                            $current_format = getSetting('date_format', 'Y-m-d');
+                            foreach ($formats as $value => $display) {
+                                $selected = ($value === $current_format) ? 'selected' : '';
+                                echo "<option value=\"$value\" $selected>$display</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <!-- Time Format -->
+                    <div>
+                        <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
+                            Time Format
+                        </label>
+                        <select name="time_format" 
+                                class="w-full px-4 py-2 dark:bg-gray-900 bg-gray-50 dark:border-gray-700 border-gray-300 dark:text-white text-gray-900 border rounded-lg focus:outline-none focus:border-cyan-500">
+                            <?php
+                            $time_formats = [
+                                'H:i:s' => date('H:i:s') . ' (24-hour)',
+                                'h:i:s A' => date('h:i:s A') . ' (12-hour)',
+                                'H:i' => date('H:i') . ' (24-hour, no seconds)',
+                                'h:i A' => date('h:i A') . ' (12-hour, no seconds)'
+                            ];
+                            $current_time_format = getSetting('time_format', 'H:i:s');
+                            foreach ($time_formats as $value => $display) {
+                                $selected = ($value === $current_time_format) ? 'selected' : '';
+                                echo "<option value=\"$value\" $selected>$display</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- API Tab -->
+            <?php include __DIR__ . '/includes/settings-tab-api.php'; ?>
+
+            <!-- SMTP Tab -->
+            <div x-show="activeTab === 'smtp'" x-cloak>
+                <div class="space-y-8">
+                    <!-- Mail Method Section -->
+                    <div>
+                        <h3 class="text-lg font-semibold dark:text-white text-gray-900 mb-4 pb-2 border-b dark:border-gray-700 border-gray-200">
+                            Email Configuration
+                        </h3>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
+                                    Mail Method
+                                </label>
+                                <select name="mail_method" 
+                                        @change="mailMethod = $event.target.value"
+                                        class="w-full px-4 py-2 dark:bg-gray-900 bg-gray-50 dark:border-gray-700 border-gray-300 dark:text-white text-gray-900 border rounded-lg focus:outline-none focus:border-cyan-500">
+                                    <option value="mail" <?php echo getSetting('mail_method', 'mail') === 'mail' ? 'selected' : ''; ?>>PHP Mail</option>
+                                    <option value="smtp" <?php echo getSetting('mail_method') === 'smtp' ? 'selected' : ''; ?>>SMTP</option>
+                                    <option value="sendmail" <?php echo getSetting('mail_method') === 'sendmail' ? 'selected' : ''; ?>>Sendmail</option>
+                                </select>
+                            </div>
+
+                            <!-- SMTP Settings - Always visible for all fields to maintain grid -->
+                            <div :class="mailMethod !== 'smtp' && 'opacity-50 pointer-events-none'">
+                                <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
+                                    SMTP Host
+                                </label>
+                                <input type="text" 
+                                       name="smtp_host" 
+                                       value="<?php echo htmlspecialchars(getSetting('smtp_host', '')); ?>"
+                                       placeholder="smtp.gmail.com"
+                                       :disabled="mailMethod !== 'smtp'"
+                                       class="w-full px-4 py-2 dark:bg-gray-900 bg-gray-50 dark:border-gray-700 border-gray-300 dark:text-white text-gray-900 border rounded-lg focus:outline-none focus:border-cyan-500">
+                            </div>
+
+                            <div :class="mailMethod !== 'smtp' && 'opacity-50 pointer-events-none'">
+                                <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
+                                    SMTP Port
+                                </label>
+                                <input type="number" 
+                                       name="smtp_port" 
+                                       value="<?php echo htmlspecialchars(getSetting('smtp_port', '587')); ?>"
+                                       :disabled="mailMethod !== 'smtp'"
+                                       class="w-full px-4 py-2 dark:bg-gray-900 bg-gray-50 dark:border-gray-700 border-gray-300 dark:text-white text-gray-900 border rounded-lg focus:outline-none focus:border-cyan-500">
+                            </div>
+
+                            <div :class="mailMethod !== 'smtp' && 'opacity-50 pointer-events-none'">
+                                <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
+                                    SMTP Username
+                                </label>
+                                <input type="text" 
+                                       name="smtp_username" 
+                                       value="<?php echo htmlspecialchars(getSetting('smtp_username', '')); ?>"
+                                       placeholder="your-email@gmail.com"
+                                       :disabled="mailMethod !== 'smtp'"
+                                       class="w-full px-4 py-2 dark:bg-gray-900 bg-gray-50 dark:border-gray-700 border-gray-300 dark:text-white text-gray-900 border rounded-lg focus:outline-none focus:border-cyan-500">
+                            </div>
+
+                            <div :class="mailMethod !== 'smtp' && 'opacity-50 pointer-events-none'">
+                                <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
+                                    SMTP Password
+                                </label>
+                                <input type="password" 
+                                       name="smtp_password" 
+                                       value="<?php echo htmlspecialchars(getSetting('smtp_password', '')); ?>"
+                                       placeholder="••••••••"
+                                       :disabled="mailMethod !== 'smtp'"
+                                       class="w-full px-4 py-2 dark:bg-gray-900 bg-gray-50 dark:border-gray-700 border-gray-300 dark:text-white text-gray-900 border rounded-lg focus:outline-none focus:border-cyan-500">
+                            </div>
+
+                            <div :class="mailMethod !== 'smtp' && 'opacity-50 pointer-events-none'">
+                                <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
+                                    Encryption
+                                </label>
+                                <select name="smtp_encryption" 
+                                        :disabled="mailMethod !== 'smtp'"
+                                        class="w-full px-4 py-2 dark:bg-gray-900 bg-gray-50 dark:border-gray-700 border-gray-300 dark:text-white text-gray-900 border rounded-lg focus:outline-none focus:border-cyan-500">
+                                    <option value="tls" <?php echo getSetting('smtp_encryption', 'tls') === 'tls' ? 'selected' : ''; ?>>TLS</option>
+                                    <option value="ssl" <?php echo getSetting('smtp_encryption') === 'ssl' ? 'selected' : ''; ?>>SSL</option>
+                                    <option value="none" <?php echo getSetting('smtp_encryption') === 'none' ? 'selected' : ''; ?>>None</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Email Settings Section -->
+                    <div>
+                        <h3 class="text-lg font-semibold dark:text-white text-gray-900 mb-4 pb-2 border-b dark:border-gray-700 border-gray-200">
+                            Email Settings
+                        </h3>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
+                                    From Email Address
+                                </label>
+                                <input type="email" 
+                                       name="smtp_from_email" 
+                                       value="<?php echo htmlspecialchars(getSetting('smtp_from_email', '')); ?>"
+                                       placeholder="noreply@example.com"
+                                       class="w-full px-4 py-2 dark:bg-gray-900 bg-gray-50 dark:border-gray-700 border-gray-300 dark:text-white text-gray-900 border rounded-lg focus:outline-none focus:border-cyan-500">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
+                                    From Name
+                                </label>
+                                <input type="text" 
+                                       name="smtp_from_name" 
+                                       value="<?php echo htmlspecialchars(getSetting('smtp_from_name', '')); ?>"
+                                       placeholder="Isotone Site"
+                                       class="w-full px-4 py-2 dark:bg-gray-900 bg-gray-50 dark:border-gray-700 border-gray-300 dark:text-white text-gray-900 border rounded-lg focus:outline-none focus:border-cyan-500">
+                            </div>
+
+                            <div>
+                                <button type="button" 
+                                        @click="sendTestEmail()"
+                                        class="w-full mt-7 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                                    Send Test Email
+                                </button>
+                            </div>
+
+                            <div class="sm:col-span-2 lg:col-span-3">
+                                <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
+                                    Email Footer Text
+                                </label>
+                                <textarea name="email_footer" 
+                                          rows="3"
+                                          placeholder="This email was sent from your Isotone site."
+                                          class="w-full px-4 py-2 dark:bg-gray-900 bg-gray-50 dark:border-gray-700 border-gray-300 dark:text-white text-gray-900 border rounded-lg focus:outline-none focus:border-cyan-500"><?php echo htmlspecialchars(getSetting('email_footer', '')); ?></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Tab -->
+            <div x-show="activeTab === 'advanced'" x-cloak>
+                <div class="space-y-8">
+                    <!-- System Settings -->
+                    <div>
+                        <h3 class="text-lg font-semibold dark:text-white text-gray-900 mb-4 pb-2 border-b dark:border-gray-700 border-gray-200">
+                            System Settings
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div>
+                                <label class="flex items-center">
+                                    <input type="checkbox" 
+                                           name="debug_mode" 
+                                           <?php echo getSetting('debug_mode', '0') === '1' ? 'checked' : ''; ?>
+                                           class="rounded dark:bg-gray-900 bg-gray-50 border-gray-300 text-cyan-600 focus:ring-cyan-500 mr-2">
+                                    <span class="text-sm dark:text-gray-300 text-gray-700">Enable Debug Mode</span>
+                                </label>
+                            </div>
+                            
+                            <div>
+                                <label class="flex items-center">
+                                    <input type="checkbox" 
+                                           name="maintenance_mode" 
+                                           <?php echo getSetting('maintenance_mode', '0') === '1' ? 'checked' : ''; ?>
+                                           class="rounded dark:bg-gray-900 bg-gray-50 border-gray-300 text-cyan-600 focus:ring-cyan-500 mr-2">
+                                    <span class="text-sm dark:text-gray-300 text-gray-700">Enable Maintenance Mode</span>
+                                </label>
+                            </div>
+                            
+                            <div>
+                                <label class="flex items-center">
+                                    <input type="checkbox" 
+                                           name="cache_enabled" 
+                                           <?php echo getSetting('cache_enabled', '1') === '1' ? 'checked' : ''; ?>
+                                           class="rounded dark:bg-gray-900 bg-gray-50 border-gray-300 text-cyan-600 focus:ring-cyan-500 mr-2">
+                                    <span class="text-sm dark:text-gray-300 text-gray-700">Enable Caching</span>
+                                </label>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
+                                    Cache TTL (seconds)
+                                </label>
+                                <input type="number" 
+                                       name="cache_ttl" 
+                                       value="<?php echo htmlspecialchars(getSetting('cache_ttl', '3600')); ?>"
+                                       class="w-full px-4 py-2 dark:bg-gray-900 bg-gray-50 dark:border-gray-700 border-gray-300 dark:text-white text-gray-900 border rounded-lg focus:outline-none focus:border-cyan-500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Media Settings -->
+                    <div>
+                        <h3 class="text-lg font-semibold dark:text-white text-gray-900 mb-4 pb-2 border-b dark:border-gray-700 border-gray-200">
+                            Media Settings
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
+                                    Max Upload Size (MB)
+                                </label>
+                                <input type="number" 
+                                       name="max_upload_size" 
+                                       value="<?php echo htmlspecialchars(getSetting('max_upload_size', '10')); ?>"
+                                       class="w-full px-4 py-2 dark:bg-gray-900 bg-gray-50 dark:border-gray-700 border-gray-300 dark:text-white text-gray-900 border rounded-lg focus:outline-none focus:border-cyan-500">
+                            </div>
+                            
+                            <div class="sm:col-span-2">
+                                <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
+                                    Allowed File Types
+                                </label>
+                                <input type="text" 
+                                       name="allowed_file_types" 
+                                       value="<?php echo htmlspecialchars(getSetting('allowed_file_types', 'jpg,jpeg,png,gif,pdf,doc,docx')); ?>"
+                                       placeholder="jpg,jpeg,png,gif,pdf"
+                                       class="w-full px-4 py-2 dark:bg-gray-900 bg-gray-50 dark:border-gray-700 border-gray-300 dark:text-white text-gray-900 border rounded-lg focus:outline-none focus:border-cyan-500">
+                                <p class="mt-1 text-xs dark:text-gray-500 text-gray-500">Comma-separated list of file extensions</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Settings -->
+                    <div>
+                        <h3 class="text-lg font-semibold dark:text-white text-gray-900 mb-4 pb-2 border-b dark:border-gray-700 border-gray-200">
+                            Content Settings
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
+                                    Posts Per Page
+                                </label>
+                                <input type="number" 
+                                       name="posts_per_page" 
+                                       value="<?php echo htmlspecialchars(getSetting('posts_per_page', '10')); ?>"
+                                       min="1"
+                                       max="100"
+                                       class="w-full px-4 py-2 dark:bg-gray-900 bg-gray-50 dark:border-gray-700 border-gray-300 dark:text-white text-gray-900 border rounded-lg focus:outline-none focus:border-cyan-500">
+                            </div>
+                            
+                            <div>
+                                <label class="flex items-center">
+                                    <input type="checkbox" 
+                                           name="comments_enabled" 
+                                           <?php echo getSetting('comments_enabled', '1') === '1' ? 'checked' : ''; ?>
+                                           class="rounded dark:bg-gray-900 bg-gray-50 border-gray-300 text-cyan-600 focus:ring-cyan-500 mr-2">
+                                    <span class="text-sm dark:text-gray-300 text-gray-700">Enable Comments</span>
+                                </label>
+                            </div>
+                            
+                            <div>
+                                <label class="flex items-center">
+                                    <input type="checkbox" 
+                                           name="comments_moderation" 
+                                           <?php echo getSetting('comments_moderation', '1') === '1' ? 'checked' : ''; ?>
+                                           class="rounded dark:bg-gray-900 bg-gray-50 border-gray-300 text-cyan-600 focus:ring-cyan-500 mr-2">
+                                    <span class="text-sm dark:text-gray-300 text-gray-700">Moderate Comments</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- User Settings -->
+                    <div>
+                        <h3 class="text-lg font-semibold dark:text-white text-gray-900 mb-4 pb-2 border-b dark:border-gray-700 border-gray-200">
+                            User Settings
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div>
+                                <label class="flex items-center">
+                                    <input type="checkbox" 
+                                           name="user_registration" 
+                                           <?php echo getSetting('user_registration', '0') === '1' ? 'checked' : ''; ?>
+                                           class="rounded dark:bg-gray-900 bg-gray-50 border-gray-300 text-cyan-600 focus:ring-cyan-500 mr-2">
+                                    <span class="text-sm dark:text-gray-300 text-gray-700">Allow User Registration</span>
+                                </label>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium dark:text-gray-300 text-gray-700 mb-2">
+                                    Default User Role
+                                </label>
+                                <select name="default_user_role" 
+                                        class="w-full px-4 py-2 dark:bg-gray-900 bg-gray-50 dark:border-gray-700 border-gray-300 dark:text-white text-gray-900 border rounded-lg focus:outline-none focus:border-cyan-500">
+                                    <option value="subscriber" <?php echo getSetting('default_user_role', 'subscriber') === 'subscriber' ? 'selected' : ''; ?>>Subscriber</option>
+                                    <option value="contributor" <?php echo getSetting('default_user_role') === 'contributor' ? 'selected' : ''; ?>>Contributor</option>
+                                    <option value="author" <?php echo getSetting('default_user_role') === 'author' ? 'selected' : ''; ?>>Author</option>
+                                    <option value="editor" <?php echo getSetting('default_user_role') === 'editor' ? 'selected' : ''; ?>>Editor</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="mt-8 pt-6 border-t dark:border-gray-700 border-gray-200 flex justify-between items-center">
+                <div x-show="saveMessage" x-text="saveMessage" 
+                     :class="saveSuccess ? 'text-green-600' : 'text-red-600'"
+                     class="text-sm font-medium"></div>
+                <button type="submit" 
+                        :disabled="saving"
+                        class="px-6 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    <span x-show="!saving">Save Settings</span>
+                    <span x-show="saving">Saving...</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function settingsPage() {
+    return {
+        activeTab: localStorage.getItem('settingsTab') || '<?php echo isset($_GET['tab']) ? htmlspecialchars($_GET['tab']) : 'general'; ?>',
+        aiProvider: '<?php echo getSetting('ai_provider', 'none'); ?>',
+        analyticsProvider: '<?php echo getSetting('analytics_provider', 'none'); ?>',
+        mailMethod: '<?php echo getSetting('mail_method', 'mail'); ?>',
+        saving: false,
+        saveMessage: '',
+        saveSuccess: false,
+        
+        init() {
+            // Watch for tab changes and save to localStorage
+            this.$watch('activeTab', value => {
+                localStorage.setItem('settingsTab', value);
+                // Update URL without reload
+                const url = new URL(window.location);
+                url.searchParams.set('tab', value);
+                window.history.replaceState({}, '', url);
+            });
+            
+            // Set initial values
+            const providerSelect = document.querySelector('select[name="ai_provider"]');
+            if (providerSelect) {
+                this.aiProvider = providerSelect.value;
+            }
+            const analyticsSelect = document.querySelector('select[name="analytics_provider"]');
+            if (analyticsSelect) {
+                this.analyticsProvider = analyticsSelect.value;
+            }
+            const mailSelect = document.querySelector('select[name="mail_method"]');
+            if (mailSelect) {
+                this.mailMethod = mailSelect.value;
+            }
+        },
+        
+        async saveSettings() {
+            this.saving = true;
+            this.saveMessage = '';
+            
+            const form = event.target;
+            const formData = new FormData(form);
+            formData.append('tab', this.activeTab);
+            
+            try {
+                const response = await fetch('/isotone/iso-admin/settings.php', {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                this.saveSuccess = result.success;
+                this.saveMessage = result.message;
+                
+                if (result.success) {
+                    showToast('Settings saved successfully!', 'success');
+                } else {
+                    showToast(result.message || 'Failed to save settings', 'error');
+                }
+                
+                // Clear message after 3 seconds
+                setTimeout(() => {
+                    this.saveMessage = '';
+                }, 3000);
+                
+            } catch (error) {
+                console.error('Error saving settings:', error);
+                this.saveSuccess = false;
+                this.saveMessage = 'Error saving settings';
+                showToast('Error saving settings', 'error');
+            } finally {
+                this.saving = false;
+            }
+        },
+        
+        async sendTestEmail() {
+            // TODO: Implement test email functionality
+            showToast('Test email functionality coming soon!', 'info');
+        }
+    }
+}
+</script>
+
+<?php
+// Get the buffered content
+$page_content = ob_get_clean();
+
+// Set page variables
+$page_title = 'Settings';
+$breadcrumbs = [
+    ['title' => 'Dashboard', 'url' => '/isotone/iso-admin/'],
+    ['title' => 'Settings', 'url' => '']
+];
+
+// Include the layout
+require_once __DIR__ . '/includes/admin-layout.php';
+?>

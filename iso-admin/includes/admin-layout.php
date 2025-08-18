@@ -268,17 +268,11 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
     <!-- Admin CSS -->
     <link rel="stylesheet" href="/isotone/iso-admin/css/admin.css">
     
-    <!-- Preload Tailwind to reduce FOUC -->
-    <link rel="preload" href="https://cdn.tailwindcss.com" as="script">
-    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="/isotone/iso-admin/css/tailwind-config.js"></script>
+    <script src="/isotone/iso-admin/js/tailwind-config.js"></script>
     
-    <!-- Alpine.js for interactivity -->
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
-    <!-- Chart.js for dashboard graphs -->
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <!-- Failsafe loader removal -->
@@ -567,7 +561,9 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                     <span class="text-gray-900 font-bold text-lg">T</span>
                 </div>
                 <div>
-                    <h3 class="font-semibold dark:text-white text-gray-900">Toni</h3>
+                    <div class="flex items-center gap-2">
+                        <h3 class="font-semibold dark:text-white text-gray-900">Toni</h3>
+                    </div>
                     <p class="text-xs dark:text-gray-400 text-gray-600">AI Assistant</p>
                 </div>
             </div>
@@ -636,6 +632,16 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
         <!-- Input Area -->
         <div class="p-4 border-t dark:border-gray-700 border-gray-200">
             <form @submit.prevent="sendToToni()" class="flex space-x-2">
+                <button type="button"
+                        @click="captureScreenshot()"
+                        :disabled="toniLoading"
+                        class="p-2 dark:bg-gray-700 bg-gray-200 dark:hover:bg-gray-600 hover:bg-gray-300 rounded-lg transition-colors disabled:opacity-50"
+                        title="Capture screenshot">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </button>
                 <input type="text" 
                        x-model="toniMessage"
                        :disabled="toniLoading"
@@ -667,6 +673,8 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                 toniMessage: '',
                 toniMessages: [],
                 toniLoading: false,
+                toniScreenshotCaptured: false,
+                capturedScreenshot: null,
                 
                 init() {
                     // Remove loading overlay once Alpine is initialized
@@ -700,10 +708,13 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                         document.documentElement.classList.remove('dark');
                     }
                     
-                    // Load Toni conversation history when opened
-                    this.$watch('toniOpen', value => {
-                        if (value && this.toniMessages.length === 0) {
-                            this.loadToniHistory();
+                    // Load Toni conversation history when opened and send page context
+                    this.$watch('toniOpen', async value => {
+                        if (value) {
+                            if (this.toniMessages.length === 0) {
+                                this.loadToniHistory();
+                            }
+                            // Page context removed - using screenshot feature instead
                         }
                     });
                 },
@@ -821,6 +832,152 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                     }
                 },
                 
+                async captureScreenshot() {
+                    try {
+                        // Check if html2canvas is loaded
+                        if (typeof html2canvas === 'undefined') {
+                            // Load html2canvas dynamically
+                            await this.loadHtml2Canvas();
+                        }
+                        
+                        // Show loading indicator
+                        this.toniMessages.push({
+                            id: 'screenshot-loading-' + Date.now(),
+                            role: 'system',
+                            content: '📸 Capturing screenshot...',
+                            timestamp: new Date().toISOString()
+                        });
+                        
+                        // Capture the main content area
+                        const mainContent = document.querySelector('main') || document.body;
+                        
+                        const canvas = await html2canvas(mainContent, {
+                            scale: 0.5, // Reduce size for faster processing
+                            logging: false,
+                            useCORS: true,
+                            allowTaint: true,
+                            backgroundColor: null,
+                            width: mainContent.scrollWidth,
+                            height: Math.min(mainContent.scrollHeight, 2000) // Limit height
+                        });
+                        
+                        // Convert to base64
+                        const base64Image = canvas.toDataURL('image/jpeg', 0.7);
+                        this.capturedScreenshot = base64Image;
+                        this.toniScreenshotCaptured = true;
+                        
+                        // Remove loading message
+                        this.toniMessages = this.toniMessages.filter(msg => !msg.id.startsWith('screenshot-loading'));
+                        
+                        // Add success message
+                        this.toniMessages.push({
+                            id: 'screenshot-success-' + Date.now(),
+                            role: 'system',
+                            content: '✅ Screenshot captured! Sending to Toni...',
+                            timestamp: new Date().toISOString()
+                        });
+                        
+                        // Send screenshot to Toni
+                        await this.sendScreenshotToToni(base64Image);
+                        
+                        return base64Image;
+                    } catch (error) {
+                        console.error('Failed to capture screenshot:', error);
+                        this.toniMessages.push({
+                            id: 'screenshot-error-' + Date.now(),
+                            role: 'system',
+                            content: '❌ Failed to capture screenshot',
+                            timestamp: new Date().toISOString()
+                        });
+                        return null;
+                    }
+                },
+                
+                async loadHtml2Canvas() {
+                    return new Promise((resolve, reject) => {
+                        const script = document.createElement('script');
+                        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+                        script.onload = resolve;
+                        script.onerror = reject;
+                        document.head.appendChild(script);
+                    });
+                },
+                
+                async sendScreenshotToToni(base64Image) {
+                    try {
+                        console.group('📸 Toni Screenshot Capture');
+                        console.log('Image Data URL prefix:', base64Image.substring(0, 50));
+                        console.log('Image size (bytes):', base64Image.length);
+                        console.log('Image format:', base64Image.match(/data:image\/([^;]+)/)?.[1] || 'unknown');
+                        
+                        const formData = new FormData();
+                        formData.append('action', 'send');
+                        formData.append('message', '[Screenshot] Please analyze this screenshot');
+                        formData.append('screenshot', base64Image);
+                        formData.append('is_visual', 'true');
+                        
+                        console.log('📤 Sending to API:', {
+                            action: 'send',
+                            message: '[Screenshot] Please analyze this screenshot',
+                            has_screenshot: true,
+                            is_visual: true,
+                            image_length: base64Image.length
+                        });
+                        
+                        const response = await fetch('/isotone/iso-admin/api/toni.php', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        
+                        console.log('📡 Response status:', response.status, response.statusText);
+                        
+                        const data = await response.json();
+                        console.log('📥 API Response:', data);
+                        
+                        if (data.debug) {
+                            console.group('🔍 Debug Info from Server');
+                            console.table(data.debug);
+                            console.groupEnd();
+                        }
+                        
+                        if (data.success) {
+                            console.log('✅ Screenshot processed successfully');
+                            console.log('AI Response:', data.response);
+                            
+                            // Remove success message
+                            this.toniMessages = this.toniMessages.filter(msg => !msg.id.startsWith('screenshot-success'));
+                            
+                            // Add Toni's response about the screenshot
+                            this.toniMessages.push({
+                                id: data.message_id,
+                                role: 'assistant',
+                                content: data.response,
+                                timestamp: new Date().toISOString()
+                            });
+                        } else {
+                            console.error('❌ Processing failed:', data.error || 'Unknown error');
+                            if (data.debug_error) {
+                                console.error('Debug error:', data.debug_error);
+                            }
+                        }
+                        
+                        console.groupEnd();
+                    } catch (error) {
+                        console.error('❌ Failed to send screenshot:', error);
+                        console.error('Error details:', error.message, error.stack);
+                        console.groupEnd();
+                        
+                        this.toniMessages.push({
+                            id: 'error-' + Date.now(),
+                            role: 'system',
+                            content: '❌ Failed to send screenshot: ' + error.message,
+                            timestamp: new Date().toISOString()
+                        });
+                    }
+                },
+                
+                // Page context feature removed - screenshot feature provides better visual context
+                
                 async clearToniChat() {
                     if (!confirm('Clear your conversation with Toni?')) return;
                     
@@ -881,5 +1038,8 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
             }
         });
     </script>
+    
+    <!-- Alpine.js - Load after adminApp is defined -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </body>
 </html>

@@ -6,9 +6,9 @@
  * @package Isotone
  */
 ?>
-    <!-- Tailwind CSS (Using Play CDN for now, consider build process for production) -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="/isotone/iso-admin/css/tailwind-config.js"></script>
+    <script src="/isotone/iso-admin/js/tailwind-config.js"></script>
     
     <!-- Favicon -->
     <link rel="icon" href="/isotone/favicon.ico">

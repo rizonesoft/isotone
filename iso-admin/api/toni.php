@@ -59,10 +59,22 @@ try {
             }
             
             $message = trim($_POST['message']);
+            $screenshot = $_POST['screenshot'] ?? null;
+            $isVisual = $_POST['is_visual'] ?? false;
             
             // Enable debug mode for development
             $debugMode = true;
-            $result = $toni->sendMessage($userId, $message, $debugMode);
+            
+            // If screenshot is provided, send it with the message
+            if ($screenshot && $isVisual) {
+                // Log image info for debugging
+                error_log("Toni API: Received screenshot, size: " . strlen($screenshot) . " bytes");
+                error_log("Toni API: Image format: " . substr($screenshot, 0, 50));
+                
+                $result = $toni->sendMessageWithImage($userId, $message, $screenshot, $debugMode);
+            } else {
+                $result = $toni->sendMessage($userId, $message, $debugMode);
+            }
             
             // Ensure we have a valid result
             if (!is_array($result)) {
