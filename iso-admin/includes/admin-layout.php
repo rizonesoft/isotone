@@ -269,8 +269,13 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
     <link rel="stylesheet" href="/isotone/iso-admin/css/admin.css">
     
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="/isotone/iso-admin/js/tailwind-config.js"></script>
+    <?php if (file_exists(__DIR__ . '/../css/tailwind.css')): ?>
+        <link rel="stylesheet" href="/isotone/iso-admin/css/tailwind.css">
+    <?php else: ?>
+        <!-- Fallback to CDN only if built CSS doesn't exist -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="/isotone/iso-admin/js/tailwind-config.js"></script>
+    <?php endif; ?>
     
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

@@ -92,6 +92,12 @@ try {
                 'update:docs' => 'docs:update',
                 'sync:user-docs' => 'docs:sync',
                 'sync:ide' => 'ide:sync',
+                'tailwind:build' => 'tailwind:build',
+                'tailwind:watch' => 'tailwind:watch',
+                'tailwind:minify' => 'tailwind:minify',
+                'tailwind:install' => 'tailwind:install',
+                'tailwind:update' => 'tailwind:update',
+                'tailwind:status' => 'tailwind:status',
             ];
             
             // Tasks that use composer
@@ -99,10 +105,13 @@ try {
             
             // All other tasks use automation CLI directly
             $automationTasks = [
+                'generate:hooks',
                 'hooks:scan',
                 'validate:rules',
-                'status',
-                'rules:export'
+                'rules:validate',
+                'rules:list',
+                'rules:export',
+                'status'
             ];
             
             $projectDir = dirname(__DIR__);
@@ -114,6 +123,11 @@ try {
             } elseif (in_array($task, $automationTasks)) {
                 // Execute via automation CLI
                 $cliPath = $projectDir . '/iso-automation/cli.php';
+                
+                // Handle command aliases
+                if ($task === 'rules:validate') {
+                    $task = 'validate:rules';
+                }
                 
                 // Don't use quiet flag - we want to see the progress
                 $command = sprintf('php %s %s 2>&1', escapeshellarg($cliPath), escapeshellarg($task));

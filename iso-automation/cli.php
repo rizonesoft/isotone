@@ -242,6 +242,36 @@ try {
             echo $ruleEngine->exportRules($format);
             exit(0);
             
+        // Tailwind CSS Commands
+        case 'tailwind:build':
+            require_once __DIR__ . '/src/Commands/TailwindCommand.php';
+            $tailwind = new \Isotone\Automation\Commands\TailwindCommand($engine);
+            exit($tailwind->build());
+            
+        case 'tailwind:watch':
+            require_once __DIR__ . '/src/Commands/TailwindCommand.php';
+            $tailwind = new \Isotone\Automation\Commands\TailwindCommand($engine);
+            exit($tailwind->watch());
+            
+        case 'tailwind:minify':
+            require_once __DIR__ . '/src/Commands/TailwindCommand.php';
+            $tailwind = new \Isotone\Automation\Commands\TailwindCommand($engine);
+            exit($tailwind->minify());
+            
+        case 'tailwind:install':
+            require_once __DIR__ . '/src/Commands/TailwindCommand.php';
+            $tailwind = new \Isotone\Automation\Commands\TailwindCommand($engine);
+            exit($tailwind->install());
+            
+        case 'tailwind:update':
+            require_once __DIR__ . '/src/Commands/TailwindCommand.php';
+            $tailwind = new \Isotone\Automation\Commands\TailwindCommand($engine);
+            exit($tailwind->update());
+            
+        case 'tailwind:status':
+            require_once __DIR__ . '/src/Commands/TailwindCommand.php';
+            $tailwind = new \Isotone\Automation\Commands\TailwindCommand($engine);
+            exit($tailwind->status());
             
         case 'help':
         case '--help':
@@ -287,6 +317,14 @@ function showHelp(): void
     echo "  rules:check        Show details of a specific rule\n";
     echo "  rules:validate     Validate all rules\n";
     echo "  rules:export       Export rules (--format=yaml|json|markdown)\n";
+    echo "\n";
+    echo "Tailwind CSS Commands:\n";
+    echo "  tailwind:build     Build Tailwind CSS\n";
+    echo "  tailwind:watch     Watch files and rebuild on changes\n";
+    echo "  tailwind:minify    Build minified production CSS\n";
+    echo "  tailwind:install   Install build dependencies\n";
+    echo "  tailwind:update    Update Tailwind to latest version\n";
+    echo "  tailwind:status    Show build status\n";
     echo "\n";
     echo "System Commands:\n";
     echo "  status             Show automation status\n";

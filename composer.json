@@ -81,7 +81,13 @@
         "pre-commit": [
             "@docs:check",
             "@check-style"
-        ]
+        ],
+        "tailwind:build": "php iso-automation/cli.php tailwind:build",
+        "tailwind:watch": "php iso-automation/cli.php tailwind:watch",
+        "tailwind:minify": "php iso-automation/cli.php tailwind:minify",
+        "tailwind:install": "php iso-automation/cli.php tailwind:install",
+        "tailwind:update": "php iso-automation/cli.php tailwind:update",
+        "tailwind:status": "php iso-automation/cli.php tailwind:status"
     },
     "config": {
         "optimize-autoloader": true,

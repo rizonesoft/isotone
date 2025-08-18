@@ -61,25 +61,37 @@ ob_start();
                 <!-- Command Dropdown -->
                 <div class="relative">
                     <label class="block text-gray-400 text-sm mb-2">Select Command</label>
+                    <div id="selected-command-display" class="hidden mb-2 p-2 bg-gray-900 rounded border border-gray-700">
+                        <span class="text-gray-400">Selected: </span>
+                        <span id="selected-desc" class="text-white"></span>
+                        <span id="selected-cmd" class="text-cyan-400 font-mono text-sm ml-2"></span>
+                    </div>
                     <div class="flex space-x-2">
                         <select id="command-select" class="flex-1 dark:bg-gray-900 bg-white dark:border-gray-700 border-gray-200 border dark:text-white text-gray-900 py-2 px-4 rounded-lg focus:outline-none focus:border-cyan-400">
                             <option value="">-- Select a command --</option>
                             <optgroup label="Documentation">
-                                <option value="check:docs">Check Documentation (docs:check)</option>
-                                <option value="update:docs">Update Documentation (docs:update)</option>
+                                <option value="check:docs" data-desc="Check Documentation" data-cmd="docs:check">Check Documentation (docs:check)</option>
+                                <option value="update:docs" data-desc="Update Documentation" data-cmd="docs:update">Update Documentation (docs:update)</option>
+                                <option value="generate:hooks" data-desc="Generate Hooks Documentation" data-cmd="generate:hooks">Generate Hooks Documentation (generate:hooks)</option>
                             </optgroup>
-                            <optgroup label="Hooks">
-                                <option value="hooks:scan">Scan & Generate Hooks Documentation</option>
+                            <optgroup label="Rules Management">
+                                <option value="rules:list" data-desc="List All Rules" data-cmd="rules:list">List All Rules (rules:list)</option>
+                                <option value="rules:validate" data-desc="Validate All Rules" data-cmd="validate:rules">Validate All Rules (validate:rules)</option>
+                                <option value="rules:export" data-desc="Export Rules YAML" data-cmd="rules:export">Export Rules YAML (rules:export)</option>
+                            </optgroup>
+                            <optgroup label="Tailwind CSS">
+                                <option value="tailwind:build" data-desc="Build CSS" data-cmd="tailwind:build">Build CSS (tailwind:build)</option>
+                                <option value="tailwind:watch" data-desc="Watch & Rebuild CSS" data-cmd="tailwind:watch">Watch & Rebuild CSS (tailwind:watch)</option>
+                                <option value="tailwind:minify" data-desc="Build Minified CSS" data-cmd="tailwind:minify">Build Minified CSS (tailwind:minify)</option>
+                                <option value="tailwind:install" data-desc="Install Dependencies" data-cmd="tailwind:install">Install Dependencies (tailwind:install)</option>
+                                <option value="tailwind:update" data-desc="Update Tailwind" data-cmd="tailwind:update">Update Tailwind (tailwind:update)</option>
+                                <option value="tailwind:status" data-desc="Check Build Status" data-cmd="tailwind:status">Check Build Status (tailwind:status)</option>
                             </optgroup>
                             <optgroup label="IDE Integration">
-                                <option value="sync:ide">Sync IDE Rules (ide:sync)</option>
-                            </optgroup>
-                            <optgroup label="Validation">
-                                <option value="validate:rules">Validate Automation Rules</option>
+                                <option value="sync:ide" data-desc="Sync IDE Rules" data-cmd="ide:sync">Sync IDE Rules (ide:sync)</option>
                             </optgroup>
                             <optgroup label="System">
-                                <option value="status">Show Automation Status</option>
-                                <option value="rules:export">Export Rules (YAML format)</option>
+                                <option value="status" data-desc="Show Automation Status" data-cmd="status">Show Automation Status (status)</option>
                             </optgroup>
                         </select>
                         <button onclick="executeSelectedCommand()" class="bg-green-600 hover:bg-green-500 text-white py-2 px-6 rounded-lg transition flex items-center space-x-2">
@@ -175,7 +187,76 @@ ob_start();
         </div>
 
 
+<style>
+/* Custom styling for command dropdown */
+#command-select {
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+#command-select option {
+    padding: 8px;
+}
+
+/* Style optgroup labels */
+#command-select optgroup {
+    font-weight: bold;
+    color: #9ca3af;
+}
+
+/* Use attribute selector to style the command part differently */
+#command-select option[data-cmd] {
+    font-family: system-ui, -apple-system, sans-serif;
+}
+</style>
+
 <script>
+// Enhanced dropdown styling
+document.addEventListener('DOMContentLoaded', function() {
+    const select = document.getElementById('command-select');
+    const display = document.getElementById('selected-command-display');
+    const descSpan = document.getElementById('selected-desc');
+    const cmdSpan = document.getElementById('selected-cmd');
+    
+    // Update display when selection changes
+    select.addEventListener('change', function() {
+        if (this.selectedIndex > 0 && this.value) {
+            const option = this.options[this.selectedIndex];
+            const desc = option.getAttribute('data-desc');
+            const cmd = option.getAttribute('data-cmd');
+            
+            // Show the styled display
+            display.classList.remove('hidden');
+            descSpan.textContent = desc;
+            cmdSpan.textContent = `(${cmd})`;
+        } else {
+            // Hide display when no selection
+            display.classList.add('hidden');
+        }
+    });
+    
+    // Enhance the dropdown options visually
+    enhanceDropdownOptions();
+});
+
+function enhanceDropdownOptions() {
+    const select = document.getElementById('command-select');
+    const options = select.querySelectorAll('option[data-cmd]');
+    
+    // Create tooltip or format text for better visibility
+    options.forEach(option => {
+        const desc = option.getAttribute('data-desc');
+        const cmd = option.getAttribute('data-cmd');
+        
+        // Format the option text to separate description and command
+        // Using Unicode spaces and special characters for visual separation
+        const formattedText = `${desc} ➜ ${cmd}`;
+        option.textContent = formattedText;
+        
+        // Add title attribute for hover tooltip
+        option.title = `Command: ${cmd}`;
+    });
+}
+
 // Terminal functions
 let autoScroll = true;
 let terminalOutput = [];
@@ -244,11 +325,18 @@ function executeTask(task) {
     const commandMap = {
         'check:docs': 'composer docs:check',
         'update:docs': 'composer docs:update',
-        'hooks:scan': 'php iso-automation/cli.php hooks:scan',
+        'generate:hooks': 'php iso-automation/cli.php generate:hooks',
         'sync:ide': 'composer ide:sync',
-        'validate:rules': 'php iso-automation/cli.php validate:rules',
-        'status': 'php iso-automation/cli.php status',
-        'rules:export': 'php iso-automation/cli.php rules:export'
+        'rules:list': 'php iso-automation/cli.php rules:list',
+        'rules:validate': 'composer validate:rules',
+        'rules:export': 'php iso-automation/cli.php rules:export',
+        'tailwind:build': 'composer tailwind:build',
+        'tailwind:watch': 'composer tailwind:watch',
+        'tailwind:minify': 'composer tailwind:minify',
+        'tailwind:install': 'composer tailwind:install',
+        'tailwind:update': 'composer tailwind:update',
+        'tailwind:status': 'composer tailwind:status',
+        'status': 'php iso-automation/cli.php status'
     };
     
     const command = commandMap[task] || `php iso-automation/cli.php ${task}`;

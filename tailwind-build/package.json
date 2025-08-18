@@ -1,0 +1,19 @@
+{
+  "name": "isotone-tailwind",
+  "version": "1.0.0",
+  "description": "Tailwind CSS build system for Isotone",
+  "private": true,
+  "scripts": {
+    "build": "npx @tailwindcss/cli -i ./src/input.css -o ../iso-admin/css/tailwind.css",
+    "watch": "npx @tailwindcss/cli -i ./src/input.css -o ../iso-admin/css/tailwind.css --watch",
+    "minify": "npx @tailwindcss/cli -i ./src/input.css -o ../iso-admin/css/tailwind.min.css --minify"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.0.0-beta.8",
+    "tailwindcss": "^4.0.0-beta.8"
+  },
+  "dependencies": {
+    "alpinejs": "^3.14.9",
+    "chart.js": "^4.5.0"
+  }
+}
