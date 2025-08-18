@@ -146,7 +146,18 @@
             "version": "0.1.7-alpha",
             "date": "2025-08-16",
             "codename": "Genesis",
-            "features": [],
+            "features": [
+                "Tailwind CSS v4 integration with build system",
+                "Automated Tailwind installation and configuration",
+                "CSS build commands (build, watch, minify)",
+                "Custom tailwind.config.js with dark mode support",
+                "Toni AI Assistant integration with GPT-5 support",
+                "AI-powered development assistant interface",
+                "Enhanced automation dashboard with real-time output",
+                "Documentation system improvements",
+                "Hooks Explorer interactive documentation viewer",
+                "API reference auto-generation from code"
+            ],
             "breaking_changes": [],
             "from_version": "0.1.6-alpha"
         },
@@ -154,8 +165,25 @@
             "version": "0.2.0-alpha",
             "date": "2025-08-18",
             "codename": "Genesis",
-            "features": [],
-            "breaking_changes": [],
+            "features": [
+                "Complete documentation system overhaul",
+                "Removed auto-generated documentation commands (docs:check, docs:update)",
+                "Static category organization for user documentation",
+                "Dynamic markdown file discovery within categories",
+                "Improved documentation viewer with collapsible sidebar",
+                "Icons for documentation categories",
+                "Comprehensive installation.md guide",
+                "Added rule_management rule for better rule maintenance",
+                "Added documentation_accuracy rule for fact-checking",
+                "Kept useful docs:hooks command for generating hooks documentation",
+                "Documentation now grows organically based on actual needs"
+            ],
+            "breaking_changes": [
+                "Removed composer docs:check command",
+                "Removed composer docs:update command",
+                "Deleted DocumentationManager.php",
+                "Documentation no longer auto-generates template files"
+            ],
             "from_version": "0.1.7-alpha"
         }
     ]

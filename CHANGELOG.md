@@ -7,7 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.2.0-alpha] - Genesis - 2025-08-18
 
+### Added
+- Complete documentation system overhaul
+- Removed auto-generated documentation commands (docs:check, docs:update)
+- Static category organization for user documentation
+- Dynamic markdown file discovery within categories
+- Improved documentation viewer with collapsible sidebar
+- Icons for documentation categories
+- Comprehensive installation.md guide
+- Added rule_management rule for better rule maintenance
+- Added documentation_accuracy rule for fact-checking
+- Kept useful docs:hooks command for generating hooks documentation
+- Documentation now grows organically based on actual needs
+
+### ⚠ BREAKING CHANGES
+- Removed composer docs:check command
+- Removed composer docs:update command
+- Deleted DocumentationManager.php
+- Documentation no longer auto-generates template files
+
 ## [0.1.7-alpha] - Genesis - 2025-08-16
+
+### Added
+- Tailwind CSS v4 integration with build system
+- Automated Tailwind installation and configuration
+- CSS build commands (build, watch, minify)
+- Custom tailwind.config.js with dark mode support
+- Toni AI Assistant integration with GPT-5 support
+- AI-powered development assistant interface
+- Enhanced automation dashboard with real-time output
+- Documentation system improvements
+- Hooks Explorer interactive documentation viewer
+- API reference auto-generation from code
 
 ## [0.1.6-alpha] - Genesis - 2025-08-15
 

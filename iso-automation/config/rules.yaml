@@ -416,6 +416,10 @@ version_management:
   mandatory_workflow:
     - step: "Determine version type (patch/minor/major)"
       command: "Analyze changes to determine type"
+    - step: "Collect features and changes"
+      command: "Review git commits and changes since last version"
+    - step: "Update version.json with features"
+      command: "Add features array to the new version entry"
     - step: "Execute version bump"
       command: "php isotone version:bump [type] [stage] [codename]"
     - step: "Generate changelog (MANDATORY)"
@@ -424,6 +428,20 @@ version_management:
       command: "Edit documentation files as needed"
     - step: "Report completion"
       command: "Show the new version number and changes"
+  
+  changelog_requirements:
+    description: "CRITICAL: Always populate features array in version.json"
+    rules:
+      - "NEVER leave features array empty when bumping version"
+      - "ALWAYS review git log for changes since last version"
+      - "Include ALL significant changes in features array"
+      - "Categorize as features, fixed, changed, or breaking_changes"
+      - "Write clear, user-friendly descriptions"
+    example_features:
+      - "Added new feature X with Y functionality"
+      - "Fixed bug in Z component"
+      - "Improved performance of database queries"
+      - "Updated documentation for better clarity"
   
   intent_mapping:
     bug_fixes:
