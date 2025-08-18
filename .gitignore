@@ -2,7 +2,7 @@
 
 # Dependencies
 /vendor/
-/node_modules/
+node_modules/
 
 # Configuration files with sensitive data
 config.php
