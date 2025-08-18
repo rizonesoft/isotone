@@ -5,18 +5,24 @@
  * @package Isotone
  */
 
-require_once dirname(__DIR__) . '/vendor/autoload.php';
-require_once dirname(__DIR__) . '/config.php';
+// Only require config if not already loaded
+if (!defined('DB_HOST')) {
+    require_once dirname(__DIR__) . '/config.php';
+}
+
+// Only load autoloader if RedBeanPHP is not already loaded
+if (!class_exists('RedBeanPHP\R')) {
+    require_once dirname(__DIR__) . '/vendor/autoload.php';
+}
 
 use RedBeanPHP\R;
 
 class IsotoneUser {
     
     public function __construct() {
-        // Setup RedBeanPHP if not already connected
-        if (!R::testConnection()) {
-            R::setup('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PASSWORD);
-        }
+        // Use centralized database connection
+        require_once dirname(__DIR__) . '/iso-includes/database.php';
+        isotone_db_connect();
     }
     
     /**

@@ -40,6 +40,49 @@ branding:
       severity: "critical"
       message: "Use 'Isotone' not 'Isotone CMS'"
 
+admin_authentication:
+  priority: 95
+  enabled: true
+  context: ["security", "admin", "authentication"]
+  description: "All admin pages must require authentication"
+  rules:
+    - "Every PHP file in /iso-admin/ must include auth.php at the top"
+    - "Exception: login.php and logout.php don't require auth.php"
+    - "AJAX handlers must check session authentication"
+    - "Debug scripts should be removed in production"
+    - "No admin functionality should be accessible without login"
+    - "Use require_once 'auth.php'; as the first include after opening PHP tag"
+  violations:
+    - pattern: "iso-admin/.+\\.php"
+      without: "require.*auth\\.php"
+      severity: "critical"
+      message: "Admin page missing authentication"
+      exceptions: ["login.php", "logout.php"]
+  examples:
+    correct: |
+      <?php
+      /**
+       * Admin Page
+       */
+      
+      // Check authentication
+      require_once 'auth.php';
+      
+      // Rest of the code...
+    incorrect: |
+      <?php
+      /**
+       * Admin Page
+       */
+      
+      // WRONG - No authentication check
+      require_once dirname(__DIR__) . '/config.php';
+  enforcement:
+    - "All admin pages must be protected"
+    - "AJAX endpoints must verify session"
+    - "API endpoints in /iso-admin/api/ must check authentication"
+    - "No direct file access without auth check"
+
 search_before_create:
   priority: 95
   enabled: true
@@ -294,6 +337,10 @@ database:
       - "Table names: lowercase, no underscores (user, setting, content, plugin, route, hook)"
       - "Column names: can use underscores (created_at, last_login)"
       - "Foreign keys: Use tablename_id pattern"
+      - "ALWAYS use centralized connection from /iso-includes/database.php"
+      - "NEVER call R::setup() directly - use isotone_db_connect() instead"
+      - "Use R::getCell() for counts instead of R::count() for memory efficiency"
+      - "Use R::find() with LIMIT instead of R::findAll() for large datasets"
     violations:
       - pattern: 'new PDO\('
         severity: "critical"
@@ -301,17 +348,32 @@ database:
       - pattern: 'new mysqli\('
         severity: "critical"
         message: "Use RedBeanPHP instead of mysqli"
+      - pattern: 'R::setup\('
+        severity: "high"
+        message: "Use isotone_db_connect() from /iso-includes/database.php instead"
+      - pattern: 'R::count\('
+        severity: "medium"
+        message: "Use R::getCell('SELECT COUNT(*)...') for better memory efficiency"
     examples:
       correct: |
-        use RedBeanPHP\R;
-        $user = R::findOne('users', 'username = ?', [$username]);
-        $post = R::dispense('post');
-        R::store($post);
+        // Use centralized connection
+        require_once dirname(__DIR__) . '/iso-includes/database.php';
+        isotone_db_connect();
+        
+        // Efficient count query
+        $count = (int)R::getCell('SELECT COUNT(*) FROM users');
+        
+        // Limited find query
+        $recent = R::find('post', 'ORDER BY created_at DESC LIMIT 5');
       incorrect: |
-        // WRONG - Direct PDO
-        $pdo = new PDO(...);
-        // WRONG - Direct MySQL
-        $conn = new mysqli(...);
+        // WRONG - Direct setup
+        R::setup('mysql:host=' . DB_HOST . '...');
+        
+        // WRONG - Inefficient count
+        $count = R::count('users');
+        
+        // WRONG - Unbounded findAll
+        $all = R::findAll('post');
   
   connection:
     web_context:

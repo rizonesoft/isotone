@@ -13,6 +13,27 @@ if (!defined('ISOTONE_START')) {
 
 session_start();
 
+// Clean up any test data and optimize session
+if (isset($_SESSION['memory_data'])) {
+    unset($_SESSION['memory_data']);
+}
+
+// Clean up old/expired session data
+$session_keys_to_keep = [
+    'isotone_admin_logged_in',
+    'isotone_admin_user',
+    'isotone_admin_user_id', 
+    'isotone_admin_user_data',
+    'isotone_admin_last_activity'
+];
+
+// Remove any keys not in the whitelist
+foreach ($_SESSION as $key => $value) {
+    if (!in_array($key, $session_keys_to_keep)) {
+        unset($_SESSION[$key]);
+    }
+}
+
 // Load configuration and user class
 require_once dirname(__DIR__) . '/config.php';
 require_once dirname(__DIR__) . '/iso-includes/class-user.php';

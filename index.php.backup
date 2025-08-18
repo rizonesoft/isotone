@@ -1,10 +1,4 @@
 <?php
-/**
- * Isotone - Lightweight CMS without Symfony
- * 
- * @copyright  2025 Rizonetech (Pty) Ltd
- * @license    MIT License
- */
 declare(strict_types=1);
 
 define('ISOTONE_START', microtime(true));
@@ -19,8 +13,11 @@ if (!defined('PHP_ORIGINAL_MEMORY_LIMIT')) {
 if (file_exists(ISOTONE_ROOT . '/config.php')) {
     require_once ISOTONE_ROOT . '/config.php';
     
+    // Isotone memory limit enforcement
     // Enforce Isotone memory limit
     if (defined('MEMORY_LIMIT')) {
+        // ALWAYS enforce the limit, even if PHP has unlimited (-1)
+        // This provides resource protection and predictable memory usage
         @ini_set('memory_limit', MEMORY_LIMIT);
     }
     
@@ -29,19 +26,15 @@ if (file_exists(ISOTONE_ROOT . '/config.php')) {
     }
 }
 
-// Load composer autoloader (for RedBean and other non-Symfony packages)
 require_once ISOTONE_ROOT . '/vendor/autoload.php';
 
-// Load core application
 use Isotone\Core\Application;
+use Symfony\Component\HttpFoundation\Request;
 
-// Create and run application
 $app = new Application(ISOTONE_ROOT);
-$app->handle();
 
-// Debug: Show memory usage in development
-if (defined('DEBUG_MODE') && DEBUG_MODE) {
-    echo "\n<!-- Memory: " . round(memory_get_usage() / 1024 / 1024, 2) . " MB -->";
-    echo "\n<!-- Peak: " . round(memory_get_peak_usage() / 1024 / 1024, 2) . " MB -->";
-    echo "\n<!-- Time: " . round((microtime(true) - ISOTONE_START) * 1000, 2) . " ms -->";
-}
+$request = Request::createFromGlobals();
+$response = $app->handle($request);
+$response->send();
+
+$app->terminate($request, $response);

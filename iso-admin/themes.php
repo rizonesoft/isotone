@@ -6,20 +6,18 @@
  * @package Isotone
  */
 
-require_once dirname(__DIR__) . '/config.php';
+// Check authentication
+require_once 'auth.php';
+
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 require_once dirname(__DIR__) . '/iso-core/Services/ThemeService.php';
+require_once dirname(__DIR__) . '/iso-includes/database.php';
 
 use RedBeanPHP\R;
 use Isotone\Services\ThemeService;
 
-// Initialize database connection
-if (!R::testConnection()) {
-    R::setup('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PASSWORD);
-}
-
-// Get current user (temporary - will be replaced with auth system)
-$current_user = 'Admin';
+// Use centralized database connection
+isotone_db_connect();
 
 // Page configuration
 $page_title = 'Themes';

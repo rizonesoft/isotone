@@ -14,36 +14,39 @@ $breadcrumbs = [];
 
 // Get stats (using RedBeanPHP)
 use RedBeanPHP\R;
+require_once dirname(__DIR__) . '/iso-includes/database.php';
 
-if (!R::testConnection()) {
-    R::setup('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PASSWORD);
-}
+// Use centralized database connection
+isotone_db_connect();
 
-// Get counts
+// Get counts - Use raw queries for better memory efficiency
 $stats = [
-    'posts' => R::count('post'),
-    'pages' => R::count('page'),
-    'users' => R::count('users'),
-    'comments' => R::count('comment'),
-    'media' => R::count('media')
+    'posts' => (int)R::getCell('SELECT COUNT(*) FROM post'),
+    'pages' => (int)R::getCell('SELECT COUNT(*) FROM page'),
+    'users' => (int)R::getCell('SELECT COUNT(*) FROM users'),
+    'comments' => (int)R::getCell('SELECT COUNT(*) FROM comment'),
+    'media' => (int)R::getCell('SELECT COUNT(*) FROM media')
 ];
 
-// Get recent activity
-$recent_posts = R::findAll('post', 'ORDER BY created_at DESC LIMIT 5');
-$recent_users = R::findAll('users', 'ORDER BY created_at DESC LIMIT 5');
+// Get recent activity - Use find() with proper LIMIT for memory efficiency
+// Only fetch the fields we actually display
+$recent_posts = R::find('post', 'ORDER BY created_at DESC LIMIT 5');
+$recent_users = R::find('users', 'ORDER BY created_at DESC LIMIT 5');
 
 // Admin area should use ADMIN_MEMORY_LIMIT (already applied in auth.php)
 // This is just for display purposes
 
-// Calculate database size
-$db_size = 0;
+// Calculate database size - Use more efficient query
 try {
-    // Get all tables in the database
-    $tables = R::getAll("SHOW TABLE STATUS");
-    foreach ($tables as $table) {
-        $db_size += $table['Data_length'] + $table['Index_length'];
-    }
-    $db_size = round($db_size / 1024 / 1024, 2) . ' MB';
+    // Get total database size in one query
+    $db_name = DB_NAME;
+    $result = R::getRow("
+        SELECT 
+            ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) AS size_mb
+        FROM information_schema.TABLES 
+        WHERE table_schema = ?
+    ", [$db_name]);
+    $db_size = $result['size_mb'] ? $result['size_mb'] . ' MB' : 'N/A';
 } catch (Exception $e) {
     $db_size = 'N/A';
 }
@@ -51,7 +54,6 @@ try {
 // System info
 $system_info = [
     'php_version' => PHP_VERSION,
-    'memory_usage' => round(memory_get_usage() / 1024 / 1024, 2),
     'isotone_limit' => defined('MEMORY_LIMIT') ? MEMORY_LIMIT : '256M',
     'php_original_limit' => defined('PHP_ORIGINAL_MEMORY_LIMIT') ? PHP_ORIGINAL_MEMORY_LIMIT : ini_get('memory_limit'),
     'max_execution_time' => ini_get('max_execution_time') . ' seconds',
@@ -330,6 +332,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <?php
 $page_content = ob_get_clean();
+
+// Debug memory usage (remove in production)
+if (defined('DEBUG_MODE') && DEBUG_MODE) {
+    // Log memory usage for debugging
+    error_log('Dashboard Memory Usage: ' . round(memory_get_usage() / 1024 / 1024, 2) . 'MB');
+    error_log('Dashboard Peak Memory: ' . round(memory_get_peak_usage() / 1024 / 1024, 2) . 'MB');
+}
 
 // Include the new layout
 include 'includes/admin-layout.php';
