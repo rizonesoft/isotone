@@ -25,8 +25,7 @@ function is_menu_active($menu_item, $current_url, $current_page) {
         // Only match if we're exactly on the dashboard
         if ($current_path === '/isotone/iso-admin/' || 
             $current_path === '/isotone/iso-admin/index.php' ||
-            $current_path === '/isotone/iso-admin/dashboard.php' ||
-            $current_path === '/isotone/iso-admin/dashboard-new.php') {
+            $current_path === '/isotone/iso-admin/dashboard.php') {
             return true;
         }
     } else {
