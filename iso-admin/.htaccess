@@ -1,4 +1,4 @@
-# Isotone - Admin Directory
+# Isotone - Admin Directory Security Enhanced
 
 # Directory listing disabled
 Options -Indexes
@@ -8,3 +8,58 @@ Options -Indexes
     Order Allow,Deny
     Allow from all
 </FilesMatch>
+
+# Deny direct access to includes directory
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^includes/ - [F,L]
+</IfModule>
+
+# Extra security headers for admin area
+<IfModule mod_headers.c>
+    # Stricter CSP for admin
+    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; frame-ancestors 'none';"
+    
+    # No caching for admin pages
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+    
+    # Additional security headers
+    Header always set X-Frame-Options "DENY"
+    Header always set X-Content-Type-Options "nosniff"
+</IfModule>
+
+# Force HTTPS for admin (uncomment when SSL is available)
+# <IfModule mod_rewrite.c>
+#     RewriteEngine On
+#     RewriteCond %{HTTPS} !=on
+#     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# </IfModule>
+
+# IP Whitelist (uncomment and add your IPs if needed)
+# <RequireAll>
+#     Require ip 192.168.1.100
+#     Require ip 10.0.0.50
+# </RequireAll>
+
+# Protect sensitive files
+<Files "*.log">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "*.bak">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "*.sql">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "auth*.php">
+    Order allow,deny
+    Deny from all
+</Files>
