@@ -1,65 +1,110 @@
-# Isotone - Admin Directory Security Enhanced
+# Isotone - Admin Directory Security
+# Safe security measures for the admin area
 
-# Directory listing disabled
+# ============================================================================
+# BASIC SECURITY
+# ============================================================================
+
+# Disable directory browsing
 Options -Indexes
 
-# Allow PHP execution in admin area
-<FilesMatch "\.php$">
-    Order Allow,Deny
-    Allow from all
-</FilesMatch>
+# ============================================================================
+# PROTECT SENSITIVE AREAS
+# ============================================================================
 
-# Deny direct access to includes directory
 <IfModule mod_rewrite.c>
     RewriteEngine On
+    
+    # Protect includes directory from direct access
     RewriteRule ^includes/ - [F,L]
+    
+    # Protect cache/temp directories if they exist
+    RewriteRule ^(cache|temp|tmp)/ - [F,L]
 </IfModule>
 
-# Extra security headers for admin area
+# ============================================================================
+# PROTECT SENSITIVE FILES
+# ============================================================================
+
+# Protect backup and log files
+<FilesMatch "\.(log|bak|backup|sql|old|orig|original|txt~|php~|ini|inc)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Protect configuration files
+<FilesMatch "^(config|configuration|settings)\.(php|ini|json)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# ============================================================================
+# OPTIONAL: IP-BASED RESTRICTION (Uncomment to use)
+# ============================================================================
+# Restrict admin access to specific IP addresses
+# Replace xxx.xxx.xxx.xxx with your actual IP address
+#
+# <RequireAll>
+#     <IfModule mod_authz_core.c>
+#         Require ip 127.0.0.1
+#         Require ip ::1
+#         # Require ip xxx.xxx.xxx.xxx
+#     </IfModule>
+# </RequireAll>
+#
+# For Apache 2.2:
+# <IfModule !mod_authz_core.c>
+#     Order deny,allow
+#     Deny from all
+#     Allow from 127.0.0.1
+#     Allow from ::1
+#     # Allow from xxx.xxx.xxx.xxx
+# </IfModule>
+
+# ============================================================================
+# OPTIONAL: PASSWORD PROTECTION (Uncomment to use)
+# ============================================================================
+# Add an extra layer of password protection to admin area
+# You'll need to create a .htpasswd file first
+#
+# AuthType Basic
+# AuthName "Admin Area - Restricted Access"
+# AuthUserFile /path/to/your/.htpasswd
+# Require valid-user
+
+# ============================================================================
+# ADMIN-SPECIFIC HEADERS
+# ============================================================================
 <IfModule mod_headers.c>
-    # Stricter CSP for admin
-    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; frame-ancestors 'none';"
-    
-    # No caching for admin pages
-    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    # Prevent caching of sensitive admin pages
+    Header set Cache-Control "no-cache, no-store, must-revalidate, private"
     Header set Pragma "no-cache"
     Header set Expires "0"
     
-    # Additional security headers
-    Header always set X-Frame-Options "DENY"
+    # Additional security for admin area
     Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
 </IfModule>
 
-# Force HTTPS for admin (uncomment when SSL is available)
-# <IfModule mod_rewrite.c>
-#     RewriteEngine On
-#     RewriteCond %{HTTPS} !=on
-#     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-# </IfModule>
-
-# IP Whitelist (uncomment and add your IPs if needed)
-# <RequireAll>
-#     Require ip 192.168.1.100
-#     Require ip 10.0.0.50
-# </RequireAll>
-
-# Protect sensitive files
-<Files "*.log">
-    Order allow,deny
-    Deny from all
-</Files>
-
-<Files "*.bak">
-    Order allow,deny
-    Deny from all
-</Files>
-
-<Files "*.sql">
-    Order allow,deny
-    Deny from all
-</Files>
-
-<Files "auth*.php">
-    Order allow,deny
-    Deny from all
-</Files>
+# ============================================================================
+# NOTES
+# ============================================================================
+# This .htaccess provides basic security for the admin directory
+# without breaking functionality. Additional measures can be enabled:
+#
+# 1. IP restriction - limit access to specific IP addresses
+# 2. Password protection - add HTTP Basic Authentication
+# 3. SSL requirement - force HTTPS for admin area (configure in PHP)
+#
+# Always test changes before deploying to production
+# ============================================================================

@@ -6,7 +6,7 @@
  * You should edit this file with your database connection details and other settings.
  * 
  * @package Isotone
- * @version 0.1.2-alpha
+ * @version 0.2.1-alpha
  */
 
 // ============================================================================
@@ -65,14 +65,14 @@ define('LANGUAGE', 'en');
  * 
  * These are EXAMPLE keys - DO NOT use these in production!
  */
-define('AUTH_KEY',         'CHANGE_THIS_Hx8$mK#p2@nL9vQ4wZ7*bF5!cR3&dG6^jY1');
-define('SECURE_AUTH_KEY',  'CHANGE_THIS_Vn4@wP7#kM2$xB9!hL5*qT8&fJ3^zC6');
-define('LOGGED_IN_KEY',    'CHANGE_THIS_Qr9#mX3@vK6$wN2!pZ8*bH5&tF7^jL4');
-define('NONCE_KEY',        'CHANGE_THIS_Yt5@hB8#nM3$kP7!xL2*wQ9&zF6^vR4');
-define('AUTH_SALT',        'CHANGE_THIS_Lp7#fK2@mW9$xN4!bQ6*hT3&vZ8^jR5');
-define('SECURE_AUTH_SALT', 'CHANGE_THIS_Wx3@vT8#kH5$nB2!mL7*pQ4&zF9^jY6');
-define('LOGGED_IN_SALT',   'CHANGE_THIS_Nz6#bQ4@hM8$vK3!wP7*xL2&tF5^jR9');
-define('NONCE_SALT',       'CHANGE_THIS_Tm2@xF7#pL4$kN9!bH3*wQ6&vZ8^jR5');
+define('AUTH_KEY',         'put your unique phrase here');
+define('SECURE_AUTH_KEY',  'put your unique phrase here');
+define('LOGGED_IN_KEY',    'put your unique phrase here');
+define('NONCE_KEY',        'put your unique phrase here');
+define('AUTH_SALT',        'put your unique phrase here');
+define('SECURE_AUTH_SALT', 'put your unique phrase here');
+define('LOGGED_IN_SALT',   'put your unique phrase here');
+define('NONCE_SALT',       'put your unique phrase here');
 
 // ============================================================================
 // DEVELOPER SETTINGS

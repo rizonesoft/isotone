@@ -5,6 +5,34 @@ All notable changes to Isotone will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1-alpha] - Genesis - 2025-08-19
+
+### Added
+- Comprehensive security system implementation
+- Session fingerprinting with IP and User-Agent validation
+- CSRF token protection for all forms
+- Brute force protection with rate limiting
+- XSS protection helpers (iso_esc_html, iso_esc_attr, etc.)
+- Secure session configuration with httponly cookies
+- Authentication keys system (SECURE_AUTH_KEY, NONCE_KEY, etc.)
+- Security keys validation and fallback handling
+- Development environment detection for simplified fingerprinting
+- Enhanced login page with Isotone theme styling
+- Glass morphism design with Inter font
+- Improved letter spacing across all UI elements
+- Safe .htaccess security rules without breaking functionality
+- Apache 2.2 and 2.4 compatibility
+- Optional IP restriction and password protection templates
+- Security test page for validating configuration
+- Automatic security warnings in debug mode
+- Fixed session validation order in auth.php
+- Fixed config.php loading order for authentication keys
+
+### ⚠ BREAKING CHANGES
+- auth.php now requires config.php to be loaded first
+- Session fingerprint validation is now enforced
+- CSRF tokens are required for all POST requests
+
 ## [0.2.0-alpha] - Genesis - 2025-08-18
 
 ### Added

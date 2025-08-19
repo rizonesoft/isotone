@@ -14,35 +14,61 @@ class IsotoneeSecurity {
      * Combines IP address and User Agent for session validation
      */
     public static function generateFingerprint() {
-        $ip = $_SERVER['REMOTE_ADDR'] ?? '';
-        $ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+        $ua = $_SERVER['HTTP_USER_AGENT'] ?? 'no-user-agent';
         
-        // Use partial IP (first 3 octets) to handle dynamic IPs
-        $ip_parts = explode('.', $ip);
-        if (count($ip_parts) >= 3) {
-            $partial_ip = $ip_parts[0] . '.' . $ip_parts[1] . '.' . $ip_parts[2];
+        // For localhost/development, use a simplified fingerprint
+        if (in_array($ip, ['127.0.0.1', '::1', 'localhost']) || strpos($ip, '192.168.') === 0 || strpos($ip, '172.') === 0) {
+            // Development environment - use only user agent for fingerprint
+            $fingerprint_base = 'dev|' . $ua;
         } else {
-            $partial_ip = $ip;
+            // Production - use partial IP (first 3 octets) to handle dynamic IPs
+            $ip_parts = explode('.', $ip);
+            if (count($ip_parts) >= 3) {
+                $partial_ip = $ip_parts[0] . '.' . $ip_parts[1] . '.' . $ip_parts[2];
+            } else {
+                $partial_ip = $ip;
+            }
+            $fingerprint_base = $partial_ip . '|' . $ua;
         }
         
-        // Use SECURE_AUTH_KEY if defined and not placeholder, otherwise use a fallback
-        $key = (defined('SECURE_AUTH_KEY') && SECURE_AUTH_KEY !== 'put your unique phrase here') 
-            ? SECURE_AUTH_KEY 
-            : 'isotone_default_key_' . $_SERVER['HTTP_HOST'];
+        // Check if SECURE_AUTH_KEY is properly set
+        if (!defined('SECURE_AUTH_KEY') || 
+            SECURE_AUTH_KEY === '' || 
+            SECURE_AUTH_KEY === 'put your unique phrase here' ||
+            strpos(SECURE_AUTH_KEY, 'your unique phrase') !== false) {
+            
+            // Log warning about insecure configuration
+            error_log('WARNING: SECURE_AUTH_KEY is not properly configured in config.php. Using fallback key.');
+            
+            // Use a fallback key based on host and installation path
+            $key = 'isotone_fallback_' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '_' . dirname(__DIR__);
+        } else {
+            $key = SECURE_AUTH_KEY;
+        }
         
-        return hash('sha256', $partial_ip . '|' . $ua . '|' . $key);
+        return hash('sha256', $fingerprint_base . '|' . $key);
     }
     
     /**
      * Validate session fingerprint
      */
     public static function validateFingerprint() {
+        // If no fingerprint exists, this is a new session - allow it
         if (!isset($_SESSION['fingerprint'])) {
-            $_SESSION['fingerprint'] = self::generateFingerprint();
             return true;
         }
         
-        return $_SESSION['fingerprint'] === self::generateFingerprint();
+        // For logged in users, validate the fingerprint
+        $current_fingerprint = self::generateFingerprint();
+        $stored_fingerprint = $_SESSION['fingerprint'];
+        
+        // If fingerprints don't match, log for debugging
+        if ($stored_fingerprint !== $current_fingerprint) {
+            error_log('Fingerprint mismatch - Stored: ' . $stored_fingerprint . ', Current: ' . $current_fingerprint);
+        }
+        
+        return $stored_fingerprint === $current_fingerprint;
     }
     
     /**
@@ -60,6 +86,10 @@ class IsotoneeSecurity {
      */
     public static function validateCSRFToken($token) {
         if (empty($_SESSION['csrf_token'])) {
+            return false;
+        }
+        
+        if (empty($token)) {
             return false;
         }
         
