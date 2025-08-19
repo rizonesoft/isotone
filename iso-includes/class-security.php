@@ -25,7 +25,12 @@ class IsotoneeSecurity {
             $partial_ip = $ip;
         }
         
-        return hash('sha256', $partial_ip . '|' . $ua . '|' . SECURE_AUTH_KEY);
+        // Use SECURE_AUTH_KEY if defined and not placeholder, otherwise use a fallback
+        $key = (defined('SECURE_AUTH_KEY') && SECURE_AUTH_KEY !== 'put your unique phrase here') 
+            ? SECURE_AUTH_KEY 
+            : 'isotone_default_key_' . $_SERVER['HTTP_HOST'];
+        
+        return hash('sha256', $partial_ip . '|' . $ua . '|' . $key);
     }
     
     /**
