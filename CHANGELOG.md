@@ -5,6 +5,25 @@ All notable changes to Isotone will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0-alpha] - Genesis - 2025-08-20
+
+### Added
+- Documentation asset management system implementation
+- Moved documentation assets to iso-automation/src/Documentation/assets/
+- Updated DocsBuilderCommand to copy assets instead of generating them
+- Collapsible navigation with tree view lines and +/- indicators
+- Professional theme toggle without excessive effects
+- Compact sidebar spacing for handling many documents
+- Removed hover background effects from navigation sections
+- Proper centering of +/- symbols in collapse buttons
+- Fixed vertical line alignment in tree view navigation
+- JavaScript navigation with localStorage persistence
+- Multiple CSS design evolution backups preserved
+- Updated Tailwind CSS documentation to reflect v4.1.12
+- LoginSecurity class for enhanced login attempt tracking
+- Documentation search functionality preparation
+- Improved typography and letter spacing in documentation
+
 ## [0.2.1-alpha] - Genesis - 2025-08-19
 
 ### Added

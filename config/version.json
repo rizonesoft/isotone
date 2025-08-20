@@ -1,8 +1,8 @@
 {
-    "current": "0.2.1-alpha",
+    "current": "0.3.0-alpha",
     "schema": "1.0.0",
     "codename": "Genesis",
-    "release_date": "2025-08-19",
+    "release_date": "2025-08-20",
     "history": [
         {
             "version": "0.1.0-alpha",
@@ -217,6 +217,30 @@
                 "CSRF tokens are required for all POST requests"
             ],
             "from_version": "0.2.0-alpha"
+        },
+        {
+            "version": "0.3.0-alpha",
+            "date": "2025-08-20",
+            "codename": "Genesis",
+            "features": [
+                "Documentation asset management system implementation",
+                "Moved documentation assets to iso-automation/src/Documentation/assets/",
+                "Updated DocsBuilderCommand to copy assets instead of generating them",
+                "Collapsible navigation with tree view lines and +/- indicators",
+                "Professional theme toggle without excessive effects",
+                "Compact sidebar spacing for handling many documents",
+                "Removed hover background effects from navigation sections",
+                "Proper centering of +/- symbols in collapse buttons",
+                "Fixed vertical line alignment in tree view navigation",
+                "JavaScript navigation with localStorage persistence",
+                "Multiple CSS design evolution backups preserved",
+                "Updated Tailwind CSS documentation to reflect v4.1.12",
+                "LoginSecurity class for enhanced login attempt tracking",
+                "Documentation search functionality preparation",
+                "Improved typography and letter spacing in documentation"
+            ],
+            "breaking_changes": [],
+            "from_version": "0.2.1-alpha"
         }
     ]
 }

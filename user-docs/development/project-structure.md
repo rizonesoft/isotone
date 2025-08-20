@@ -15,39 +15,51 @@ last_updated: 2025-01-20
 
 ```
 isotone/
-├── .claude/
-├── .htaccess
-├── .windsurf/
-│   └── rules/
 ├── CLAUDE.md
 ├── README.md
 ├── composer.json
 ├── config/
-├── config.php
 ├── config.sample.php
+├── docs/
+│   ├── api-reference/
+│   ├── assets/
+│   │   ├── css/
+│   │   ├── images/
+│   │   ├── js/
+│   ├── automation/
+│   ├── configuration/
+│   ├── development/
+│   ├── getting-started/
+│   ├── toni/
+│   └── troubleshooting/
 ├── install/
+│   ├── README.md
 ├── iso-admin/
 │   ├── api/
 │   ├── css/
 │   ├── includes/
 │   ├── js/
 ├── iso-automation/
+│   ├── README.md
 │   ├── cache/
 │   ├── config/
 │   └── src/
-│       ├── Analyzers/
-│       ├── Commands/
-│       ├── Core/
-│       ├── Dashboard/
-│       ├── Documentation/
-│       ├── Generators/
-│       └── Rules/
+│   │   ├── Analyzers/
+│   │   ├── Commands/
+│   │   ├── Core/
+│   │   ├── Dashboard/
+│   │   ├── Documentation/
+│   │   ├── Generators/
+│   │   └── Rules/
 ├── iso-content/
+│   ├── README.md
 │   ├── plugins/
 │   │   ├── hello-isotone/
 │   ├── themes/
+│   │   ├── isotone/
 │   │   ├── isotone-default/
-│   │   └── neutron/
+│   │   ├── neutron/
+│   │   └── quantum/
 │   └── uploads/
 ├── iso-core/
 │   ├── Commands/
@@ -57,21 +69,29 @@ isotone/
 ├── iso-includes/
 │   ├── assets/
 │   ├── css/
-│   ├── js/
 │   └── scripts/
 ├── iso-runtime/
+│   ├── README.md
 │   ├── cache/
 │   ├── logs/
 │   └── temp/
+├── storage/
 ├── tailwind-build/
+│   ├── README.md
+│   ├── package.json
 │   └── src/
-└── user-docs/
-    ├── .vitepress/
-    ├── api-reference/
-    ├── automation/
-    ├── configuration/
-    ├── development/
-    ├── getting-started/
-    ├── toni/
-    └── troubleshooting/
+├── user-docs/
+│   ├── .kb/
+│   ├── .vitepress/
+│   │   └── dist/
+│   ├── README.md
+│   ├── api-reference/
+│   ├── automation/
+│   ├── configuration/
+│   ├── development/
+│   ├── getting-started/
+│   ├── package.json
+│   ├── reference/
+│   ├── toni/
+│   └── troubleshooting/
 ```

@@ -279,9 +279,9 @@ requireRole('admin'); // or appropriate role
 <style>.my-class { color: red; }</style>
 ```
 
-### Tailwind CSS (v4.0.0-beta.8)
+### Tailwind CSS (v4.1.12)
 - Use Tailwind utility classes for styling; prefer composition over custom CSS.
-- Version: Tailwind CSS v4.0.0-beta.8 with @tailwindcss/cli v4.0.0-beta.8.
+- Version: Tailwind CSS v4.1.12 (latest stable version)
 - Content scanning uses Tailwind v4 `@source` directives defined in `tailwind-build/src/input.css`. If you add UI files in new locations, update those `@source` globs accordingly.
 - Build via Composer scripts:
   - `composer tailwind:build` (production build)

@@ -339,51 +339,48 @@ If settings aren't being applied:
 3. **Permissions**: Verify PHP can read the file
 4. **Cache clearing**: Some settings may be cached - clear cache after changes
 
-## Configuration Variables Reference
+## Configuration Variables
 
-| Variable | Type | Default | Description |
-|----------|------|---------|-------------|
-| **Database Settings** ||||
-| `DB_HOST` | string | `'localhost'` | Database server hostname |
-| `DB_NAME` | string | (required) | Database name |
-| `DB_USER` | string | (required) | Database username |
-| `DB_PASSWORD` | string | (required) | Database password |
-| `DB_PORT` | int | `3306` | Database server port |
-| `DB_CHARSET` | string | `'utf8mb4'` | Database character set |
-| `DB_COLLATE` | string | `'utf8mb4_unicode_ci'` | Database collation |
-| `DB_PREFIX` | string | `'iso_'` | Table prefix |
-| **Application Settings** ||||
-| `SITE_URL` | string | `''` (auto-detect) | Site URL |
-| `ADMIN_EMAIL` | string | `'admin@example.com'` | Administrator email |
-| `TIMEZONE` | string | `'UTC'` | Default timezone |
-| `LANGUAGE` | string | `'en'` | Default language |
-| **Security Keys** ||||
-| `AUTH_KEY` | string | (required) | Authentication key |
-| `SECURE_AUTH_KEY` | string | (required) | Secure auth key |
-| `LOGGED_IN_KEY` | string | (required) | Logged-in key |
-| `NONCE_KEY` | string | (required) | Nonce key |
-| `AUTH_SALT` | string | (required) | Auth salt |
-| `SECURE_AUTH_SALT` | string | (required) | Secure auth salt |
-| `LOGGED_IN_SALT` | string | (required) | Logged-in salt |
-| `NONCE_SALT` | string | (required) | Nonce salt |
-| **Developer Settings** ||||
-| `DEBUG_MODE` | bool | `true` | Enable debug mode |
-| `DEBUG_QUERIES` | bool | `false` | Log queries |
-| `DISPLAY_ERRORS` | bool | `true` | Display errors |
-| `ERROR_LEVEL` | int | `E_ALL` | Error reporting level |
-| `MAINTENANCE_MODE` | bool | `false` | Maintenance mode |
-| **Performance Settings** ||||
-| `MEMORY_LIMIT` | string | `'256M'` | System-wide memory limit |
-| `MAX_EXECUTION_TIME` | int | `30` | Max execution seconds |
-| `UPLOAD_MAX_SIZE` | string | `'10M'` | Max upload size |
-| `SESSION_LIFETIME` | int | `120` | Session lifetime (minutes) |
-| `CACHE_TTL` | int | `3600` | Cache TTL (seconds) |
-| **Redis Settings** ||||
-| `REDIS_ENABLED` | bool | `false` | Enable Redis |
-| `REDIS_HOST` | string | `'127.0.0.1'` | Redis host |
-| `REDIS_PORT` | int | `6379` | Redis port |
-| **Environment** ||||
-| `ENVIRONMENT` | string | `'development'` | Current environment |
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `DB_HOST` | `localhost` | Database host |
+| `DB_NAME` | `database_name_here` | Database name |
+| `DB_USER` | `username_here` | Database username |
+| `DB_PASSWORD` | `password_here` | Database password |
+| `DB_PORT` | `3306` | Configuration setting |
+| `DB_CHARSET` | `utf8mb4` | Configuration setting |
+| `DB_COLLATE` | `utf8mb4_unicode_ci` | Configuration setting |
+| `DB_PREFIX` | `iso_` | Configuration setting |
+| `SITE_URL` | `(empty)` | Configuration setting |
+| `ADMIN_EMAIL` | `your-email@example.com` | Administrator email |
+| `TIMEZONE` | `UTC` | Default timezone |
+| `LANGUAGE` | `en` | Configuration setting |
+| `AUTH_KEY` | `put your unique phrase here` | Configuration setting |
+| `SECURE_AUTH_KEY` | `put your unique phrase here` | Configuration setting |
+| `LOGGED_IN_KEY` | `put your unique phrase here` | Configuration setting |
+| `NONCE_KEY` | `put your unique phrase here` | Configuration setting |
+| `AUTH_SALT` | `put your unique phrase here` | Configuration setting |
+| `SECURE_AUTH_SALT` | `put your unique phrase here` | Configuration setting |
+| `LOGGED_IN_SALT` | `put your unique phrase here` | Configuration setting |
+| `NONCE_SALT` | `put your unique phrase here` | Configuration setting |
+| `DEBUG_MODE` | `true` | Configuration setting |
+| `DEBUG_QUERIES` | `false` | Configuration setting |
+| `DISPLAY_ERRORS` | `true` | Configuration setting |
+| `ERROR_LEVEL` | `E_ALL` | Configuration setting |
+| `MAINTENANCE_MODE` | `false` | Configuration setting |
+| `MEMORY_LIMIT` | `128M` | Configuration setting |
+| `MAX_EXECUTION_TIME` | `30` | Configuration setting |
+| `UPLOAD_MAX_SIZE` | `10M` | Maximum upload size |
+| `SESSION_LIFETIME` | `120` | Session lifetime in minutes |
+| `CACHE_TTL` | `3600` | Configuration setting |
+| `REDIS_ENABLED` | `false` | Configuration setting |
+| `REDIS_HOST` | `127.0.0.1` | Configuration setting |
+| `REDIS_PORT` | `6379` | Configuration setting |
+| `ENVIRONMENT` | `development` | Configuration setting |
+| `DEBUG_MODE` | `false` | Configuration setting |
+| `DISPLAY_ERRORS` | `false` | Configuration setting |
+| `DEBUG_MODE` | `true` | Configuration setting |
+| `DISPLAY_ERRORS` | `false` | Configuration setting |
 
 ## For Developers and LLMs
 
