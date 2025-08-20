@@ -9,7 +9,7 @@
 require_once dirname(__DIR__) . '/iso-includes/class-security.php';
 
 // Start session for testing
-IsotoneeSecurity::secureSession();
+IsotoneSecurity::secureSession();
 
 $tests = [];
 
@@ -22,23 +22,23 @@ $tests['Session Security'] = [
 ];
 
 // Test 2: CSRF Protection
-$token = IsotoneeSecurity::generateCSRFToken();
+$token = IsotoneSecurity::generateCSRFToken();
 $tests['CSRF Protection'] = [
     'Token Generated' => !empty($token) ? '✅ Yes' : '❌ No',
     'Token Length' => strlen($token) . ' characters',
-    'Validation Works' => IsotoneeSecurity::validateCSRFToken($token) ? '✅ Yes' : '❌ No'
+    'Validation Works' => IsotoneSecurity::validateCSRFToken($token) ? '✅ Yes' : '❌ No'
 ];
 
 // Test 3: Session Fingerprinting
-$fingerprint = IsotoneeSecurity::generateFingerprint();
+$fingerprint = IsotoneSecurity::generateFingerprint();
 $tests['Session Fingerprinting'] = [
     'Fingerprint Generated' => !empty($fingerprint) ? '✅ Yes' : '❌ No',
-    'Validation Works' => IsotoneeSecurity::validateFingerprint() ? '✅ Yes' : '❌ No'
+    'Validation Works' => IsotoneSecurity::validateFingerprint() ? '✅ Yes' : '❌ No'
 ];
 
 // Test 4: Brute Force Protection
 $tests['Brute Force Protection'] = [
-    'Check Function' => is_array(IsotoneeSecurity::checkBruteForce()) ? '✅ Working' : '❌ Failed',
+    'Check Function' => is_array(IsotoneSecurity::checkBruteForce()) ? '✅ Working' : '❌ Failed',
     'Block After' => '5 attempts',
     'Block Duration' => '15 minutes'
 ];
@@ -46,17 +46,17 @@ $tests['Brute Force Protection'] = [
 // Test 5: XSS Protection
 $xss_test = "<script>alert('XSS')</script>";
 $tests['XSS Protection'] = [
-    'HTML Escaping' => IsotoneeSecurity::escape($xss_test) === '&lt;script&gt;alert(&#039;XSS&#039;)&lt;/script&gt;' ? '✅ Working' : '❌ Failed',
-    'Strip Tags' => strip_tags(IsotoneeSecurity::escapeHtml($xss_test)) === "alert('XSS')" ? '✅ Working' : '❌ Failed'
+    'HTML Escaping' => IsotoneSecurity::escape($xss_test) === '&lt;script&gt;alert(&#039;XSS&#039;)&lt;/script&gt;' ? '✅ Working' : '❌ Failed',
+    'Strip Tags' => strip_tags(IsotoneSecurity::escapeHtml($xss_test)) === "alert('XSS')" ? '✅ Working' : '❌ Failed'
 ];
 
 // Test 6: Password Hashing
 $test_password = 'TestPassword123!';
-$hash = IsotoneeSecurity::hashPassword($test_password);
+$hash = IsotoneSecurity::hashPassword($test_password);
 $tests['Password Security'] = [
     'BCrypt Hashing' => strpos($hash, '$2y$') === 0 ? '✅ BCrypt' : '❌ Other',
     'Cost Factor' => '12',
-    'Verification' => IsotoneeSecurity::verifyPassword($test_password, $hash) ? '✅ Working' : '❌ Failed'
+    'Verification' => IsotoneSecurity::verifyPassword($test_password, $hash) ? '✅ Working' : '❌ Failed'
 ];
 
 // Test 7: Security Headers (check response headers)
@@ -98,8 +98,8 @@ $php_file = [
     'size' => 1024
 ];
 
-$validation1 = IsotoneeSecurity::validateFileUpload($fake_file, ['image/jpeg', 'image/png']);
-$validation2 = IsotoneeSecurity::validateFileUpload($php_file, ['image/jpeg', 'image/png']);
+$validation1 = IsotoneSecurity::validateFileUpload($fake_file, ['image/jpeg', 'image/png']);
+$validation2 = IsotoneSecurity::validateFileUpload($php_file, ['image/jpeg', 'image/png']);
 
 $tests['File Upload Security'] = [
     'Valid File' => $validation1['valid'] ? '✅ Accepted' : '❌ Rejected',

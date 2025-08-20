@@ -1,3 +1,12 @@
+---
+title: Isotone Architecture
+description: Detailed overview of Isotone's service-oriented architecture, design patterns, and system components
+tags: [architecture, design-patterns, services, core-components, system-design]
+category: development
+priority: 90
+last_updated: 2025-01-20
+---
+
 # Isotone Architecture
 
 ## Overview

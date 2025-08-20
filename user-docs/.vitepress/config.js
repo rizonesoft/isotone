@@ -13,8 +13,9 @@ export default {
     
     nav: [
       { text: 'Guide', link: '/getting-started/installation' },
-      { text: 'Developers', link: '/developers/themes' },
-      { text: 'API', link: '/api/theme-api' },
+      { text: 'Development', link: '/development/architecture' },
+      { text: 'API', link: '/api-reference/endpoints' },
+      { text: 'Toni AI', link: '/toni/overview' },
       { text: 'GitHub', link: 'https://github.com/rizonesoft/isotone' }
     ],
     
@@ -29,25 +30,56 @@ export default {
           ]
         }
       ],
-      '/developers/': [
+      '/development/': [
         {
           text: 'Development',
           items: [
-            { text: 'Theme Development', link: '/developers/themes' },
-            { text: 'Plugin Development', link: '/developers/plugins' },
-            { text: 'Hooks Reference', link: '/developers/hooks' },
-            { text: 'Template Functions', link: '/developers/template-functions' }
+            { text: 'Architecture', link: '/development/architecture' },
+            { text: 'Project Structure', link: '/development/project-structure' },
+            { text: 'Commands', link: '/development/commands' },
+            { text: 'Routes', link: '/development/routes' },
+            { text: 'Hooks System', link: '/development/hooks-system' }
           ]
         }
       ],
-      '/api/': [
+      '/api-reference/': [
         {
           text: 'API Reference',
           items: [
-            { text: 'Theme API', link: '/api/theme-api' },
-            { text: 'Content API', link: '/api/content-api' },
-            { text: 'Database Models', link: '/api/models' },
-            { text: 'REST Endpoints', link: '/api/rest' }
+            { text: 'Endpoints', link: '/api-reference/endpoints' },
+            { text: 'Models', link: '/api-reference/models' },
+            { text: 'Theme API', link: '/api-reference/theme-api' },
+            { text: 'Content API', link: '/api-reference/content-api' }
+          ]
+        }
+      ],
+      '/automation/': [
+        {
+          text: 'Automation',
+          items: [
+            { text: 'Rules', link: '/automation/rules' },
+            { text: 'Workflows', link: '/automation/workflows' },
+            { text: 'CLI Tools', link: '/automation/cli-tools' }
+          ]
+        }
+      ],
+      '/toni/': [
+        {
+          text: 'Toni AI Assistant',
+          items: [
+            { text: 'Overview', link: '/toni/overview' },
+            { text: 'Query Guidelines', link: '/toni/query-guidelines' },
+            { text: 'Knowledge Base', link: '/toni/knowledge-base' }
+          ]
+        }
+      ],
+      '/troubleshooting/': [
+        {
+          text: 'Troubleshooting',
+          items: [
+            { text: 'Common Issues', link: '/troubleshooting/common-issues' },
+            { text: 'Database Issues', link: '/troubleshooting/database' },
+            { text: 'Installation Problems', link: '/troubleshooting/installation' }
           ]
         }
       ],

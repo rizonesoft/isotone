@@ -1,8 +1,14 @@
-# Endpoints
+---
+title: API Endpoints Reference
+description: Complete documentation of all Isotone API endpoints including authentication, content, and admin APIs
+tags: [api, endpoints, rest, authentication, content-api, admin-api]
+category: api-reference
+priority: 80
+last_updated: 2025-01-20
+status: draft
+---
 
-> **Category**: API Reference  
-> **Last Updated**: 2025-08-18  
-> **Status**: Draft
+# Endpoints
 
 ## Overview
 

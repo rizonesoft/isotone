@@ -43,21 +43,11 @@ function is_menu_active($menu_item, $current_url, $current_page) {
             
             // Check if current path matches submenu path (considering query strings)
             if ($current_path === $sub_path) {
-                // Special handling for documentation.php - only Documentation menu should be active
-                if ($sub_path === '/isotone/iso-admin/documentation.php') {
-                    // Only activate if this is the Documentation menu, not other menus
-                    return $menu_item['title'] === 'Documentation';
-                }
                 return true;
             }
             
-            // Also check with query string for special cases like documentation sections
+            // Also check with query string for special cases
             if ($current_url === $subitem['url']) {
-                // Special handling for documentation.php URLs
-                if (strpos($subitem['url'], '/isotone/iso-admin/documentation.php') !== false) {
-                    // Only activate if this is the Documentation menu
-                    return $menu_item['title'] === 'Documentation';
-                }
                 return true;
             }
         }
@@ -164,6 +154,14 @@ $admin_menu = [
             ['title' => 'Theme Editor', 'url' => '/isotone/iso-admin/theme-editor.php']
         ]
     ],
+    'security' => [
+        'title' => 'Security',
+        'icon' => 'shield-check',
+        'url' => '/isotone/iso-admin/security-login.php',
+        'submenu' => [
+            ['title' => 'Login Security', 'url' => '/isotone/iso-admin/security-login.php']
+        ]
+    ],
     'settings' => [
         'title' => 'Settings',
         'icon' => 'cog',
@@ -196,14 +194,8 @@ $admin_menu = [
             ['title' => 'Automation', 'url' => '/isotone/iso-admin/automation.php'],
             ['title' => 'Hooks Explorer', 'url' => '/isotone/iso-admin/hooks-explorer.php'],
             ['title' => 'API Testing', 'url' => '/isotone/iso-admin/api-test.php'],
-            ['title' => 'Debug Console', 'url' => '/isotone/iso-admin/debug.php'],
-            ['title' => 'Developer Docs', 'url' => '/isotone/iso-admin/documentation.php?section=developers']
+            ['title' => 'Debug Console', 'url' => '/isotone/iso-admin/debug.php']
         ]
-    ],
-    'documentation' => [
-        'title' => 'Documentation',
-        'icon' => 'book-open',
-        'url' => '/isotone/iso-admin/documentation.php'
     ]
 ];
 
@@ -217,6 +209,7 @@ $icon_map = [
     'puzzle' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />',
     'color-swatch' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />',
     'cog' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />',
+    'shield-check' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />',
     'wrench' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />',
     'book-open' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />',
     'code' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />',
@@ -231,7 +224,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
 ?>
 
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -300,7 +293,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
     <!-- Favicon -->
     <link rel="icon" href="/isotone/favicon.ico">
 </head>
-<body class="min-h-full dark:bg-gray-900 bg-gray-50 dark:text-gray-100 text-gray-900" 
+<body class="dark:bg-gray-900 bg-gray-50 dark:text-gray-100 text-gray-900" 
       x-data="adminApp()" 
       x-init="init()"
       @keydown.cmd.k.prevent="showSearch = true"
@@ -313,7 +306,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
     </div>
 
     <!-- Top Admin Bar -->
-    <header class="fixed top-0 left-0 right-0 h-16 dark:bg-gray-800 bg-white dark:border-gray-700 border-gray-200 border-b z-40">
+    <header class="fixed top-0 left-0 right-0 h-16 dark:bg-gray-800 bg-white border-b dark:border-gray-700 border-gray-200 shadow-md z-50">
         <div class="h-full px-4 flex items-center justify-between">
             <!-- Left side -->
             <div class="flex items-center space-x-4">
@@ -439,7 +432,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
     </header>
 
     <!-- Layout Container -->
-    <div class="flex h-full pt-16">
+    <div class="flex" style="padding-top: 64px; min-height: 100vh;">
         <!-- Sidebar -->
         <aside :class="sidebarCollapsed ? 'w-16' : 'w-64'" 
                class="fixed left-0 top-16 bottom-0 dark:bg-gray-800 bg-gray-100 dark:border-gray-700 border-gray-200 border-r overflow-y-auto overflow-x-hidden sidebar-transition z-30"
@@ -518,12 +511,12 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
             </div>
             
             <!-- Page Content (grows to fill space) -->
-            <div class="flex-1 p-8 overflow-y-auto">
+            <div class="flex-1 p-8">
                 <?php echo $page_content ?? ''; ?>
             </div>
             
-            <!-- Footer (sticky at bottom) -->
-            <div class="border-t dark:border-gray-700 border-gray-200 py-2 px-8 dark:bg-gray-800 bg-white mt-auto">
+            <!-- Footer -->
+            <div class="mt-auto border-t dark:border-gray-700 border-gray-200 py-2 px-8 dark:bg-gray-900 bg-gray-50">
                 <div class="flex items-center justify-between">
                     <!-- Left: Copyright and Version -->
                     <div class="flex items-center space-x-3">

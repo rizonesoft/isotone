@@ -50,6 +50,7 @@ phpunit.xml
 # Build files
 /build/
 /dist/
+/docs/
 
 # Composer
 composer.phar

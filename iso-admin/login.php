@@ -9,21 +9,29 @@
 require_once dirname(__DIR__) . '/iso-includes/class-security.php';
 
 // Start secure session
-IsotoneeSecurity::secureSession();
+IsotoneSecurity::secureSession();
 
 // Ensure CSRF token exists for the login form
 // This must happen BEFORE any logout/session destruction
 if (empty($_SESSION['csrf_token'])) {
-    IsotoneeSecurity::generateCSRFToken();
+    IsotoneSecurity::generateCSRFToken();
 }
 
+// Load login security for remaining attempts
+require_once dirname(__DIR__) . '/iso-includes/database.php';
+require_once dirname(__DIR__) . '/iso-includes/class-login-security.php';
+isotone_db_connect();
+
 // Check for brute force
-$brute_check = IsotoneeSecurity::checkBruteForce();
+$brute_check = IsotoneSecurity::checkBruteForce();
 if ($brute_check['blocked']) {
     $error_message = $brute_check['message'];
     $blocked = true;
 } else {
     $blocked = false;
+    // Get remaining attempts if enabled
+    $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+    $remaining_attempts = LoginSecurity::getRemainingAttempts($ip);
 }
 
 // Handle login form submission
@@ -51,8 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$blocked) {
         
         if ($userData) {
             // Record successful login
-            IsotoneeSecurity::recordLoginAttempt($username, true);
-            IsotoneeSecurity::logSecurityEvent('login_success', [
+            IsotoneSecurity::recordLoginAttempt($username, true);
+            IsotoneSecurity::logSecurityEvent('login_success', [
                 'user' => $username
             ]);
             
@@ -65,11 +73,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$blocked) {
             $_SESSION['isotone_admin_user_id'] = $userData['id'];
             $_SESSION['isotone_admin_user_data'] = $userData;
             $_SESSION['isotone_admin_last_activity'] = time();
-            $_SESSION['fingerprint'] = IsotoneeSecurity::generateFingerprint();
+            $_SESSION['fingerprint'] = IsotoneSecurity::generateFingerprint();
             
             // Handle remember me (secure cookie)
             if ($remember) {
-                $token = IsotoneeSecurity::generateToken();
+                $token = IsotoneSecurity::generateToken();
                 $cookie_data = $username . '|' . $token;
                 $cookie_hash = hash_hmac('sha256', $cookie_data, SECURE_AUTH_KEY);
                 
@@ -94,30 +102,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$blocked) {
             exit;
         } else {
             // Record failed login
-            IsotoneeSecurity::recordLoginAttempt($username, false);
-            IsotoneeSecurity::logSecurityEvent('login_failed', [
+            IsotoneSecurity::recordLoginAttempt($username, false);
+            IsotoneSecurity::logSecurityEvent('login_failed', [
                 'user' => $username,
                 'reason' => 'Invalid credentials'
             ]);
             
             $error_message = 'Invalid username or password.';
+            
+            // Show remaining attempts if enabled
+            $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+            $remaining = LoginSecurity::getRemainingAttempts($ip, $username);
+            if ($remaining !== null && $remaining > 0) {
+                $error_message .= ' (' . $remaining . ' attempt' . ($remaining > 1 ? 's' : '') . ' remaining)';
+            }
         }
     }
 }
 
 // Check for logout
 if (isset($_GET['logout'])) {
-    IsotoneeSecurity::logSecurityEvent('logout', [
+    IsotoneSecurity::logSecurityEvent('logout', [
         'user' => $_SESSION['isotone_admin_user'] ?? 'unknown'
     ]);
-    
-    // Preserve rate limiting data before destroying session
-    $preserved_data = [];
-    foreach ($_SESSION as $key => $value) {
-        if (strpos($key, 'login_attempts_') === 0) {
-            $preserved_data[$key] = $value;
-        }
-    }
     
     // Clear session
     session_unset();
@@ -127,15 +134,10 @@ if (isset($_GET['logout'])) {
     setcookie('isotone_remember', '', time() - 3600, '/isotone/');
     
     // Restart session for the login form
-    IsotoneeSecurity::secureSession();
-    
-    // Restore rate limiting data
-    foreach ($preserved_data as $key => $value) {
-        $_SESSION[$key] = $value;
-    }
+    IsotoneSecurity::secureSession();
     
     // Generate new CSRF token for the login form
-    IsotoneeSecurity::generateCSRFToken();
+    IsotoneSecurity::generateCSRFToken();
     
     $success_message = 'You have been logged out successfully.';
 }
@@ -145,7 +147,7 @@ if (isset($_GET['expired'])) {
     $error_message = 'Your session has expired. Please login again.';
     // Ensure we have a CSRF token for the form
     if (empty($_SESSION['csrf_token'])) {
-        IsotoneeSecurity::generateCSRFToken();
+        IsotoneSecurity::generateCSRFToken();
     }
 }
 
@@ -154,13 +156,13 @@ if (isset($_GET['error']) && $_GET['error'] === 'session_invalid') {
     $error_message = 'Your session was invalid. Please login again.';
     // Ensure we have a CSRF token for the form
     if (empty($_SESSION['csrf_token'])) {
-        IsotoneeSecurity::generateCSRFToken();
+        IsotoneSecurity::generateCSRFToken();
     }
 }
 
 // Final check: Always ensure CSRF token exists before displaying the form
 if (empty($_SESSION['csrf_token'])) {
-    IsotoneeSecurity::generateCSRFToken();
+    IsotoneSecurity::generateCSRFToken();
 }
 ?>
 <!DOCTYPE html>

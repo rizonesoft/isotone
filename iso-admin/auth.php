@@ -41,7 +41,7 @@ if (defined('DEBUG_MODE') && DEBUG_MODE) {
 require_once dirname(__DIR__) . '/iso-includes/class-security.php';
 
 // Configure secure session
-IsotoneeSecurity::secureSession();
+IsotoneSecurity::secureSession();
 
 // Check if user is logged in FIRST
 if (!isset($_SESSION['isotone_admin_logged_in']) || $_SESSION['isotone_admin_logged_in'] !== true) {
@@ -52,30 +52,16 @@ if (!isset($_SESSION['isotone_admin_logged_in']) || $_SESSION['isotone_admin_log
 }
 
 // Only validate fingerprint for logged-in users
-if (!IsotoneeSecurity::validateFingerprint()) {
+if (!IsotoneSecurity::validateFingerprint()) {
     // Possible session hijacking attempt
-    IsotoneeSecurity::logSecurityEvent('session_hijack_attempt', [
+    IsotoneSecurity::logSecurityEvent('session_hijack_attempt', [
         'session_id' => session_id(),
         'user' => $_SESSION['isotone_admin_user'] ?? 'unknown'
     ]);
     
-    // Preserve rate limiting data before destroying session
-    $preserved_data = [];
-    foreach ($_SESSION as $key => $value) {
-        if (strpos($key, 'login_attempts_') === 0) {
-            $preserved_data[$key] = $value;
-        }
-    }
-    
     // Destroy session
     session_unset();
     session_destroy();
-    
-    // Restart session and restore rate limiting
-    IsotoneeSecurity::secureSession();
-    foreach ($preserved_data as $key => $value) {
-        $_SESSION[$key] = $value;
-    }
     
     header('Location: /isotone/iso-admin/login.php?error=session_invalid');
     exit;
@@ -100,7 +86,7 @@ $session_keys_to_keep = [
 
 // Remove any keys not in the whitelist
 foreach ($_SESSION as $key => $value) {
-    if (!in_array($key, $session_keys_to_keep) && strpos($key, 'login_attempts_') !== 0) {
+    if (!in_array($key, $session_keys_to_keep)) {
         unset($_SESSION[$key]);
     }
 }
@@ -121,27 +107,13 @@ if (defined('MEMORY_LIMIT')) {
 // Check session timeout (2 hours)
 if (isset($_SESSION['isotone_admin_last_activity']) && (time() - $_SESSION['isotone_admin_last_activity'] > 7200)) {
     // Log timeout event
-    IsotoneeSecurity::logSecurityEvent('session_timeout', [
+    IsotoneSecurity::logSecurityEvent('session_timeout', [
         'user' => $_SESSION['isotone_admin_user'] ?? 'unknown'
     ]);
-    
-    // Preserve rate limiting data before destroying session
-    $preserved_data = [];
-    foreach ($_SESSION as $key => $value) {
-        if (strpos($key, 'login_attempts_') === 0) {
-            $preserved_data[$key] = $value;
-        }
-    }
     
     // Session expired
     session_unset();
     session_destroy();
-    
-    // Restart session and restore rate limiting
-    IsotoneeSecurity::secureSession();
-    foreach ($preserved_data as $key => $value) {
-        $_SESSION[$key] = $value;
-    }
     
     header('Location: /isotone/iso-admin/login.php?expired=1');
     exit;
@@ -168,7 +140,7 @@ function requireRole($role) {
     $user = new IsotoneUser();
     if (!$user->hasRole($current_user_id, $role)) {
         // Log unauthorized access attempt
-        IsotoneeSecurity::logSecurityEvent('unauthorized_access', [
+        IsotoneSecurity::logSecurityEvent('unauthorized_access', [
             'user_id' => $current_user_id,
             'required_role' => $role,
             'page' => $_SERVER['REQUEST_URI']
@@ -179,11 +151,15 @@ function requireRole($role) {
     }
 }
 
-// CSRF Protection for POST requests
+// CSRF Protection for POST requests (skip for API endpoints)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!iso_verify_csrf()) {
+    // Check if this is an API endpoint
+    $is_api = strpos($_SERVER['REQUEST_URI'], '/iso-admin/api/') !== false;
+    
+    // Only validate CSRF for non-API POST requests
+    if (!$is_api && !iso_verify_csrf()) {
         // Log CSRF failure
-        IsotoneeSecurity::logSecurityEvent('csrf_failure', [
+        IsotoneSecurity::logSecurityEvent('csrf_failure', [
             'user' => $current_user,
             'page' => $_SERVER['REQUEST_URI']
         ]);

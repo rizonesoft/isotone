@@ -1,8 +1,14 @@
-# Toni Overview
+---
+title: Toni AI Assistant Overview
+description: Introduction to Toni, Isotone's AI assistant powered by GPT-5 for intelligent content and site management
+tags: [toni, ai, assistant, gpt-5, automation, chatbot, content-generation]
+category: toni
+priority: 85
+last_updated: 2025-01-20
+status: draft
+---
 
-> **Category**: Toni AI Assistant  
-> **Last Updated**: 2025-08-18  
-> **Status**: Draft
+# Toni Overview
 
 ## Overview
 

@@ -48,7 +48,18 @@
         "analyse": "phpstan analyse iso-core --level=6",
         "check-style": "phpcs iso-core --standard=PSR12",
         "fix-style": "phpcbf iso-core --standard=PSR12",
+        "docs:check": "php iso-automation/cli.php docs:check",
+        "docs:update": "php iso-automation/cli.php docs:update",
+        "docs:index": "php iso-automation/cli.php docs:index",
+        "docs:lint": "php iso-automation/cli.php docs:lint",
+        "docs:build": "php iso-automation/cli.php docs:build",
+        "docs:html": "@docs:build",
         "docs:hooks": "php iso-automation/cli.php hooks:scan",
+        "docs:all": [
+            "@docs:update",
+            "@docs:hooks",
+            "@docs:index"
+        ],
         "hooks:docs": "@docs:hooks",
         "hooks:scan": "php iso-automation/cli.php hooks:scan",
         "ide:sync": "php iso-automation/cli.php sync:ide",

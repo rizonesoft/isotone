@@ -1,0 +1,4154 @@
+{
+    "C:\\xampp\\htdocs\\isotone/user-docs\\api-reference\\api-reference.md": {
+        "id": "fac593d01540a3bd419517ba0ebb9759",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\api-reference\\api-reference.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\api-reference\\api-reference",
+        "title": "Isotone Hooks API Reference",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Isotone Hooks API Reference",
+                "anchor": "isotone-hooks-api-reference"
+            },
+            {
+                "level": 2,
+                "text": "Overview",
+                "anchor": "overview"
+            },
+            {
+                "level": 2,
+                "text": "Actions",
+                "anchor": "actions"
+            },
+            {
+                "level": 3,
+                "text": "`test_action`",
+                "anchor": "testaction"
+            },
+            {
+                "level": 3,
+                "text": "`priority_test`",
+                "anchor": "prioritytest"
+            },
+            {
+                "level": 3,
+                "text": "`remove_test`",
+                "anchor": "removetest"
+            },
+            {
+                "level": 3,
+                "text": "`current_test`",
+                "anchor": "currenttest"
+            },
+            {
+                "level": 3,
+                "text": "`after_setup_theme`",
+                "anchor": "aftersetuptheme"
+            },
+            {
+                "level": 3,
+                "text": "`init`",
+                "anchor": "init"
+            },
+            {
+                "level": 3,
+                "text": "`iso_loaded`",
+                "anchor": "isoloaded"
+            },
+            {
+                "level": 3,
+                "text": "`template_redirect`",
+                "anchor": "templateredirect"
+            },
+            {
+                "level": 3,
+                "text": "`shutdown`",
+                "anchor": "shutdown"
+            },
+            {
+                "level": 3,
+                "text": "`iso_head`",
+                "anchor": "isohead"
+            },
+            {
+                "level": 3,
+                "text": "`iso_footer`",
+                "anchor": "isofooter"
+            },
+            {
+                "level": 3,
+                "text": "`iso_body_open`",
+                "anchor": "isobodyopen"
+            },
+            {
+                "level": 3,
+                "text": "`iso_enqueue_scripts`",
+                "anchor": "isoenqueuescripts"
+            },
+            {
+                "level": 3,
+                "text": "`widgets_init`",
+                "anchor": "widgetsinit"
+            },
+            {
+                "level": 3,
+                "text": "`isotone_head`",
+                "anchor": "isotonehead"
+            },
+            {
+                "level": 3,
+                "text": "`isotone_before_content`",
+                "anchor": "isotonebeforecontent"
+            },
+            {
+                "level": 3,
+                "text": "`isotone_after_content`",
+                "anchor": "isotoneaftercontent"
+            },
+            {
+                "level": 3,
+                "text": "`isotone_footer`",
+                "anchor": "isotonefooter"
+            },
+            {
+                "level": 3,
+                "text": "`hello_isotone_loaded`",
+                "anchor": "helloisotoneloaded"
+            },
+            {
+                "level": 2,
+                "text": "Filters",
+                "anchor": "filters"
+            },
+            {
+                "level": 3,
+                "text": "`test_filter`",
+                "anchor": "testfilter"
+            },
+            {
+                "level": 3,
+                "text": "`iso_enqueue_style`",
+                "anchor": "isoenqueuestyle"
+            },
+            {
+                "level": 3,
+                "text": "`iso_enqueue_script`",
+                "anchor": "isoenqueuescript"
+            }
+        ],
+        "modified": 1755362638,
+        "size": 4606
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\api-reference\\authentication.md": {
+        "id": "69da80496720519b129212ffdfea3b4a",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\api-reference\\authentication.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\api-reference\\authentication",
+        "title": "Authentication",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Authentication",
+                "anchor": "authentication"
+            },
+            {
+                "level": 2,
+                "text": "Overview",
+                "anchor": "overview"
+            },
+            {
+                "level": 2,
+                "text": "Examples",
+                "anchor": "examples"
+            },
+            {
+                "level": 2,
+                "text": "Best Practices",
+                "anchor": "best-practices"
+            },
+            {
+                "level": 2,
+                "text": "Troubleshooting",
+                "anchor": "troubleshooting"
+            },
+            {
+                "level": 2,
+                "text": "See Also",
+                "anchor": "see-also"
+            }
+        ],
+        "modified": 1755530165,
+        "size": 656
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\api-reference\\endpoints.md": {
+        "id": "0a45acabba513969b1bf6a4f3d90c5c0",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\api-reference\\endpoints.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\api-reference\\endpoints",
+        "title": "Endpoints",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Endpoints",
+                "anchor": "endpoints"
+            },
+            {
+                "level": 2,
+                "text": "Overview",
+                "anchor": "overview"
+            },
+            {
+                "level": 2,
+                "text": "Examples",
+                "anchor": "examples"
+            },
+            {
+                "level": 2,
+                "text": "Best Practices",
+                "anchor": "best-practices"
+            },
+            {
+                "level": 2,
+                "text": "Troubleshooting",
+                "anchor": "troubleshooting"
+            },
+            {
+                "level": 2,
+                "text": "See Also",
+                "anchor": "see-also"
+            }
+        ],
+        "modified": 1755700850,
+        "size": 870
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\api-reference\\overview.md": {
+        "id": "e5316c798bdf3c5131c6fefaaab139a5",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\api-reference\\overview.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\api-reference\\overview",
+        "title": "Overview",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Overview",
+                "anchor": "overview"
+            },
+            {
+                "level": 2,
+                "text": "Overview",
+                "anchor": "overview"
+            },
+            {
+                "level": 2,
+                "text": "Introduction",
+                "anchor": "introduction"
+            },
+            {
+                "level": 2,
+                "text": "Key Concepts",
+                "anchor": "key-concepts"
+            },
+            {
+                "level": 2,
+                "text": "Getting Started",
+                "anchor": "getting-started"
+            },
+            {
+                "level": 2,
+                "text": "Examples",
+                "anchor": "examples"
+            },
+            {
+                "level": 2,
+                "text": "Best Practices",
+                "anchor": "best-practices"
+            },
+            {
+                "level": 2,
+                "text": "Troubleshooting",
+                "anchor": "troubleshooting"
+            },
+            {
+                "level": 2,
+                "text": "See Also",
+                "anchor": "see-also"
+            }
+        ],
+        "modified": 1755530165,
+        "size": 813
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\api-reference\\theme-api.md": {
+        "id": "9d7f56b0b383638ed9eb96bf161db794",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\api-reference\\theme-api.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\api-reference\\theme-api",
+        "title": "Theme API Reference",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Theme API Reference",
+                "anchor": "theme-api-reference"
+            },
+            {
+                "level": 2,
+                "text": "Core Classes",
+                "anchor": "core-classes"
+            },
+            {
+                "level": 3,
+                "text": "ThemeAPI",
+                "anchor": "themeapi"
+            },
+            {
+                "level": 2,
+                "text": "Site Information",
+                "anchor": "site-information"
+            },
+            {
+                "level": 3,
+                "text": "bloginfo()",
+                "anchor": "bloginfo"
+            },
+            {
+                "level": 3,
+                "text": "get_bloginfo()",
+                "anchor": "getbloginfo"
+            },
+            {
+                "level": 3,
+                "text": "home_url()",
+                "anchor": "homeurl"
+            },
+            {
+                "level": 3,
+                "text": "get_template_directory_uri()",
+                "anchor": "gettemplatedirectoryuri"
+            },
+            {
+                "level": 2,
+                "text": "The Loop",
+                "anchor": "the-loop"
+            },
+            {
+                "level": 3,
+                "text": "have_posts()",
+                "anchor": "haveposts"
+            },
+            {
+                "level": 3,
+                "text": "the_post()",
+                "anchor": "thepost"
+            },
+            {
+                "level": 2,
+                "text": "Post Data",
+                "anchor": "post-data"
+            },
+            {
+                "level": 3,
+                "text": "the_title()",
+                "anchor": "thetitle"
+            },
+            {
+                "level": 3,
+                "text": "get_the_title()",
+                "anchor": "getthetitle"
+            },
+            {
+                "level": 3,
+                "text": "the_content()",
+                "anchor": "thecontent"
+            },
+            {
+                "level": 3,
+                "text": "the_excerpt()",
+                "anchor": "theexcerpt"
+            },
+            {
+                "level": 3,
+                "text": "the_permalink()",
+                "anchor": "thepermalink"
+            },
+            {
+                "level": 3,
+                "text": "the_date()",
+                "anchor": "thedate"
+            },
+            {
+                "level": 3,
+                "text": "the_author()",
+                "anchor": "theauthor"
+            },
+            {
+                "level": 2,
+                "text": "Conditional Tags",
+                "anchor": "conditional-tags"
+            },
+            {
+                "level": 3,
+                "text": "is_home()",
+                "anchor": "ishome"
+            },
+            {
+                "level": 3,
+                "text": "is_front_page()",
+                "anchor": "isfrontpage"
+            },
+            {
+                "level": 3,
+                "text": "is_single()",
+                "anchor": "issingle"
+            },
+            {
+                "level": 3,
+                "text": "is_page()",
+                "anchor": "ispage"
+            },
+            {
+                "level": 3,
+                "text": "is_archive()",
+                "anchor": "isarchive"
+            },
+            {
+                "level": 3,
+                "text": "is_404()",
+                "anchor": "is404"
+            },
+            {
+                "level": 2,
+                "text": "Template Functions",
+                "anchor": "template-functions"
+            },
+            {
+                "level": 3,
+                "text": "body_class()",
+                "anchor": "bodyclass"
+            },
+            {
+                "level": 3,
+                "text": "post_class()",
+                "anchor": "postclass"
+            },
+            {
+                "level": 3,
+                "text": "get_header()",
+                "anchor": "getheader"
+            },
+            {
+                "level": 3,
+                "text": "get_footer()",
+                "anchor": "getfooter"
+            },
+            {
+                "level": 3,
+                "text": "get_sidebar()",
+                "anchor": "getsidebar"
+            },
+            {
+                "level": 3,
+                "text": "get_template_part()",
+                "anchor": "gettemplatepart"
+            },
+            {
+                "level": 2,
+                "text": "Navigation",
+                "anchor": "navigation"
+            },
+            {
+                "level": 3,
+                "text": "wp_nav_menu()",
+                "anchor": "wpnavmenu"
+            },
+            {
+                "level": 3,
+                "text": "has_nav_menu()",
+                "anchor": "hasnavmenu"
+            },
+            {
+                "level": 2,
+                "text": "Theme Mods",
+                "anchor": "theme-mods"
+            },
+            {
+                "level": 3,
+                "text": "get_theme_mod()",
+                "anchor": "getthememod"
+            },
+            {
+                "level": 3,
+                "text": "set_theme_mod()",
+                "anchor": "setthememod"
+            },
+            {
+                "level": 2,
+                "text": "Escaping Functions",
+                "anchor": "escaping-functions"
+            },
+            {
+                "level": 3,
+                "text": "esc_html()",
+                "anchor": "eschtml"
+            },
+            {
+                "level": 3,
+                "text": "esc_attr()",
+                "anchor": "escattr"
+            },
+            {
+                "level": 3,
+                "text": "esc_url()",
+                "anchor": "escurl"
+            },
+            {
+                "level": 3,
+                "text": "esc_js()",
+                "anchor": "escjs"
+            },
+            {
+                "level": 2,
+                "text": "Utility Functions",
+                "anchor": "utility-functions"
+            },
+            {
+                "level": 3,
+                "text": "__()",
+                "anchor": ""
+            },
+            {
+                "level": 3,
+                "text": "_e()",
+                "anchor": "e"
+            },
+            {
+                "level": 3,
+                "text": "wp_kses()",
+                "anchor": "wpkses"
+            },
+            {
+                "level": 3,
+                "text": "wp_kses_post()",
+                "anchor": "wpksespost"
+            },
+            {
+                "level": 2,
+                "text": "Hooks Integration",
+                "anchor": "hooks-integration"
+            },
+            {
+                "level": 3,
+                "text": "Actions",
+                "anchor": "actions"
+            },
+            {
+                "level": 3,
+                "text": "Filters",
+                "anchor": "filters"
+            },
+            {
+                "level": 2,
+                "text": "Example Usage",
+                "anchor": "example-usage"
+            }
+        ],
+        "modified": 1755215711,
+        "size": 7232
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\automation\\automation-guide.md": {
+        "id": "3b62ca928243da9b281dd06c33945bbc",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\automation\\automation-guide.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\automation\\automation-guide",
+        "title": "Automation Guide",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Automation Guide",
+                "anchor": "automation-guide"
+            },
+            {
+                "level": 2,
+                "text": "Overview",
+                "anchor": "overview"
+            },
+            {
+                "level": 2,
+                "text": "Introduction",
+                "anchor": "introduction"
+            },
+            {
+                "level": 2,
+                "text": "Key Concepts",
+                "anchor": "key-concepts"
+            },
+            {
+                "level": 2,
+                "text": "Getting Started",
+                "anchor": "getting-started"
+            },
+            {
+                "level": 2,
+                "text": "Examples",
+                "anchor": "examples"
+            },
+            {
+                "level": 2,
+                "text": "Best Practices",
+                "anchor": "best-practices"
+            },
+            {
+                "level": 2,
+                "text": "Troubleshooting",
+                "anchor": "troubleshooting"
+            },
+            {
+                "level": 2,
+                "text": "See Also",
+                "anchor": "see-also"
+            }
+        ],
+        "modified": 1755530165,
+        "size": 801
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\automation\\rules.md": {
+        "id": "6808730b5c2cfa70c047c0b55e1763c8",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\automation\\rules.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\automation\\rules",
+        "title": "Rules",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Rules",
+                "anchor": "rules"
+            },
+            {
+                "level": 2,
+                "text": "Overview",
+                "anchor": "overview"
+            },
+            {
+                "level": 2,
+                "text": "Examples",
+                "anchor": "examples"
+            },
+            {
+                "level": 2,
+                "text": "Best Practices",
+                "anchor": "best-practices"
+            },
+            {
+                "level": 2,
+                "text": "Troubleshooting",
+                "anchor": "troubleshooting"
+            },
+            {
+                "level": 2,
+                "text": "See Also",
+                "anchor": "see-also"
+            }
+        ],
+        "modified": 1755700912,
+        "size": 856
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\automation\\workflows.md": {
+        "id": "9cd7670ee78fa95953adbf5946c30aa9",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\automation\\workflows.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\automation\\workflows",
+        "title": "Workflows",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Workflows",
+                "anchor": "workflows"
+            },
+            {
+                "level": 2,
+                "text": "Overview",
+                "anchor": "overview"
+            },
+            {
+                "level": 2,
+                "text": "Examples",
+                "anchor": "examples"
+            },
+            {
+                "level": 2,
+                "text": "Best Practices",
+                "anchor": "best-practices"
+            },
+            {
+                "level": 2,
+                "text": "Troubleshooting",
+                "anchor": "troubleshooting"
+            },
+            {
+                "level": 2,
+                "text": "See Also",
+                "anchor": "see-also"
+            }
+        ],
+        "modified": 1755530165,
+        "size": 644
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\configuration\\config-guide.md": {
+        "id": "a956edb709cd4cc2f516e62f37c1f1bc",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\configuration\\config-guide.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\configuration\\config-guide",
+        "title": "Isotone Configuration Guide",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Isotone Configuration Guide",
+                "anchor": "isotone-configuration-guide"
+            },
+            {
+                "level": 2,
+                "text": "Overview",
+                "anchor": "overview"
+            },
+            {
+                "level": 2,
+                "text": "\u26a0\ufe0f IMPORTANT: No .env Files",
+                "anchor": "important-no-env-files"
+            },
+            {
+                "level": 2,
+                "text": "Initial Setup",
+                "anchor": "initial-setup"
+            },
+            {
+                "level": 3,
+                "text": "1. Configuration File Location",
+                "anchor": "1-configuration-file-location"
+            },
+            {
+                "level": 3,
+                "text": "2. Required Database Settings",
+                "anchor": "2-required-database-settings"
+            },
+            {
+                "level": 2,
+                "text": "Configuration Sections",
+                "anchor": "configuration-sections"
+            },
+            {
+                "level": 3,
+                "text": "Database Configuration",
+                "anchor": "database-configuration"
+            },
+            {
+                "level": 4,
+                "text": "Special Note for WSL Users",
+                "anchor": "special-note-for-wsl-users"
+            },
+            {
+                "level": 3,
+                "text": "Application Settings",
+                "anchor": "application-settings"
+            },
+            {
+                "level": 3,
+                "text": "Security Settings",
+                "anchor": "security-settings"
+            },
+            {
+                "level": 3,
+                "text": "Developer Settings",
+                "anchor": "developer-settings"
+            },
+            {
+                "level": 3,
+                "text": "Memory Limit - Simple & Effective",
+                "anchor": "memory-limit---simple-effective"
+            },
+            {
+                "level": 4,
+                "text": "How It Works",
+                "anchor": "how-it-works"
+            },
+            {
+                "level": 4,
+                "text": "Why Enforce Limits?",
+                "anchor": "why-enforce-limits"
+            },
+            {
+                "level": 4,
+                "text": "Configuration Examples",
+                "anchor": "configuration-examples"
+            },
+            {
+                "level": 4,
+                "text": "What the Dashboard Shows",
+                "anchor": "what-the-dashboard-shows"
+            },
+            {
+                "level": 4,
+                "text": "Checking Applied Memory Limit",
+                "anchor": "checking-applied-memory-limit"
+            },
+            {
+                "level": 3,
+                "text": "Advanced Settings",
+                "anchor": "advanced-settings"
+            },
+            {
+                "level": 3,
+                "text": "Redis Configuration (Optional)",
+                "anchor": "redis-configuration-optional"
+            },
+            {
+                "level": 3,
+                "text": "Environment-Specific Configuration",
+                "anchor": "environment-specific-configuration"
+            },
+            {
+                "level": 2,
+                "text": "Example Configurations",
+                "anchor": "example-configurations"
+            },
+            {
+                "level": 3,
+                "text": "Local Development",
+                "anchor": "local-development"
+            },
+            {
+                "level": 3,
+                "text": "Shared Hosting",
+                "anchor": "shared-hosting"
+            },
+            {
+                "level": 3,
+                "text": "Production Server",
+                "anchor": "production-server"
+            },
+            {
+                "level": 2,
+                "text": "Security Best Practices",
+                "anchor": "security-best-practices"
+            },
+            {
+                "level": 3,
+                "text": "1. File Permissions",
+                "anchor": "1-file-permissions"
+            },
+            {
+                "level": 1,
+                "text": "Set secure permissions for config.php",
+                "anchor": "set-secure-permissions-for-configphp"
+            },
+            {
+                "level": 1,
+                "text": "Or slightly less restrictive if needed",
+                "anchor": "or-slightly-less-restrictive-if-needed"
+            },
+            {
+                "level": 3,
+                "text": "2. Version Control",
+                "anchor": "2-version-control"
+            },
+            {
+                "level": 3,
+                "text": "3. Backup Strategy",
+                "anchor": "3-backup-strategy"
+            },
+            {
+                "level": 3,
+                "text": "4. Security Keys",
+                "anchor": "4-security-keys"
+            },
+            {
+                "level": 2,
+                "text": "Troubleshooting",
+                "anchor": "troubleshooting"
+            },
+            {
+                "level": 3,
+                "text": "Database Connection Issues",
+                "anchor": "database-connection-issues"
+            },
+            {
+                "level": 3,
+                "text": "Memory Limit Issues",
+                "anchor": "memory-limit-issues"
+            },
+            {
+                "level": 3,
+                "text": "Configuration Not Loading",
+                "anchor": "configuration-not-loading"
+            },
+            {
+                "level": 2,
+                "text": "Configuration Variables Reference",
+                "anchor": "configuration-variables-reference"
+            },
+            {
+                "level": 2,
+                "text": "For Developers and LLMs",
+                "anchor": "for-developers-and-llms"
+            },
+            {
+                "level": 3,
+                "text": "\u26a0\ufe0f CRITICAL RULES",
+                "anchor": "critical-rules"
+            },
+            {
+                "level": 3,
+                "text": "Loading Configuration",
+                "anchor": "loading-configuration"
+            },
+            {
+                "level": 3,
+                "text": "Accessing Configuration Values",
+                "anchor": "accessing-configuration-values"
+            },
+            {
+                "level": 2,
+                "text": "Support",
+                "anchor": "support"
+            }
+        ],
+        "modified": 1755552071,
+        "size": 14267
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\configuration\\database.md": {
+        "id": "0c4f5fa896448b64bdf93f9d9461e1f4",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\configuration\\database.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\configuration\\database",
+        "title": "Database Connection Guide",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Database Connection Guide",
+                "anchor": "database-connection-guide"
+            },
+            {
+                "level": 2,
+                "text": "Application Database Connection",
+                "anchor": "application-database-connection"
+            },
+            {
+                "level": 3,
+                "text": "Web Context (Browser)",
+                "anchor": "web-context-browser"
+            },
+            {
+                "level": 3,
+                "text": "CLI Context (WSL)",
+                "anchor": "cli-context-wsl"
+            },
+            {
+                "level": 2,
+                "text": "IDE/Database Client Configuration",
+                "anchor": "idedatabase-client-configuration"
+            },
+            {
+                "level": 3,
+                "text": "For IDEs and Database Clients (PhpStorm, VSCode, DBeaver, etc.)",
+                "anchor": "for-ides-and-database-clients-phpstorm-vscode-dbeaver-etc"
+            },
+            {
+                "level": 3,
+                "text": "Connection Methods by Tool",
+                "anchor": "connection-methods-by-tool"
+            },
+            {
+                "level": 4,
+                "text": "PhpStorm / IntelliJ IDEA",
+                "anchor": "phpstorm-intellij-idea"
+            },
+            {
+                "level": 4,
+                "text": "Visual Studio Code (MySQL Extension)",
+                "anchor": "visual-studio-code-mysql-extension"
+            },
+            {
+                "level": 4,
+                "text": "DBeaver",
+                "anchor": "dbeaver"
+            },
+            {
+                "level": 4,
+                "text": "MySQL Workbench",
+                "anchor": "mysql-workbench"
+            },
+            {
+                "level": 4,
+                "text": "TablePlus",
+                "anchor": "tableplus"
+            },
+            {
+                "level": 4,
+                "text": "HeidiSQL (comes with XAMPP)",
+                "anchor": "heidisql-comes-with-xampp"
+            },
+            {
+                "level": 3,
+                "text": "Command Line Access",
+                "anchor": "command-line-access"
+            },
+            {
+                "level": 4,
+                "text": "From Windows (XAMPP)",
+                "anchor": "from-windows-xampp"
+            },
+            {
+                "level": 1,
+                "text": "Press Enter when prompted for password (empty)",
+                "anchor": "press-enter-when-prompted-for-password-empty"
+            },
+            {
+                "level": 4,
+                "text": "From WSL",
+                "anchor": "from-wsl"
+            },
+            {
+                "level": 1,
+                "text": "If mysql client is installed in WSL",
+                "anchor": "if-mysql-client-is-installed-in-wsl"
+            },
+            {
+                "level": 1,
+                "text": "Press Enter when prompted for password",
+                "anchor": "press-enter-when-prompted-for-password"
+            },
+            {
+                "level": 2,
+                "text": "How It Works (Technical Details)",
+                "anchor": "how-it-works-technical-details"
+            },
+            {
+                "level": 2,
+                "text": "Environment Variables (.env)",
+                "anchor": "environment-variables-env"
+            },
+            {
+                "level": 2,
+                "text": "Troubleshooting",
+                "anchor": "troubleshooting"
+            },
+            {
+                "level": 3,
+                "text": "IDE Can't Connect",
+                "anchor": "ide-cant-connect"
+            },
+            {
+                "level": 3,
+                "text": "Application Can't Connect",
+                "anchor": "application-cant-connect"
+            },
+            {
+                "level": 3,
+                "text": "WSL CLI Can't Connect",
+                "anchor": "wsl-cli-cant-connect"
+            },
+            {
+                "level": 2,
+                "text": "Database Schema",
+                "anchor": "database-schema"
+            },
+            {
+                "level": 3,
+                "text": "Table Structure",
+                "anchor": "table-structure"
+            },
+            {
+                "level": 2,
+                "text": "RedBeanPHP ORM",
+                "anchor": "redbeanphp-orm"
+            },
+            {
+                "level": 2,
+                "text": "Best Practices",
+                "anchor": "best-practices"
+            },
+            {
+                "level": 2,
+                "text": "Quick Reference Card",
+                "anchor": "quick-reference-card"
+            }
+        ],
+        "modified": 1755357977,
+        "size": 6092
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\configuration\\environment.md": {
+        "id": "a907be456d828d9a622c7f050e2bec8d",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\configuration\\environment.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\configuration\\environment",
+        "title": "Environment",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Environment",
+                "anchor": "environment"
+            },
+            {
+                "level": 2,
+                "text": "Overview",
+                "anchor": "overview"
+            },
+            {
+                "level": 2,
+                "text": "Examples",
+                "anchor": "examples"
+            },
+            {
+                "level": 2,
+                "text": "Best Practices",
+                "anchor": "best-practices"
+            },
+            {
+                "level": 2,
+                "text": "Troubleshooting",
+                "anchor": "troubleshooting"
+            },
+            {
+                "level": 2,
+                "text": "See Also",
+                "anchor": "see-also"
+            }
+        ],
+        "modified": 1755530165,
+        "size": 672
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\development\\api-reference.md": {
+        "id": "f33dde2e69b288bdabbce918ef719609",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\development\\api-reference.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\development\\api-reference",
+        "title": "Isotone Hooks API Reference",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Isotone Hooks API Reference",
+                "anchor": "isotone-hooks-api-reference"
+            },
+            {
+                "level": 2,
+                "text": "Overview",
+                "anchor": "overview"
+            },
+            {
+                "level": 2,
+                "text": "Actions",
+                "anchor": "actions"
+            },
+            {
+                "level": 3,
+                "text": "`after_setup_theme`",
+                "anchor": "aftersetuptheme"
+            },
+            {
+                "level": 3,
+                "text": "`init`",
+                "anchor": "init"
+            },
+            {
+                "level": 3,
+                "text": "`widgets_init`",
+                "anchor": "widgetsinit"
+            },
+            {
+                "level": 3,
+                "text": "`iso_enqueue_scripts`",
+                "anchor": "isoenqueuescripts"
+            },
+            {
+                "level": 3,
+                "text": "`isotone_head`",
+                "anchor": "isotonehead"
+            },
+            {
+                "level": 3,
+                "text": "`isotone_before_content`",
+                "anchor": "isotonebeforecontent"
+            },
+            {
+                "level": 3,
+                "text": "`isotone_after_content`",
+                "anchor": "isotoneaftercontent"
+            },
+            {
+                "level": 3,
+                "text": "`isotone_footer`",
+                "anchor": "isotonefooter"
+            },
+            {
+                "level": 3,
+                "text": "`iso_body_open`",
+                "anchor": "isobodyopen"
+            },
+            {
+                "level": 3,
+                "text": "`hello_isotone_loaded`",
+                "anchor": "helloisotoneloaded"
+            }
+        ],
+        "modified": 1755537272,
+        "size": 2245
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\development\\architecture.md": {
+        "id": "89a09664ed9882d81ca61af1574b52fb",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\development\\architecture.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\development\\architecture",
+        "title": "Isotone Architecture",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Isotone Architecture",
+                "anchor": "isotone-architecture"
+            },
+            {
+                "level": 2,
+                "text": "Overview",
+                "anchor": "overview"
+            },
+            {
+                "level": 2,
+                "text": "Architecture Pattern",
+                "anchor": "architecture-pattern"
+            },
+            {
+                "level": 3,
+                "text": "Not MVC",
+                "anchor": "not-mvc"
+            },
+            {
+                "level": 3,
+                "text": "Core Components",
+                "anchor": "core-components"
+            },
+            {
+                "level": 2,
+                "text": "Architectural Decisions",
+                "anchor": "architectural-decisions"
+            },
+            {
+                "level": 3,
+                "text": "1. Service-Oriented Business Logic",
+                "anchor": "1-service-oriented-business-logic"
+            },
+            {
+                "level": 3,
+                "text": "2. Direct Page Routing",
+                "anchor": "2-direct-page-routing"
+            },
+            {
+                "level": 3,
+                "text": "3. RedBeanPHP Active Record",
+                "anchor": "3-redbeanphp-active-record"
+            },
+            {
+                "level": 3,
+                "text": "4. WordPress-Style Hooks System",
+                "anchor": "4-wordpress-style-hooks-system"
+            },
+            {
+                "level": 3,
+                "text": "5. Template-Based UI",
+                "anchor": "5-template-based-ui"
+            },
+            {
+                "level": 2,
+                "text": "Data Flow",
+                "anchor": "data-flow"
+            },
+            {
+                "level": 3,
+                "text": "Request Lifecycle",
+                "anchor": "request-lifecycle"
+            },
+            {
+                "level": 3,
+                "text": "Example Flow: Settings Page",
+                "anchor": "example-flow-settings-page"
+            },
+            {
+                "level": 2,
+                "text": "Design Principles",
+                "anchor": "design-principles"
+            },
+            {
+                "level": 3,
+                "text": "1. Simplicity First",
+                "anchor": "1-simplicity-first"
+            },
+            {
+                "level": 3,
+                "text": "2. Shared Hosting Compatible",
+                "anchor": "2-shared-hosting-compatible"
+            },
+            {
+                "level": 3,
+                "text": "3. Progressive Enhancement",
+                "anchor": "3-progressive-enhancement"
+            },
+            {
+                "level": 3,
+                "text": "4. Extensible but Stable",
+                "anchor": "4-extensible-but-stable"
+            },
+            {
+                "level": 2,
+                "text": "File Organization",
+                "anchor": "file-organization"
+            },
+            {
+                "level": 3,
+                "text": "Application Code (`/iso-core/`)",
+                "anchor": "application-code-iso-core"
+            },
+            {
+                "level": 3,
+                "text": "Admin Interface (`/iso-admin/`)",
+                "anchor": "admin-interface-iso-admin"
+            },
+            {
+                "level": 3,
+                "text": "Content & Extensions (`/iso-content/`)",
+                "anchor": "content-extensions-iso-content"
+            },
+            {
+                "level": 3,
+                "text": "Shared Resources (`/iso-includes/`)",
+                "anchor": "shared-resources-iso-includes"
+            },
+            {
+                "level": 2,
+                "text": "Comparison with MVC",
+                "anchor": "comparison-with-mvc"
+            },
+            {
+                "level": 2,
+                "text": "Benefits of This Architecture",
+                "anchor": "benefits-of-this-architecture"
+            },
+            {
+                "level": 3,
+                "text": "For Developers",
+                "anchor": "for-developers"
+            },
+            {
+                "level": 3,
+                "text": "For Hosting",
+                "anchor": "for-hosting"
+            },
+            {
+                "level": 3,
+                "text": "For Maintenance",
+                "anchor": "for-maintenance"
+            },
+            {
+                "level": 2,
+                "text": "Security Considerations",
+                "anchor": "security-considerations"
+            },
+            {
+                "level": 3,
+                "text": "Authentication",
+                "anchor": "authentication"
+            },
+            {
+                "level": 3,
+                "text": "Database",
+                "anchor": "database"
+            },
+            {
+                "level": 3,
+                "text": "File Access",
+                "anchor": "file-access"
+            },
+            {
+                "level": 2,
+                "text": "Performance Optimizations",
+                "anchor": "performance-optimizations"
+            },
+            {
+                "level": 3,
+                "text": "Caching Strategy",
+                "anchor": "caching-strategy"
+            },
+            {
+                "level": 3,
+                "text": "Lazy Loading",
+                "anchor": "lazy-loading"
+            },
+            {
+                "level": 2,
+                "text": "Future Considerations",
+                "anchor": "future-considerations"
+            },
+            {
+                "level": 2,
+                "text": "Conclusion",
+                "anchor": "conclusion"
+            }
+        ],
+        "modified": 1755700794,
+        "size": 8184
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\development\\bean-database-guide.md": {
+        "id": "c02d2aabb8917f6656ac5c843c047223",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\development\\bean-database-guide.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\development\\bean-database-guide",
+        "title": "RedBeanPHP Database Guide for Isotone Developers",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "RedBeanPHP Database Guide for Isotone Developers",
+                "anchor": "redbeanphp-database-guide-for-isotone-developers"
+            },
+            {
+                "level": 2,
+                "text": "Table of Contents",
+                "anchor": "table-of-contents"
+            },
+            {
+                "level": 2,
+                "text": "Introduction",
+                "anchor": "introduction"
+            },
+            {
+                "level": 3,
+                "text": "Key Benefits for Developers",
+                "anchor": "key-benefits-for-developers"
+            },
+            {
+                "level": 3,
+                "text": "RedBeanPHP Version",
+                "anchor": "redbeanphp-version"
+            },
+            {
+                "level": 2,
+                "text": "Getting Started",
+                "anchor": "getting-started"
+            },
+            {
+                "level": 3,
+                "text": "Accessing RedBeanPHP in Isotone",
+                "anchor": "accessing-redbeanphp-in-isotone"
+            },
+            {
+                "level": 3,
+                "text": "Understanding Beans",
+                "anchor": "understanding-beans"
+            },
+            {
+                "level": 2,
+                "text": "Basic CRUD Operations",
+                "anchor": "basic-crud-operations"
+            },
+            {
+                "level": 3,
+                "text": "Create (INSERT)",
+                "anchor": "create-insert"
+            },
+            {
+                "level": 3,
+                "text": "Read (SELECT)",
+                "anchor": "read-select"
+            },
+            {
+                "level": 3,
+                "text": "Update",
+                "anchor": "update"
+            },
+            {
+                "level": 3,
+                "text": "Delete",
+                "anchor": "delete"
+            },
+            {
+                "level": 2,
+                "text": "Finding and Querying Beans",
+                "anchor": "finding-and-querying-beans"
+            },
+            {
+                "level": 3,
+                "text": "Finding Single Records",
+                "anchor": "finding-single-records"
+            },
+            {
+                "level": 3,
+                "text": "Finding Multiple Records",
+                "anchor": "finding-multiple-records"
+            },
+            {
+                "level": 3,
+                "text": "Counting Records",
+                "anchor": "counting-records"
+            },
+            {
+                "level": 3,
+                "text": "Using SQL Queries",
+                "anchor": "using-sql-queries"
+            },
+            {
+                "level": 2,
+                "text": "Relationships",
+                "anchor": "relationships"
+            },
+            {
+                "level": 3,
+                "text": "One-to-Many (Parent owns Children)",
+                "anchor": "one-to-many-parent-owns-children"
+            },
+            {
+                "level": 3,
+                "text": "Many-to-One (Child belongs to Parent)",
+                "anchor": "many-to-one-child-belongs-to-parent"
+            },
+            {
+                "level": 3,
+                "text": "Many-to-Many (Shared relationships)",
+                "anchor": "many-to-many-shared-relationships"
+            },
+            {
+                "level": 3,
+                "text": "Eager Loading (Preloading relationships)",
+                "anchor": "eager-loading-preloading-relationships"
+            },
+            {
+                "level": 2,
+                "text": "Advanced Features",
+                "anchor": "advanced-features"
+            },
+            {
+                "level": 3,
+                "text": "Transactions",
+                "anchor": "transactions"
+            },
+            {
+                "level": 3,
+                "text": "Bean Validation with FUSE",
+                "anchor": "bean-validation-with-fuse"
+            },
+            {
+                "level": 3,
+                "text": "Duplicate Beans",
+                "anchor": "duplicate-beans"
+            },
+            {
+                "level": 3,
+                "text": "Export/Import",
+                "anchor": "exportimport"
+            },
+            {
+                "level": 3,
+                "text": "Fluid vs Frozen Mode",
+                "anchor": "fluid-vs-frozen-mode"
+            },
+            {
+                "level": 2,
+                "text": "Best Practices for Isotone",
+                "anchor": "best-practices-for-isotone"
+            },
+            {
+                "level": 3,
+                "text": "1. Use Isotone's Database Connection",
+                "anchor": "1-use-isotones-database-connection"
+            },
+            {
+                "level": 3,
+                "text": "2. Follow Naming Conventions",
+                "anchor": "2-follow-naming-conventions"
+            },
+            {
+                "level": 3,
+                "text": "3. Always Validate Input",
+                "anchor": "3-always-validate-input"
+            },
+            {
+                "level": 3,
+                "text": "4. Use Transactions for Critical Operations",
+                "anchor": "4-use-transactions-for-critical-operations"
+            },
+            {
+                "level": 2,
+                "text": "Security Considerations",
+                "anchor": "security-considerations"
+            },
+            {
+                "level": 3,
+                "text": "1. Automatic SQL Injection Protection",
+                "anchor": "1-automatic-sql-injection-protection"
+            },
+            {
+                "level": 3,
+                "text": "2. Never Use Unescaped SQL",
+                "anchor": "2-never-use-unescaped-sql"
+            },
+            {
+                "level": 3,
+                "text": "3. Validate Permissions",
+                "anchor": "3-validate-permissions"
+            },
+            {
+                "level": 2,
+                "text": "Plugin Development Examples",
+                "anchor": "plugin-development-examples"
+            },
+            {
+                "level": 3,
+                "text": "Example 1: Contact Form Plugin",
+                "anchor": "example-1-contact-form-plugin"
+            },
+            {
+                "level": 3,
+                "text": "Example 2: Custom Analytics Plugin",
+                "anchor": "example-2-custom-analytics-plugin"
+            },
+            {
+                "level": 2,
+                "text": "Theme Development Examples",
+                "anchor": "theme-development-examples"
+            },
+            {
+                "level": 3,
+                "text": "Example: Theme Settings Manager",
+                "anchor": "example-theme-settings-manager"
+            },
+            {
+                "level": 2,
+                "text": "Common Patterns and Solutions",
+                "anchor": "common-patterns-and-solutions"
+            },
+            {
+                "level": 3,
+                "text": "Pagination",
+                "anchor": "pagination"
+            },
+            {
+                "level": 3,
+                "text": "Search Implementation",
+                "anchor": "search-implementation"
+            },
+            {
+                "level": 3,
+                "text": "Caching with RedBeanPHP",
+                "anchor": "caching-with-redbeanphp"
+            },
+            {
+                "level": 2,
+                "text": "Troubleshooting",
+                "anchor": "troubleshooting"
+            },
+            {
+                "level": 3,
+                "text": "Common Issues and Solutions",
+                "anchor": "common-issues-and-solutions"
+            },
+            {
+                "level": 2,
+                "text": "Conclusion",
+                "anchor": "conclusion"
+            },
+            {
+                "level": 3,
+                "text": "Key Takeaways",
+                "anchor": "key-takeaways"
+            },
+            {
+                "level": 3,
+                "text": "Additional Resources",
+                "anchor": "additional-resources"
+            }
+        ],
+        "modified": 1755700835,
+        "size": 32991
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\development\\commands.md": {
+        "id": "5ea4c3a62eb74b85a50f3346f14ebef7",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\development\\commands.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\development\\commands",
+        "title": "Isotone CLI Commands Reference",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Isotone CLI Commands Reference",
+                "anchor": "isotone-cli-commands-reference"
+            },
+            {
+                "level": 2,
+                "text": "Table of Contents",
+                "anchor": "table-of-contents"
+            },
+            {
+                "level": 2,
+                "text": "Isotone Core CLI",
+                "anchor": "isotone-core-cli"
+            },
+            {
+                "level": 3,
+                "text": "Version Management",
+                "anchor": "version-management"
+            },
+            {
+                "level": 3,
+                "text": "Database Commands",
+                "anchor": "database-commands"
+            },
+            {
+                "level": 3,
+                "text": "Hooks Commands",
+                "anchor": "hooks-commands"
+            },
+            {
+                "level": 2,
+                "text": "Automation CLI",
+                "anchor": "automation-cli"
+            },
+            {
+                "level": 3,
+                "text": "Documentation Commands",
+                "anchor": "documentation-commands"
+            },
+            {
+                "level": 3,
+                "text": "Rules Management Commands",
+                "anchor": "rules-management-commands"
+            },
+            {
+                "level": 3,
+                "text": "Tailwind CSS Commands",
+                "anchor": "tailwind-css-commands"
+            },
+            {
+                "level": 3,
+                "text": "System Commands",
+                "anchor": "system-commands"
+            },
+            {
+                "level": 3,
+                "text": "Options",
+                "anchor": "options"
+            },
+            {
+                "level": 3,
+                "text": "Examples",
+                "anchor": "examples"
+            },
+            {
+                "level": 1,
+                "text": "Check documentation",
+                "anchor": "check-documentation"
+            },
+            {
+                "level": 1,
+                "text": "Update documentation quietly",
+                "anchor": "update-documentation-quietly"
+            },
+            {
+                "level": 1,
+                "text": "Export rules as markdown",
+                "anchor": "export-rules-as-markdown"
+            },
+            {
+                "level": 1,
+                "text": "Search for database rules",
+                "anchor": "search-for-database-rules"
+            },
+            {
+                "level": 1,
+                "text": "Build Tailwind CSS",
+                "anchor": "build-tailwind-css"
+            },
+            {
+                "level": 2,
+                "text": "Composer Scripts",
+                "anchor": "composer-scripts"
+            },
+            {
+                "level": 3,
+                "text": "Testing & Quality",
+                "anchor": "testing-quality"
+            },
+            {
+                "level": 3,
+                "text": "Documentation",
+                "anchor": "documentation"
+            },
+            {
+                "level": 3,
+                "text": "Tailwind CSS Build",
+                "anchor": "tailwind-css-build"
+            },
+            {
+                "level": 3,
+                "text": "Version Management",
+                "anchor": "version-management"
+            },
+            {
+                "level": 3,
+                "text": "IDE Integration",
+                "anchor": "ide-integration"
+            },
+            {
+                "level": 2,
+                "text": "Quick Reference",
+                "anchor": "quick-reference"
+            },
+            {
+                "level": 3,
+                "text": "Most Common Commands",
+                "anchor": "most-common-commands"
+            },
+            {
+                "level": 1,
+                "text": "Development workflow",
+                "anchor": "development-workflow"
+            },
+            {
+                "level": 1,
+                "text": "Automation",
+                "anchor": "automation"
+            },
+            {
+                "level": 1,
+                "text": "Version management",
+                "anchor": "version-management"
+            },
+            {
+                "level": 3,
+                "text": "Command Execution Locations",
+                "anchor": "command-execution-locations"
+            },
+            {
+                "level": 3,
+                "text": "Notes",
+                "anchor": "notes"
+            },
+            {
+                "level": 2,
+                "text": "Automation Dashboard",
+                "anchor": "automation-dashboard"
+            },
+            {
+                "level": 2,
+                "text": "Troubleshooting",
+                "anchor": "troubleshooting"
+            },
+            {
+                "level": 3,
+                "text": "Command Not Found",
+                "anchor": "command-not-found"
+            },
+            {
+                "level": 3,
+                "text": "Permission Errors",
+                "anchor": "permission-errors"
+            },
+            {
+                "level": 3,
+                "text": "Build Errors",
+                "anchor": "build-errors"
+            },
+            {
+                "level": 2,
+                "text": "Composer Commands",
+                "anchor": "composer-commands"
+            },
+            {
+                "level": 3,
+                "text": "Testing",
+                "anchor": "testing"
+            },
+            {
+                "level": 4,
+                "text": "`composer test`",
+                "anchor": "composer-test"
+            },
+            {
+                "level": 4,
+                "text": "`composer test:unit`",
+                "anchor": "composer-testunit"
+            },
+            {
+                "level": 4,
+                "text": "`composer test:integration`",
+                "anchor": "composer-testintegration"
+            },
+            {
+                "level": 4,
+                "text": "`composer analyse`",
+                "anchor": "composer-analyse"
+            },
+            {
+                "level": 4,
+                "text": "`composer check-style`",
+                "anchor": "composer-check-style"
+            },
+            {
+                "level": 4,
+                "text": "`composer fix-style`",
+                "anchor": "composer-fix-style"
+            },
+            {
+                "level": 3,
+                "text": "Documentation",
+                "anchor": "documentation"
+            },
+            {
+                "level": 4,
+                "text": "`composer docs:check`",
+                "anchor": "composer-docscheck"
+            },
+            {
+                "level": 4,
+                "text": "`composer docs:update`",
+                "anchor": "composer-docsupdate"
+            },
+            {
+                "level": 4,
+                "text": "`composer docs:hooks`",
+                "anchor": "composer-docshooks"
+            },
+            {
+                "level": 4,
+                "text": "`composer docs:all`",
+                "anchor": "composer-docsall"
+            },
+            {
+                "level": 4,
+                "text": "`composer hooks:docs`",
+                "anchor": "composer-hooksdocs"
+            },
+            {
+                "level": 4,
+                "text": "`composer hooks:scan`",
+                "anchor": "composer-hooksscan"
+            },
+            {
+                "level": 3,
+                "text": "IDE & Development",
+                "anchor": "ide-development"
+            },
+            {
+                "level": 4,
+                "text": "`composer ide:sync`",
+                "anchor": "composer-idesync"
+            },
+            {
+                "level": 4,
+                "text": "`composer validate:rules`",
+                "anchor": "composer-validaterules"
+            },
+            {
+                "level": 3,
+                "text": "Version Management",
+                "anchor": "version-management"
+            },
+            {
+                "level": 4,
+                "text": "`composer version:patch`",
+                "anchor": "composer-versionpatch"
+            },
+            {
+                "level": 4,
+                "text": "`composer version:minor`",
+                "anchor": "composer-versionminor"
+            },
+            {
+                "level": 4,
+                "text": "`composer version:major`",
+                "anchor": "composer-versionmajor"
+            },
+            {
+                "level": 3,
+                "text": "Other",
+                "anchor": "other"
+            },
+            {
+                "level": 4,
+                "text": "`composer pre-commit`",
+                "anchor": "composer-pre-commit"
+            },
+            {
+                "level": 3,
+                "text": "Tailwind CSS",
+                "anchor": "tailwind-css"
+            },
+            {
+                "level": 4,
+                "text": "`composer tailwind:build`",
+                "anchor": "composer-tailwindbuild"
+            },
+            {
+                "level": 4,
+                "text": "`composer tailwind:watch`",
+                "anchor": "composer-tailwindwatch"
+            },
+            {
+                "level": 4,
+                "text": "`composer tailwind:minify`",
+                "anchor": "composer-tailwindminify"
+            },
+            {
+                "level": 4,
+                "text": "`composer tailwind:install`",
+                "anchor": "composer-tailwindinstall"
+            },
+            {
+                "level": 4,
+                "text": "`composer tailwind:update`",
+                "anchor": "composer-tailwindupdate"
+            },
+            {
+                "level": 4,
+                "text": "`composer tailwind:status`",
+                "anchor": "composer-tailwindstatus"
+            },
+            {
+                "level": 2,
+                "text": "Testing",
+                "anchor": "testing"
+            },
+            {
+                "level": 4,
+                "text": "`composer test`",
+                "anchor": "composer-test"
+            },
+            {
+                "level": 4,
+                "text": "`composer test:unit`",
+                "anchor": "composer-testunit"
+            },
+            {
+                "level": 4,
+                "text": "`composer test:integration`",
+                "anchor": "composer-testintegration"
+            },
+            {
+                "level": 4,
+                "text": "`composer analyse`",
+                "anchor": "composer-analyse"
+            },
+            {
+                "level": 4,
+                "text": "`composer check-style`",
+                "anchor": "composer-check-style"
+            },
+            {
+                "level": 4,
+                "text": "`composer fix-style`",
+                "anchor": "composer-fix-style"
+            },
+            {
+                "level": 3,
+                "text": "Documentation",
+                "anchor": "documentation"
+            },
+            {
+                "level": 4,
+                "text": "`composer docs:check`",
+                "anchor": "composer-docscheck"
+            },
+            {
+                "level": 4,
+                "text": "`composer docs:update`",
+                "anchor": "composer-docsupdate"
+            },
+            {
+                "level": 4,
+                "text": "`composer docs:hooks`",
+                "anchor": "composer-docshooks"
+            },
+            {
+                "level": 4,
+                "text": "`composer docs:all`",
+                "anchor": "composer-docsall"
+            },
+            {
+                "level": 4,
+                "text": "`composer hooks:docs`",
+                "anchor": "composer-hooksdocs"
+            },
+            {
+                "level": 4,
+                "text": "`composer hooks:scan`",
+                "anchor": "composer-hooksscan"
+            },
+            {
+                "level": 3,
+                "text": "IDE & Development",
+                "anchor": "ide-development"
+            },
+            {
+                "level": 4,
+                "text": "`composer ide:sync`",
+                "anchor": "composer-idesync"
+            },
+            {
+                "level": 4,
+                "text": "`composer validate:rules`",
+                "anchor": "composer-validaterules"
+            },
+            {
+                "level": 3,
+                "text": "Version Management",
+                "anchor": "version-management"
+            },
+            {
+                "level": 4,
+                "text": "`composer version:patch`",
+                "anchor": "composer-versionpatch"
+            },
+            {
+                "level": 4,
+                "text": "`composer version:minor`",
+                "anchor": "composer-versionminor"
+            },
+            {
+                "level": 4,
+                "text": "`composer version:major`",
+                "anchor": "composer-versionmajor"
+            },
+            {
+                "level": 3,
+                "text": "Other",
+                "anchor": "other"
+            },
+            {
+                "level": 4,
+                "text": "`composer pre-commit`",
+                "anchor": "composer-pre-commit"
+            },
+            {
+                "level": 3,
+                "text": "Tailwind CSS",
+                "anchor": "tailwind-css"
+            },
+            {
+                "level": 4,
+                "text": "`composer tailwind:build`",
+                "anchor": "composer-tailwindbuild"
+            },
+            {
+                "level": 4,
+                "text": "`composer tailwind:watch`",
+                "anchor": "composer-tailwindwatch"
+            },
+            {
+                "level": 4,
+                "text": "`composer tailwind:minify`",
+                "anchor": "composer-tailwindminify"
+            },
+            {
+                "level": 4,
+                "text": "`composer tailwind:install`",
+                "anchor": "composer-tailwindinstall"
+            },
+            {
+                "level": 4,
+                "text": "`composer tailwind:update`",
+                "anchor": "composer-tailwindupdate"
+            },
+            {
+                "level": 4,
+                "text": "`composer tailwind:status`",
+                "anchor": "composer-tailwindstatus"
+            },
+            {
+                "level": 2,
+                "text": "Testing",
+                "anchor": "testing"
+            },
+            {
+                "level": 4,
+                "text": "`composer test`",
+                "anchor": "composer-test"
+            },
+            {
+                "level": 4,
+                "text": "`composer test:unit`",
+                "anchor": "composer-testunit"
+            },
+            {
+                "level": 4,
+                "text": "`composer test:integration`",
+                "anchor": "composer-testintegration"
+            },
+            {
+                "level": 4,
+                "text": "`composer analyse`",
+                "anchor": "composer-analyse"
+            },
+            {
+                "level": 4,
+                "text": "`composer check-style`",
+                "anchor": "composer-check-style"
+            },
+            {
+                "level": 4,
+                "text": "`composer fix-style`",
+                "anchor": "composer-fix-style"
+            },
+            {
+                "level": 3,
+                "text": "Documentation",
+                "anchor": "documentation"
+            },
+            {
+                "level": 4,
+                "text": "`composer docs:check`",
+                "anchor": "composer-docscheck"
+            },
+            {
+                "level": 4,
+                "text": "`composer docs:update`",
+                "anchor": "composer-docsupdate"
+            },
+            {
+                "level": 4,
+                "text": "`composer docs:hooks`",
+                "anchor": "composer-docshooks"
+            },
+            {
+                "level": 4,
+                "text": "`composer docs:all`",
+                "anchor": "composer-docsall"
+            },
+            {
+                "level": 4,
+                "text": "`composer hooks:docs`",
+                "anchor": "composer-hooksdocs"
+            },
+            {
+                "level": 4,
+                "text": "`composer hooks:scan`",
+                "anchor": "composer-hooksscan"
+            },
+            {
+                "level": 3,
+                "text": "IDE & Development",
+                "anchor": "ide-development"
+            },
+            {
+                "level": 4,
+                "text": "`composer ide:sync`",
+                "anchor": "composer-idesync"
+            },
+            {
+                "level": 4,
+                "text": "`composer validate:rules`",
+                "anchor": "composer-validaterules"
+            },
+            {
+                "level": 3,
+                "text": "Version Management",
+                "anchor": "version-management"
+            },
+            {
+                "level": 4,
+                "text": "`composer version:patch`",
+                "anchor": "composer-versionpatch"
+            },
+            {
+                "level": 4,
+                "text": "`composer version:minor`",
+                "anchor": "composer-versionminor"
+            },
+            {
+                "level": 4,
+                "text": "`composer version:major`",
+                "anchor": "composer-versionmajor"
+            },
+            {
+                "level": 3,
+                "text": "Other",
+                "anchor": "other"
+            },
+            {
+                "level": 4,
+                "text": "`composer pre-commit`",
+                "anchor": "composer-pre-commit"
+            },
+            {
+                "level": 3,
+                "text": "Tailwind CSS",
+                "anchor": "tailwind-css"
+            },
+            {
+                "level": 4,
+                "text": "`composer tailwind:build`",
+                "anchor": "composer-tailwindbuild"
+            },
+            {
+                "level": 4,
+                "text": "`composer tailwind:watch`",
+                "anchor": "composer-tailwindwatch"
+            },
+            {
+                "level": 4,
+                "text": "`composer tailwind:minify`",
+                "anchor": "composer-tailwindminify"
+            },
+            {
+                "level": 4,
+                "text": "`composer tailwind:install`",
+                "anchor": "composer-tailwindinstall"
+            },
+            {
+                "level": 4,
+                "text": "`composer tailwind:update`",
+                "anchor": "composer-tailwindupdate"
+            },
+            {
+                "level": 4,
+                "text": "`composer tailwind:status`",
+                "anchor": "composer-tailwindstatus"
+            }
+        ],
+        "modified": 1755532850,
+        "size": 13477
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\development\\development-setup.md": {
+        "id": "59d5d081f186b836787de0c25a7e4e4c",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\development\\development-setup.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\development\\development-setup",
+        "title": "Development Environment Setup",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Development Environment Setup",
+                "anchor": "development-environment-setup"
+            },
+            {
+                "level": 2,
+                "text": "Prerequisites",
+                "anchor": "prerequisites"
+            },
+            {
+                "level": 3,
+                "text": "Required Software",
+                "anchor": "required-software"
+            },
+            {
+                "level": 3,
+                "text": "Recommended Development Stacks",
+                "anchor": "recommended-development-stacks"
+            },
+            {
+                "level": 4,
+                "text": "Windows",
+                "anchor": "windows"
+            },
+            {
+                "level": 4,
+                "text": "macOS",
+                "anchor": "macos"
+            },
+            {
+                "level": 4,
+                "text": "Linux",
+                "anchor": "linux"
+            },
+            {
+                "level": 2,
+                "text": "Installation Steps",
+                "anchor": "installation-steps"
+            },
+            {
+                "level": 3,
+                "text": "1. Setting Up XAMPP (Windows)",
+                "anchor": "1-setting-up-xampp-windows"
+            },
+            {
+                "level": 4,
+                "text": "Install XAMPP",
+                "anchor": "install-xampp"
+            },
+            {
+                "level": 4,
+                "text": "Enable Required Modules",
+                "anchor": "enable-required-modules"
+            },
+            {
+                "level": 3,
+                "text": "2. Install Composer",
+                "anchor": "2-install-composer"
+            },
+            {
+                "level": 4,
+                "text": "Windows",
+                "anchor": "windows"
+            },
+            {
+                "level": 4,
+                "text": "macOS/Linux",
+                "anchor": "macoslinux"
+            },
+            {
+                "level": 3,
+                "text": "3. Clone or Download Isotone",
+                "anchor": "3-clone-or-download-isotone"
+            },
+            {
+                "level": 4,
+                "text": "Option A: Git Clone (Recommended)",
+                "anchor": "option-a-git-clone-recommended"
+            },
+            {
+                "level": 4,
+                "text": "Option B: Download ZIP",
+                "anchor": "option-b-download-zip"
+            },
+            {
+                "level": 3,
+                "text": "4. Install Dependencies",
+                "anchor": "4-install-dependencies"
+            },
+            {
+                "level": 3,
+                "text": "5. Environment Configuration",
+                "anchor": "5-environment-configuration"
+            },
+            {
+                "level": 3,
+                "text": "6. Database Setup",
+                "anchor": "6-database-setup"
+            },
+            {
+                "level": 3,
+                "text": "7. Run Installation Wizard",
+                "anchor": "7-run-installation-wizard"
+            },
+            {
+                "level": 3,
+                "text": "8. Verify Installation",
+                "anchor": "8-verify-installation"
+            },
+            {
+                "level": 2,
+                "text": "Troubleshooting",
+                "anchor": "troubleshooting"
+            },
+            {
+                "level": 3,
+                "text": "404 Error on Homepage",
+                "anchor": "404-error-on-homepage"
+            },
+            {
+                "level": 3,
+                "text": "Composer Not Found",
+                "anchor": "composer-not-found"
+            },
+            {
+                "level": 3,
+                "text": "Permission Issues (Linux/macOS)",
+                "anchor": "permission-issues-linuxmacos"
+            },
+            {
+                "level": 1,
+                "text": "Set proper permissions",
+                "anchor": "set-proper-permissions"
+            },
+            {
+                "level": 3,
+                "text": "Database Connection Failed",
+                "anchor": "database-connection-failed"
+            },
+            {
+                "level": 2,
+                "text": "Development Tools",
+                "anchor": "development-tools"
+            },
+            {
+                "level": 3,
+                "text": "VS Code Extensions",
+                "anchor": "vs-code-extensions"
+            },
+            {
+                "level": 3,
+                "text": "PHPStorm Configuration",
+                "anchor": "phpstorm-configuration"
+            },
+            {
+                "level": 3,
+                "text": "Running Tests",
+                "anchor": "running-tests"
+            },
+            {
+                "level": 1,
+                "text": "Run all tests",
+                "anchor": "run-all-tests"
+            },
+            {
+                "level": 1,
+                "text": "Run with coverage",
+                "anchor": "run-with-coverage"
+            },
+            {
+                "level": 1,
+                "text": "Run specific test",
+                "anchor": "run-specific-test"
+            },
+            {
+                "level": 3,
+                "text": "Code Quality",
+                "anchor": "code-quality"
+            },
+            {
+                "level": 1,
+                "text": "Check code style",
+                "anchor": "check-code-style"
+            },
+            {
+                "level": 1,
+                "text": "Fix code style",
+                "anchor": "fix-code-style"
+            },
+            {
+                "level": 1,
+                "text": "Run static analysis",
+                "anchor": "run-static-analysis"
+            },
+            {
+                "level": 2,
+                "text": "Next Steps",
+                "anchor": "next-steps"
+            },
+            {
+                "level": 2,
+                "text": "Getting Help",
+                "anchor": "getting-help"
+            }
+        ],
+        "modified": 1755241949,
+        "size": 6031
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\development\\documentation-system.md": {
+        "id": "aaf65759922f7243b63d2473ee834cdb",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\development\\documentation-system.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\development\\documentation-system",
+        "title": "Documentation System",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Documentation System",
+                "anchor": "documentation-system"
+            },
+            {
+                "level": 2,
+                "text": "Overview",
+                "anchor": "overview"
+            },
+            {
+                "level": 2,
+                "text": "Category Structure",
+                "anchor": "category-structure"
+            },
+            {
+                "level": 3,
+                "text": "1. Getting Started",
+                "anchor": "1-getting-started"
+            },
+            {
+                "level": 3,
+                "text": "2. Core Concepts",
+                "anchor": "2-core-concepts"
+            },
+            {
+                "level": 3,
+                "text": "3. Configuration",
+                "anchor": "3-configuration"
+            },
+            {
+                "level": 3,
+                "text": "4. Development",
+                "anchor": "4-development"
+            },
+            {
+                "level": 3,
+                "text": "5. API Reference",
+                "anchor": "5-api-reference"
+            },
+            {
+                "level": 3,
+                "text": "6. Themes & Plugins",
+                "anchor": "6-themes-plugins"
+            },
+            {
+                "level": 3,
+                "text": "7. Automation",
+                "anchor": "7-automation"
+            },
+            {
+                "level": 3,
+                "text": "8. Toni AI Assistant",
+                "anchor": "8-toni-ai-assistant"
+            },
+            {
+                "level": 3,
+                "text": "9. Troubleshooting",
+                "anchor": "9-troubleshooting"
+            },
+            {
+                "level": 3,
+                "text": "10. Reference",
+                "anchor": "10-reference"
+            },
+            {
+                "level": 2,
+                "text": "How It Works",
+                "anchor": "how-it-works"
+            },
+            {
+                "level": 3,
+                "text": "Static Categories, Dynamic Content",
+                "anchor": "static-categories-dynamic-content"
+            },
+            {
+                "level": 3,
+                "text": "File Organization",
+                "anchor": "file-organization"
+            },
+            {
+                "level": 3,
+                "text": "Folder Mapping",
+                "anchor": "folder-mapping"
+            },
+            {
+                "level": 2,
+                "text": "Features",
+                "anchor": "features"
+            },
+            {
+                "level": 3,
+                "text": "Navigation",
+                "anchor": "navigation"
+            },
+            {
+                "level": 3,
+                "text": "Document Display",
+                "anchor": "document-display"
+            },
+            {
+                "level": 3,
+                "text": "Visual Indicators",
+                "anchor": "visual-indicators"
+            },
+            {
+                "level": 2,
+                "text": "Adding Documentation",
+                "anchor": "adding-documentation"
+            },
+            {
+                "level": 3,
+                "text": "Creating New Documents",
+                "anchor": "creating-new-documents"
+            },
+            {
+                "level": 3,
+                "text": "File Naming Conventions",
+                "anchor": "file-naming-conventions"
+            },
+            {
+                "level": 3,
+                "text": "Markdown Features",
+                "anchor": "markdown-features"
+            },
+            {
+                "level": 2,
+                "text": "Automated Documentation",
+                "anchor": "automated-documentation"
+            },
+            {
+                "level": 3,
+                "text": "Documentation Check",
+                "anchor": "documentation-check"
+            },
+            {
+                "level": 3,
+                "text": "Documentation Update",
+                "anchor": "documentation-update"
+            },
+            {
+                "level": 2,
+                "text": "Best Practices",
+                "anchor": "best-practices"
+            },
+            {
+                "level": 3,
+                "text": "Writing Guidelines",
+                "anchor": "writing-guidelines"
+            },
+            {
+                "level": 3,
+                "text": "Organization Tips",
+                "anchor": "organization-tips"
+            },
+            {
+                "level": 2,
+                "text": "Technical Details",
+                "anchor": "technical-details"
+            },
+            {
+                "level": 3,
+                "text": "Implementation",
+                "anchor": "implementation"
+            },
+            {
+                "level": 3,
+                "text": "Category Configuration",
+                "anchor": "category-configuration"
+            },
+            {
+                "level": 3,
+                "text": "Performance",
+                "anchor": "performance"
+            },
+            {
+                "level": 2,
+                "text": "Future Enhancements",
+                "anchor": "future-enhancements"
+            }
+        ],
+        "modified": 1755519397,
+        "size": 6427
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\development\\getting-started.md": {
+        "id": "78043453b554bf09641c38d17ff4f6d2",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\development\\getting-started.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\development\\getting-started",
+        "title": "Getting Started with Isotone",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Getting Started with Isotone",
+                "anchor": "getting-started-with-isotone"
+            },
+            {
+                "level": 2,
+                "text": "Quick Start",
+                "anchor": "quick-start"
+            },
+            {
+                "level": 2,
+                "text": "Understanding Isotone",
+                "anchor": "understanding-isotone"
+            },
+            {
+                "level": 3,
+                "text": "What is Isotone?",
+                "anchor": "what-is-isotone"
+            },
+            {
+                "level": 3,
+                "text": "Core Concepts",
+                "anchor": "core-concepts"
+            },
+            {
+                "level": 2,
+                "text": "Project Structure",
+                "anchor": "project-structure"
+            },
+            {
+                "level": 2,
+                "text": "Creating Your First Page",
+                "anchor": "creating-your-first-page"
+            },
+            {
+                "level": 3,
+                "text": "1. Understanding Routing",
+                "anchor": "1-understanding-routing"
+            },
+            {
+                "level": 3,
+                "text": "2. Creating a Controller Method",
+                "anchor": "2-creating-a-controller-method"
+            },
+            {
+                "level": 3,
+                "text": "3. Testing Your Page",
+                "anchor": "3-testing-your-page"
+            },
+            {
+                "level": 2,
+                "text": "Installation Process",
+                "anchor": "installation-process"
+            },
+            {
+                "level": 3,
+                "text": "Initial Setup",
+                "anchor": "initial-setup"
+            },
+            {
+                "level": 2,
+                "text": "Working with the Database",
+                "anchor": "working-with-the-database"
+            },
+            {
+                "level": 3,
+                "text": "Setting Up RedBeanPHP",
+                "anchor": "setting-up-redbeanphp"
+            },
+            {
+                "level": 3,
+                "text": "Working with Settings",
+                "anchor": "working-with-settings"
+            },
+            {
+                "level": 3,
+                "text": "Creating Models",
+                "anchor": "creating-models"
+            },
+            {
+                "level": 2,
+                "text": "Creating a Plugin",
+                "anchor": "creating-a-plugin"
+            },
+            {
+                "level": 3,
+                "text": "Basic Plugin Structure",
+                "anchor": "basic-plugin-structure"
+            },
+            {
+                "level": 3,
+                "text": "Plugin File Template",
+                "anchor": "plugin-file-template"
+            },
+            {
+                "level": 2,
+                "text": "Creating a Theme",
+                "anchor": "creating-a-theme"
+            },
+            {
+                "level": 3,
+                "text": "Basic Theme Structure",
+                "anchor": "basic-theme-structure"
+            },
+            {
+                "level": 3,
+                "text": "Theme Files",
+                "anchor": "theme-files"
+            },
+            {
+                "level": 2,
+                "text": "Using the CLI (Coming Soon)",
+                "anchor": "using-the-cli-coming-soon"
+            },
+            {
+                "level": 1,
+                "text": "Create a new plugin",
+                "anchor": "create-a-new-plugin"
+            },
+            {
+                "level": 1,
+                "text": "Create a new theme",
+                "anchor": "create-a-new-theme"
+            },
+            {
+                "level": 1,
+                "text": "Clear cache",
+                "anchor": "clear-cache"
+            },
+            {
+                "level": 1,
+                "text": "Run migrations",
+                "anchor": "run-migrations"
+            },
+            {
+                "level": 2,
+                "text": "Environment Configuration",
+                "anchor": "environment-configuration"
+            },
+            {
+                "level": 3,
+                "text": "Development vs Production",
+                "anchor": "development-vs-production"
+            },
+            {
+                "level": 3,
+                "text": "Security Keys",
+                "anchor": "security-keys"
+            },
+            {
+                "level": 1,
+                "text": "Generate a random key",
+                "anchor": "generate-a-random-key"
+            },
+            {
+                "level": 2,
+                "text": "Best Practices",
+                "anchor": "best-practices"
+            },
+            {
+                "level": 3,
+                "text": "1. Follow PSR Standards",
+                "anchor": "1-follow-psr-standards"
+            },
+            {
+                "level": 3,
+                "text": "2. Security First",
+                "anchor": "2-security-first"
+            },
+            {
+                "level": 3,
+                "text": "3. Performance",
+                "anchor": "3-performance"
+            },
+            {
+                "level": 3,
+                "text": "4. Version Control",
+                "anchor": "4-version-control"
+            },
+            {
+                "level": 2,
+                "text": "Common Tasks",
+                "anchor": "common-tasks"
+            },
+            {
+                "level": 3,
+                "text": "Adding a Menu Item",
+                "anchor": "adding-a-menu-item"
+            },
+            {
+                "level": 3,
+                "text": "Creating a Widget",
+                "anchor": "creating-a-widget"
+            },
+            {
+                "level": 3,
+                "text": "Handling Forms",
+                "anchor": "handling-forms"
+            },
+            {
+                "level": 2,
+                "text": "Debugging",
+                "anchor": "debugging"
+            },
+            {
+                "level": 3,
+                "text": "Enable Debug Mode",
+                "anchor": "enable-debug-mode"
+            },
+            {
+                "level": 3,
+                "text": "Using var_dump",
+                "anchor": "using-vardump"
+            },
+            {
+                "level": 3,
+                "text": "Logging",
+                "anchor": "logging"
+            },
+            {
+                "level": 3,
+                "text": "Check Logs",
+                "anchor": "check-logs"
+            },
+            {
+                "level": 2,
+                "text": "Resources",
+                "anchor": "resources"
+            },
+            {
+                "level": 3,
+                "text": "Documentation",
+                "anchor": "documentation"
+            },
+            {
+                "level": 3,
+                "text": "Community",
+                "anchor": "community"
+            },
+            {
+                "level": 3,
+                "text": "Learning PHP",
+                "anchor": "learning-php"
+            },
+            {
+                "level": 2,
+                "text": "Next Steps",
+                "anchor": "next-steps"
+            },
+            {
+                "level": 2,
+                "text": "Need Help?",
+                "anchor": "need-help"
+            }
+        ],
+        "modified": 1755382779,
+        "size": 9750
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\development\\hooks.md": {
+        "id": "8101d0b7b4b26fa763b5b0525d5bda72",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\development\\hooks.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\development\\hooks",
+        "title": "Hooks",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Hooks",
+                "anchor": "hooks"
+            },
+            {
+                "level": 2,
+                "text": "Overview",
+                "anchor": "overview"
+            },
+            {
+                "level": 2,
+                "text": "Examples",
+                "anchor": "examples"
+            },
+            {
+                "level": 2,
+                "text": "Best Practices",
+                "anchor": "best-practices"
+            },
+            {
+                "level": 2,
+                "text": "Troubleshooting",
+                "anchor": "troubleshooting"
+            },
+            {
+                "level": 2,
+                "text": "See Also",
+                "anchor": "see-also"
+            }
+        ],
+        "modified": 1755530165,
+        "size": 753
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\development\\project-structure.md": {
+        "id": "cc8647ca5e92c6ca1fc5bbd40e33a949",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\development\\project-structure.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\development\\project-structure",
+        "title": "Isotone Project Structure",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Isotone Project Structure",
+                "anchor": "isotone-project-structure"
+            },
+            {
+                "level": 2,
+                "text": "Project Structure",
+                "anchor": "project-structure"
+            }
+        ],
+        "modified": 1755700885,
+        "size": 1880
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\development\\routes.md": {
+        "id": "28390d912c2898d1f3f5ca4c9f662ba0",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\development\\routes.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\development\\routes",
+        "title": "Untitled",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 2,
+                "text": "Available Routes",
+                "anchor": "available-routes"
+            }
+        ],
+        "modified": 1755381718,
+        "size": 176
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\development\\themes.md": {
+        "id": "85bac0d98077066d8539508bc291d36d",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\development\\themes.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\development\\themes",
+        "title": "Theme Development",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Theme Development",
+                "anchor": "theme-development"
+            },
+            {
+                "level": 2,
+                "text": "Introduction",
+                "anchor": "introduction"
+            },
+            {
+                "level": 2,
+                "text": "Theme Structure",
+                "anchor": "theme-structure"
+            },
+            {
+                "level": 2,
+                "text": "Creating a Theme",
+                "anchor": "creating-a-theme"
+            },
+            {
+                "level": 3,
+                "text": "1. Theme Metadata (style.css)",
+                "anchor": "1-theme-metadata-stylecss"
+            },
+            {
+                "level": 3,
+                "text": "2. Basic Template (index.php)",
+                "anchor": "2-basic-template-indexphp"
+            },
+            {
+                "level": 3,
+                "text": "3. Theme Functions (functions.php)",
+                "anchor": "3-theme-functions-functionsphp"
+            },
+            {
+                "level": 2,
+                "text": "Template Functions",
+                "anchor": "template-functions"
+            },
+            {
+                "level": 3,
+                "text": "Site Information",
+                "anchor": "site-information"
+            },
+            {
+                "level": 3,
+                "text": "The Loop",
+                "anchor": "the-loop"
+            },
+            {
+                "level": 3,
+                "text": "Template Parts",
+                "anchor": "template-parts"
+            },
+            {
+                "level": 3,
+                "text": "Conditional Tags",
+                "anchor": "conditional-tags"
+            },
+            {
+                "level": 2,
+                "text": "Hooks",
+                "anchor": "hooks"
+            },
+            {
+                "level": 3,
+                "text": "Action Hooks",
+                "anchor": "action-hooks"
+            },
+            {
+                "level": 3,
+                "text": "Filter Hooks",
+                "anchor": "filter-hooks"
+            },
+            {
+                "level": 2,
+                "text": "Theme Customization",
+                "anchor": "theme-customization"
+            },
+            {
+                "level": 3,
+                "text": "Theme Mods",
+                "anchor": "theme-mods"
+            },
+            {
+                "level": 3,
+                "text": "Custom Logo",
+                "anchor": "custom-logo"
+            },
+            {
+                "level": 2,
+                "text": "Best Practices",
+                "anchor": "best-practices"
+            },
+            {
+                "level": 2,
+                "text": "Example: Neutron Theme",
+                "anchor": "example-neutron-theme"
+            },
+            {
+                "level": 2,
+                "text": "Resources",
+                "anchor": "resources"
+            }
+        ],
+        "modified": 1755215611,
+        "size": 6458
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\getting-started\\installation.md": {
+        "id": "23e91c32f2bf959ae55fdb6d3676abfc",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\getting-started\\installation.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\getting-started\\installation",
+        "title": "Installation Guide",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Installation Guide",
+                "anchor": "installation-guide"
+            },
+            {
+                "level": 2,
+                "text": "System Requirements",
+                "anchor": "system-requirements"
+            },
+            {
+                "level": 3,
+                "text": "Minimum Requirements",
+                "anchor": "minimum-requirements"
+            },
+            {
+                "level": 3,
+                "text": "Required PHP Extensions",
+                "anchor": "required-php-extensions"
+            },
+            {
+                "level": 3,
+                "text": "Recommended Server Settings",
+                "anchor": "recommended-server-settings"
+            },
+            {
+                "level": 2,
+                "text": "Installation Methods",
+                "anchor": "installation-methods"
+            },
+            {
+                "level": 3,
+                "text": "Method 1: Standard Installation",
+                "anchor": "method-1-standard-installation"
+            },
+            {
+                "level": 4,
+                "text": "1. Download Isotone",
+                "anchor": "1-download-isotone"
+            },
+            {
+                "level": 1,
+                "text": "Clone via Git (recommended)",
+                "anchor": "clone-via-git-recommended"
+            },
+            {
+                "level": 1,
+                "text": "Or download the latest release ZIP from GitHub",
+                "anchor": "or-download-the-latest-release-zip-from-github"
+            },
+            {
+                "level": 1,
+                "text": "Extract to your web directory",
+                "anchor": "extract-to-your-web-directory"
+            },
+            {
+                "level": 4,
+                "text": "2. Install PHP Dependencies",
+                "anchor": "2-install-php-dependencies"
+            },
+            {
+                "level": 1,
+                "text": "Install all PHP dependencies via Composer",
+                "anchor": "install-all-php-dependencies-via-composer"
+            },
+            {
+                "level": 1,
+                "text": "For development environments, include dev dependencies",
+                "anchor": "for-development-environments-include-dev-dependencies"
+            },
+            {
+                "level": 4,
+                "text": "3. Database Setup",
+                "anchor": "3-database-setup"
+            },
+            {
+                "level": 4,
+                "text": "4. Configure Isotone",
+                "anchor": "4-configure-isotone"
+            },
+            {
+                "level": 1,
+                "text": "Copy the sample configuration file",
+                "anchor": "copy-the-sample-configuration-file"
+            },
+            {
+                "level": 1,
+                "text": "Edit config.php with your database credentials",
+                "anchor": "edit-configphp-with-your-database-credentials"
+            },
+            {
+                "level": 4,
+                "text": "5. Build CSS Assets",
+                "anchor": "5-build-css-assets"
+            },
+            {
+                "level": 1,
+                "text": "Install Tailwind CSS dependencies (downloads Node.js if needed)",
+                "anchor": "install-tailwind-css-dependencies-downloads-nodejs-if-needed"
+            },
+            {
+                "level": 1,
+                "text": "Build the CSS files",
+                "anchor": "build-the-css-files"
+            },
+            {
+                "level": 1,
+                "text": "For production (minified CSS)",
+                "anchor": "for-production-minified-css"
+            },
+            {
+                "level": 1,
+                "text": "For development (watch mode)",
+                "anchor": "for-development-watch-mode"
+            },
+            {
+                "level": 4,
+                "text": "6. Run Installation Wizard",
+                "anchor": "6-run-installation-wizard"
+            },
+            {
+                "level": 4,
+                "text": "7. Post-Installation Security",
+                "anchor": "7-post-installation-security"
+            },
+            {
+                "level": 1,
+                "text": "Remove installation directory (IMPORTANT!)",
+                "anchor": "remove-installation-directory-important"
+            },
+            {
+                "level": 1,
+                "text": "Set proper file permissions",
+                "anchor": "set-proper-file-permissions"
+            },
+            {
+                "level": 1,
+                "text": "Protect sensitive directories with .htaccess (Apache)",
+                "anchor": "protect-sensitive-directories-with-htaccess-apache"
+            },
+            {
+                "level": 3,
+                "text": "Method 2: Shared Hosting Installation",
+                "anchor": "method-2-shared-hosting-installation"
+            },
+            {
+                "level": 4,
+                "text": "1. Prepare Files Locally",
+                "anchor": "1-prepare-files-locally"
+            },
+            {
+                "level": 1,
+                "text": "Download Isotone",
+                "anchor": "download-isotone"
+            },
+            {
+                "level": 1,
+                "text": "Install dependencies",
+                "anchor": "install-dependencies"
+            },
+            {
+                "level": 1,
+                "text": "Build CSS (requires Node.js locally)",
+                "anchor": "build-css-requires-nodejs-locally"
+            },
+            {
+                "level": 1,
+                "text": "Create config from sample",
+                "anchor": "create-config-from-sample"
+            },
+            {
+                "level": 4,
+                "text": "2. Upload to Hosting",
+                "anchor": "2-upload-to-hosting"
+            },
+            {
+                "level": 4,
+                "text": "3. Configure via Hosting Panel",
+                "anchor": "3-configure-via-hosting-panel"
+            },
+            {
+                "level": 4,
+                "text": "4. Complete Installation",
+                "anchor": "4-complete-installation"
+            },
+            {
+                "level": 3,
+                "text": "Method 3: Docker Installation (Development)",
+                "anchor": "method-3-docker-installation-development"
+            },
+            {
+                "level": 1,
+                "text": "Clone repository",
+                "anchor": "clone-repository"
+            },
+            {
+                "level": 1,
+                "text": "Copy config file",
+                "anchor": "copy-config-file"
+            },
+            {
+                "level": 1,
+                "text": "Start containers (if Docker configuration exists)",
+                "anchor": "start-containers-if-docker-configuration-exists"
+            },
+            {
+                "level": 1,
+                "text": "Install dependencies",
+                "anchor": "install-dependencies"
+            },
+            {
+                "level": 1,
+                "text": "Visit {your-domain}/install/",
+                "anchor": "visit-your-domaininstall"
+            },
+            {
+                "level": 2,
+                "text": "Advanced Configuration",
+                "anchor": "advanced-configuration"
+            },
+            {
+                "level": 3,
+                "text": "Enable Pretty URLs",
+                "anchor": "enable-pretty-urls"
+            },
+            {
+                "level": 3,
+                "text": "Performance Optimization",
+                "anchor": "performance-optimization"
+            },
+            {
+                "level": 1,
+                "text": "Enable OPcache (php.ini)",
+                "anchor": "enable-opcache-phpini"
+            },
+            {
+                "level": 1,
+                "text": "Build optimized autoloader",
+                "anchor": "build-optimized-autoloader"
+            },
+            {
+                "level": 1,
+                "text": "Minify CSS for production",
+                "anchor": "minify-css-for-production"
+            },
+            {
+                "level": 3,
+                "text": "Environment Configuration",
+                "anchor": "environment-configuration"
+            },
+            {
+                "level": 2,
+                "text": "Automation & Development Tools",
+                "anchor": "automation-development-tools"
+            },
+            {
+                "level": 1,
+                "text": "Documentation Management",
+                "anchor": "documentation-management"
+            },
+            {
+                "level": 1,
+                "text": "Validation & Testing",
+                "anchor": "validation-testing"
+            },
+            {
+                "level": 1,
+                "text": "IDE & Development",
+                "anchor": "ide-development"
+            },
+            {
+                "level": 1,
+                "text": "CSS Management",
+                "anchor": "css-management"
+            },
+            {
+                "level": 2,
+                "text": "Troubleshooting",
+                "anchor": "troubleshooting"
+            },
+            {
+                "level": 3,
+                "text": "Common Issues",
+                "anchor": "common-issues"
+            },
+            {
+                "level": 1,
+                "text": "Rebuild Tailwind CSS",
+                "anchor": "rebuild-tailwind-css"
+            },
+            {
+                "level": 1,
+                "text": "Check if CSS file exists",
+                "anchor": "check-if-css-file-exists"
+            },
+            {
+                "level": 1,
+                "text": "Check Tailwind status",
+                "anchor": "check-tailwind-status"
+            },
+            {
+                "level": 1,
+                "text": "Increase memory limit",
+                "anchor": "increase-memory-limit"
+            },
+            {
+                "level": 1,
+                "text": "Reinstall and rebuild",
+                "anchor": "reinstall-and-rebuild"
+            },
+            {
+                "level": 1,
+                "text": "Check Node.js version",
+                "anchor": "check-nodejs-version"
+            },
+            {
+                "level": 3,
+                "text": "Getting Help",
+                "anchor": "getting-help"
+            },
+            {
+                "level": 2,
+                "text": "Next Steps",
+                "anchor": "next-steps"
+            },
+            {
+                "level": 2,
+                "text": "Version Management",
+                "anchor": "version-management"
+            },
+            {
+                "level": 1,
+                "text": "Bump version (creates new version and updates changelog)",
+                "anchor": "bump-version-creates-new-version-and-updates-changelog"
+            },
+            {
+                "level": 1,
+                "text": "Or use Composer scripts",
+                "anchor": "or-use-composer-scripts"
+            },
+            {
+                "level": 2,
+                "text": "Security Recommendations",
+                "anchor": "security-recommendations"
+            },
+            {
+                "level": 2,
+                "text": "System Health Check",
+                "anchor": "system-health-check"
+            }
+        ],
+        "modified": 1755700777,
+        "size": 10088
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\getting-started\\tech-stack.md": {
+        "id": "e086300f5d984626b257c177340033a8",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\getting-started\\tech-stack.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\getting-started\\tech-stack",
+        "title": "Isotone Technology Stack Specification",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Isotone Technology Stack Specification",
+                "anchor": "isotone-technology-stack-specification"
+            },
+            {
+                "level": 2,
+                "text": "Overview",
+                "anchor": "overview"
+            },
+            {
+                "level": 2,
+                "text": "Core Backend Stack",
+                "anchor": "core-backend-stack"
+            },
+            {
+                "level": 3,
+                "text": "PHP 8.3+",
+                "anchor": "php-83"
+            },
+            {
+                "level": 3,
+                "text": "Composer Dependencies (Planned)",
+                "anchor": "composer-dependencies-planned"
+            },
+            {
+                "level": 2,
+                "text": "Database Layer",
+                "anchor": "database-layer"
+            },
+            {
+                "level": 3,
+                "text": "MariaDB 10.6+ / MySQL 8.0+",
+                "anchor": "mariadb-106-mysql-80"
+            },
+            {
+                "level": 3,
+                "text": "RedBeanPHP ORM",
+                "anchor": "redbeanphp-orm"
+            },
+            {
+                "level": 2,
+                "text": "Frontend Technologies",
+                "anchor": "frontend-technologies"
+            },
+            {
+                "level": 3,
+                "text": "CSS Framework Strategy",
+                "anchor": "css-framework-strategy"
+            },
+            {
+                "level": 3,
+                "text": "JavaScript Stack",
+                "anchor": "javascript-stack"
+            },
+            {
+                "level": 3,
+                "text": "Icon System",
+                "anchor": "icon-system"
+            },
+            {
+                "level": 2,
+                "text": "Planned Architecture Patterns",
+                "anchor": "planned-architecture-patterns"
+            },
+            {
+                "level": 3,
+                "text": "Plugin Architecture",
+                "anchor": "plugin-architecture"
+            },
+            {
+                "level": 3,
+                "text": "Theme System",
+                "anchor": "theme-system"
+            },
+            {
+                "level": 3,
+                "text": "REST API",
+                "anchor": "rest-api"
+            },
+            {
+                "level": 3,
+                "text": "Content Management",
+                "anchor": "content-management"
+            },
+            {
+                "level": 2,
+                "text": "Planned Performance Optimization",
+                "anchor": "planned-performance-optimization"
+            },
+            {
+                "level": 3,
+                "text": "Caching Strategy",
+                "anchor": "caching-strategy"
+            },
+            {
+                "level": 3,
+                "text": "Image Optimization",
+                "anchor": "image-optimization"
+            },
+            {
+                "level": 2,
+                "text": "Planned Security Features",
+                "anchor": "planned-security-features"
+            },
+            {
+                "level": 3,
+                "text": "Core Security",
+                "anchor": "core-security"
+            },
+            {
+                "level": 3,
+                "text": "User Permissions",
+                "anchor": "user-permissions"
+            },
+            {
+                "level": 2,
+                "text": "Planned Development Tools",
+                "anchor": "planned-development-tools"
+            },
+            {
+                "level": 3,
+                "text": "Local Development",
+                "anchor": "local-development"
+            },
+            {
+                "level": 3,
+                "text": "Planned Testing Framework",
+                "anchor": "planned-testing-framework"
+            },
+            {
+                "level": 3,
+                "text": "Planned Code Quality Tools",
+                "anchor": "planned-code-quality-tools"
+            },
+            {
+                "level": 2,
+                "text": "Deployment Considerations",
+                "anchor": "deployment-considerations"
+            },
+            {
+                "level": 3,
+                "text": "Minimum Requirements",
+                "anchor": "minimum-requirements"
+            },
+            {
+                "level": 3,
+                "text": "Recommended Environment",
+                "anchor": "recommended-environment"
+            },
+            {
+                "level": 3,
+                "text": "Planned Installation Process",
+                "anchor": "planned-installation-process"
+            },
+            {
+                "level": 2,
+                "text": "Additional Components",
+                "anchor": "additional-components"
+            },
+            {
+                "level": 3,
+                "text": "Search Functionality",
+                "anchor": "search-functionality"
+            },
+            {
+                "level": 3,
+                "text": "Multi-language Support",
+                "anchor": "multi-language-support"
+            },
+            {
+                "level": 3,
+                "text": "Email System",
+                "anchor": "email-system"
+            },
+            {
+                "level": 3,
+                "text": "Backup System",
+                "anchor": "backup-system"
+            },
+            {
+                "level": 2,
+                "text": "Future Considerations",
+                "anchor": "future-considerations"
+            },
+            {
+                "level": 3,
+                "text": "Potential Progressive Enhancements",
+                "anchor": "potential-progressive-enhancements"
+            },
+            {
+                "level": 3,
+                "text": "Scalability Path",
+                "anchor": "scalability-path"
+            },
+            {
+                "level": 2,
+                "text": "Version Control",
+                "anchor": "version-control"
+            },
+            {
+                "level": 3,
+                "text": "Git Workflow",
+                "anchor": "git-workflow"
+            },
+            {
+                "level": 2,
+                "text": "Documentation",
+                "anchor": "documentation"
+            },
+            {
+                "level": 3,
+                "text": "Developer Documentation",
+                "anchor": "developer-documentation"
+            },
+            {
+                "level": 3,
+                "text": "User Documentation",
+                "anchor": "user-documentation"
+            }
+        ],
+        "modified": 1755241949,
+        "size": 10108
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\README.md": {
+        "id": "e3f5e4ef44cdeff714bdc46c9c46e5b1",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\README.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\README",
+        "title": "Isotone Documentation",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Isotone Documentation",
+                "anchor": "isotone-documentation"
+            },
+            {
+                "level": 2,
+                "text": "Documentation Categories",
+                "anchor": "documentation-categories"
+            },
+            {
+                "level": 3,
+                "text": "[Getting Started](./getting-started/)",
+                "anchor": "getting-startedgetting-started"
+            },
+            {
+                "level": 3,
+                "text": "[Configuration](./configuration/)",
+                "anchor": "configurationconfiguration"
+            },
+            {
+                "level": 3,
+                "text": "[Development](./development/)",
+                "anchor": "developmentdevelopment"
+            },
+            {
+                "level": 3,
+                "text": "[API Reference](./api-reference/)",
+                "anchor": "api-referenceapi-reference"
+            },
+            {
+                "level": 3,
+                "text": "[Automation](./automation/)",
+                "anchor": "automationautomation"
+            },
+            {
+                "level": 3,
+                "text": "[Toni AI Assistant](./toni/)",
+                "anchor": "toni-ai-assistanttoni"
+            },
+            {
+                "level": 3,
+                "text": "[Troubleshooting](./troubleshooting/)",
+                "anchor": "troubleshootingtroubleshooting"
+            },
+            {
+                "level": 2,
+                "text": "Quick Start",
+                "anchor": "quick-start"
+            },
+            {
+                "level": 2,
+                "text": "Documentation System",
+                "anchor": "documentation-system"
+            }
+        ],
+        "modified": 1755532850,
+        "size": 2229
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\toni\\toni-overview.md": {
+        "id": "d40fa5b7440e8a3745f54d4206389574",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\toni\\toni-overview.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\toni\\toni-overview",
+        "title": "Toni Overview",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Toni Overview",
+                "anchor": "toni-overview"
+            },
+            {
+                "level": 2,
+                "text": "Overview",
+                "anchor": "overview"
+            },
+            {
+                "level": 2,
+                "text": "Introduction",
+                "anchor": "introduction"
+            },
+            {
+                "level": 2,
+                "text": "Key Concepts",
+                "anchor": "key-concepts"
+            },
+            {
+                "level": 2,
+                "text": "Getting Started",
+                "anchor": "getting-started"
+            },
+            {
+                "level": 2,
+                "text": "Examples",
+                "anchor": "examples"
+            },
+            {
+                "level": 2,
+                "text": "Best Practices",
+                "anchor": "best-practices"
+            },
+            {
+                "level": 2,
+                "text": "Troubleshooting",
+                "anchor": "troubleshooting"
+            },
+            {
+                "level": 2,
+                "text": "See Also",
+                "anchor": "see-also"
+            }
+        ],
+        "modified": 1755700819,
+        "size": 1050
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\toni\\toni-setup.md": {
+        "id": "2dbd5dc03a4fd4f72b47e42085861c67",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\toni\\toni-setup.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\toni\\toni-setup",
+        "title": "Toni Setup",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Toni Setup",
+                "anchor": "toni-setup"
+            },
+            {
+                "level": 2,
+                "text": "Overview",
+                "anchor": "overview"
+            },
+            {
+                "level": 2,
+                "text": "Configuration",
+                "anchor": "configuration"
+            },
+            {
+                "level": 3,
+                "text": "Options",
+                "anchor": "options"
+            },
+            {
+                "level": 2,
+                "text": "Examples",
+                "anchor": "examples"
+            },
+            {
+                "level": 2,
+                "text": "Best Practices",
+                "anchor": "best-practices"
+            },
+            {
+                "level": 2,
+                "text": "Troubleshooting",
+                "anchor": "troubleshooting"
+            },
+            {
+                "level": 2,
+                "text": "See Also",
+                "anchor": "see-also"
+            }
+        ],
+        "modified": 1755530165,
+        "size": 782
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\toni\\toni-usage.md": {
+        "id": "e66715ff71d7d242f3b08e4f5ad5a265",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\toni\\toni-usage.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\toni\\toni-usage",
+        "title": "Toni Usage",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Toni Usage",
+                "anchor": "toni-usage"
+            },
+            {
+                "level": 2,
+                "text": "Overview",
+                "anchor": "overview"
+            },
+            {
+                "level": 2,
+                "text": "Examples",
+                "anchor": "examples"
+            },
+            {
+                "level": 2,
+                "text": "Best Practices",
+                "anchor": "best-practices"
+            },
+            {
+                "level": 2,
+                "text": "Troubleshooting",
+                "anchor": "troubleshooting"
+            },
+            {
+                "level": 2,
+                "text": "See Also",
+                "anchor": "see-also"
+            }
+        ],
+        "modified": 1755530165,
+        "size": 678
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\troubleshooting\\common-issues.md": {
+        "id": "dc05de468caede43e1736e4f37a39c97",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\troubleshooting\\common-issues.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\troubleshooting\\common-issues",
+        "title": "Common Issues",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Common Issues",
+                "anchor": "common-issues"
+            },
+            {
+                "level": 2,
+                "text": "Overview",
+                "anchor": "overview"
+            },
+            {
+                "level": 2,
+                "text": "Examples",
+                "anchor": "examples"
+            },
+            {
+                "level": 2,
+                "text": "Best Practices",
+                "anchor": "best-practices"
+            },
+            {
+                "level": 2,
+                "text": "Troubleshooting",
+                "anchor": "troubleshooting"
+            },
+            {
+                "level": 2,
+                "text": "See Also",
+                "anchor": "see-also"
+            }
+        ],
+        "modified": 1755700869,
+        "size": 866
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\troubleshooting\\error-reference.md": {
+        "id": "dae36cdf8b7409c2bf045ca29e61b359",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\troubleshooting\\error-reference.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\troubleshooting\\error-reference",
+        "title": "Error Reference",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Error Reference",
+                "anchor": "error-reference"
+            },
+            {
+                "level": 2,
+                "text": "Overview",
+                "anchor": "overview"
+            },
+            {
+                "level": 2,
+                "text": "API Reference",
+                "anchor": "api-reference"
+            },
+            {
+                "level": 3,
+                "text": "Methods",
+                "anchor": "methods"
+            },
+            {
+                "level": 3,
+                "text": "Parameters",
+                "anchor": "parameters"
+            },
+            {
+                "level": 2,
+                "text": "Examples",
+                "anchor": "examples"
+            },
+            {
+                "level": 2,
+                "text": "Best Practices",
+                "anchor": "best-practices"
+            },
+            {
+                "level": 2,
+                "text": "Troubleshooting",
+                "anchor": "troubleshooting"
+            },
+            {
+                "level": 2,
+                "text": "See Also",
+                "anchor": "see-also"
+            }
+        ],
+        "modified": 1755530165,
+        "size": 786
+    },
+    "C:\\xampp\\htdocs\\isotone/user-docs\\troubleshooting\\faq.md": {
+        "id": "28459a16565c3aced0e0a2c6d717003c",
+        "path": "C:\\xampp\\htdocs\\isotone/user-docs\\troubleshooting\\faq.md",
+        "url": "/docs/C:\\xampp\\htdocs\\isotone/user-docs\\troubleshooting\\faq",
+        "title": "Faq",
+        "description": "",
+        "tags": [],
+        "headings": [
+            {
+                "level": 1,
+                "text": "Faq",
+                "anchor": "faq"
+            },
+            {
+                "level": 2,
+                "text": "Overview",
+                "anchor": "overview"
+            },
+            {
+                "level": 2,
+                "text": "Examples",
+                "anchor": "examples"
+            },
+            {
+                "level": 2,
+                "text": "Best Practices",
+                "anchor": "best-practices"
+            },
+            {
+                "level": 2,
+                "text": "Troubleshooting",
+                "anchor": "troubleshooting"
+            },
+            {
+                "level": 2,
+                "text": "See Also",
+                "anchor": "see-also"
+            }
+        ],
+        "modified": 1755530165,
+        "size": 656
+    }
+}

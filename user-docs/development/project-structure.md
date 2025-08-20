@@ -1,3 +1,12 @@
+---
+title: Project Structure Guide
+description: Complete overview of Isotone's directory structure, file organization, and component architecture
+tags: [project-structure, directories, files, organization, architecture]
+category: development
+priority: 88
+last_updated: 2025-01-20
+---
+
 # Isotone Project Structure
 
 *Updated on 2025-08-17 - Reflects Service-Oriented Architecture*

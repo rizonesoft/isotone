@@ -156,6 +156,26 @@ try {
     // Convert to array format for easier charting
     $chartDataArray = array_values($chartData);
     
+    // Ensure we have at least some data for charts
+    if (empty($chartDataArray)) {
+        // Create sample data structure for empty results
+        $chartDataArray = [];
+        if ($period === 'day') {
+            // Create hourly slots for today
+            for ($i = 0; $i <= date('G'); $i++) {
+                $chartDataArray[] = [
+                    'time' => $i,
+                    'models' => []
+                ];
+            }
+        }
+    }
+    
+    // Ensure summary has proper structure even if empty
+    if (empty($summary)) {
+        $summary = [];
+    }
+    
     // Prepare response
     $response = [
         'success' => true,
@@ -167,7 +187,8 @@ try {
         'totals' => $totals,
         'summary_by_model' => $summary,
         'chart_data' => $chartDataArray,
-        'models' => $models
+        'models' => $models,
+        'has_data' => !empty($records)
     ];
     
     echo json_encode($response);

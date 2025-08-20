@@ -7,7 +7,7 @@
  * @package Isotone
  */
 
-class IsotoneeSecurity {
+class IsotoneSecurity {
     
     /**
      * Generate session fingerprint
@@ -105,64 +105,35 @@ class IsotoneeSecurity {
     }
     
     /**
-     * Check for brute force attempts
+     * Check for brute force attempts (delegates to LoginSecurity class)
      */
     public static function checkBruteForce($identifier = null) {
-        $identifier = $identifier ?: $_SERVER['REMOTE_ADDR'];
-        $key = 'login_attempts_' . md5($identifier);
-        
-        if (!isset($_SESSION[$key])) {
-            $_SESSION[$key] = [
-                'count' => 0,
-                'last_attempt' => 0
-            ];
+        // Load database connection if not loaded
+        if (!class_exists('LoginSecurity')) {
+            require_once dirname(__DIR__) . '/iso-includes/database.php';
+            require_once dirname(__DIR__) . '/iso-includes/class-login-security.php';
+            isotone_db_connect();
         }
         
-        $attempts = &$_SESSION[$key];
-        
-        // Reset counter after 15 minutes
-        if (time() - $attempts['last_attempt'] > 900) {
-            $attempts['count'] = 0;
-        }
-        
-        // Check if too many attempts
-        if ($attempts['count'] >= 5) {
-            $wait_time = 900 - (time() - $attempts['last_attempt']);
-            if ($wait_time > 0) {
-                return [
-                    'blocked' => true,
-                    'wait_time' => $wait_time,
-                    'message' => 'Too many login attempts. Please wait ' . ceil($wait_time / 60) . ' minutes.'
-                ];
-            }
-            $attempts['count'] = 0;
-        }
-        
-        return ['blocked' => false];
+        $ip = $identifier ?: $_SERVER['REMOTE_ADDR'];
+        return LoginSecurity::checkBruteForce($ip);
     }
     
     /**
-     * Record login attempt
+     * Record login attempt (delegates to LoginSecurity class)
      */
-    public static function recordLoginAttempt($identifier = null, $success = false) {
-        $identifier = $identifier ?: $_SERVER['REMOTE_ADDR'];
-        $key = 'login_attempts_' . md5($identifier);
-        
-        if (!isset($_SESSION[$key])) {
-            $_SESSION[$key] = [
-                'count' => 0,
-                'last_attempt' => 0
-            ];
+    public static function recordLoginAttempt($username = null, $success = false) {
+        // Load database connection if not loaded
+        if (!class_exists('LoginSecurity')) {
+            require_once dirname(__DIR__) . '/iso-includes/database.php';
+            require_once dirname(__DIR__) . '/iso-includes/class-login-security.php';
+            isotone_db_connect();
         }
         
-        if ($success) {
-            // Clear attempts on successful login
-            unset($_SESSION[$key]);
-        } else {
-            // Increment failed attempts
-            $_SESSION[$key]['count']++;
-            $_SESSION[$key]['last_attempt'] = time();
-        }
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+        $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+        
+        return LoginSecurity::recordAttempt($ip, $username, $success, $user_agent);
     }
     
     /**
@@ -309,14 +280,14 @@ class IsotoneeSecurity {
 
 // Convenience functions
 function iso_escape($string) {
-    return IsotoneeSecurity::escape($string);
+    return IsotoneSecurity::escape($string);
 }
 
 function iso_csrf_field() {
-    return IsotoneeSecurity::csrfField();
+    return IsotoneSecurity::csrfField();
 }
 
 function iso_verify_csrf($token = null) {
     $token = $token ?: ($_POST['csrf_token'] ?? '');
-    return IsotoneeSecurity::validateCSRFToken($token);
+    return IsotoneSecurity::validateCSRFToken($token);
 }

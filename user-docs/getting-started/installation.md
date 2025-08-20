@@ -1,3 +1,12 @@
+---
+title: Installation Guide
+description: Complete guide to installing Isotone CMS with system requirements, configuration, and troubleshooting
+tags: [installation, setup, requirements, configuration, getting-started]
+category: getting-started
+priority: 100
+last_updated: 2025-01-20
+---
+
 # Installation Guide
 
 ## System Requirements

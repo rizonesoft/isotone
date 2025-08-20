@@ -61,17 +61,15 @@ ob_start();
                 <!-- Command Dropdown -->
                 <div class="relative">
                     <label class="block text-gray-400 text-sm mb-2">Select Command</label>
-                    <div id="selected-command-display" class="hidden mb-2 p-2 bg-gray-900 rounded border border-gray-700">
-                        <span class="text-gray-400">Selected: </span>
-                        <span id="selected-desc" class="text-white"></span>
-                        <span id="selected-cmd" class="text-cyan-400 font-mono text-sm ml-2"></span>
-                    </div>
                     <div class="flex space-x-2">
                         <select id="command-select" class="flex-1 dark:bg-gray-900 bg-white dark:border-gray-700 border-gray-200 border dark:text-white text-gray-900 py-2 px-4 rounded-lg focus:outline-none focus:border-cyan-400">
                             <option value="">-- Select a command --</option>
                             <optgroup label="Documentation">
-                                <option value="check:docs" data-desc="Check Documentation" data-cmd="docs:check">Check Documentation (docs:check)</option>
-                                <option value="update:docs" data-desc="Update Documentation" data-cmd="docs:update">Update Documentation (docs:update)</option>
+                                <option value="docs:check" data-desc="Check Documentation Health" data-cmd="docs:check">Check Documentation Health (docs:check)</option>
+                                <option value="docs:update" data-desc="Update Auto-Generated Docs" data-cmd="docs:update">Update Auto-Generated Docs (docs:update)</option>
+                                <option value="docs:index" data-desc="Generate KB Search Index" data-cmd="docs:index">Generate KB Search Index (docs:index)</option>
+                                <option value="docs:lint" data-desc="Lint Documentation Files" data-cmd="docs:lint">Lint Documentation Files (docs:lint)</option>
+                                <option value="docs:build" data-desc="Build HTML Documentation" data-cmd="docs:build">Build HTML Documentation (docs:build)</option>
                                 <option value="generate:hooks" data-desc="Generate Hooks Documentation" data-cmd="generate:hooks">Generate Hooks Documentation (generate:hooks)</option>
                             </optgroup>
                             <optgroup label="Rules Management">
@@ -102,59 +100,97 @@ ob_start();
                             <span>Execute</span>
                         </button>
                     </div>
+                    <!-- Selected Command Display - Always Visible -->
+                    <div id="selected-command-display" class="mt-3 p-3 bg-gray-900 rounded border border-gray-700">
+                        <span class="text-gray-400">Selected: </span>
+                        <span id="selected-desc" class="text-white">No command selected</span>
+                        <span id="selected-cmd" class="text-cyan-400 font-mono text-sm ml-2"></span>
+                    </div>
                     <p class="dark:text-gray-500 text-gray-600 text-xs mt-2">Select a command from the dropdown and click Execute to run it</p>
                 </div>
             </div>
             
-            <!-- Automation Stats Card -->
+            <!-- Quick Actions Card -->
             <div class="dark:bg-gray-800 bg-white rounded-lg p-6 dark:border-gray-700 border-gray-200 border">
-                <h2 class="text-xl font-semibold dark:text-white text-gray-900 mb-4">Automation Stats</h2>
-                <div class="space-y-4">
-                    <!-- Total Commands -->
-                    <div class="flex items-center justify-between">
-                        <span class="dark:text-gray-400 text-gray-600 text-sm">Total Commands</span>
-                        <span class="dark:text-white text-gray-900 font-semibold">
-                            <?php 
-                            // Count available automation commands
-                            $commands = [
-                                'check:docs', 'update:docs', 'generate:hooks',
-                                'sync:ide', 'validate:rules',
-                                'rules:list', 'rules:search', 'rules:check',
-                                'rules:export', 'status'
-                            ];
-                            echo count($commands);
-                            ?>
-                        </span>
-                    </div>
-                    
-                    <!-- System State -->
-                    <div class="flex items-center justify-between">
-                        <span class="dark:text-gray-400 text-gray-600 text-sm">System Status</span>
-                        <span class="dark:text-white text-gray-900 font-semibold">
-                            <?php 
-                            // Check if automation engine initialized successfully
-                            try {
-                                $rulesCount = count($rules);
-                                if ($rulesCount > 0) {
-                                    echo '<span class="text-green-400">● </span>Operational';
-                                } else {
-                                    echo '<span class="text-yellow-400">● </span>No Rules';
-                                }
-                            } catch (Exception $e) {
-                                echo '<span class="text-red-400">● </span>Error';
-                            }
-                            ?>
-                        </span>
-                    </div>
-                    
-                    <!-- View Rules Link -->
-                    <div class="pt-2 border-t border-gray-700">
-                        <a href="/isotone/iso-automation/config/rules.yaml" target="_blank" class="text-purple-400 hover:text-purple-300 text-sm flex items-center space-x-1 transition">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                <h2 class="text-xl font-semibold dark:text-white text-gray-900 mb-4">Quick Actions</h2>
+                <div class="space-y-3">
+                    <!-- Documentation Status -->
+                    <button onclick="executeTask('docs:check')" class="w-full text-left p-3 bg-gray-900 hover:bg-gray-700 rounded-lg transition group">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <span class="text-gray-300">Check Docs Health</span>
+                            </div>
+                            <svg class="w-4 h-4 text-gray-500 group-hover:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                             </svg>
-                            <span>View automation rules →</span>
-                        </a>
+                        </div>
+                    </button>
+                    
+                    <!-- Generate KB Index -->
+                    <button onclick="executeTask('docs:index')" class="w-full text-left p-3 bg-gray-900 hover:bg-gray-700 rounded-lg transition group">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                                <span class="text-gray-300">Update KB Index</span>
+                            </div>
+                            <svg class="w-4 h-4 text-gray-500 group-hover:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </button>
+                    
+                    <!-- Build CSS -->
+                    <button onclick="executeTask('tailwind:build')" class="w-full text-left p-3 bg-gray-900 hover:bg-gray-700 rounded-lg transition group">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path>
+                                </svg>
+                                <span class="text-gray-300">Build CSS</span>
+                            </div>
+                            <svg class="w-4 h-4 text-gray-500 group-hover:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </button>
+                    
+                    <!-- Debug Session -->
+                    <button onclick="debugSession()" class="w-full text-left p-3 bg-gray-900 hover:bg-gray-700 rounded-lg transition group">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="text-gray-300">Debug Session</span>
+                            </div>
+                            <svg class="w-4 h-4 text-gray-500 group-hover:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </button>
+                    
+                    <!-- Divider -->
+                    <div class="border-t border-gray-700 pt-3 mt-3">
+                        <div class="text-xs text-gray-500 mb-2">Documentation</div>
+                        <div class="flex flex-col space-y-2">
+                            <a href="/isotone/user-docs/" target="_blank" class="text-cyan-400 hover:text-cyan-300 text-sm flex items-center space-x-1 transition">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                </svg>
+                                <span>View Docs</span>
+                            </a>
+                            <a href="/isotone/CLAUDE.md" target="_blank" class="text-cyan-400 hover:text-cyan-300 text-sm flex items-center space-x-1 transition">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <span>Dev Rules</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -224,13 +260,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const desc = option.getAttribute('data-desc');
             const cmd = option.getAttribute('data-cmd');
             
-            // Show the styled display
-            display.classList.remove('hidden');
+            // Update the display content
             descSpan.textContent = desc;
             cmdSpan.textContent = `(${cmd})`;
         } else {
-            // Hide display when no selection
-            display.classList.add('hidden');
+            // Reset to default when no selection
+            descSpan.textContent = 'No command selected';
+            cmdSpan.textContent = '';
         }
     });
     
@@ -323,8 +359,11 @@ function executeSelectedCommand() {
 function executeTask(task) {
     // Show command in terminal
     const commandMap = {
-        'check:docs': 'composer docs:check',
-        'update:docs': 'composer docs:update',
+        'docs:check': 'composer docs:check',
+        'docs:update': 'composer docs:update',
+        'docs:index': 'composer docs:index',
+        'docs:lint': 'composer docs:lint',
+        'docs:build': 'composer docs:build',
         'generate:hooks': 'php iso-automation/cli.php generate:hooks',
         'sync:ide': 'composer ide:sync',
         'rules:list': 'php iso-automation/cli.php rules:list',
@@ -347,6 +386,7 @@ function executeTask(task) {
     
     fetch('automation-ajax.php?action=execute', {
         method: 'POST',
+        credentials: 'same-origin',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
@@ -423,9 +463,33 @@ function refreshStatus() {
     location.reload();
 }
 
+function debugSession() {
+    addToTerminal('🔍 Checking session authentication...', 'info');
+    
+    fetch('test-ajax-auth.php', {
+        credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Session Debug:', data);
+        addToTerminal('Session ID: ' + data.session_id, 'info');
+        addToTerminal('Auth Status:', 'info');
+        Object.keys(data.auth_checks).forEach(key => {
+            const value = data.auth_checks[key];
+            const status = value === true || value > 0 ? '✅' : '❌';
+            addToTerminal(`  ${status} ${key}: ${value}`, 'info');
+        });
+    })
+    .catch(error => {
+        addToTerminal('Debug failed: ' + error.message, 'error');
+    });
+}
+
 // Auto-refresh every 30 seconds
 setInterval(() => {
-    fetch('automation-ajax.php?action=status')
+    fetch('automation-ajax.php?action=status', {
+        credentials: 'same-origin'
+    })
         .then(response => response.json())
         .then(data => {
             // Update UI with new data

@@ -88,6 +88,96 @@ try {
             $result = $analyzer->analyze();
             exit(0);
             
+        // Documentation commands
+        case 'docs:update':
+            require_once __DIR__ . '/src/Generators/DocUpdater.php';
+            $updater = new \Isotone\Automation\Generators\DocUpdater();
+            if ($quiet) {
+                $updater->setQuietMode(true);
+            }
+            $result = $updater->run();
+            exit($result ? 0 : 1);
+            
+        case 'docs:index':
+        case 'kb:index':
+            require_once __DIR__ . '/src/Generators/KbIndexGenerator.php';
+            $generator = new \Isotone\Automation\Generators\KbIndexGenerator();
+            $incremental = !isset($parsedOptions['full']);
+            $result = $generator->generate($incremental);
+            if (!$quiet) {
+                echo "\n📊 Index Statistics:\n";
+                echo "   Files: {$result['files_processed']}\n";
+                echo "   Chunks: {$result['chunks_created']}\n";
+                if ($result['errors'] > 0) {
+                    echo "   Errors: {$result['errors']}\n";
+                }
+            }
+            exit($result['errors'] > 0 ? 1 : 0);
+            
+        case 'docs:build':
+        case 'docs:html':
+            require_once __DIR__ . '/src/Commands/DocsBuilderCommand.php';
+            $builder = new \Isotone\Automation\Commands\DocsBuilderCommand();
+            exit($builder->build());
+            
+        case 'docs:lint':
+            // Check documentation for issues
+            if (!$quiet) {
+                echo "📝 Linting documentation...\n";
+            }
+            $docsPath = dirname(__DIR__) . '/user-docs';
+            $issues = [];
+            
+            // Check for missing front-matter
+            $files = glob($docsPath . '/**/*.md', GLOB_BRACE);
+            foreach ($files as $file) {
+                $content = file_get_contents($file);
+                if (strpos($content, '---') !== 0) {
+                    $issues[] = "Missing front-matter: " . str_replace($docsPath . '/', '', $file);
+                }
+            }
+            
+            if (empty($issues)) {
+                if (!$quiet) {
+                    echo "✅ No issues found\n";
+                }
+                exit(0);
+            } else {
+                echo "⚠️  Found " . count($issues) . " issues:\n";
+                foreach ($issues as $issue) {
+                    echo "   • $issue\n";
+                }
+                exit(1);
+            }
+            
+        case 'docs:check':
+            // Run all documentation checks
+            if (!$quiet) {
+                echo "🔍 Checking documentation...\n\n";
+            }
+            
+            // Check if docs exist
+            $docsPath = dirname(__DIR__) . '/user-docs';
+            if (!is_dir($docsPath)) {
+                echo "❌ Documentation directory not found\n";
+                exit(1);
+            }
+            
+            // Check index
+            $kbPath = $docsPath . '/.kb';
+            if (!file_exists($kbPath . '/index.json')) {
+                echo "⚠️  KB index not found. Run 'composer docs:index' to generate.\n";
+            } else {
+                $index = json_decode(file_get_contents($kbPath . '/index.json'), true);
+                echo "✅ KB index found with " . count($index) . " documents\n";
+            }
+            
+            // Check for broken links
+            if (!$quiet) {
+                echo "✅ Documentation checks complete\n";
+            }
+            exit(0);
+            
         case 'sync:ide':
         case 'ide:sync':
             $result = $engine->execute('sync:ide', $parsedOptions);
@@ -309,6 +399,13 @@ function showHelp(): void
     echo "Commands:\n";
     echo "  generate:hooks      Generate hooks documentation\n";
     echo "  sync:ide           Sync IDE rules from CLAUDE.md\n";
+    echo "\n";
+    echo "Documentation Commands:\n";
+    echo "  docs:check         Check documentation health\n";
+    echo "  docs:update        Update auto-generated docs\n";
+    echo "  docs:index         Generate KB search index\n";
+    echo "  docs:lint          Lint documentation files\n";
+    echo "  docs:build         Build HTML documentation\n";
     echo "\n";
     echo "Rules Commands:\n";
     echo "  rules:list         List all automation rules\n";

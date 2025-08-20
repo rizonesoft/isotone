@@ -8,6 +8,11 @@
  * @package Isotone
  */
 
+// Load RedBeanPHP if not already loaded
+if (!class_exists('RedBeanPHP\R')) {
+    require_once dirname(__DIR__) . '/vendor/autoload.php';
+}
+
 use RedBeanPHP\R;
 
 /**

@@ -1,8 +1,14 @@
-# Rules
+---
+title: Automation Rules
+description: Guide to Isotone's automation rules system for code validation, documentation generation, and quality checks
+tags: [automation, rules, validation, code-quality, documentation]
+category: automation
+priority: 70
+last_updated: 2025-01-20
+status: draft
+---
 
-> **Category**: Automation  
-> **Last Updated**: 2025-08-18  
-> **Status**: Draft
+# Rules
 
 ## Overview
 

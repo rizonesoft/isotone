@@ -37,8 +37,8 @@ Options -Indexes
     </IfModule>
 </FilesMatch>
 
-# Protect configuration files
-<FilesMatch "^(config|configuration|settings)\.(php|ini|json)$">
+# Protect configuration files (but allow settings.php which is a valid admin page)
+<FilesMatch "^(config|configuration)\.(php|ini|json)$">
     <IfModule mod_authz_core.c>
         Require all denied
     </IfModule>

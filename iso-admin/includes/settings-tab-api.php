@@ -487,12 +487,28 @@ function tokenUsageMonitor() {
             
             // Wait for Chart.js to load
             if (typeof Chart === 'undefined') {
-                // Wait a bit and try again
-                setTimeout(() => this.init(), 100);
-                this.initialized = false; // Reset so we can try again
+                console.log('Waiting for Chart.js...');
+                // Listen for the custom event or retry
+                const waitForChart = () => {
+                    if (typeof Chart !== 'undefined') {
+                        console.log('Chart.js is ready');
+                        this.fetchUsageData();
+                    } else {
+                        setTimeout(waitForChart, 100);
+                    }
+                };
+                
+                // Also listen for the custom event
+                window.addEventListener('chartjs-loaded', () => {
+                    console.log('Chart.js loaded event received');
+                    this.fetchUsageData();
+                }, { once: true });
+                
+                waitForChart();
                 return;
             }
             
+            console.log('Chart.js already loaded');
             await this.fetchUsageData();
             
             // Set up auto-refresh every 30 seconds when on API tab
@@ -535,24 +551,35 @@ function tokenUsageMonitor() {
             this.loading = true;
             this.error = null;
             
+            console.log(`Fetching usage data for period: ${this.period}`);
+            
             try {
                 const response = await fetch(`/isotone/iso-admin/api/token-usage.php?period=${this.period}`, {
                     method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json'
-                    }
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    credentials: 'same-origin'
                 });
                 
+                console.log('Response status:', response.status);
+                
                 if (!response.ok) {
-                    throw new Error('Failed to fetch usage data');
+                    const text = await response.text();
+                    console.error('Response not OK:', text);
+                    throw new Error(`Failed to fetch usage data: ${response.status}`);
                 }
                 
                 const data = await response.json();
+                console.log('API response:', data);
                 
                 if (data.success) {
                     this.totals = data.totals || this.totals;
                     this.modelSummary = data.summary_by_model || [];
                     this.chartData = data.chart_data || [];
+                    
+                    console.log('Data loaded, updating charts...');
                     
                     // Update charts
                     this.$nextTick(() => {
@@ -560,10 +587,11 @@ function tokenUsageMonitor() {
                     });
                 } else {
                     this.error = data.error || 'Failed to load usage data';
+                    console.error('API error:', this.error);
                 }
             } catch (error) {
                 console.error('Error fetching token usage:', error);
-                this.error = 'Unable to fetch usage data. Start using the API to see statistics.';
+                this.error = 'Unable to fetch usage data. Please check the console for details.';
             } finally {
                 this.loading = false;
             }
@@ -824,5 +852,17 @@ function tokenUsageMonitor() {
 }
 </script>
 
-<!-- Add Chart.js library -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Add Chart.js library (moved to head for earlier loading) -->
+<script>
+// Load Chart.js dynamically if not already loaded
+if (typeof Chart === 'undefined') {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+    script.onload = function() {
+        console.log('Chart.js loaded successfully');
+        // Trigger a custom event when Chart.js is loaded
+        window.dispatchEvent(new Event('chartjs-loaded'));
+    };
+    document.head.appendChild(script);
+}
+</script>

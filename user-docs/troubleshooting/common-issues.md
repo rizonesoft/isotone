@@ -1,8 +1,14 @@
-# Common Issues
+---
+title: Common Issues & Solutions
+description: Troubleshooting guide for common Isotone installation, configuration, and runtime issues
+tags: [troubleshooting, errors, solutions, debugging, common-issues, fixes]
+category: troubleshooting
+priority: 75
+last_updated: 2025-01-20
+status: draft
+---
 
-> **Category**: Troubleshooting  
-> **Last Updated**: 2025-08-18  
-> **Status**: Draft
+# Common Issues
 
 ## Overview
 

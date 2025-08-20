@@ -65,7 +65,7 @@ When you receive [Page Context] messages, understand the user is on that specifi
     {
         try {
             // Get recent messages for context
-            $messages = R::find('tonimessages', 
+            $messages = R::find('toni', 
                 'user_id = ? ORDER BY created_at DESC LIMIT ?', 
                 [$userId, self::CONTEXT_WINDOW]
             );
@@ -95,7 +95,7 @@ When you receive [Page Context] messages, understand the user is on that specifi
     {
         try {
             // Store user message
-            $userMessage = R::dispense('tonimessages');
+            $userMessage = R::dispense('toni');
             $userMessage->user_id = $userId;
             $userMessage->role = 'user';
             $userMessage->content = $message;
@@ -124,7 +124,7 @@ When you receive [Page Context] messages, understand the user is on that specifi
             }
 
             // Store AI response
-            $aiMessage = R::dispense('tonimessages');
+            $aiMessage = R::dispense('toni');
             $aiMessage->user_id = $userId;
             $aiMessage->role = 'assistant';
             $aiMessage->content = $response;
@@ -149,7 +149,7 @@ When you receive [Page Context] messages, understand the user is on that specifi
     {
         try {
             // Store user message
-            $userMessage = R::dispense('tonimessages');
+            $userMessage = R::dispense('toni');
             $userMessage->user_id = $userId;
             $userMessage->role = 'user';
             $userMessage->content = $message;
@@ -177,7 +177,7 @@ When you receive [Page Context] messages, understand the user is on that specifi
             }
 
             // Store AI response
-            $aiMessage = R::dispense('tonimessages');
+            $aiMessage = R::dispense('toni');
             $aiMessage->user_id = $userId;
             $aiMessage->role = 'assistant';
             $aiMessage->content = $response;
@@ -1351,7 +1351,7 @@ Could you provide more details about what you're trying to accomplish?";
     public function clearConversation(int $userId): bool
     {
         try {
-            R::exec('DELETE FROM tonimessages WHERE user_id = ?', [$userId]);
+            R::exec('DELETE FROM toni WHERE user_id = ?', [$userId]);
             return true;
         } catch (Exception $e) {
             error_log('Toni clear conversation error: ' . $e->getMessage());
