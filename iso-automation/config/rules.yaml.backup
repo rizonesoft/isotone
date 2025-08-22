@@ -372,14 +372,14 @@ documentation:
         pre_push:
           when: "Every git push"
           actions:
-            - "Detect version.json changes"
+            - "Detect iso-automation/version.json changes"
             - "Auto-generate CHANGELOG.md if version changed"
             - "Stage changelog if updated"
             - "Final documentation validation"
       version_bump:
         when: "Running php isotone version:bump"
         actions:
-          - "Update version in config/version.json"
+          - "Update version in iso-automation/version.json"
           - "Generate CHANGELOG.md"
           - "Run composer docs:update"
           - "Run composer ide:sync"
@@ -548,8 +548,8 @@ hook_system:
       command: "php isotone hooks:docs"
       description: "Generate comprehensive hook documentation"
       outputs:
-        - "/storage/hooks/hooks.json - All hooks data"
-        - "/storage/hooks/stats.json - Hook statistics"
+        - "/iso-automation/storage/hooks.json - All hooks data"
+        - "/iso-automation/storage/stats.json - Hook statistics"
         - "/HOOKS.md - Main documentation"
         - "/docs/HOOK-NAMING-CONVENTIONS.md - Naming guide"
         - "/user-docs/api/hooks/ - Interactive explorer"

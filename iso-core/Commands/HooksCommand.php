@@ -58,9 +58,9 @@ class HooksCommand
         }
         
         // Save results to JSON
-        $jsonFile = __DIR__ . '/../../storage/hooks-scan.json';
+        $jsonFile = __DIR__ . '/../../iso-automation/storage/hooks-scan.json';
         file_put_contents($jsonFile, json_encode($results, JSON_PRETTY_PRINT));
-        echo "\nDetailed results saved to: storage/hooks-scan.json\n";
+        echo "\nDetailed results saved to: iso-automation/storage/hooks-scan.json\n";
     }
     
     /**
@@ -186,7 +186,7 @@ class HooksCommand
         
         // Scan for hook usage
         $scanResults = json_decode(
-            file_get_contents(__DIR__ . '/../../storage/hooks-scan.json'),
+            file_get_contents(__DIR__ . '/../../iso-automation/storage/hooks-scan.json'),
             true
         );
         

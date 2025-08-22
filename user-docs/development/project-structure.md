@@ -18,7 +18,6 @@ isotone/
 ├── CLAUDE.md
 ├── README.md
 ├── composer.json
-├── config/
 ├── config.sample.php
 ├── docs/
 │   ├── api-reference/
@@ -30,6 +29,7 @@ isotone/
 │   ├── configuration/
 │   ├── development/
 │   ├── getting-started/
+│   ├── icons/
 │   ├── toni/
 │   └── troubleshooting/
 ├── install/
@@ -39,11 +39,12 @@ isotone/
 │   ├── css/
 │   ├── includes/
 │   ├── js/
+├── iso-api/
 ├── iso-automation/
 │   ├── README.md
 │   ├── cache/
 │   ├── config/
-│   └── src/
+│   ├── src/
 │   │   ├── Analyzers/
 │   │   ├── Commands/
 │   │   ├── Core/
@@ -51,6 +52,11 @@ isotone/
 │   │   ├── Documentation/
 │   │   ├── Generators/
 │   │   └── Rules/
+│   ├── storage/
+│   ├── tailwind/
+│   │   ├── README.md
+│   │   ├── package.json
+│   │   └── src/
 ├── iso-content/
 │   ├── README.md
 │   ├── plugins/
@@ -69,27 +75,25 @@ isotone/
 ├── iso-includes/
 │   ├── assets/
 │   ├── css/
+│   ├── js/
 │   └── scripts/
 ├── iso-runtime/
 │   ├── README.md
 │   ├── cache/
 │   ├── logs/
 │   └── temp/
-├── storage/
-├── tailwind-build/
-│   ├── README.md
-│   ├── package.json
-│   └── src/
 ├── user-docs/
 │   ├── .kb/
 │   ├── .vitepress/
 │   │   └── dist/
 │   ├── README.md
+│   ├── api/
 │   ├── api-reference/
 │   ├── automation/
 │   ├── configuration/
 │   ├── development/
 │   ├── getting-started/
+│   ├── icons/
 │   ├── package.json
 │   ├── reference/
 │   ├── toni/

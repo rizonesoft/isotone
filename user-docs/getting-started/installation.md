@@ -146,12 +146,12 @@ chmod 755 iso-content/
 chmod 755 iso-content/uploads/
 chmod 755 iso-content/themes/
 chmod 755 iso-content/plugins/
-chmod 755 storage/
+chmod 755 iso-runtime/
 chmod 644 config.php
 
 # Protect sensitive directories with .htaccess (Apache)
 echo "Deny from all" > iso-automation/.htaccess
-echo "Deny from all" > storage/.htaccess
+echo "Deny from all" > iso-runtime/.htaccess
 ```
 
 ### Method 2: Shared Hosting Installation
@@ -387,6 +387,6 @@ After installation, regularly check your system health:
 
 1. Review PHP configuration with `phpinfo()`
 2. Check available PHP extensions: `php -m`
-3. Monitor error logs in `/storage/logs/`
+3. Monitor error logs in `/iso-runtime/logs/`
 4. Use debugging tools in development mode
 5. Test database connectivity periodically

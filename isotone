@@ -70,6 +70,7 @@ function showHelp(): void
     echo "  hooks:docs       Generate hook documentation\n";
     echo "  hooks:validate   Validate hook implementation\n";
     echo "  hooks:list       List all registered hooks\n";
+    echo "  icons:gallery    Generate HTML icon gallery documentation\n";
     echo "  hooks:test       Test hook system\n";
     echo "  help             Show this help message\n";
     echo "\n";
@@ -130,7 +131,7 @@ try {
             // Show what changed
             echo "\nVersion updated successfully!\n";
             echo "All documentation and IDE rules synced!\n";
-            echo "Run 'git add config/version.json CHANGELOG.md docs/' to stage the changes.\n";
+            echo "Run 'git add iso-automation/version.json CHANGELOG.md docs/' to stage the changes.\n";
             break;
             
         case 'version:set':
@@ -146,7 +147,7 @@ try {
             if (Version::set($newVersion, $codename)) {
                 echo "Version set to: " . Version::format($newVersion) . "\n";
                 echo "\nVersion updated successfully!\n";
-                echo "Run 'git add config/version.json' to stage the changes.\n";
+                echo "Run 'git add iso-automation/version.json' to stage the changes.\n";
             } else {
                 echo "Error: Failed to set version.\n";
                 exit(1);
@@ -196,6 +197,13 @@ try {
         case 'hooks:docs':
             $hooksCmd = new HooksCommand();
             $hooksCmd->docs();
+            break;
+            
+        case 'icons:gallery':
+            // Generate icon gallery
+            require_once __DIR__ . '/iso-automation/src/Commands/IconGalleryCommand.php';
+            $iconCmd = new \Isotone\Automation\Commands\IconGalleryCommand();
+            exit($iconCmd->execute($argv));
             break;
             
         case 'hooks:validate':

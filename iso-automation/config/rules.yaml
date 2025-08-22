@@ -480,7 +480,7 @@ version_management:
       command: "Analyze changes to determine type"
     - step: "Collect features and changes"
       command: "Review git commits and changes since last version"
-    - step: "Update version.json with features"
+    - step: "Update iso-automation/version.json with features"
       command: "Add features array to the new version entry"
     - step: "Execute version bump"
       command: "php isotone version:bump [type] [stage] [codename]"
@@ -492,7 +492,7 @@ version_management:
       command: "Show the new version number and changes"
   
   changelog_requirements:
-    description: "CRITICAL: Always populate features array in version.json"
+    description: "CRITICAL: Always populate features array in iso-automation/version.json"
     rules:
       - "NEVER leave features array empty when bumping version"
       - "ALWAYS review git log for changes since last version"
@@ -686,14 +686,14 @@ documentation:
         pre_push:
           when: "Every git push"
           actions:
-            - "Detect version.json changes"
+            - "Detect iso-automation/version.json changes"
             - "Auto-generate CHANGELOG.md if version changed"
             - "Stage changelog if updated"
             - "Final documentation validation"
       version_bump:
         when: "Running php isotone version:bump"
         actions:
-          - "Update version in config/version.json"
+          - "Update version in iso-automation/version.json"
           - "Generate CHANGELOG.md"
           - "Update documentation manually if needed"
           - "Run composer ide:sync"
@@ -852,8 +852,8 @@ hook_system:
       command: "php isotone hooks:docs"
       description: "Generate comprehensive hook documentation"
       outputs:
-        - "/storage/hooks-implementation.json - All hooks data"
-        - "/storage/hook-stats.json - Hook statistics"
+        - "/iso-automation/storage/hooks-implementation.json - All hooks data"
+        - "/iso-automation/storage/hook-stats.json - Hook statistics"
         - "/user-docs/development/api-reference.md - API documentation"
         - "Hook naming conventions follow WordPress standards with iso_ prefix"
     scanning:

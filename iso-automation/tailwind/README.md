@@ -28,7 +28,7 @@ All commands are available through Composer:
 You can also run commands directly in this directory:
 
 ```bash
-cd tailwind-build
+cd iso-automation/tailwind
 npm run build    # Build CSS
 npm run watch    # Watch mode
 npm run minify   # Minified build

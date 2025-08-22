@@ -13,8 +13,7 @@ The default theme for Isotone, featuring a modern dark design with glassmorphism
 ## Template Files
 
 - `index.php` - Main template file
-- `theme.json` - Theme configuration
-- `style.css` - Theme-specific styles
+- `style.css` - Theme metadata and styles
 - `functions.php` - Theme functions (optional)
 
 ## Customization

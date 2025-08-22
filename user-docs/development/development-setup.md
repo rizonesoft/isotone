@@ -178,7 +178,7 @@ Visit http://localhost/isotone/ in your browser. You should see:
 ```bash
 # Set proper permissions
 chmod -R 755 isotone
-chmod -R 777 storage
+chmod -R 777 iso-runtime
 chmod -R 777 content/cache
 chmod -R 777 content/uploads
 ```

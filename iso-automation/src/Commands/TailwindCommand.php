@@ -13,7 +13,7 @@ class TailwindCommand
     public function __construct(AutomationEngine $engine)
     {
         $this->engine = $engine;
-        $this->buildDir = dirname(__DIR__, 3) . '/tailwind-build';
+        $this->buildDir = dirname(__DIR__, 2) . '/tailwind';
     }
     
     /**
@@ -222,8 +222,8 @@ class TailwindCommand
         
         $this->step("Step 2/3: Checking version...");
         $packageJson = json_decode(file_get_contents($this->buildDir . '/package.json'), true);
-        $version = $packageJson['devDependencies']['@tailwindcss/cli'] ?? 'unknown';
-        $this->info("   Tailwind CLI version: " . $version);
+        $version = $packageJson['devDependencies']['tailwindcss'] ?? 'unknown';
+        $this->info("   Tailwind CSS version: " . $version);
         
         $this->step("Step 3/3: Rebuilding CSS...");
         return $this->build();
@@ -250,8 +250,8 @@ class TailwindCommand
             
             // Check package versions
             $packageJson = json_decode(file_get_contents($this->buildDir . '/package.json'), true);
-            $this->info("   Tailwind CLI: " . ($packageJson['devDependencies']['@tailwindcss/cli'] ?? 'N/A'));
             $this->info("   Tailwind CSS: " . ($packageJson['devDependencies']['tailwindcss'] ?? 'N/A'));
+            $this->info("   Tailwind CLI: " . ($packageJson['devDependencies']['@tailwindcss/cli'] ?? 'N/A'));
             $this->info("   Alpine.js: " . ($packageJson['dependencies']['alpinejs'] ?? 'N/A'));
             $this->info("   Chart.js: " . ($packageJson['dependencies']['chart.js'] ?? 'N/A'));
         } else {

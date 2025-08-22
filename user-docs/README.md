@@ -28,6 +28,9 @@ Developer guides, API reference, and best practices
 - [Getting Started](./development/getting-started.md)
 - [Project Structure](./development/project-structure.md)
 - [Commands](./development/commands.md)
+- [Theme Customizer](./development/customizer.md)
+- [Themes](./development/themes.md)
+- [Hooks System](./development/hooks.md)
 
 ### [API Reference](./api-reference/)
 
@@ -77,4 +80,4 @@ This documentation uses a structured category system with automatic discovery of
 
 ---
 
-*Documentation updated: 2025-08-18 16:00:43*
+*Documentation updated: 2025-08-22*

@@ -3,6 +3,8 @@
 ## 📝 Quick Notes
 <!-- Add quick notes and thoughts here -->
 
+- [2025-08-22T16:00+00:00] Move tailwind directory to correct location - currently in iso-automation/tailwind but should be organized properly #refactor #tailwind
+
 ### Quick Prompts
 
 ---
@@ -138,4 +140,4 @@
 
 ---
 
-*Last updated: 2025-08-14 (6:27 PM)*
+*Last updated: 2025-08-22 (4:00 PM UTC)*

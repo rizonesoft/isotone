@@ -23,7 +23,7 @@ class Version
     /**
      * Version configuration file
      */
-    private const VERSION_FILE = __DIR__ . '/../../config/version.json';
+    private const VERSION_FILE = __DIR__ . '/../../iso-automation/version.json';
     
     /**
      * Version data cache

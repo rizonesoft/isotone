@@ -1,0 +1,42 @@
+{
+    "actions": {
+        "after_setup_theme": [
+            "iso-core\/Commands\/..\/..\/iso-admin\/hooks-explorer.php"
+        ],
+        "init": [
+            "iso-core\/Commands\/..\/..\/iso-admin\/hooks-explorer.php"
+        ],
+        "widgets_init": [
+            "iso-core\/Commands\/..\/..\/iso-admin\/hooks-explorer.php"
+        ],
+        "iso_enqueue_scripts": [
+            "iso-core\/Commands\/..\/..\/iso-admin\/hooks-explorer.php"
+        ],
+        "isotone_head": [
+            "iso-core\/Commands\/..\/..\/iso-content\/themes\/isotone-default\/index.php"
+        ],
+        "isotone_before_content": [
+            "iso-core\/Commands\/..\/..\/iso-content\/themes\/isotone-default\/index.php"
+        ],
+        "isotone_after_content": [
+            "iso-core\/Commands\/..\/..\/iso-content\/themes\/isotone-default\/index.php"
+        ],
+        "isotone_footer": [
+            "iso-core\/Commands\/..\/..\/iso-content\/themes\/isotone-default\/index.php"
+        ],
+        "iso_body_open": [
+            "iso-core\/Commands\/..\/..\/iso-content\/themes\/neutron\/compat.php"
+        ],
+        "hello_isotone_loaded": [
+            "iso-core\/Commands\/..\/..\/iso-content\/plugins\/hello-isotone\/hello-isotone.php"
+        ]
+    },
+    "filters": [],
+    "total_files": 44,
+    "files_with_hooks": [
+        0,
+        1,
+        2,
+        "iso-core\/Commands\/..\/..\/iso-content\/plugins\/hello-isotone\/hello-isotone.php"
+    ]
+}

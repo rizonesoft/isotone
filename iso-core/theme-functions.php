@@ -574,9 +574,31 @@ function is_user_logged_in() {
     return false;
 }
 
-function current_user_can($capability) {
-    // Will integrate with Isotone's auth system
-    return false;
+if (!function_exists('current_user_can')) {
+    function current_user_can($capability) {
+        // Check if user is logged in and has admin role
+        if (isset($_SESSION['isotone_admin_user_data']['role'])) {
+            // For now, assume admin users have all capabilities
+            return $_SESSION['isotone_admin_user_data']['role'] === 'admin';
+        }
+        
+        // Fallback: Check if user ID exists and verify role directly
+        if (isset($_SESSION['isotone_admin_user_id'])) {
+            // Ensure database is connected
+            require_once dirname(__DIR__) . '/vendor/autoload.php';
+            require_once dirname(__DIR__) . '/iso-includes/database.php';
+            
+            if (!class_exists('R') || !R::testConnection()) {
+                isotone_db_connect();
+            }
+            
+            require_once dirname(__DIR__) . '/iso-includes/class-user.php';
+            $user = new IsotoneUser();
+            return $user->hasRole($_SESSION['isotone_admin_user_id'], 'admin');
+        }
+        
+        return false;
+    }
 }
 
 /**

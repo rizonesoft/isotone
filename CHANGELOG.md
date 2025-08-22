@@ -5,6 +5,40 @@ All notable changes to Isotone will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.1-alpha] - Genesis - 2025-08-22
+
+### Added
+- **Icon API System** - Complete icon management with lazy loading support
+  - Created `/iso-api/icons.php` RESTful endpoint
+  - Added `iso_icon()`, `iso_get_icon()`, `iso_icon_url()` helper functions
+  - Implemented icon preloading with `iso_preload_icons()`
+  - Added icon helper components (`iso_icon_button()`, `iso_icon_link()`)
+- **Icon Libraries** - Three Heroicons v2 variants
+  - IconLibrary (outline, 24x24, stroke-based)
+  - IconLibrarySolid (solid, 24x24, fill-based)  
+  - IconLibraryMicro (micro, 16x16, fill-based)
+- **JavaScript Icon Support** - Global icon objects for frontend
+  - `IsotoneIcons`, `IsotoneIconsSolid`, `IsotoneIconsMicro` 
+- **Customizer API** - WordPress-compatible theme customization
+  - CustomizerPanel, CustomizerSection, CustomizerControl classes
+  - Live preview with postMessage support
+  - Icon picker control with search functionality
+- **Icon Gallery Generator** - Automated icon documentation
+  - Better error messaging when Tailwind CSS files are missing
+  - Improved path resolution for Tailwind v4 @source directives
+
+### Fixed
+- Fixed Tailwind CSS v4.1 build system with correct @source paths
+- Fixed Tailwind CSS file size issue (was 4.6 KB, now properly 50.6 KB minified)
+- Fixed admin dashboard styling not loading due to incorrect build paths
+
+### Changed
+- Updated Tailwind CSS from v4.0.0-beta.8 to stable v4.1.12
+- Removed Tailwind CDN fallback for better performance and security
+- Improved admin-layout.php Tailwind loading logic with clear error messages
+- Optimized page size from 330.5 KB to ~210 KB (36% reduction)
+- Replaced all hardcoded SVG icons with Icon API calls throughout admin
+
 ## [0.3.0-alpha] - Genesis - 2025-08-20
 
 ### Added

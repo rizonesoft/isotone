@@ -8,6 +8,23 @@
 // Check authentication
 require_once 'auth.php';
 
+// Include Icon API
+require_once dirname(__DIR__) . '/iso-includes/icon-functions.php';
+
+// Preload dashboard icons
+iso_preload_icons([
+    // Stats card icons
+    ['name' => 'document-text', 'style' => 'outline'],
+    ['name' => 'document-duplicate', 'style' => 'outline'], 
+    ['name' => 'users', 'style' => 'outline'],
+    ['name' => 'photo', 'style' => 'outline'],
+    // Quick links icons (micro style for smaller UI elements)
+    ['name' => 'plus', 'style' => 'micro'],
+    ['name' => 'cloud-arrow-up', 'style' => 'micro'],
+    ['name' => 'cog-6-tooth', 'style' => 'micro'],
+    ['name' => 'eye', 'style' => 'micro']
+]);
+
 // Page setup
 $page_title = 'Dashboard';
 $breadcrumbs = [];
@@ -77,9 +94,7 @@ ob_start();
                         <p class="text-3xl font-bold text-cyan-400"><?php echo $stats['posts']; ?></p>
                         <p class="text-sm dark:text-gray-400 text-gray-600 mt-1">Posts</p>
                     </div>
-                    <svg class="w-8 h-8 dark:text-gray-600 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
+                    <?php echo iso_get_icon('document-text', 'outline', ['class' => 'w-8 h-8 dark:text-gray-600 text-gray-400'], false); ?>
                 </div>
             </div>
             
@@ -89,9 +104,7 @@ ob_start();
                         <p class="text-3xl font-bold text-green-400"><?php echo $stats['pages']; ?></p>
                         <p class="text-sm dark:text-gray-400 text-gray-600 mt-1">Pages</p>
                     </div>
-                    <svg class="w-8 h-8 dark:text-gray-600 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                    </svg>
+                    <?php echo iso_get_icon('document-duplicate', 'outline', ['class' => 'w-8 h-8 dark:text-gray-600 text-gray-400'], false); ?>
                 </div>
             </div>
             
@@ -101,9 +114,7 @@ ob_start();
                         <p class="text-3xl font-bold text-purple-400"><?php echo $stats['users']; ?></p>
                         <p class="text-sm dark:text-gray-400 text-gray-600 mt-1">Users</p>
                     </div>
-                    <svg class="w-8 h-8 dark:text-gray-600 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
+                    <?php echo iso_get_icon('users', 'outline', ['class' => 'w-8 h-8 dark:text-gray-600 text-gray-400'], false); ?>
                 </div>
             </div>
             
@@ -113,9 +124,7 @@ ob_start();
                         <p class="text-3xl font-bold text-yellow-400"><?php echo $stats['media']; ?></p>
                         <p class="text-sm dark:text-gray-400 text-gray-600 mt-1">Media</p>
                     </div>
-                    <svg class="w-8 h-8 dark:text-gray-600 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
+                    <?php echo iso_get_icon('photo', 'outline', ['class' => 'w-8 h-8 dark:text-gray-600 text-gray-400'], false); ?>
                 </div>
             </div>
         </div>
@@ -207,32 +216,22 @@ ob_start();
             <div class="space-y-2">
                 <a href="/isotone/iso-admin/post-edit.php?action=new" 
                    class="flex items-center p-2 dark:hover:bg-gray-700 hover:bg-gray-100 dark:text-white text-gray-900 rounded transition-colors">
-                    <svg class="w-4 h-4 mr-2 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
+                    <?php echo iso_get_icon('plus', 'micro', ['class' => 'w-4 h-4 mr-2 text-cyan-400'], false); ?>
                     New Post
                 </a>
                 <a href="/isotone/iso-admin/media.php" 
                    class="flex items-center p-2 dark:hover:bg-gray-700 hover:bg-gray-100 dark:text-white text-gray-900 rounded transition-colors">
-                    <svg class="w-4 h-4 mr-2 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                    </svg>
+                    <?php echo iso_get_icon('cloud-arrow-up', 'micro', ['class' => 'w-4 h-4 mr-2 text-green-400'], false); ?>
                     Upload Media
                 </a>
                 <a href="/isotone/iso-admin/settings.php" 
                    class="flex items-center p-2 dark:hover:bg-gray-700 hover:bg-gray-100 dark:text-white text-gray-900 rounded transition-colors">
-                    <svg class="w-4 h-4 mr-2 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
+                    <?php echo iso_get_icon('cog-6-tooth', 'micro', ['class' => 'w-4 h-4 mr-2 text-purple-400'], false); ?>
                     Settings
                 </a>
                 <a href="/isotone" target="_blank"
                    class="flex items-center p-2 dark:hover:bg-gray-700 hover:bg-gray-100 dark:text-white text-gray-900 rounded transition-colors">
-                    <svg class="w-4 h-4 mr-2 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
+                    <?php echo iso_get_icon('eye', 'micro', ['class' => 'w-4 h-4 mr-2 text-yellow-400'], false); ?>
                     View Site
                 </a>
             </div>

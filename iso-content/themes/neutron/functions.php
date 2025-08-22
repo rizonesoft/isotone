@@ -82,12 +82,118 @@ if (function_exists('add_action')) {
  * Theme customizer options
  */
 function customize_register($customizer = null) {
-    // Customizer options will be implemented when Isotone's customizer system is ready
-    // Planned options:
-    // - Primary color picker
-    // - Dark mode default (auto/light/dark)
-    // - Typography settings
-    // - Layout options
+    // Get the Isotone customizer instance
+    if (!$customizer && class_exists('\\Isotone\\Core\\Customizer')) {
+        $customizer = \Isotone\Core\Customizer::getInstance();
+    }
+    
+    if (!$customizer) {
+        return false;
+    }
+    
+    // Add Neutron Theme section
+    $customizer->addSection('neutron_theme_options', [
+        'title'       => 'Neutron Theme',
+        'description' => 'Customize the Neutron theme appearance',
+        'priority'    => 120,
+        'capability'  => 'edit_theme_options',
+        'icon'        => 'sparkles'  // Theme-specific icon
+    ]);
+    
+    // Primary Color Setting
+    $customizer->addSetting('neutron_primary_color', [
+        'default'           => '#00D9FF',
+        'type'              => 'theme_mod',
+        'capability'        => 'edit_theme_options',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'postMessage'
+    ]);
+    
+    $customizer->addControl('neutron_primary_color', [
+        'label'       => 'Primary Color',
+        'section'     => 'neutron_theme_options',
+        'setting'     => 'neutron_primary_color',
+        'type'        => 'color',
+        'description' => 'Main accent color for buttons and links'
+    ]);
+    
+    // Dark Mode Default Setting
+    $customizer->addSetting('neutron_dark_mode', [
+        'default'           => 'auto',
+        'type'              => 'theme_mod',
+        'capability'        => 'edit_theme_options',
+        'sanitize_callback' => __NAMESPACE__ . '\\sanitize_dark_mode',
+        'transport'         => 'refresh'
+    ]);
+    
+    $customizer->addControl('neutron_dark_mode', [
+        'label'       => 'Dark Mode Default',
+        'section'     => 'neutron_theme_options',
+        'setting'     => 'neutron_dark_mode',
+        'type'        => 'select',
+        'choices'     => [
+            'auto'  => 'Auto (System)',
+            'light' => 'Light Mode',
+            'dark'  => 'Dark Mode'
+        ],
+        'description' => 'Default theme appearance'
+    ]);
+    
+    // Footer Text Setting
+    $customizer->addSetting('neutron_footer_text', [
+        'default'           => 'Powered by Isotone',
+        'type'              => 'theme_mod',
+        'capability'        => 'edit_theme_options',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'postMessage'
+    ]);
+    
+    $customizer->addControl('neutron_footer_text', [
+        'label'       => 'Footer Text',
+        'section'     => 'neutron_theme_options',
+        'setting'     => 'neutron_footer_text',
+        'type'        => 'text',
+        'description' => 'Text displayed in the footer'
+    ]);
+    
+    // Show Header Search Setting
+    $customizer->addSetting('neutron_show_search', [
+        'default'           => true,
+        'type'              => 'theme_mod',
+        'capability'        => 'edit_theme_options',
+        'sanitize_callback' => 'wp_validate_boolean',
+        'transport'         => 'refresh'
+    ]);
+    
+    $customizer->addControl('neutron_show_search', [
+        'label'       => 'Show Header Search',
+        'section'     => 'neutron_theme_options',
+        'setting'     => 'neutron_show_search',
+        'type'        => 'checkbox',
+        'description' => 'Display search bar in header'
+    ]);
+    
+    // Container Width Setting
+    $customizer->addSetting('neutron_container_width', [
+        'default'           => '1280',
+        'type'              => 'theme_mod',
+        'capability'        => 'edit_theme_options',
+        'sanitize_callback' => 'absint',
+        'transport'         => 'postMessage'
+    ]);
+    
+    $customizer->addControl('neutron_container_width', [
+        'label'       => 'Container Width (px)',
+        'section'     => 'neutron_theme_options',
+        'setting'     => 'neutron_container_width',
+        'type'        => 'number',
+        'input_attrs' => [
+            'min'  => 960,
+            'max'  => 1920,
+            'step' => 10
+        ],
+        'description' => 'Maximum content width'
+    ]);
     
     return true;
 }
@@ -95,6 +201,12 @@ function customize_register($customizer = null) {
 // Register customizer options with Isotone hooks
 if (function_exists('add_action')) {
     add_action('customize_register', __NAMESPACE__ . '\\customize_register');
+} else {
+    // Direct initialization for now until hook system is ready
+    // Check if we're in the admin area and Customizer class exists
+    if (defined('ABSPATH') && class_exists('\\Isotone\\Core\\Customizer')) {
+        customize_register();
+    }
 }
 
 /**

@@ -171,6 +171,9 @@ class DocsBuilderCommand
             }
         }
         
+        // Generate icon preview pages directly from icon libraries
+        $this->generateIconPreviewPages();
+        
         // Generate index page
         $this->generateIndexPage();
         
@@ -250,6 +253,12 @@ class DocsBuilderCommand
      */
     private function processMarkdownFile(string $filePath): void
     {
+        // Skip icon preview pages - they're generated directly from libraries
+        $basename = basename($filePath, '.md');
+        if (in_array($basename, ['icon-preview-outline', 'icon-preview-solid', 'icon-preview-micro'])) {
+            return;
+        }
+        
         $content = file_get_contents($filePath);
         
         // Setup CommonMark with extensions
@@ -298,6 +307,405 @@ class DocsBuilderCommand
     }
     
     /**
+     * Generate all icon preview pages directly from icon libraries
+     */
+    private function generateIconPreviewPages(): void
+    {
+        echo "  Generating icon preview pages...\n";
+        
+        $iconPages = [
+            'icon-preview-outline' => 'Outline',
+            'icon-preview-solid' => 'Solid',
+            'icon-preview-micro' => 'Micro'
+        ];
+        
+        foreach ($iconPages as $basename => $title) {
+            echo "    Creating $title icons page...";
+            
+            // Create a fake file path for consistency with existing code
+            $fakePath = $this->docsPath . '/icons/' . $basename . '.md';
+            $this->processIconPreviewPage($fakePath, $basename);
+            
+            echo " ✓\n";
+        }
+    }
+    
+    /**
+     * Process icon preview page with actual icon SVGs
+     */
+    private function processIconPreviewPage(string $filePath, string $basename): void
+    {
+        // Load the appropriate icon library
+        $iconLibraryPath = dirname(dirname(dirname(__DIR__))) . '/iso-core/Core/';
+        $iconClass = 'IconLibrary';
+        $iconStyle = 'outline';
+        $fillType = 'none';
+        $strokeType = 'currentColor';
+        
+        switch ($basename) {
+            case 'icon-preview-solid':
+                require_once $iconLibraryPath . 'IconLibrarySolid.php';
+                $iconClass = 'IconLibrarySolid';
+                $iconStyle = 'solid';
+                $fillType = 'currentColor';
+                $strokeType = 'none';
+                break;
+            case 'icon-preview-micro':
+                require_once $iconLibraryPath . 'IconLibraryMicro.php';
+                $iconClass = 'IconLibraryMicro';
+                $iconStyle = 'micro';
+                $fillType = 'currentColor';
+                $strokeType = 'none';
+                break;
+            default:
+                require_once $iconLibraryPath . 'IconLibrary.php';
+                break;
+        }
+        
+        // Get all icon names from the library
+        $allIconNames = $iconClass::getIconNames();
+        
+        // Create categories based on ALL icons in the library
+        $categories = $this->organizeAllIcons($allIconNames);
+        
+        // Generate the HTML content
+        $content = $this->generateIconGalleryHTML($iconClass, $iconStyle, $categories, $fillType, $strokeType);
+        
+        // Determine output path
+        $relativePath = str_replace($this->docsPath, '', $filePath);
+        $relativePath = str_replace('\\', '/', $relativePath);
+        $relativePath = ltrim($relativePath, '/\\');
+        
+        // Calculate depth for relative paths
+        $depth = substr_count($relativePath, '/');
+        $pathToRoot = $depth > 0 ? str_repeat('../', $depth) : './';
+        
+        // Generate full HTML page
+        $title = ucfirst(str_replace('icon-preview-', '', $basename)) . ' Icons Preview';
+        $html = $this->generateHTMLPageWithDepth($content, $title, "Gallery of $iconStyle style icons", $pathToRoot);
+        
+        $outputFile = $this->outputPath . '/' . str_replace('.md', '.html', $relativePath);
+        
+        // Create directory if needed
+        $outputDir = dirname($outputFile);
+        if (!is_dir($outputDir)) {
+            mkdir($outputDir, 0755, true);
+        }
+        
+        // Write HTML file
+        file_put_contents($outputFile, $html);
+    }
+    
+    /**
+     * Get icon categories (legacy method for backward compatibility)
+     */
+    private function getIconCategories(): array
+    {
+        return [
+            'Navigation & UI' => ['menu', 'menu-alt', 'x', 'x-circle', 'chevron-left', 'chevron-right', 'chevron-up', 'chevron-down', 'arrow-left', 'arrow-right', 'arrow-up', 'arrow-down', 'external-link'],
+            'Actions' => ['plus', 'plus-circle', 'minus', 'minus-circle', 'check', 'check-circle', 'trash', 'pencil', 'pencil-square', 'duplicate', 'save', 'download', 'upload', 'refresh'],
+            'User & Account' => ['user', 'user-circle', 'user-group', 'identification', 'login', 'logout'],
+            'Settings' => ['cog', 'cog-8-tooth', 'wrench', 'adjustments'],
+            'Content' => ['document', 'document-text', 'folder', 'folder-open', 'clipboard', 'newspaper'],
+            'Media' => ['photograph', 'camera', 'video-camera', 'microphone', 'play', 'pause', 'stop'],
+            'Layout' => ['template', 'view-columns', 'view-grid', 'rectangle-stack', 'bars-3', 'bars-3-bottom', 'bars-3-center'],
+            'Appearance' => ['swatch', 'paint-brush', 'sparkles', 'sun', 'moon', 'eye', 'eye-slash'],
+            'Communication' => ['chat', 'chat-bubble', 'envelope', 'phone', 'bell'],
+            'Status' => ['information-circle', 'question-mark-circle', 'exclamation-circle', 'exclamation-triangle'],
+            'E-commerce' => ['shopping-cart', 'shopping-bag', 'credit-card', 'currency-dollar', 'chart-bar', 'chart-pie'],
+            'Technology' => ['code', 'code-bracket', 'command-line', 'cpu-chip', 'server', 'server-stack', 'globe', 'wifi'],
+            'Security' => ['lock-closed', 'lock-open', 'shield-check', 'shield-exclamation', 'key', 'finger-print'],
+            'Data' => ['database', 'table-cells', 'funnel', 'magnifying-glass'],
+            'Time' => ['clock', 'calendar', 'calendar-days'],
+            'Location' => ['map-pin', 'map', 'globe-alt'],
+            'Miscellaneous' => ['heart', 'star', 'flag', 'bookmark', 'tag', 'puzzle-piece', 'light-bulb', 'fire', 'gift', 'home']
+        ];
+    }
+    
+    /**
+     * Organize ALL icons from the library into categories
+     */
+    private function organizeAllIcons(array $allIconNames): array
+    {
+        $categories = [
+            'Arrows' => [],
+            'Navigation' => [],
+            'Actions' => [],
+            'User & Account' => [],
+            'Interface' => [],
+            'Media' => [],
+            'Communication' => [],
+            'Documents & Files' => [],
+            'E-commerce' => [],
+            'Charts & Data' => [],
+            'Device & Technology' => [],
+            'Buildings & Places' => [],
+            'Nature & Weather' => [],
+            'Time & Calendar' => [],
+            'Security' => [],
+            'Status & Alerts' => [],
+            'Shapes & Symbols' => [],
+            'Miscellaneous' => []
+        ];
+        
+        // Sort icons into categories based on their names
+        foreach ($allIconNames as $iconName) {
+            // Arrows
+            if (strpos($iconName, 'arrow') !== false || strpos($iconName, 'chevron') !== false) {
+                $categories['Arrows'][] = $iconName;
+            }
+            // User & Account
+            elseif (strpos($iconName, 'user') !== false || in_array($iconName, ['identification', 'login', 'logout'])) {
+                $categories['User & Account'][] = $iconName;
+            }
+            // Navigation
+            elseif (in_array($iconName, ['menu', 'menu-alt', 'bars-2', 'bars-3', 'bars-3-bottom', 'bars-3-bottom-left', 'bars-3-bottom-right', 'bars-3-center', 'bars-3-center-left', 'bars-4', 'x', 'x-circle', 'x-mark', 'home', 'home-modern'])) {
+                $categories['Navigation'][] = $iconName;
+            }
+            // Media
+            elseif (strpos($iconName, 'camera') !== false || strpos($iconName, 'video') !== false || 
+                    strpos($iconName, 'photo') !== false || strpos($iconName, 'film') !== false ||
+                    strpos($iconName, 'microphone') !== false || strpos($iconName, 'speaker') !== false ||
+                    strpos($iconName, 'play') !== false || strpos($iconName, 'pause') !== false || 
+                    strpos($iconName, 'stop') !== false || strpos($iconName, 'forward') !== false || 
+                    strpos($iconName, 'backward') !== false || strpos($iconName, 'musical') !== false ||
+                    in_array($iconName, ['photograph', 'gif'])) {
+                $categories['Media'][] = $iconName;
+            }
+            // Communication
+            elseif (strpos($iconName, 'chat') !== false || strpos($iconName, 'envelope') !== false || 
+                    strpos($iconName, 'phone') !== false || strpos($iconName, 'bell') !== false ||
+                    strpos($iconName, 'megaphone') !== false || strpos($iconName, 'at-symbol') !== false ||
+                    strpos($iconName, 'inbox') !== false || strpos($iconName, 'paper-airplane') !== false ||
+                    strpos($iconName, 'rss') !== false || strpos($iconName, 'signal') !== false ||
+                    in_array($iconName, ['share', 'link', 'hashtag'])) {
+                $categories['Communication'][] = $iconName;
+            }
+            // Documents & Files
+            elseif (strpos($iconName, 'document') !== false || strpos($iconName, 'folder') !== false || 
+                    strpos($iconName, 'clipboard') !== false || strpos($iconName, 'paper') !== false ||
+                    in_array($iconName, ['newspaper', 'book-open', 'academic-cap', 'archive-box', 'archive-box-arrow-down', 'archive-box-x-mark'])) {
+                $categories['Documents & Files'][] = $iconName;
+            }
+            // E-commerce
+            elseif (strpos($iconName, 'shopping') !== false || strpos($iconName, 'credit') !== false || 
+                    strpos($iconName, 'currency') !== false || strpos($iconName, 'receipt') !== false ||
+                    strpos($iconName, 'gift') !== false || strpos($iconName, 'ticket') !== false ||
+                    in_array($iconName, ['banknotes', 'wallet', 'tag'])) {
+                $categories['E-commerce'][] = $iconName;
+            }
+            // Charts & Data
+            elseif (strpos($iconName, 'chart') !== false || strpos($iconName, 'presentation') !== false ||
+                    strpos($iconName, 'table') !== false || strpos($iconName, 'funnel') !== false ||
+                    strpos($iconName, 'magnifying') !== false || strpos($iconName, 'calculator') !== false ||
+                    in_array($iconName, ['database', 'server', 'server-stack', 'queue-list', 'list-bullet', 'squares-2x2', 'rectangle-group', 'rectangle-stack', 'square-2-stack', 'square-3-stack-3d', 'squares-plus', 'circle-stack', 'scale'])) {
+                $categories['Charts & Data'][] = $iconName;
+            }
+            // Device & Technology
+            elseif (strpos($iconName, 'computer') !== false || strpos($iconName, 'device') !== false || 
+                    strpos($iconName, 'cpu') !== false || strpos($iconName, 'code') !== false ||
+                    strpos($iconName, 'command') !== false || strpos($iconName, 'wifi') !== false ||
+                    strpos($iconName, 'printer') !== false || strpos($iconName, 'radio') !== false ||
+                    strpos($iconName, 'tv') !== false || strpos($iconName, 'battery') !== false ||
+                    in_array($iconName, ['globe', 'globe-alt', 'globe-americas', 'globe-asia-australia', 'globe-europe-africa', 'qr-code', 'bug-ant', 'variable', 'window'])) {
+                $categories['Device & Technology'][] = $iconName;
+            }
+            // Buildings & Places
+            elseif (strpos($iconName, 'building') !== false || strpos($iconName, 'map') !== false ||
+                    in_array($iconName, ['truck'])) {
+                $categories['Buildings & Places'][] = $iconName;
+            }
+            // Nature & Weather
+            elseif (strpos($iconName, 'cloud') !== false || strpos($iconName, 'sun') !== false || 
+                    strpos($iconName, 'moon') !== false || strpos($iconName, 'fire') !== false ||
+                    strpos($iconName, 'bolt') !== false || strpos($iconName, 'sparkles') !== false ||
+                    in_array($iconName, ['beaker'])) {
+                $categories['Nature & Weather'][] = $iconName;
+            }
+            // Time & Calendar
+            elseif (strpos($iconName, 'clock') !== false || strpos($iconName, 'calendar') !== false) {
+                $categories['Time & Calendar'][] = $iconName;
+            }
+            // Security
+            elseif (strpos($iconName, 'lock') !== false || strpos($iconName, 'shield') !== false || 
+                    strpos($iconName, 'key') !== false || strpos($iconName, 'finger-print') !== false ||
+                    strpos($iconName, 'eye') !== false) {
+                $categories['Security'][] = $iconName;
+            }
+            // Status & Alerts
+            elseif (strpos($iconName, 'check') !== false || strpos($iconName, 'exclamation') !== false || 
+                    strpos($iconName, 'information') !== false || strpos($iconName, 'question') !== false ||
+                    strpos($iconName, 'badge') !== false || strpos($iconName, 'flag') !== false ||
+                    in_array($iconName, ['no-symbol'])) {
+                $categories['Status & Alerts'][] = $iconName;
+            }
+            // Shapes & Symbols
+            elseif (strpos($iconName, 'circle') !== false || strpos($iconName, 'square') !== false || 
+                    strpos($iconName, 'cube') !== false || strpos($iconName, 'ellipsis') !== false ||
+                    strpos($iconName, 'plus') !== false || strpos($iconName, 'minus') !== false ||
+                    in_array($iconName, ['heart', 'star', 'puzzle-piece'])) {
+                $categories['Shapes & Symbols'][] = $iconName;
+            }
+            // Actions (must be after other categories to avoid conflicts)
+            elseif (in_array($iconName, ['trash', 'pencil', 'pencil-square', 'duplicate', 'save', 'download', 'upload', 'refresh', 'external-link', 'scissors', 'paint-brush', 'swatch', 'wrench', 'wrench-screwdriver', 'cog', 'cog-6-tooth', 'cog-8-tooth', 'adjustments', 'adjustments-horizontal', 'adjustments-vertical', 'cursor-arrow-rays', 'cursor-arrow-ripple', 'hand-raised', 'hand-thumb-down', 'hand-thumb-up', 'rocket-launch', 'power', 'lifebuoy', 'language', 'viewfinder-circle'])) {
+                $categories['Actions'][] = $iconName;
+            }
+            // Interface elements
+            elseif (in_array($iconName, ['template', 'view-columns', 'view-grid', 'collection', 'dots-horizontal', 'dots-vertical', 'switch-horizontal', 'switch-vertical', 'selector', 'bookmark', 'bookmark-slash', 'bookmark-square', 'face-frown', 'face-smile'])) {
+                $categories['Interface'][] = $iconName;
+            }
+            // Everything else goes to Miscellaneous
+            else {
+                $categories['Miscellaneous'][] = $iconName;
+            }
+        }
+        
+        // Remove empty categories and sort icons within each category
+        $finalCategories = [];
+        foreach ($categories as $categoryName => $icons) {
+            if (!empty($icons)) {
+                sort($icons);
+                $finalCategories[$categoryName] = $icons;
+            }
+        }
+        
+        return $finalCategories;
+    }
+    
+    /**
+     * Generate icon gallery HTML
+     */
+    private function generateIconGalleryHTML(string $iconClass, string $iconStyle, array $categories, string $fillType, string $strokeType): string
+    {
+        $html = '<h1>' . ucfirst($iconStyle) . ' Icons Preview</h1>';
+        
+        // Add appropriate description based on icon style
+        if ($iconStyle === 'micro') {
+            $html .= '<p>Gallery of micro icons (16x16) from the Isotone Icon Library. These compact icons are perfect for small UI elements and tight spaces.</p>';
+        } elseif ($iconStyle === 'solid') {
+            $html .= '<p>Gallery of solid style icons (24x24) from the Isotone Icon Library. These filled icons provide strong visual emphasis.</p>';
+        } else {
+            $html .= '<p>Gallery of outline style icons (24x24) from the Isotone Icon Library. These are the default icons with clean strokes.</p>';
+        }
+        
+        // Add search box
+        $html .= '
+<div class="icon-search-container">
+    <input type="text" id="icon-search" class="icon-search" placeholder="Search icons..." onkeyup="filterIcons()">
+</div>';
+        
+        // Add icon grid
+        $html .= '<div class="icon-gallery">';
+        
+        $totalIcons = 0;
+        foreach ($categories as $category => $iconNames) {
+            $categoryHtml = '<div class="icon-category" data-category="' . htmlspecialchars($category) . '">';
+            $categoryHtml .= '<h2>' . htmlspecialchars($category) . '</h2>';
+            $categoryHtml .= '<div class="icon-grid">';
+            
+            $hasIcons = false;
+            foreach ($iconNames as $iconName) {
+                if ($iconClass::hasIcon($iconName)) {
+                    $iconPath = $iconClass::getIconPath($iconName);
+                    $viewBox = $iconStyle === 'micro' ? '0 0 16 16' : '0 0 24 24';
+                    
+                    // Add icon-micro class for smaller icons
+                    $svgClasses = $iconStyle === 'micro' ? 'icon-svg icon-micro' : 'icon-svg';
+                    
+                    $categoryHtml .= '
+<div class="icon-card" data-icon="' . htmlspecialchars($iconName) . '" 
+     onclick="copyIconName(\'' . htmlspecialchars($iconName) . '\', this)">
+    <svg class="' . $svgClasses . '" fill="' . $fillType . '" stroke="' . $strokeType . '" viewBox="' . $viewBox . '">
+        ' . $iconPath . '
+    </svg>
+    <div class="icon-name">' . htmlspecialchars($iconName) . '</div>
+</div>';
+                    $hasIcons = true;
+                    $totalIcons++;
+                }
+            }
+            
+            $categoryHtml .= '</div></div>';
+            
+            if ($hasIcons) {
+                $html .= $categoryHtml;
+            }
+        }
+        
+        $html .= '</div>';
+        
+        // Add stats
+        $html .= '<p class="icon-stats">Total icons: ' . $totalIcons . '</p>';
+        
+        // Add JavaScript for interactivity
+        $html .= '
+<script>
+function filterIcons() {
+    const searchTerm = document.getElementById("icon-search").value.toLowerCase();
+    const iconCards = document.querySelectorAll(".icon-card");
+    const categories = document.querySelectorAll(".icon-category");
+    
+    categories.forEach(category => {
+        let hasVisibleIcons = false;
+        const categoryCards = category.querySelectorAll(".icon-card");
+        
+        categoryCards.forEach(card => {
+            const iconName = card.dataset.icon;
+            if (iconName.includes(searchTerm)) {
+                card.style.display = "";
+                hasVisibleIcons = true;
+            } else {
+                card.style.display = "none";
+            }
+        });
+        
+        category.style.display = hasVisibleIcons ? "" : "none";
+    });
+}
+
+function copyIconName(iconName, element) {
+    // Copy to clipboard
+    const textArea = document.createElement("textarea");
+    textArea.value = iconName;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textArea);
+    
+    // Visual feedback using CSS class
+    element.classList.add("copied");
+    
+    setTimeout(() => {
+        element.classList.remove("copied");
+    }, 500);
+    
+    // Show toast notification
+    showToast("Copied: " + iconName);
+}
+
+function showToast(message) {
+    const existing = document.getElementById("copy-toast");
+    if (existing) existing.remove();
+    
+    const toast = document.createElement("div");
+    toast.id = "copy-toast";
+    toast.textContent = message;
+    toast.style.cssText = "animation: slideUp 0.3s ease;";
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.animation = "slideDown 0.3s ease";
+        setTimeout(() => toast.remove(), 300);
+    }, 2000);
+}
+
+// CSS styles are now in documentation.css
+</script>';
+        
+        return $html;
+    }
+    
+    /**
      * Generate complete HTML page
      */
     private function generateHTMLPage(string $content, string $title, string $description): string
@@ -333,17 +741,17 @@ class DocsBuilderCommand
                 <!-- Theme Toggle -->
                 <button onclick="toggleTheme()" class="theme-toggle" title="Toggle theme">
                     <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
                     </svg>
                     <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
                     </svg>
                 </button>
                 <!-- Search -->
                 <div class="search-box">
                     <input type="text" placeholder="Search docs..." id="search">
                     <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                 </div>
             </div>
@@ -459,17 +867,17 @@ HTML;
                 <!-- Theme Toggle -->
                 <button onclick="toggleTheme()" class="theme-toggle" title="Toggle theme">
                     <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
                     </svg>
                     <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
                     </svg>
                 </button>
                 <!-- Search -->
                 <div class="search-box">
                     <input type="text" placeholder="Search docs..." id="search">
                     <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                 </div>
             </div>
@@ -555,12 +963,13 @@ HTML;
         
         // Heroicons for each section
         $sectionIcons = [
-            'Getting Started' => '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>',
-            'Development' => '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>',
-            'API Reference' => '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>',
-            'Configuration' => '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>',
-            'Toni AI' => '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>',
-            'Troubleshooting' => '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>'
+            'Getting Started' => '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>',
+            'Development' => '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>',
+            'Icons' => '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg>',
+            'API Reference' => '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>',
+            'Configuration' => '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>',
+            'Toni AI' => '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>',
+            'Troubleshooting' => '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>'
         ];
         
         // Real navigation structure based on actual folders
@@ -576,6 +985,12 @@ HTML;
                 'development/commands',
                 'development/routes',
                 'development/hooks'
+            ],
+            'Icons' => [
+                'icons/icons-overview',
+                'icons/icon-preview-outline',
+                'icons/icon-preview-solid',
+                'icons/icon-preview-micro'
             ],
             'API Reference' => [
                 'api-reference/endpoints',
@@ -646,7 +1061,7 @@ HTML;
     <div class="card">
         <div class="card-icon">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
             </svg>
         </div>
         <h2>Getting Started</h2>
@@ -660,7 +1075,7 @@ HTML;
     <div class="card">
         <div class="card-icon">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
             </svg>
         </div>
         <h2>Development</h2>
@@ -675,7 +1090,7 @@ HTML;
     <div class="card">
         <div class="card-icon">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
             </svg>
         </div>
         <h2>API Reference</h2>
@@ -690,8 +1105,8 @@ HTML;
     <div class="card">
         <div class="card-icon">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
             </svg>
         </div>
         <h2>Configuration</h2>
@@ -706,7 +1121,7 @@ HTML;
     <div class="card">
         <div class="card-icon">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
             </svg>
         </div>
         <h2>Toni AI</h2>
@@ -721,7 +1136,7 @@ HTML;
     <div class="card">
         <div class="card-icon">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
         </div>
         <h2>Troubleshooting</h2>
@@ -730,6 +1145,22 @@ HTML;
             <li><a href="./troubleshooting/common-issues.html">Common Issues</a></li>
             <li><a href="./troubleshooting/error-reference.html">Error Reference</a></li>
             <li><a href="./troubleshooting/faq.html">FAQ</a></li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <div class="card-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path>
+            </svg>
+        </div>
+        <h2>Icon Library</h2>
+        <p>Browse and search all available icons in the Isotone icon library with interactive galleries for all three styles.</p>
+        <ul>
+            <li><a href="./icons/icons-overview.html">Icon Library Overview</a></li>
+            <li><a href="./icons/icon-preview-outline.html">Outline Icons Gallery</a></li>
+            <li><a href="./icons/icon-preview-solid.html">Solid Icons Gallery</a></li>
+            <li><a href="./icons/icon-preview-micro.html">Micro Icons Gallery</a></li>
         </ul>
     </div>
 </div>

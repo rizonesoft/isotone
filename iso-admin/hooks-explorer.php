@@ -66,7 +66,7 @@ $registeredHooks = Hook::getAllHooks();
 
 // Load implementation data BEFORE processing hooks
 $implementationData = [];
-$implementationFile = dirname(__DIR__) . '/storage/hooks-implementation.json';
+$implementationFile = dirname(__DIR__) . '/iso-automation/storage/hooks-implementation.json';
 if (file_exists($implementationFile)) {
     $data = json_decode(file_get_contents($implementationFile), true);
     if ($data && isset($data['implementations'])) {
@@ -195,7 +195,7 @@ foreach ($categories as &$category) {
 
 // Get hook statistics from JSON file
 $hookStats = null;
-$statsFile = dirname(__DIR__) . '/storage/hook-stats.json';
+$statsFile = dirname(__DIR__) . '/iso-automation/storage/hook-stats.json';
 if (file_exists($statsFile)) {
     $statsData = json_decode(file_get_contents($statsFile), true);
     if ($statsData) {

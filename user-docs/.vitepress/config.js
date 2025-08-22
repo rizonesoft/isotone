@@ -38,7 +38,9 @@ export default {
             { text: 'Project Structure', link: '/development/project-structure' },
             { text: 'Commands', link: '/development/commands' },
             { text: 'Routes', link: '/development/routes' },
-            { text: 'Hooks System', link: '/development/hooks-system' }
+            { text: 'Hooks System', link: '/development/hooks-system' },
+            { text: 'Theme Customizer', link: '/development/customizer' },
+            { text: 'Themes', link: '/development/themes' }
           ]
         }
       ],

@@ -6,6 +6,39 @@
  * @package Isotone
  */
 
+// Include the Icon API and helper functions
+require_once dirname(dirname(__DIR__)) . '/iso-includes/icon-functions.php';
+
+// Preload admin sidebar and header icons for better performance
+iso_preload_icons([
+    // Sidebar menu icons
+    ['name' => 'home', 'style' => 'outline'],
+    ['name' => 'document-text', 'style' => 'outline'],
+    ['name' => 'document-duplicate', 'style' => 'outline'],
+    ['name' => 'film', 'style' => 'outline'],
+    ['name' => 'user-group', 'style' => 'outline'],
+    ['name' => 'puzzle-piece', 'style' => 'outline'],
+    ['name' => 'swatch', 'style' => 'outline'],
+    ['name' => 'shield-check', 'style' => 'outline'],
+    ['name' => 'cog-6-tooth', 'style' => 'outline'],
+    ['name' => 'wrench', 'style' => 'outline'],
+    ['name' => 'code', 'style' => 'outline'],
+    // Header action icons
+    ['name' => 'plus', 'style' => 'outline'],
+    ['name' => 'eye', 'style' => 'outline'],
+    ['name' => 'magnifying-glass', 'style' => 'outline'],
+    ['name' => 'bell', 'style' => 'outline'],
+    ['name' => 'sparkles', 'style' => 'outline'],
+    ['name' => 'moon', 'style' => 'outline'],
+    ['name' => 'sun', 'style' => 'outline'],
+    ['name' => 'chevron-down', 'style' => 'outline'],
+    ['name' => 'chevron-left', 'style' => 'outline'],
+    ['name' => 'chevron-right', 'style' => 'outline'],
+    ['name' => 'bars-3', 'style' => 'outline'],
+    // Fallback icons
+    ['name' => 'question-mark-circle', 'style' => 'outline']
+]);
+
 // Get current page for active menu highlighting
 $current_page = basename($_SERVER['PHP_SELF'], '.php');
 $current_url = $_SERVER['REQUEST_URI'];
@@ -103,7 +136,7 @@ $admin_menu = [
     ],
     'pages' => [
         'title' => 'Pages',
-        'icon' => 'collection',
+        'icon' => 'document-duplicate',
         'url' => '/isotone/iso-admin/pages.php',
         'submenu' => [
             ['title' => 'All Pages', 'url' => '/isotone/iso-admin/pages.php'],
@@ -113,7 +146,7 @@ $admin_menu = [
     ],
     'media' => [
         'title' => 'Media',
-        'icon' => 'photograph',
+        'icon' => 'film',
         'url' => '/isotone/iso-admin/media.php',
         'submenu' => [
             ['title' => 'Library', 'url' => '/isotone/iso-admin/media.php'],
@@ -123,7 +156,7 @@ $admin_menu = [
     ],
     'users' => [
         'title' => 'Users',
-        'icon' => 'users',
+        'icon' => 'user-group',
         'url' => '/isotone/iso-admin/users.php',
         'submenu' => [
             ['title' => 'All Users', 'url' => '/isotone/iso-admin/users.php'],
@@ -134,7 +167,7 @@ $admin_menu = [
     ],
     'plugins' => [
         'title' => 'Plugins',
-        'icon' => 'puzzle',
+        'icon' => 'puzzle-piece',
         'url' => '/isotone/iso-admin/plugins.php',
         'submenu' => [
             ['title' => 'Installed', 'url' => '/isotone/iso-admin/plugins.php'],
@@ -144,7 +177,7 @@ $admin_menu = [
     ],
     'appearance' => [
         'title' => 'Appearance',
-        'icon' => 'color-swatch',
+        'icon' => 'swatch',
         'url' => '/isotone/iso-admin/themes.php',
         'submenu' => [
             ['title' => 'Themes', 'url' => '/isotone/iso-admin/themes.php'],
@@ -164,7 +197,7 @@ $admin_menu = [
     ],
     'settings' => [
         'title' => 'Settings',
-        'icon' => 'cog',
+        'icon' => 'cog-6-tooth',
         'url' => '/isotone/iso-admin/settings.php',
         'submenu' => [
             ['title' => 'General', 'url' => '/isotone/iso-admin/settings.php'],
@@ -199,27 +232,17 @@ $admin_menu = [
     ]
 ];
 
-// Icon mapping for Heroicons
-$icon_map = [
-    'home' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />',
-    'document-text' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />',
-    'collection' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />',
-    'photograph' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />',
-    'users' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />',
-    'puzzle' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />',
-    'color-swatch' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />',
-    'cog' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />',
-    'shield-check' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />',
-    'wrench' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />',
-    'book-open' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />',
-    'code' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />',
-    'link' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />'
-];
-
+// Helper function to render icons using the Icon API
 function render_icon($icon_name, $class = 'w-6 h-6') {
-    global $icon_map;
-    $path = $icon_map[$icon_name] ?? '';
-    return '<svg class="' . $class . '" fill="none" stroke="currentColor" viewBox="0 0 24 24">' . $path . '</svg>';
+    // Use the new Icon API with inline SVG for immediate rendering
+    $icon = iso_get_icon($icon_name, 'outline', ['class' => $class], false); // false = inline SVG, not lazy
+    
+    // Fallback to question mark if icon is empty
+    if (empty($icon)) {
+        $icon = iso_get_icon('question-mark-circle', 'outline', ['class' => $class], false);
+    }
+    
+    return $icon;
 }
 ?>
 
@@ -255,12 +278,30 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
     <link rel="stylesheet" href="/isotone/iso-admin/css/admin.css">
     
     <!-- Tailwind CSS -->
-    <?php if (file_exists(__DIR__ . '/../css/tailwind.css')): ?>
+    <?php 
+    // Prefer minified version if available, otherwise use regular version
+    $tailwindMinPath = __DIR__ . '/../css/tailwind.min.css';
+    $tailwindPath = __DIR__ . '/../css/tailwind.css';
+    
+    if (file_exists($tailwindMinPath)): ?>
+        <!-- Using minified Tailwind CSS -->
+        <link rel="stylesheet" href="/isotone/iso-admin/css/tailwind.min.css">
+    <?php elseif (file_exists($tailwindPath)): ?>
+        <!-- Using regular Tailwind CSS -->
         <link rel="stylesheet" href="/isotone/iso-admin/css/tailwind.css">
     <?php else: ?>
-        <!-- Fallback to CDN only if built CSS doesn't exist -->
-        <script src="https://cdn.tailwindcss.com"></script>
-        <script src="/isotone/iso-admin/js/tailwind-config.js"></script>
+        <!-- ERROR: Tailwind CSS not found! Run: composer tailwind:build -->
+        <style>
+            body::before {
+                content: "⚠️ Tailwind CSS not found! Run: composer tailwind:build";
+                display: block;
+                background: #ef4444;
+                color: white;
+                padding: 1rem;
+                text-align: center;
+                font-family: monospace;
+            }
+        </style>
     <?php endif; ?>
     
     <!-- Chart.js -->
@@ -312,9 +353,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
             <div class="flex items-center space-x-4">
                 <!-- Menu toggle -->
                 <button @click="sidebarOpen = !sidebarOpen" class="p-2 hover:bg-gray-700 rounded-lg transition-colors lg:hidden">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
+                    <?php echo render_icon('bars-3', 'w-6 h-6'); ?>
                 </button>
                 
                 <!-- Logo -->
@@ -331,35 +370,38 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                 <!-- Quick Actions -->
                 <div class="hidden md:flex items-center space-x-2">
                     <button class="px-3 py-1.5 bg-cyan-600 hover:bg-cyan-700 text-white rounded text-sm transition-colors flex items-center">
-                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                        </svg>
+                        <?php echo render_icon('plus', 'w-4 h-4 mr-1'); ?>
                         New Post
                     </button>
-                    <button class="px-3 py-1.5 dark:bg-gray-700 bg-gray-200 dark:hover:bg-gray-600 hover:bg-gray-300 dark:text-white text-gray-900 rounded text-sm transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                    </button>
+                    <a href="/isotone" target="_blank" 
+                       class="w-8 h-8 dark:bg-gray-700 bg-gray-200 dark:hover:bg-gray-600 hover:bg-gray-300 dark:text-white text-gray-900 rounded text-sm transition-colors inline-flex items-center justify-center"
+                       title="View Site">
+                        <?php echo render_icon('eye', 'w-4 h-4'); ?>
+                    </a>
                 </div>
             </div>
             
             <!-- Right side -->
             <div class="flex items-center space-x-4">
+                <!-- View Site (Mobile & Desktop visible) -->
+                <a href="/isotone" target="_blank" 
+                   class="w-9 h-9 dark:hover:bg-gray-700 hover:bg-gray-200 rounded-lg transition-colors md:hidden flex items-center justify-center"
+                   title="View Site">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                </a>
+                
                 <!-- Search -->
                 <button @click="showSearch = true" class="p-2 dark:hover:bg-gray-700 hover:bg-gray-200 rounded-lg transition-colors">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
+                    <?php echo render_icon('magnifying-glass', 'w-5 h-5'); ?>
                 </button>
                 
                 <!-- Notifications -->
                 <div class="relative" x-data="{ open: false }">
                     <button @click="open = !open" class="relative p-2 dark:hover:bg-gray-700 hover:bg-gray-200 rounded-lg transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                        </svg>
+                        <?php echo render_icon('bell', 'w-5 h-5'); ?>
                         <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
                     </button>
                     
@@ -384,9 +426,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                 <button @click="toniOpen = !toniOpen" 
                         class="relative p-2 dark:hover:bg-gray-700 hover:bg-gray-200 rounded-lg transition-all group"
                         title="Toni AI Assistant">
-                    <svg class="w-5 h-5 transition-colors group-hover:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                    </svg>
+                    <?php echo render_icon('sparkles', 'w-5 h-5 transition-colors group-hover:text-cyan-400'); ?>
                     <span class="absolute top-1 right-1 flex h-2 w-2">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
@@ -395,12 +435,12 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                 
                 <!-- Dark/Light Mode Toggle -->
                 <button @click="darkMode = !darkMode" class="p-2 dark:hover:bg-gray-700 hover:bg-gray-200 rounded-lg transition-colors relative w-9 h-9 flex items-center justify-center">
-                    <svg x-show="!darkMode" x-transition class="w-5 h-5 absolute" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                    </svg>
-                    <svg x-show="darkMode" x-transition class="w-5 h-5 absolute" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
+                    <span x-show="!darkMode" x-transition class="absolute">
+                        <?php echo render_icon('moon', 'w-5 h-5'); ?>
+                    </span>
+                    <span x-show="darkMode" x-transition class="absolute">
+                        <?php echo render_icon('sun', 'w-5 h-5'); ?>
+                    </span>
                 </button>
                 
                 <!-- User Menu -->
@@ -409,9 +449,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                         <div class="w-8 h-8 bg-gradient-to-r from-cyan-400 to-green-400 rounded-full flex items-center justify-center text-gray-900 font-semibold">
                             <?php echo strtoupper(substr($current_user ?? 'A', 0, 1)); ?>
                         </div>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
+                        <?php echo render_icon('chevron-down', 'w-4 h-4'); ?>
                     </button>
                     
                     <!-- Dropdown -->
@@ -443,9 +481,9 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                 <button @click="sidebarCollapsed = !sidebarCollapsed" 
                         class="absolute top-4 w-6 h-6 dark:bg-gray-700 bg-gray-400 dark:hover:bg-gray-600 hover:bg-gray-500 text-white rounded-full flex items-center justify-center transition-all z-40"
                         :class="sidebarCollapsed ? 'left-5' : 'right-4'">
-                    <svg class="w-4 h-4 transition-transform" :class="sidebarCollapsed && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                    </svg>
+                    <span class="transition-transform" :class="sidebarCollapsed && 'rotate-180'">
+                        <?php echo render_icon('chevron-left', 'w-4 h-4'); ?>
+                    </span>
                 </button>
             </div>
             
@@ -464,9 +502,9 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                         <span class="flex-shrink-0 <?php echo $is_active ? 'text-cyan-400' : ''; ?>"><?php echo render_icon($item['icon']); ?></span>
                         <span x-show="!sidebarCollapsed" class="ml-3" x-cloak><?php echo $item['title']; ?></span>
                         <?php if ($has_submenu): ?>
-                        <svg x-show="!sidebarCollapsed" class="w-4 h-4 ml-auto transition-transform" :class="open && 'rotate-90'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
+                        <span x-show="!sidebarCollapsed" class="ml-auto transition-transform" :class="open && 'rotate-90'">
+                            <?php echo render_icon('chevron-right', 'w-4 h-4'); ?>
+                        </span>
                         <?php endif; ?>
                     </a>
                     
@@ -594,6 +632,14 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
                             </svg>
                             <span class="dark:text-gray-400 text-gray-600">Peak: <?php echo $memory_peak; ?>MB</span>
+                        </div>
+                        
+                        <!-- Page Size -->
+                        <div class="flex items-center space-x-2">
+                            <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <span class="dark:text-gray-400 text-gray-600" id="page-size-metric">Calculating...</span>
                         </div>
                         
                     </div>
@@ -783,6 +829,9 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                     } else {
                         document.documentElement.classList.remove('dark');
                     }
+                    
+                    // Calculate and display page size
+                    this.calculatePageSize();
                     
                     // Load Toni conversation history when opened and send page context
                     this.$watch('toniOpen', async value => {
@@ -1053,6 +1102,92 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                 },
                 
                 // Page context feature removed - screenshot feature provides better visual context
+                
+                calculatePageSize() {
+                    // Wait for DOM to be fully loaded
+                    window.addEventListener('load', () => {
+                        let totalSize = 0;
+                        
+                        // Calculate HTML size
+                        const htmlSize = new Blob([document.documentElement.outerHTML]).size;
+                        totalSize += htmlSize;
+                        
+                        // Calculate CSS size
+                        const stylesheets = document.styleSheets;
+                        let cssSize = 0;
+                        for (let i = 0; i < stylesheets.length; i++) {
+                            try {
+                                const stylesheet = stylesheets[i];
+                                if (stylesheet.href) {
+                                    // External stylesheet - estimate size
+                                    cssSize += 50000; // Average CSS file estimate
+                                } else if (stylesheet.cssRules) {
+                                    // Inline styles - calculate actual size
+                                    let cssText = '';
+                                    for (let j = 0; j < stylesheet.cssRules.length; j++) {
+                                        cssText += stylesheet.cssRules[j].cssText;
+                                    }
+                                    cssSize += new Blob([cssText]).size;
+                                }
+                            } catch (e) {
+                                // Cross-origin CSS - estimate
+                                cssSize += 30000;
+                            }
+                        }
+                        totalSize += cssSize;
+                        
+                        // Calculate JavaScript size
+                        const scripts = document.getElementsByTagName('script');
+                        let jsSize = 0;
+                        for (let script of scripts) {
+                            if (script.src) {
+                                // External script - estimate based on common libraries
+                                if (script.src.includes('alpine')) jsSize += 25000;
+                                else if (script.src.includes('chart')) jsSize += 80000;
+                                else if (script.src.includes('tailwind')) jsSize += 15000;
+                                else jsSize += 20000; // Default estimate
+                            } else {
+                                // Inline script
+                                jsSize += new Blob([script.textContent]).size;
+                            }
+                        }
+                        totalSize += jsSize;
+                        
+                        // Calculate image sizes (approximation)
+                        const images = document.getElementsByTagName('img');
+                        let imageSize = 0;
+                        for (let img of images) {
+                            // Estimate based on image dimensions or use default
+                            const width = img.naturalWidth || img.width || 100;
+                            const height = img.naturalHeight || img.height || 100;
+                            imageSize += Math.max(width * height * 0.5, 2000); // Rough estimate
+                        }
+                        totalSize += imageSize;
+                        
+                        // Format size
+                        const formatSize = (bytes) => {
+                            if (bytes < 1024) return bytes + ' B';
+                            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+                            return (bytes / 1024 / 1024).toFixed(2) + ' MB';
+                        };
+                        
+                        // Update the display
+                        const element = document.getElementById('page-size-metric');
+                        if (element) {
+                            element.textContent = formatSize(totalSize);
+                            
+                            // Add color coding for size
+                            element.classList.remove('text-green-400', 'text-yellow-400', 'text-red-400');
+                            if (totalSize < 500000) { // < 500KB = good
+                                element.classList.add('text-green-400');
+                            } else if (totalSize < 1000000) { // < 1MB = ok
+                                element.classList.add('text-yellow-400');
+                            } else { // > 1MB = heavy
+                                element.classList.add('text-red-400');
+                            }
+                        }
+                    });
+                },
                 
                 async clearToniChat() {
                     if (!confirm('Clear your conversation with Toni?')) return;

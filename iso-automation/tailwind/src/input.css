@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 /* Explicitly tell Tailwind where to scan for classes */
-@source "../../iso-admin/**/*.{php,html,js}";
-@source "../../iso-core/**/*.php";
-@source "../../iso-themes/**/*.php";
-@source "../../iso-content/**/*.php";
+@source "../../../iso-admin/**/*.{php,html,js}";
+@source "../../../iso-core/**/*.php";
+@source "../../../iso-themes/**/*.php";
+@source "../../../iso-content/**/*.php";
 
 /* Custom Isotone Styles */
 @layer utilities {

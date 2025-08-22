@@ -49,7 +49,7 @@ isotone/
 ├── docs/               # Documentation
 ├── install/            # Installation wizard
 ├── scripts/            # Build scripts
-├── storage/            # Logs and temp
+├── iso-runtime/        # Logs, cache and temp files
 ├── vendor/             # Composer dependencies
 ├── index.php           # Entry point
 ├── .htaccess           # URL rewriting & security
@@ -401,9 +401,9 @@ $logger->error('Database connection failed');
 
 ### Check Logs
 
-View logs in `storage/logs/`:
+View logs in `iso-runtime/logs/`:
 ```bash
-tail -f storage/logs/isotone.log
+tail -f iso-runtime/logs/isotone.log
 ```
 
 ## Resources

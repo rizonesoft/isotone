@@ -1,8 +1,8 @@
 {
-    "current": "0.3.0-alpha",
+    "current": "0.3.1-alpha",
     "schema": "1.0.0",
     "codename": "Genesis",
-    "release_date": "2025-08-20",
+    "release_date": "2025-08-22",
     "history": [
         {
             "version": "0.1.0-alpha",
@@ -241,6 +241,14 @@
             ],
             "breaking_changes": [],
             "from_version": "0.2.1-alpha"
+        },
+        {
+            "version": "0.3.1-alpha",
+            "date": "2025-08-22",
+            "codename": "Genesis",
+            "features": [],
+            "breaking_changes": [],
+            "from_version": "0.3.0-alpha"
         }
     ]
 }

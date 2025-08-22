@@ -179,7 +179,7 @@ class ThemeAPI
     public function getThemeMod($name, $default = false)
     {
         if (R::testConnection()) {
-            $setting = R::findOne('setting', 'setting_key = ?', ['theme_mod_' . $name]);
+            $setting = R::findOne('settings', 'setting_key = ?', ['theme_mod_' . $name]);
             if ($setting) {
                 return $setting->setting_value;
             }
@@ -193,7 +193,7 @@ class ThemeAPI
     public function setThemeMod($name, $value)
     {
         if (R::testConnection()) {
-            $setting = R::findOne('setting', 'setting_key = ?', ['theme_mod_' . $name]);
+            $setting = R::findOne('settings', 'setting_key = ?', ['theme_mod_' . $name]);
             if (!$setting) {
                 $setting = R::dispense('settings');
                 $setting->setting_key = 'theme_mod_' . $name;
