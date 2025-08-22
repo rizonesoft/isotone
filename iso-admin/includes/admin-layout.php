@@ -304,8 +304,21 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
         </style>
     <?php endif; ?>
     
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chart.js (Local) -->
+    <?php 
+    $chartMinPath = dirname(__DIR__, 2) . '/iso-includes/js/chart.min.js';
+    $chartPath = dirname(__DIR__, 2) . '/iso-includes/js/chart.js';
+    
+    if (file_exists($chartMinPath)): ?>
+        <!-- Using local minified Chart.js v4.4.0 -->
+        <script src="/isotone/iso-includes/js/chart.min.js"></script>
+    <?php elseif (file_exists($chartPath)): ?>
+        <!-- Using local Chart.js v4.4.0 -->
+        <script src="/isotone/iso-includes/js/chart.js"></script>
+    <?php else: ?>
+        <!-- Fallback to CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
+    <?php endif; ?>
     
     <!-- Failsafe loader removal -->
     <script>
@@ -1250,7 +1263,20 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
         });
     </script>
     
-    <!-- Alpine.js - Load after adminApp is defined -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Alpine.js (Local) - Load after adminApp is defined -->
+    <?php 
+    $alpineMinPath = dirname(__DIR__, 2) . '/iso-includes/js/alpine.min.js';
+    $alpinePath = dirname(__DIR__, 2) . '/iso-includes/js/alpine.js';
+    
+    if (file_exists($alpineMinPath)): ?>
+        <!-- Using local minified Alpine.js v3.14.3 -->
+        <script defer src="/isotone/iso-includes/js/alpine.min.js"></script>
+    <?php elseif (file_exists($alpinePath)): ?>
+        <!-- Using local Alpine.js v3.14.3 -->
+        <script defer src="/isotone/iso-includes/js/alpine.js"></script>
+    <?php else: ?>
+        <!-- Fallback to CDN -->
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
+    <?php endif; ?>
 </body>
 </html>
