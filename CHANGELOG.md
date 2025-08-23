@@ -5,12 +5,12 @@ All notable changes to Isotone will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.3.2-alpha] - Aurora UI v1.0 - 2025-08-23
+## [0.3.2-alpha] - Lumina UI v1.0 - 2025-08-23
 
-### UI/UX System - Aurora v1.0
-- **Codename:** Aurora
+### UI/UX System - Lumina v1.0
+- **Codename:** Lumina
 - **Version:** 1.0
-- **Design Language:** Professional glassmorphism with subtle depth effects
+- **Design Language:** Professional glassmorphism with luminous depth effects
 - **Primary Accent:** Cyan (#06b6d4)
 - **Key Features:**
   - Glassmorphism cards with semi-transparent gradients

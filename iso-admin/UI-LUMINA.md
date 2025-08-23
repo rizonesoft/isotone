@@ -1,13 +1,14 @@
-# Aurora UI v1.0 - Design System
+# Lumina UI v1.0 - Design System
 
 ## Overview
-Aurora UI is Isotone's modern design system introduced in v0.3.2-alpha. It provides a cohesive, professional interface with glassmorphism effects and subtle depth enhancements.
+Lumina UI is Isotone's modern design system introduced in v0.3.2-alpha. Named after the Latin word for "light", it embodies the luminous, glowing aesthetic that defines the interface through glassmorphism effects and radiant depth enhancements.
 
 ## Version Information
-- **Codename:** Aurora
+- **Codename:** Lumina
 - **Version:** 1.0
 - **Released:** August 23, 2025
 - **Primary Accent:** Cyan (#06b6d4)
+- **Etymology:** From Latin "lūmina" meaning "lights" - reflecting the glowing, translucent nature of the design
 
 ## Design Principles
 
@@ -222,14 +223,14 @@ iso_preload_icons([
 
 ## Migration Guide
 
-### Converting Existing Pages to Aurora UI
+### Converting Existing Pages to Lumina UI
 
 1. **Replace generic cards:**
 ```php
 // Old
 <div class="bg-white dark:bg-gray-800 rounded-lg shadow">
 
-// Aurora UI
+// Lumina UI
 <div class="content-card">
 ```
 
@@ -240,7 +241,7 @@ iso_preload_icons([
     <h2>Title</h2>
 </div>
 
-// Aurora UI
+// Lumina UI
 <div class="content-card-header">
     <h2>Title</h2>
 </div>
@@ -261,7 +262,7 @@ iso_preload_icons([
 // Old metric card
 <div class="metric-card">
 
-// Aurora UI info card
+// Lumina UI info card
 <div class="info-card info-cyan">
 ```
 
@@ -288,7 +289,7 @@ iso_preload_icons([
    - Subtle transforms only
 
 ## Template Reference
-See `/iso-admin/templates/admin-page-template.php` for a complete Aurora UI implementation example.
+See `/iso-admin/templates/admin-page-template.php` for a complete Lumina UI implementation example.
 
 ## Component Showcase
-View all Aurora UI components at `/iso-admin/templates/admin-components-showcase.php`
+View all Lumina UI components at `/iso-admin/templates/admin-components-showcase.php`
