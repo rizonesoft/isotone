@@ -289,7 +289,33 @@ iso_preload_icons([
    - Subtle transforms only
 
 ## Template Reference
-See `/iso-admin/templates/admin-page-template.php` for a complete Lumina UI implementation example.
+See `/iso-admin/lumina/admin-page-template.php` for a complete Lumina UI implementation example.
 
 ## Component Showcase
-View all Lumina UI components at `/iso-admin/templates/admin-components-showcase.php`
+View all Lumina UI components at `/iso-admin/lumina/admin-components-showcase.php`
+
+## Quick Start Guide
+
+### Creating a New Admin Page
+
+1. **Copy the template:**
+   ```bash
+   cp lumina/admin-page-template.php your-new-page.php
+   ```
+
+2. **Fix the paths** (since template is in `/iso-admin/lumina/`):
+   ```php
+   // From (lumina version):
+   require_once dirname(__DIR__) . '/auth.php';
+   require_once dirname(__DIR__, 2) . '/config.php';
+   
+   // To (admin root version):
+   require_once 'auth.php';
+   require_once dirname(__DIR__) . '/config.php';
+   ```
+
+3. **Update page specifics:**
+   - Change `$page_title` 
+   - Update `$breadcrumbs` array
+   - Replace the page icon
+   - Update requireRole() if needed
