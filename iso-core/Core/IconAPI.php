@@ -30,7 +30,23 @@ class IconAPI
             // Determine base URL dynamically
             $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
             $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-            $basePath = str_replace($_SERVER['DOCUMENT_ROOT'], '', dirname(dirname(__DIR__)));
+            
+            // Better path detection for various environments
+            $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
+            $requestUri = $_SERVER['REQUEST_URI'] ?? '';
+            
+            // Try to find the isotone base path
+            if (strpos($scriptName, '/isotone/') !== false) {
+                // Extract isotone path from script name
+                $basePath = substr($scriptName, 0, strpos($scriptName, '/isotone/') + 8);
+            } elseif (strpos($requestUri, '/isotone/') !== false) {
+                // Extract isotone path from request URI
+                $basePath = substr($requestUri, 0, strpos($requestUri, '/isotone/') + 8);
+            } else {
+                // Fallback to calculating from directory structure
+                $basePath = str_replace($_SERVER['DOCUMENT_ROOT'] ?? '', '', dirname(dirname(__DIR__)));
+            }
+            
             self::$apiUrl = $protocol . '://' . $host . $basePath . '/iso-api/icons.php';
         }
         return self::$apiUrl;
@@ -109,7 +125,7 @@ class IconAPI
      * @param string $name Icon name
      * @param string $style Icon style (outline, solid, micro)
      * @param array $attributes SVG attributes
-     * @return string SVG element or empty string if not found
+     * @return string SVG element or fallback if not found
      */
     public static function getIconSvg($name, $style = 'outline', $attributes = [])
     {
@@ -125,7 +141,9 @@ class IconAPI
         }
         
         if (empty($svgPath)) {
-            return '';
+            // Return a fallback icon (question mark circle)
+            $svgPath = '<path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />';
+            $style = 'outline'; // Use outline style for fallback
         }
         
         // Build SVG with attributes
@@ -142,19 +160,33 @@ class IconAPI
         switch ($style) {
             case 'outline':
                 require_once $libraryPath . 'IconLibrary.php';
-                return IconLibrary::getIconPath($name);
+                if (class_exists('IconLibrary') && method_exists('IconLibrary', 'hasIcon')) {
+                    if (IconLibrary::hasIcon($name)) {
+                        return IconLibrary::getIconPath($name);
+                    }
+                }
+                break;
                 
             case 'solid':
                 require_once $libraryPath . 'IconLibrarySolid.php';
-                return IconLibrarySolid::getIconPath($name);
+                if (class_exists('IconLibrarySolid') && method_exists('IconLibrarySolid', 'hasIcon')) {
+                    if (IconLibrarySolid::hasIcon($name)) {
+                        return IconLibrarySolid::getIconPath($name);
+                    }
+                }
+                break;
                 
             case 'micro':
                 require_once $libraryPath . 'IconLibraryMicro.php';
-                return IconLibraryMicro::getIconPath($name);
-                
-            default:
-                return '';
+                if (class_exists('IconLibraryMicro') && method_exists('IconLibraryMicro', 'hasIcon')) {
+                    if (IconLibraryMicro::hasIcon($name)) {
+                        return IconLibraryMicro::getIconPath($name);
+                    }
+                }
+                break;
         }
+        
+        return '';
     }
     
     /**

@@ -673,7 +673,7 @@ if (!function_exists('get_option')) {
     function get_option($option, $default = false) {
         // Try to get from database if available
         if (class_exists('\\RedBeanPHP\\R')) {
-            $setting = \RedBeanPHP\R::findOne('settings', 'setting_key = ?', [$option]);
+            $setting = \RedBeanPHP\R::findOne('setting', 'setting_key = ?', [$option]);
             if ($setting) {
                 return $setting->setting_value;
             }

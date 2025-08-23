@@ -12,6 +12,7 @@ require_once 'auth.php';
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 require_once dirname(__DIR__) . '/iso-core/Services/ThemeService.php';
 require_once dirname(__DIR__) . '/iso-includes/database.php';
+require_once dirname(__DIR__) . '/iso-includes/class-security.php';
 
 use RedBeanPHP\R;
 use Isotone\Services\ThemeService;
@@ -188,6 +189,7 @@ ob_start();
                     <!-- Hover Actions -->
                     <div class="absolute inset-0 bg-black bg-opacity-75 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center space-x-2">
                         <form method="POST" class="inline">
+                            <?php echo iso_csrf_field(); ?>
                             <input type="hidden" name="action" value="activate">
                             <input type="hidden" name="theme" value="<?php echo htmlspecialchars($theme['slug']); ?>">
                             <button type="submit" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded transition">
@@ -229,6 +231,7 @@ ob_start();
                     
                     <!-- Hidden delete form -->
                     <form id="delete-<?php echo $theme['slug']; ?>" method="POST" class="hidden">
+                        <?php echo iso_csrf_field(); ?>
                         <input type="hidden" name="action" value="delete">
                         <input type="hidden" name="theme" value="<?php echo htmlspecialchars($theme['slug']); ?>">
                     </form>
@@ -259,6 +262,7 @@ ob_start();
             <h3 class="text-xl font-semibold dark:text-white text-gray-900 mb-4">Upload Theme</h3>
             
             <form method="POST" enctype="multipart/form-data" class="space-y-4">
+                <?php echo iso_csrf_field(); ?>
                 <input type="hidden" name="action" value="upload">
                 
                 <div>

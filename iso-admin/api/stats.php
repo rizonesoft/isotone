@@ -23,7 +23,7 @@ $query = "
     SELECT 
         (SELECT COUNT(*) FROM post) as posts,
         (SELECT COUNT(*) FROM page) as pages,
-        (SELECT COUNT(*) FROM users) as users,
+        (SELECT COUNT(*) FROM user) as users,
         (SELECT COUNT(*) FROM comment) as comments,
         (SELECT COUNT(*) FROM media) as media
 ";

@@ -335,7 +335,7 @@ class Customizer
         if ($setting['type'] === 'option') {
             // Get from options table
             if (R::testConnection()) {
-                $option = R::findOne('settings', 'setting_key = ?', [$setting_id]);
+                $option = R::findOne('setting', 'setting_key = ?', [$setting_id]);
                 if ($option) {
                     return $option->setting_value;
                 }
@@ -367,9 +367,9 @@ class Customizer
         if ($setting['type'] === 'option') {
             // Save to options table
             if (R::testConnection()) {
-                $option = R::findOne('settings', 'setting_key = ?', [$setting_id]);
+                $option = R::findOne('setting', 'setting_key = ?', [$setting_id]);
                 if (!$option) {
-                    $option = R::dispense('settings');
+                    $option = R::dispense('setting');
                     $option->setting_key = $setting_id;
                     $option->setting_type = 'option';
                 }

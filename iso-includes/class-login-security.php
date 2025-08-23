@@ -107,7 +107,7 @@ class LoginSecurity {
         
         try {
             $denied = R::findOne('iplist', 
-                'ipAddress = ? AND listType = ? AND active = ?', 
+                'ip_address = ? AND list_type = ? AND active = ?', 
                 [$ip, 'denylist', 1]
             );
             
@@ -131,7 +131,7 @@ class LoginSecurity {
         
         try {
             $safe = R::findOne('iplist', 
-                'ipAddress = ? AND listType = ? AND active = ?', 
+                'ip_address = ? AND list_type = ? AND active = ?', 
                 [$ip, 'safelist', 1]
             );
             
@@ -155,7 +155,7 @@ class LoginSecurity {
         
         try {
             $denied = R::findOne('usernamelist', 
-                'username = ? AND listType = ? AND active = ?', 
+                'username = ? AND list_type = ? AND active = ?', 
                 [$username, 'denylist', 1]
             );
             
@@ -179,7 +179,7 @@ class LoginSecurity {
         
         try {
             $safe = R::findOne('usernamelist', 
-                'username = ? AND listType = ? AND active = ?', 
+                'username = ? AND list_type = ? AND active = ?', 
                 [$username, 'safelist', 1]
             );
             
@@ -482,7 +482,7 @@ class LoginSecurity {
         try {
             // Check if already exists
             $existing = R::findOne('iplist', 
-                'ipAddress = ? AND listType = ?', 
+                'ip_address = ? AND list_type = ?', 
                 [$ip, $list_type]
             );
             
@@ -490,17 +490,17 @@ class LoginSecurity {
                 // Update existing entry
                 $existing->active = 1;
                 $existing->reason = $reason;
-                $existing->addedBy = $added_by;
-                $existing->addedDate = date('Y-m-d H:i:s');
+                $existing->added_by = $added_by;
+                $existing->added_date = date('Y-m-d H:i:s');
                 R::store($existing);
             } else {
                 // Create new entry
                 $iplist = R::dispense('iplist');
-                $iplist->ipAddress = $ip;
-                $iplist->listType = $list_type;
+                $iplist->ip_address = $ip;
+                $iplist->list_type = $list_type;
                 $iplist->reason = $reason;
-                $iplist->addedBy = $added_by;
-                $iplist->addedDate = date('Y-m-d H:i:s');
+                $iplist->added_by = $added_by;
+                $iplist->added_date = date('Y-m-d H:i:s');
                 $iplist->active = 1;
                 R::store($iplist);
             }
@@ -524,35 +524,49 @@ class LoginSecurity {
      */
     public static function addUsernameToList($username, $list_type, $reason = null, $added_by = null) {
         try {
-            // Check if already exists
+            error_log('addUsernameToList called with: username=' . $username . ', list_type=' . $list_type . ', reason=' . $reason . ', added_by=' . $added_by);
+            
+            // Ensure database is connected
+            if (!R::testConnection()) {
+                error_log('Database connection lost, attempting to reconnect');
+                require_once dirname(__DIR__) . '/iso-includes/database.php';
+                isotone_db_connect();
+            }
+            
+            // Check if already exists - using snake_case for database columns
             $existing = R::findOne('usernamelist', 
-                'username = ? AND listType = ?', 
+                'username = ? AND list_type = ?', 
                 [$username, $list_type]
             );
+            
+            error_log('Existing entry found: ' . ($existing ? 'yes (id=' . $existing->id . ')' : 'no'));
             
             if ($existing) {
                 // Update existing entry
                 $existing->active = 1;
                 $existing->reason = $reason;
-                $existing->addedBy = $added_by;
-                $existing->addedDate = date('Y-m-d H:i:s');
-                R::store($existing);
+                $existing->added_by = $added_by;
+                $existing->added_date = date('Y-m-d H:i:s');
+                $id = R::store($existing);
+                error_log('Updated existing entry with id: ' . $id);
             } else {
                 // Create new entry
                 $userlist = R::dispense('usernamelist');
                 $userlist->username = $username;
-                $userlist->listType = $list_type;
+                $userlist->list_type = $list_type;
                 $userlist->reason = $reason;
-                $userlist->addedBy = $added_by;
-                $userlist->addedDate = date('Y-m-d H:i:s');
+                $userlist->added_by = $added_by;
+                $userlist->added_date = date('Y-m-d H:i:s');
                 $userlist->active = 1;
-                R::store($userlist);
+                $id = R::store($userlist);
+                error_log('Created new entry with id: ' . $id);
             }
             
             return true;
             
         } catch (Exception $e) {
-            error_log('Failed to add username to list: ' . $e->getMessage());
+            error_log('Failed to add username to list - Exception: ' . $e->getMessage());
+            error_log('Stack trace: ' . $e->getTraceAsString());
             return false;
         }
     }

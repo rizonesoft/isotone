@@ -10,9 +10,29 @@ requireRole('admin');
 
 require_once dirname(__DIR__) . '/iso-includes/database.php';
 require_once dirname(__DIR__) . '/iso-includes/class-login-security.php';
+require_once dirname(__DIR__) . '/iso-includes/icon-functions.php';
 isotone_db_connect();
 
 use RedBeanPHP\R;
+
+// Preload icons for the page
+iso_preload_icons([
+    // Page header icon
+    ['name' => 'shield-check', 'style' => 'outline'],
+    // Metric card icons
+    ['name' => 'lock-closed', 'style' => 'outline'],
+    ['name' => 'exclamation-circle', 'style' => 'outline'],
+    ['name' => 'shield-exclamation', 'style' => 'outline'],
+    ['name' => 'clock', 'style' => 'outline'],
+    // Success/error message icons
+    ['name' => 'check-circle', 'style' => 'outline'],
+    ['name' => 'x-circle', 'style' => 'outline'],
+    ['name' => 'x-mark', 'style' => 'outline'],
+    // Tab/section icons
+    ['name' => 'trash', 'style' => 'outline'],
+    // Empty state icon
+    ['name' => 'check-circle', 'style' => 'outline']
+]);
 
 // Handle AJAX requests
 if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
@@ -95,15 +115,27 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
     if (isset($_POST['action'])) {
         switch ($_POST['action']) {
             case 'add_ip':
-                $ip = filter_var($_POST['ip'], FILTER_VALIDATE_IP);
-                $list_type = $_POST['list_type'];
+                $ip = filter_var($_POST['ip'] ?? '', FILTER_VALIDATE_IP);
+                $list_type = $_POST['list_type'] ?? '';
                 $reason = $_POST['reason'] ?? '';
                 
-                if ($ip && in_array($list_type, ['safelist', 'denylist'])) {
-                    $success = LoginSecurity::addIPToList($ip, $list_type, $reason, $_SESSION['isotone_admin_username']);
-                    echo json_encode(['success' => $success]);
+                if (!$ip) {
+                    echo json_encode(['success' => false, 'error' => 'Invalid IP address format']);
+                    break;
+                }
+                
+                if (!in_array($list_type, ['safelist', 'denylist'])) {
+                    echo json_encode(['success' => false, 'error' => 'Invalid list type: ' . $list_type]);
+                    break;
+                }
+                
+                $added_by = $_SESSION['user']['username'] ?? $_SESSION['isotone_admin_username'] ?? 'admin';
+                $success = LoginSecurity::addIPToList($ip, $list_type, $reason, $added_by);
+                
+                if (!$success) {
+                    echo json_encode(['success' => false, 'error' => 'Database error - check logs']);
                 } else {
-                    echo json_encode(['success' => false, 'error' => 'Invalid IP or list type']);
+                    echo json_encode(['success' => true]);
                 }
                 break;
                 
@@ -119,15 +151,30 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
                 break;
                 
             case 'add_username':
-                $username = $_POST['username'];
-                $list_type = $_POST['list_type'];
+                $username = trim($_POST['username'] ?? '');
+                $list_type = $_POST['list_type'] ?? '';
                 $reason = $_POST['reason'] ?? '';
                 
-                if ($username && in_array($list_type, ['safelist', 'denylist'])) {
-                    $success = LoginSecurity::addUsernameToList($username, $list_type, $reason, $_SESSION['isotone_admin_username']);
-                    echo json_encode(['success' => $success]);
+                error_log('Add username request: ' . json_encode(['username' => $username, 'list_type' => $list_type, 'reason' => $reason]));
+                
+                if (empty($username)) {
+                    echo json_encode(['success' => false, 'error' => 'Username cannot be empty']);
+                    break;
+                }
+                
+                if (!in_array($list_type, ['safelist', 'denylist'])) {
+                    echo json_encode(['success' => false, 'error' => 'Invalid list type: ' . $list_type]);
+                    break;
+                }
+                
+                $added_by = $_SESSION['user']['username'] ?? $_SESSION['isotone_admin_username'] ?? 'admin';
+                $success = LoginSecurity::addUsernameToList($username, $list_type, $reason, $added_by);
+                
+                if (!$success) {
+                    error_log('Failed to add username to list');
+                    echo json_encode(['success' => false, 'error' => 'Database error - check logs']);
                 } else {
-                    echo json_encode(['success' => false, 'error' => 'Invalid username or list type']);
+                    echo json_encode(['success' => true]);
                 }
                 break;
                 
@@ -245,13 +292,13 @@ $blocked_7d = R::count('loginattempt',
     [date('Y-m-d H:i:s', strtotime('-7 days'))]
 );
 
-// Get IP lists
-$ip_safelist = R::find('iplist', 'listType = ? AND active = 1 ORDER BY addedDate DESC', ['safelist']);
-$ip_denylist = R::find('iplist', 'listType = ? AND active = 1 ORDER BY addedDate DESC', ['denylist']);
+// Get IP lists - using snake_case for database columns
+$ip_safelist = R::find('iplist', 'list_type = ? AND active = 1 ORDER BY added_date DESC', ['safelist']);
+$ip_denylist = R::find('iplist', 'list_type = ? AND active = 1 ORDER BY added_date DESC', ['denylist']);
 
-// Get username lists
-$username_safelist = R::find('usernamelist', 'listType = ? AND active = 1 ORDER BY addedDate DESC', ['safelist']);
-$username_denylist = R::find('usernamelist', 'listType = ? AND active = 1 ORDER BY addedDate DESC', ['denylist']);
+// Get username lists - using snake_case for database columns
+$username_safelist = R::find('usernamelist', 'list_type = ? AND active = 1 ORDER BY added_date DESC', ['safelist']);
+$username_denylist = R::find('usernamelist', 'list_type = ? AND active = 1 ORDER BY added_date DESC', ['denylist']);
 
 // Fun lockout messages
 $fun_messages = [
@@ -271,77 +318,18 @@ $fun_messages = [
 ob_start();
 ?>
 
-<style>
-/* Chart container styles */
-.chart-container {
-    position: relative;
-    height: 250px;
-    width: 100%;
-}
-
-.chart-container canvas {
-    max-width: 100%;
-    height: 100% !important;
-}
-
-/* Loading state for charts */
-.chart-loading {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.9);
-    z-index: 10;
-}
-
-.dark .chart-loading {
-    background: rgba(31, 41, 55, 0.9);
-}
-
-.chart-loading-spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid #e5e7eb;
-    border-top-color: #06b6d4;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* Slide down animation for messages */
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.animate-slideDown {
-    animation: slideDown 0.4s ease-out;
-}
-</style>
+<!-- Load admin components CSS -->
+<link rel="stylesheet" href="css/admin-components.css">
 
 <!-- Alpine.js component for the entire page -->
-<div x-data="loginSecurityPage()" x-init="init()" class="max-w-7xl mx-auto p-6">
+<div x-data="loginSecurityPage()" x-init="init()">
     <!-- Page Header -->
     <div class="mb-6">
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center">
-            <svg class="w-8 h-8 mr-3 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-            </svg>
-            Login Security
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-4">
+            <span class="shield-pulse flex-shrink-0">
+                <?php echo iso_get_icon('shield-check', 'outline', ['class' => 'w-10 h-10 text-cyan-500'], false); ?>
+            </span>
+            <span>Login Security</span>
         </h1>
         <p class="mt-2 text-gray-600 dark:text-gray-400">
             Protect your site from brute force attacks and manage access control
@@ -349,13 +337,10 @@ ob_start();
     </div>
 
     <?php if (isset($success_message)): ?>
-    <div class="mb-6 relative overflow-hidden backdrop-blur-sm rounded-xl shadow-lg border border-cyan-200 dark:border-cyan-800 animate-slideDown" style="background-color: rgba(0, 211, 242, 0.1);">
-        <div class="absolute top-0 left-0 w-1 h-full" style="background-color: #00D3F2;"></div>
+    <div class="mb-6 message-success rounded-xl shadow-lg border border-cyan-200 dark:border-cyan-800 animate-slideDown">
         <div class="flex items-center p-4 pl-6">
             <div class="flex-shrink-0">
-                <svg class="w-6 h-6 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
+                <?php echo iso_get_icon('check-circle', 'outline', ['class' => 'w-6 h-6 text-cyan-600 dark:text-cyan-400'], false); ?>
             </div>
             <div class="ml-3 flex-1">
                 <p class="text-sm font-medium text-gray-900 dark:text-white">
@@ -363,22 +348,17 @@ ob_start();
                 </p>
             </div>
             <button onclick="this.parentElement.parentElement.style.display='none'" class="ml-4 flex-shrink-0 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
+                <?php echo iso_get_icon('x-mark', 'outline', ['class' => 'w-5 h-5'], false); ?>
             </button>
         </div>
     </div>
     <?php endif; ?>
 
     <?php if (isset($error_message)): ?>
-    <div class="mb-6 relative overflow-hidden backdrop-blur-sm rounded-xl shadow-lg border border-red-200 dark:border-red-800 animate-slideDown" style="background-color: rgba(239, 68, 68, 0.1);">
-        <div class="absolute top-0 left-0 w-1 h-full" style="background-color: #EF4444;"></div>
+    <div class="mb-6 message-error rounded-xl shadow-lg border border-red-200 dark:border-red-800 animate-slideDown">
         <div class="flex items-center p-4 pl-6">
             <div class="flex-shrink-0">
-                <svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
+                <?php echo iso_get_icon('x-circle', 'outline', ['class' => 'w-6 h-6 text-red-600 dark:text-red-400'], false); ?>
             </div>
             <div class="ml-3 flex-1">
                 <p class="text-sm font-medium text-gray-900 dark:text-white">
@@ -386,9 +366,7 @@ ob_start();
                 </p>
             </div>
             <button onclick="this.parentElement.parentElement.style.display='none'" class="ml-4 flex-shrink-0 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
+                <?php echo iso_get_icon('x-mark', 'outline', ['class' => 'w-5 h-5'], false); ?>
             </button>
         </div>
     </div>
@@ -397,14 +375,11 @@ ob_start();
     <!-- Statistics Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <!-- Active Lockouts -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 relative overflow-hidden">
-            <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-red-500 opacity-10 rounded-full"></div>
-            <div class="relative">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <div>
                 <div class="flex items-center">
-                    <div class="p-3 bg-red-100 dark:bg-red-900/30 rounded-lg">
-                        <svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                        </svg>
+                    <div>
+                        <?php echo iso_get_icon('lock-closed', 'outline', ['class' => 'w-9 h-9 text-red-600 dark:text-red-400'], false); ?>
                     </div>
                     <div class="ml-4">
                         <p class="text-sm text-gray-600 dark:text-gray-400">Active Lockouts</p>
@@ -415,14 +390,11 @@ ob_start();
         </div>
 
         <!-- Blocked Today -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 relative overflow-hidden">
-            <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-yellow-500 opacity-10 rounded-full"></div>
-            <div class="relative">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <div>
                 <div class="flex items-center">
-                    <div class="p-3 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg">
-                        <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
+                    <div>
+                        <?php echo iso_get_icon('exclamation-circle', 'outline', ['class' => 'w-9 h-9 text-yellow-600 dark:text-yellow-400'], false); ?>
                     </div>
                     <div class="ml-4">
                         <p class="text-sm text-gray-600 dark:text-gray-400">Blocked (24h)</p>
@@ -433,14 +405,11 @@ ob_start();
         </div>
 
         <!-- Blocked This Week -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 relative overflow-hidden">
-            <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-blue-500 opacity-10 rounded-full"></div>
-            <div class="relative">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <div>
                 <div class="flex items-center">
-                    <div class="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                        <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                        </svg>
+                    <div>
+                        <?php echo iso_get_icon('shield-exclamation', 'outline', ['class' => 'w-9 h-9 text-blue-600 dark:text-blue-400'], false); ?>
                     </div>
                     <div class="ml-4">
                         <p class="text-sm text-gray-600 dark:text-gray-400">Blocked (7d)</p>
@@ -451,14 +420,11 @@ ob_start();
         </div>
 
         <!-- Max Attempts Setting -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 relative overflow-hidden">
-            <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-green-500 opacity-10 rounded-full"></div>
-            <div class="relative">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <div>
                 <div class="flex items-center">
-                    <div class="p-3 bg-green-100 dark:bg-green-900/30 rounded-lg">
-                        <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
+                    <div>
+                        <?php echo iso_get_icon('clock', 'outline', ['class' => 'w-9 h-9 text-green-600 dark:text-green-400'], false); ?>
                     </div>
                     <div class="ml-4">
                         <p class="text-sm text-gray-600 dark:text-gray-400">Max Attempts</p>
@@ -488,7 +454,7 @@ ob_start();
                                 class="text-xs px-3 py-1 rounded transition-colors">Month</button>
                     </div>
                 </div>
-                <div class="chart-container" style="position: relative; height: 250px; width: 100%;">
+                <div class="chart-container">
                     <canvas id="attemptsChart"></canvas>
                     <div x-show="!chartsInitialized" class="chart-loading">
                         <div class="chart-loading-spinner"></div>
@@ -501,7 +467,7 @@ ob_start();
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
             <div class="p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Top Blocked IPs</h3>
-                <div class="chart-container" style="position: relative; height: 250px; width: 100%;">
+                <div class="chart-container">
                     <canvas id="blockedIPsChart"></canvas>
                     <div x-show="!chartsInitialized" class="chart-loading">
                         <div class="chart-loading-spinner"></div>
@@ -777,14 +743,12 @@ ob_start();
                                     <?php if ($entry->reason): ?>
                                     <div class="text-xs text-gray-500 dark:text-gray-400"><?php echo htmlspecialchars($entry->reason); ?></div>
                                     <?php endif; ?>
-                                    <div class="text-xs text-gray-400 dark:text-gray-500">Added <?php echo date('M j, Y', strtotime($entry->addedDate)); ?></div>
+                                    <div class="text-xs text-gray-400 dark:text-gray-500">Added <?php echo date('M j, Y', strtotime($entry->added_date)); ?></div>
                                 </div>
                                 <button @click="removeFromIPList(<?php echo $entry->id; ?>)" 
                                         type="button"
                                         class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                    </svg>
+                                    <?php echo iso_get_icon('trash', 'outline', ['class' => 'w-5 h-5'], false); ?>
                                 </button>
                             </div>
                             <?php endforeach; ?>
@@ -829,14 +793,12 @@ ob_start();
                                     <?php if ($entry->reason): ?>
                                     <div class="text-xs text-gray-500 dark:text-gray-400"><?php echo htmlspecialchars($entry->reason); ?></div>
                                     <?php endif; ?>
-                                    <div class="text-xs text-gray-400 dark:text-gray-500">Added <?php echo date('M j, Y', strtotime($entry->addedDate)); ?></div>
+                                    <div class="text-xs text-gray-400 dark:text-gray-500">Added <?php echo date('M j, Y', strtotime($entry->added_date)); ?></div>
                                 </div>
                                 <button @click="removeFromIPList(<?php echo $entry->id; ?>)" 
                                         type="button"
                                         class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                    </svg>
+                                    <?php echo iso_get_icon('trash', 'outline', ['class' => 'w-5 h-5'], false); ?>
                                 </button>
                             </div>
                             <?php endforeach; ?>
@@ -886,14 +848,12 @@ ob_start();
                                     <?php if ($entry->reason): ?>
                                     <div class="text-xs text-gray-500 dark:text-gray-400"><?php echo htmlspecialchars($entry->reason); ?></div>
                                     <?php endif; ?>
-                                    <div class="text-xs text-gray-400 dark:text-gray-500">Added <?php echo date('M j, Y', strtotime($entry->addedDate)); ?></div>
+                                    <div class="text-xs text-gray-400 dark:text-gray-500">Added <?php echo date('M j, Y', strtotime($entry->added_date)); ?></div>
                                 </div>
                                 <button @click="removeFromUsernameList(<?php echo $entry->id; ?>)" 
                                         type="button"
                                         class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                    </svg>
+                                    <?php echo iso_get_icon('trash', 'outline', ['class' => 'w-5 h-5'], false); ?>
                                 </button>
                             </div>
                             <?php endforeach; ?>
@@ -938,14 +898,12 @@ ob_start();
                                     <?php if ($entry->reason): ?>
                                     <div class="text-xs text-gray-500 dark:text-gray-400"><?php echo htmlspecialchars($entry->reason); ?></div>
                                     <?php endif; ?>
-                                    <div class="text-xs text-gray-400 dark:text-gray-500">Added <?php echo date('M j, Y', strtotime($entry->addedDate)); ?></div>
+                                    <div class="text-xs text-gray-400 dark:text-gray-500">Added <?php echo date('M j, Y', strtotime($entry->added_date)); ?></div>
                                 </div>
                                 <button @click="removeFromUsernameList(<?php echo $entry->id; ?>)" 
                                         type="button"
                                         class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                    </svg>
+                                    <?php echo iso_get_icon('trash', 'outline', ['class' => 'w-5 h-5'], false); ?>
                                 </button>
                             </div>
                             <?php endforeach; ?>
@@ -999,9 +957,9 @@ ob_start();
                 </div>
                 <?php else: ?>
                 <div class="text-center py-12">
-                    <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
+                    <div class="mx-auto">
+                        <?php echo iso_get_icon('check-circle', 'outline', ['class' => 'h-12 w-12 text-gray-400 dark:text-gray-600'], false); ?>
+                    </div>
                     <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">No active lockouts</p>
                 </div>
                 <?php endif; ?>
@@ -1473,6 +1431,12 @@ function loginSecurityPage() {
                 formData.append('list_type', listType);
                 formData.append('reason', reason);
                 
+                // Add CSRF token
+                const csrfToken = document.querySelector('input[name="csrf_token"]')?.value;
+                if (csrfToken) {
+                    formData.append('csrf_token', csrfToken);
+                }
+                
                 const response = await fetch('', {
                     method: 'POST',
                     headers: {
@@ -1481,7 +1445,16 @@ function loginSecurityPage() {
                     body: formData
                 });
                 
-                const result = await response.json();
+                const responseText = await response.text();
+                let result;
+                
+                try {
+                    result = JSON.parse(responseText);
+                } catch (e) {
+                    console.error('Invalid JSON response:', responseText);
+                    alert('Invalid server response. Check console for details.');
+                    return;
+                }
                 
                 if (result.success) {
                     // Clear inputs and reload page
@@ -1511,6 +1484,12 @@ function loginSecurityPage() {
                 const formData = new FormData();
                 formData.append('action', 'remove_ip');
                 formData.append('id', id);
+                
+                // Add CSRF token
+                const csrfToken = document.querySelector('input[name="csrf_token"]')?.value;
+                if (csrfToken) {
+                    formData.append('csrf_token', csrfToken);
+                }
                 
                 const response = await fetch('', {
                     method: 'POST',
@@ -1549,6 +1528,12 @@ function loginSecurityPage() {
                 formData.append('list_type', listType);
                 formData.append('reason', reason);
                 
+                // Add CSRF token
+                const csrfToken = document.querySelector('input[name="csrf_token"]')?.value;
+                if (csrfToken) {
+                    formData.append('csrf_token', csrfToken);
+                }
+                
                 const response = await fetch('', {
                     method: 'POST',
                     headers: {
@@ -1557,7 +1542,25 @@ function loginSecurityPage() {
                     body: formData
                 });
                 
-                const result = await response.json();
+                // Get response text first (can only read once)
+                const responseText = await response.text();
+                
+                // Check if response is OK
+                if (!response.ok) {
+                    console.error('Server error:', responseText);
+                    alert('Server error: ' + response.status + '. Check console for details.');
+                    return;
+                }
+                
+                // Try to parse JSON
+                let result;
+                try {
+                    result = JSON.parse(responseText);
+                } catch (e) {
+                    console.error('Invalid JSON response:', responseText);
+                    alert('Invalid server response. Check console for details.');
+                    return;
+                }
                 
                 if (result.success) {
                     // Clear inputs and reload page
@@ -1570,11 +1573,12 @@ function loginSecurityPage() {
                     }
                     window.location.reload();
                 } else {
-                    alert(result.error || 'Failed to add username');
+                    console.error('Operation failed:', result);
+                    alert(result.error || 'Failed to add username. Check server logs.');
                 }
             } catch (error) {
                 console.error('Error adding username:', error);
-                alert('Error adding username');
+                alert('Error adding username: ' + error.message);
             }
         },
         
@@ -1587,6 +1591,12 @@ function loginSecurityPage() {
                 const formData = new FormData();
                 formData.append('action', 'remove_username');
                 formData.append('id', id);
+                
+                // Add CSRF token
+                const csrfToken = document.querySelector('input[name="csrf_token"]')?.value;
+                if (csrfToken) {
+                    formData.append('csrf_token', csrfToken);
+                }
                 
                 const response = await fetch('', {
                     method: 'POST',
@@ -1619,6 +1629,12 @@ function loginSecurityPage() {
                 formData.append('action', 'clear_lockout');
                 formData.append('id', id);
                 
+                // Add CSRF token
+                const csrfToken = document.querySelector('input[name="csrf_token"]')?.value;
+                if (csrfToken) {
+                    formData.append('csrf_token', csrfToken);
+                }
+                
                 const response = await fetch('', {
                     method: 'POST',
                     headers: {
@@ -1649,5 +1665,9 @@ $page_content = ob_get_clean();
 
 // Now include the layout with the content
 $page_title = 'Login Security Settings';
+$breadcrumbs = [
+    ['title' => 'Security', 'url' => '/isotone/iso-admin/security.php'],
+    ['title' => 'Login Security', 'url' => '']
+];
 require_once 'includes/admin-layout.php';
 ?>

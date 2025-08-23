@@ -40,7 +40,7 @@ isotone_db_connect();
 $stats = [
     'posts' => (int)R::getCell('SELECT COUNT(*) FROM post'),
     'pages' => (int)R::getCell('SELECT COUNT(*) FROM page'),
-    'users' => (int)R::getCell('SELECT COUNT(*) FROM users'),
+    'users' => (int)R::getCell('SELECT COUNT(*) FROM user'),
     'comments' => (int)R::getCell('SELECT COUNT(*) FROM comment'),
     'media' => (int)R::getCell('SELECT COUNT(*) FROM media')
 ];
@@ -48,7 +48,7 @@ $stats = [
 // Get recent activity - Use find() with proper LIMIT for memory efficiency
 // Only fetch the fields we actually display
 $recent_posts = R::find('post', 'ORDER BY created_at DESC LIMIT 5');
-$recent_users = R::find('users', 'ORDER BY created_at DESC LIMIT 5');
+$recent_users = R::find('user', 'ORDER BY created_at DESC LIMIT 5');
 
 // Admin area should use ADMIN_MEMORY_LIMIT (already applied in auth.php)
 // This is just for display purposes

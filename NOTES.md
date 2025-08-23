@@ -3,8 +3,6 @@
 ## 📝 Quick Notes
 <!-- Add quick notes and thoughts here -->
 
-- [2025-08-22T16:00+00:00] Move tailwind directory to correct location - currently in iso-automation/tailwind but should be organized properly #refactor #tailwind
-
 ### Quick Prompts
 
 ---
@@ -28,14 +26,6 @@
 
 ## 📋 TODO List
 <!-- Things to do (separate from code tasks) -->
-
-- **Admin Area Styling**: Work on implementing proper dark mode and light mode styling for the admin area. Currently, the admin interface needs:
-  - Consistent color scheme for dark mode
-  - Proper light mode support with good contrast
-  - Smooth transitions between modes
-  - Storage of user preference
-  - Integration with system theme preferences
-  - Update all admin pages to support both modes
 
 ---
 

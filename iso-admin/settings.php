@@ -9,6 +9,7 @@ require_once 'auth.php';
 // Load configuration and database
 require_once dirname(__DIR__) . '/config.php';
 require_once dirname(__DIR__) . '/vendor/autoload.php';
+require_once dirname(__DIR__) . '/iso-includes/class-security.php';
 
 use RedBeanPHP\R;
 
@@ -102,9 +103,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Save settings to database
         foreach ($settings as $key => $value) {
-            $setting = R::findOne('settings', 'setting_key = ?', [$key]);
+            $setting = R::findOne('setting', 'setting_key = ?', [$key]);
             if (!$setting) {
-                $setting = R::dispense('settings');
+                $setting = R::dispense('setting');
                 $setting->setting_key = $key;
             }
             $setting->setting_value = $value;
@@ -128,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Load existing settings
-$allSettings = R::findAll('settings');
+$allSettings = R::findAll('setting');
 $settings = [];
 foreach ($allSettings as $setting) {
     $settings[$setting->setting_key] = $setting->setting_value;
@@ -188,6 +189,7 @@ ob_start();
     <!-- Settings Forms -->
     <div class="dark:bg-gray-800 bg-white rounded-lg shadow-sm">
         <form @submit.prevent="saveSettings" class="p-6">
+            <?php echo iso_csrf_field(); ?>
             <!-- General Tab -->
             <?php include __DIR__ . '/includes/settings-tab-general.php'; ?>
 
@@ -259,6 +261,12 @@ function settingsPage() {
             const form = event.target;
             const formData = new FormData(form);
             formData.append('tab', this.activeTab);
+            
+            // Get CSRF token from form
+            const csrfInput = form.querySelector('input[name="csrf_token"]');
+            if (csrfInput) {
+                formData.append('csrf_token', csrfInput.value);
+            }
             
             try {
                 const response = await fetch('/isotone/iso-admin/settings.php', {

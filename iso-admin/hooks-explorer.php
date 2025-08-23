@@ -26,7 +26,7 @@ try {
 require_once dirname(__DIR__) . '/iso-core/hooks.php';
 
 // Load theme hooks if active theme exists
-$activeTheme = \RedBeanPHP\R::findOne('settings', 'setting_key = ?', ['active_theme']);
+$activeTheme = \RedBeanPHP\R::findOne('setting', 'setting_key = ?', ['active_theme']);
 if ($activeTheme && $activeTheme->setting_value) {
     $themeFunctions = dirname(__DIR__) . '/iso-content/themes/' . $activeTheme->setting_value . '/functions.php';
     if (file_exists($themeFunctions)) {

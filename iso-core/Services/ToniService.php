@@ -1229,7 +1229,7 @@ Could you provide more details about what you're trying to accomplish?";
     private function getSetting(string $key, string $default = ''): string
     {
         try {
-            $setting = R::findOne('settings', 'setting_key = ?', [$key]);
+            $setting = R::findOne('setting', 'setting_key = ?', [$key]);
             return $setting ? $setting->setting_value : $default;
         } catch (Exception $e) {
             error_log('Error getting setting ' . $key . ': ' . $e->getMessage());

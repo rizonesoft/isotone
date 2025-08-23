@@ -29,6 +29,7 @@ iso_preload_icons([
     ['name' => 'magnifying-glass', 'style' => 'outline'],
     ['name' => 'bell', 'style' => 'outline'],
     ['name' => 'sparkles', 'style' => 'outline'],
+    ['name' => 'chat-bubble-left-ellipsis', 'style' => 'outline'],
     ['name' => 'moon', 'style' => 'outline'],
     ['name' => 'sun', 'style' => 'outline'],
     ['name' => 'chevron-down', 'style' => 'outline'],
@@ -343,6 +344,8 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
         });
     </script>
     
+    <!-- Page-specific styles if defined -->
+    <?php if (isset($page_styles)) echo $page_styles; ?>
     
     <!-- Favicon -->
     <link rel="icon" href="/isotone/favicon.ico">
@@ -395,7 +398,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
             </div>
             
             <!-- Right side -->
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-2">
                 <!-- View Site (Mobile & Desktop visible) -->
                 <a href="/isotone" target="_blank" 
                    class="w-9 h-9 dark:hover:bg-gray-700 hover:bg-gray-200 rounded-lg transition-colors md:hidden flex items-center justify-center"
@@ -407,15 +410,18 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                 </a>
                 
                 <!-- Search -->
-                <button @click="showSearch = true" class="p-2 dark:hover:bg-gray-700 hover:bg-gray-200 rounded-lg transition-colors">
-                    <?php echo render_icon('magnifying-glass', 'w-5 h-5'); ?>
+                <button @click="showSearch = true" @mouseenter="$el.querySelector('svg').style.color = '#00d9ff'" @mouseleave="$el.querySelector('svg').style.color = ''" class="p-2 dark:hover:bg-gray-700 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer dark:text-gray-400 text-gray-600">
+                    <?php echo iso_get_icon('magnifying-glass', 'outline', ['class' => 'w-5 h-5'], false); ?>
                 </button>
                 
                 <!-- Notifications -->
                 <div class="relative" x-data="{ open: false }">
-                    <button @click="open = !open" class="relative p-2 dark:hover:bg-gray-700 hover:bg-gray-200 rounded-lg transition-colors">
-                        <?php echo render_icon('bell', 'w-5 h-5'); ?>
-                        <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                    <button @click="open = !open" @mouseenter="$el.querySelector('svg').style.color = '#00d9ff'" @mouseleave="$el.querySelector('svg').style.color = ''" class="relative p-2 dark:hover:bg-gray-700 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer dark:text-gray-400 text-gray-600">
+                        <?php echo iso_get_icon('bell', 'outline', ['class' => 'w-5 h-5'], false); ?>
+                        <span class="absolute flex h-2 w-2" style="top: 2px; right: 2px;">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                        </span>
                     </button>
                     
                     <!-- Dropdown -->
@@ -437,28 +443,29 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                 
                 <!-- Toni AI Assistant -->
                 <button @click="toniOpen = !toniOpen" 
-                        class="relative p-2 dark:hover:bg-gray-700 hover:bg-gray-200 rounded-lg transition-all group"
+                        @mouseenter="$el.querySelector('svg').style.color = '#00d9ff'" @mouseleave="$el.querySelector('svg').style.color = ''"
+                        class="relative p-2 dark:hover:bg-gray-700 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer dark:text-gray-400 text-gray-600"
                         title="Toni AI Assistant">
-                    <?php echo render_icon('sparkles', 'w-5 h-5 transition-colors group-hover:text-cyan-400'); ?>
-                    <span class="absolute top-1 right-1 flex h-2 w-2">
+                    <?php echo iso_get_icon('chat-bubble-left-ellipsis', 'outline', ['class' => 'w-5 h-5'], false); ?>
+                    <span class="absolute flex h-2 w-2" style="top: 2px; right: 2px;">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
                     </span>
                 </button>
                 
                 <!-- Dark/Light Mode Toggle -->
-                <button @click="darkMode = !darkMode" class="p-2 dark:hover:bg-gray-700 hover:bg-gray-200 rounded-lg transition-colors relative w-9 h-9 flex items-center justify-center">
-                    <span x-show="!darkMode" x-transition class="absolute">
-                        <?php echo render_icon('moon', 'w-5 h-5'); ?>
+                <button @click="darkMode = !darkMode" @mouseenter="$el.querySelector('svg').style.color = '#00d9ff'" @mouseleave="$el.querySelector('svg').style.color = ''" class="p-2 dark:hover:bg-gray-700 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer dark:text-gray-400 text-gray-600">
+                    <span x-show="!darkMode" x-transition>
+                        <?php echo iso_get_icon('moon', 'outline', ['class' => 'w-5 h-5'], false); ?>
                     </span>
-                    <span x-show="darkMode" x-transition class="absolute">
-                        <?php echo render_icon('sun', 'w-5 h-5'); ?>
+                    <span x-show="darkMode" x-transition>
+                        <?php echo iso_get_icon('sun', 'outline', ['class' => 'w-5 h-5'], false); ?>
                     </span>
                 </button>
                 
                 <!-- User Menu -->
-                <div class="relative" x-data="{ open: false }">
-                    <button @click="open = !open" class="flex items-center space-x-2 p-2 dark:hover:bg-gray-700 hover:bg-gray-200 rounded-lg transition-colors">
+                <div class="relative ml-2" x-data="{ open: false }">
+                    <button @click="open = !open" class="flex items-center space-x-2 p-2 dark:hover:bg-gray-700 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer">
                         <div class="w-8 h-8 bg-gradient-to-r from-cyan-400 to-green-400 rounded-full flex items-center justify-center text-gray-900 font-semibold">
                             <?php echo strtoupper(substr($current_user ?? 'A', 0, 1)); ?>
                         </div>
@@ -828,7 +835,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                     
                     // Watch dark mode - only toggle 'dark' class on html element
                     this.$watch('darkMode', value => {
-                        localStorage.setItem('darkMode', value);
+                        localStorage.setItem('darkMode', value ? 'true' : 'false');
                         if (value) {
                             document.documentElement.classList.add('dark');
                         } else {

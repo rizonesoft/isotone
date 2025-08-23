@@ -31,7 +31,7 @@ if (!R::testConnection()) {
 
 // Helper function to get settings from database
 function getSetting($key, $default = '') {
-    $setting = R::findOne('settings', 'setting_key = ?', [$key]);
+    $setting = R::findOne('setting', 'setting_key = ?', [$key]);
     return $setting ? $setting->setting_value : $default;
 }
 

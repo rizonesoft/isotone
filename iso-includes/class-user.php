@@ -35,7 +35,7 @@ class IsotoneUser {
     public function authenticate($username, $password) {
         try {
             // Find user by username or email
-            $user = R::findOne('users', 
+            $user = R::findOne('user', 
                 '(username = ? OR email = ?) AND status = ?', 
                 [$username, $username, 'active']
             );
@@ -66,7 +66,7 @@ class IsotoneUser {
      */
     public function create($data) {
         try {
-            $user = R::dispense('users');
+            $user = R::dispense('user');
             
             // Set user properties
             $user->username = $data['username'];
@@ -95,7 +95,7 @@ class IsotoneUser {
      */
     public function update($id, $data) {
         try {
-            $user = R::load('users', $id);
+            $user = R::load('user', $id);
             
             if (!$user->id) {
                 return false;
@@ -130,7 +130,7 @@ class IsotoneUser {
      */
     public function getById($id) {
         try {
-            $user = R::load('users', $id);
+            $user = R::load('user', $id);
             
             if (!$user->id) {
                 return false;
@@ -153,7 +153,7 @@ class IsotoneUser {
      */
     public function getByUsername($username) {
         try {
-            $user = R::findOne('users', 'username = ?', [$username]);
+            $user = R::findOne('user', 'username = ?', [$username]);
             
             if (!$user) {
                 return false;
@@ -215,7 +215,7 @@ class IsotoneUser {
      */
     public function delete($id) {
         try {
-            $user = R::load('users', $id);
+            $user = R::load('user', $id);
             
             if (!$user->id) {
                 return false;
@@ -268,7 +268,7 @@ class IsotoneUser {
      */
     public function hasRole($userId, $role) {
         try {
-            $user = R::load('users', $userId);
+            $user = R::load('user', $userId);
             
             if (!$user->id) {
                 return false;

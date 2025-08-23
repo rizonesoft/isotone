@@ -5,7 +5,7 @@ All notable changes to Isotone will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.3.1-alpha] - Genesis - 2025-08-22
+## [0.3.1-alpha] - Genesis - 2025-08-23
 
 ### Added
 - **Icon API System** - Complete icon management with lazy loading support
@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added `iso_icon()`, `iso_get_icon()`, `iso_icon_url()` helper functions
   - Implemented icon preloading with `iso_preload_icons()`
   - Added icon helper components (`iso_icon_button()`, `iso_icon_link()`)
+  - **Improved non-lazy loading support** - Icons now work correctly with inline SVG
+  - **Added fallback icon** - Shows question mark icon when requested icon not found
+  - **Better URL generation** - Improved path detection for various server environments
 - **Icon Libraries** - Three Heroicons v2 variants
   - IconLibrary (outline, 24x24, stroke-based)
   - IconLibrarySolid (solid, 24x24, fill-based)  
@@ -26,11 +29,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Icon Gallery Generator** - Automated icon documentation
   - Better error messaging when Tailwind CSS files are missing
   - Improved path resolution for Tailwind v4 @source directives
+- **Admin UI Enhancements**
+  - Glassmorphism effects on all content cards with bottom glow
+  - Enhanced card headers with icons, badges, and action buttons
+  - Professional info cards with subtle hover effects
+  - Comprehensive CSS component library (admin-components.css)
 
 ### Fixed
 - Fixed Tailwind CSS v4.1 build system with correct @source paths
 - Fixed Tailwind CSS file size issue (was 4.6 KB, now properly 50.6 KB minified)
 - Fixed admin dashboard styling not loading due to incorrect build paths
+- Fixed Icon API inline SVG generation with proper error handling
+- Fixed icon library loading with class and method existence checks
 
 ### Changed
 - Updated Tailwind CSS from v4.0.0-beta.8 to stable v4.1.12
@@ -38,6 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved admin-layout.php Tailwind loading logic with clear error messages
 - Optimized page size from 330.5 KB to ~210 KB (36% reduction)
 - Replaced all hardcoded SVG icons with Icon API calls throughout admin
+- Moved all inline styles to external CSS files (no inline styles allowed)
 
 ## [0.3.0-alpha] - Genesis - 2025-08-20
 

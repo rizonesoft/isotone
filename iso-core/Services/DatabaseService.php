@@ -222,17 +222,17 @@ class DatabaseService
             
             $results = [];
             
-            // Create settings table (RedBean prefers simple names without underscores)
-            $setting = R::dispense('settings');
+            // Create setting table (RedBean prefers simple names without underscores)
+            $setting = R::dispense('setting');
             $setting->key = 'site_title';
             $setting->value = 'Isotone';
             $setting->type = 'string';
             $setting->created_at = date('Y-m-d H:i:s');
             R::store($setting);
-            $results[] = 'Settings table created';
+            $results[] = 'Setting table created';
             
-            // Create users table structure
-            $user = R::dispense('users');
+            // Create user table structure
+            $user = R::dispense('user');
             $user->username = 'admin';
             $user->email = 'admin@example.com';
             $user->password = password_hash('admin123', PASSWORD_DEFAULT);
@@ -259,7 +259,7 @@ class DatabaseService
             return [
                 'success' => true,
                 'results' => $results,
-                'tables_created' => ['settings', 'users', 'content']
+                'tables_created' => ['setting', 'user', 'content']
             ];
             
         } catch (Exception $e) {
