@@ -3,6 +3,7 @@
 You're building a CMS that must work reliably on thousands of different hosting environments. Every decision should prioritize simplicity, security, and compatibility over cleverness or advanced features. **REMEMBER:** You're not just writing code; you're maintaining a system that must work reliably and securely everywhere.
 
 Search before creating - **REUSE** existing code, stylesheets, APIs, hooks, services, includes, etc, where possible.
+**UI/UX Standard:** When asked to apply "Aurora UI" (v1.0), "modern UI", or "new UI/UX", implement: glassmorphism cards with bottom glow effects, enhanced headers with icons/badges/actions, info cards with subtle hover (1px lift), no inline styles (use admin-components.css), micro icons for UI elements, content-card/tab-card/form-card classes, and professional cyan (#06b6d4) accent color.
 Note similar implementations, patterns to follow.
 Follow **PSR-12 standards**.
 

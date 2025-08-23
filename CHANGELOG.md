@@ -5,6 +5,23 @@ All notable changes to Isotone will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.2-alpha] - Aurora UI v1.0 - 2025-08-23
+
+### UI/UX System - Aurora v1.0
+- **Codename:** Aurora
+- **Version:** 1.0
+- **Design Language:** Professional glassmorphism with subtle depth effects
+- **Primary Accent:** Cyan (#06b6d4)
+- **Key Features:**
+  - Glassmorphism cards with semi-transparent gradients
+  - Bottom glow lines with gradient fade for depth
+  - Enhanced headers with icon/badge/action support
+  - Info cards with minimal hover effects (1px lift)
+  - No inline styles - all styling in external CSS
+  - Micro icons (16x16) for UI elements
+  - Content/Tab/Form card component classes
+  - Professional, subtle animations
+
 ## [0.3.1-alpha] - Genesis - 2025-08-23
 
 ### Added
