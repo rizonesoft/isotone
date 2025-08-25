@@ -4,12 +4,12 @@ description: Complete overview of Isotone's directory structure, file organizati
 tags: [project-structure, directories, files, organization, architecture]
 category: development
 priority: 88
-last_updated: 2025-01-20
+last_updated: 2025-08-25
 ---
 
 # Isotone Project Structure
 
-*Updated on 2025-08-17 - Reflects Service-Oriented Architecture*
+*Updated on 2025-08-25 - Reflects separation of development tools from production code*
 
 ## Project Structure
 
@@ -17,9 +17,9 @@ last_updated: 2025-01-20
 isotone/
 ├── CLAUDE.md
 ├── README.md
-├── composer.json
+├── composer              # Wrapper script for composer in tools/
 ├── config.sample.php
-├── docs/
+├── docs/                 # Generated HTML documentation
 │   ├── api-reference/
 │   ├── assets/
 │   │   ├── css/
@@ -32,56 +32,74 @@ isotone/
 │   ├── icons/
 │   ├── toni/
 │   └── troubleshooting/
-├── install/
+├── error/                # HTTP error pages
+├── install/              # Installation wizard
 │   ├── README.md
-├── iso-admin/
+│   └── assets/
+├── iso-admin/            # Admin panel
 │   ├── api/
 │   ├── css/
 │   ├── includes/
 │   ├── js/
-├── iso-api/
-├── iso-automation/
+│   └── lumina/          # Lumina UI templates
+├── iso-api/              # REST API endpoints
+│   └── admin/
+├── iso-content/          # User content
 │   ├── README.md
 │   ├── cache/
-│   ├── config/
-│   ├── src/
-│   │   ├── Analyzers/
-│   │   ├── Commands/
-│   │   ├── Core/
-│   │   ├── Dashboard/
-│   │   ├── Documentation/
-│   │   ├── Generators/
-│   │   └── Rules/
-│   ├── storage/
-│   ├── tailwind/
-│   │   ├── README.md
-│   │   ├── package.json
-│   │   └── src/
-├── iso-content/
-│   ├── README.md
+│   ├── logs/
 │   ├── plugins/
-│   │   ├── hello-isotone/
+│   │   └── hello-isotone/
 │   ├── themes/
 │   │   ├── isotone/
 │   │   ├── isotone-default/
 │   │   ├── neutron/
 │   │   └── quantum/
 │   └── uploads/
-├── iso-core/
+├── iso-core/             # Core system
 │   ├── Commands/
 │   ├── Config/
 │   ├── Core/
 │   ├── Services/
-├── iso-includes/
+│   └── runtime/         # Production dependencies (formerly vendor/)
+│       ├── autoload.php
+│       ├── gabordemooij/    # RedBeanPHP
+│       ├── intervention/    # Image processing
+│       ├── league/          # CommonMark
+│       ├── monolog/         # Logging
+│       ├── nesbot/          # Carbon dates
+│       └── symfony/         # YAML parser
+├── iso-development/      # Development tools (excluded from production)
+│   ├── README.md
+│   ├── admin/           # Development admin pages
+│   ├── cache/
+│   ├── cli.php          # Automation CLI
+│   ├── lumina/          # Lumina UI source (LESS)
+│   ├── src/             # Automation source
+│   │   ├── Analyzers/
+│   │   ├── Commands/
+│   │   ├── Core/
+│   │   ├── Documentation/
+│   │   ├── Generators/
+│   │   └── Rules/
+│   ├── storage/
+│   ├── tailwind/        # Tailwind build tools
+│   │   ├── README.md
+│   │   ├── package.json
+│   │   └── src/
+│   ├── tests/           # Test files
+│   └── tools/           # Development dependencies
+│       ├── composer     # Composer executable
+│       ├── composer.json
+│       ├── composer.lock
+│       └── phpstan.neon # PHPStan config
+├── iso-includes/        # Shared includes
 │   ├── assets/
 │   ├── css/
 │   ├── js/
+│   ├── lumina/          # Lumina UI compiled CSS
 │   └── scripts/
-├── iso-runtime/
-│   ├── README.md
-│   ├── cache/
-│   ├── logs/
-│   └── temp/
+├── server/              # Server configurations
 ├── user-docs/
 │   ├── .kb/
 │   ├── .vitepress/

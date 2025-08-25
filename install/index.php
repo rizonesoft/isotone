@@ -212,8 +212,8 @@ try {
     <link rel="icon" type="image/png" sizes="512x512" href="../favicon.png">
     <link rel="apple-touch-icon" href="../favicon.png">
     <link rel="manifest" href="../site.webmanifest">
-    <!-- Global Isotone CSS -->
-    <link rel="stylesheet" href="../iso-includes/css/isotone.css">
+    <!-- Isotone CSS -->
+    <link rel="stylesheet" href="assets/css/isotone.css">
     <style>
         /* Page-specific overrides only */
         

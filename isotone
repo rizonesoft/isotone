@@ -77,8 +77,8 @@ function showHelp(): void
     echo "Version bump usage:\n";
     echo "  php isotone version:bump [major|minor|patch] [stage] [codename]\n";
     echo "  Examples:\n";
-    echo "    php isotone version:bump patch                    # 0.1.0 -> 0.1.1\n";
-    echo "    php isotone version:bump minor beta               # 0.1.0 -> 0.2.0-beta\n";
+    echo "    php isotone version:bump patch                      # 0.1.0 -> 0.1.1\n";
+    echo "    php isotone version:bump minor beta                 # 0.1.0 -> 0.2.0-beta\n";
     echo "    php isotone version:bump major stable \"Phoenix\"   # 0.1.0 -> 1.0.0 (Phoenix)\n";
     echo "\n";
     echo "Version set usage:\n";

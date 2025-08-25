@@ -460,6 +460,9 @@ if (empty($_SESSION['csrf_token'])) {
             font-size: 0.875rem;
         }
     </style>
+    
+    <!-- Lumina UI Design System -->
+    <link rel="stylesheet" href="/isotone/iso-includes/lumina/lumina-admin.css">
 </head>
 <body>
     <div class="login-wrapper">

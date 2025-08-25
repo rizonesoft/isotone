@@ -1,87 +1,10 @@
-
-**YOUR MISSION:**
-You're building a CMS that must work reliably on thousands of different hosting environments. Every decision should prioritize simplicity, security, and compatibility over cleverness or advanced features. **REMEMBER:** You're not just writing code; you're maintaining a system that must work reliably and securely everywhere.
-
-Search before creating - **REUSE** existing code, stylesheets, APIs, hooks, services, includes, etc, where possible.
-**UI/UX Standard:** When asked to apply "Lumina UI" (v1.0), "modern UI", or "new UI/UX", implement: glassmorphism cards with bottom glow effects, enhanced headers with icons/badges/actions, info cards with subtle hover (1px lift), no inline styles (use admin-components.css and other CSS files as needed), micro icons for UI elements, use CSS classes: content-card/tab-card/form-card (containers), content-card-header/content-card-body (structure), info-card with color variants (info-red/yellow/blue/green/purple/cyan), content-card-header-icon/actions/badge (header elements), professional cyan (#06b6d4) accent. Reference templates: /iso-admin/lumina/admin-page-template.php (implementation) and /iso-admin/lumina/admin-components-showcase.php (all components).
-
-Note similar implementations, patterns to follow.
-Follow **PSR-12 standards**.
-
-Do notuse Laravel/Symfony patterns.
-Step 1: Get Windows host IP: `ip route | grep default | awk '{print $3}'` and then Step 2: Connect using that IP: `mysql -h [IP_FROM_STEP_1] -u root isotone_db` to MySQL database from WSL.
-Use RedBeanPHP ORM for ALL database operations (no raw SQL, no migration files).
-ALWAYS use singular, lowercase, no underscores table names.
-**NEVER** use inline CSS or style tags.
-CSS should be in the `/iso-includes/css/` directory.
-Always look for existing CSS before creating new classes or styles.
-Always look for existing solutions before creating new code.
-Isotone admin pages use Tailwind CSS v4.1.12. Never change this version without approval.
-`require_once 'auth.php';` is always first in admin pages.
-`require_once dirname(__DIR__) . '/config.php';` is always second in admin pages.
-`require_once dirname(__DIR__) . '/vendor/autoload.php';` is always third in admin pages.
-Use `iso_` prefix for WordPress-compatible hooks.
-All API endpoints go in the `/iso-api/` directory, **NEVER** outside.
-All API endpoints should include CORS headers.
-All API endpoints should validate input and return proper HTTP status codes.
-Create RESTful API endpoints: follow RESTful API standards.
-Use Icon API (`iso_icon()`), **NEVER** hardcode SVG icons.
-Isotone uses plain PHP classes, not namespaces.
-Every UI needs both light/dark styles.
-**NEVER** load Alpine.js in `<head>` - always defer.
-**NEVER** modify vendor/ directory.
-For core hooks, always use `iso_` prefix: apply_filters('iso_menu_items', $items);
-For plugin hooks always use `plugin_` prefix, for theme hooks always use `theme_` prefix, for admin hooks always use `admin_` prefix, for user hooks always use `user_` prefix, etc.
-Find existing iso_* hooks to extend vs creating new.
-Use Context7 for external API documentation.
-Keep documentation updated after each change.
-Update NOTES.md for notes/reminders/todos.
-**NEVER** write "Isotone CMS" - just "Isotone".
-
-**PRESERVE** the glitch-style animated 404 page at `/iso-admin/404.php` - it's a feature.
-
-**ASK FIRST** when requirements are unclear - clarify before implementing.
-
-**SEARCH** - Discover & Reuse Existing Code, Javascripts, Stylesheets, APIs, Hooks, Services, Includes
-**ISOTONE DIRECTORY STRUCTURE**:
-- iso-core/Services/*  - Core service classes
-- iso-core/Core/*      - Core functionality
-- iso-admin/*          - Admin components
-- iso-includes/*       - Shared includes
-
-### 3. ✅ **CHECK** - Validate Standards & Architecture
-- **PSR-12 Compliance**: Verify formatting, naming conventions
-- **Security Layer**: Confirm `iso-admin/auth.php` on admin pages (except login.php/logout.php).
-- **Hook Naming**: All hooks prefixed with `iso_`.
-- **Early Conflict Detection**: Flag any standard violations BEFORE coding.
-
-### 4. ✅ **IMPLEMENT** - Code with Minimal Impact
-- **Diff Minimization**: Change only what's necessary
-- **Extension First**: Extend existing classes/services before creating new
-- **Import Organization**: All use/require statements at file top
-- **No New Dependencies**: Work within existing framework
-- **Escape HTML output**: Use `esc_html()`, `esc_attr()`, `esc_url()`.
-- **ICON API**: Use the Icon API for icons.
-- **Error Handling**: Implement try-catch blocks, log errors appropriately
-- **Code Comments**: Document complex logic, not obvious code
-
-### 5. ✅ **VALIDATE** - Multi-Layer Testing
-- **Static Analysis**: Run PHPStan if configured - `composer analyse`
-- **Style Check**: `phpcs --standard=PSR12 [files]` - The vendor JS files (alpine.js, chart.js) should probably be excluded.
-- **Unit Tests**: Run existing test suite, add tests for new methods
-- **Integration Test**: Verify with connected services
-- **Hook Verification**: Confirm all hooks fire correctly
-- **Manual Smoke Test**: Click through affected UI paths
-- **Performance Check**: Verify no degradation (query count, load time)
-
-### 6. ✅ **DOCUMENT** - Complete the Cycle
-- **Code Documentation**: PHPDoc blocks for new methods/classes
-- **Changelog Update**: Add entry with version, date, changes
-  **Update these documentation files:**
-- `README.md` — if new feature changes or install steps.
-- `CHANGELOG.md` — user-visible changes
-- `HOOKS.md` — Document new `iso_*` hooks with parameters
-- `user-docs/development/project-structure.md` — directory changes
-- `user-docs/development/commands.md` — new CLI commands
-- `user-docs/configuration/config-guide.md` — config variables
-- `user-docs/icons/` — icon library changes
+**(1) STANDARDS & CHECKS**: PSR-12 coding. Security-first: escape ALL output (`esc_html()`, `esc_attr()`, `esc_url()`), validate/sanitize input, CSRF tokens on forms. PHP 8.3+ compatible. Admin pages: 1) `auth.php` 2) `config.php` 3) `vendor/autoload.php` (except login/logout.php). Hooks: `iso_` (core), `plugin_`, `theme_`, `admin_`, `user_` prefixes. Check standards BEFORE coding. ASK FIRST when unclear.
+**(2) IMPLEMENTATION**: ALWAYS search for existing solutions/hooks first. Minimal diffs - change ONLY what's needed. Extend existing before creating new. All imports at file top. NO new dependencies. Plain PHP classes (no namespaces). Icon API (`iso_icon()`) ONLY. Alpine.js defer (never `<head>`). NEVER modify vendor/. Try-catch for errors, log failures. **ADD COMPREHENSIVE COMMENTS**: Document ALL functions/methods, explain complex logic, describe data structures, note integration points, include usage examples - comments guide future development and documentation generation.
+**(3) DOCUMENTATION**: Update AS YOU CODE - PHPDoc for new methods/classes. Files: `README.md` (features/install), `CHANGELOG.md` (user-visible changes w/ version+date), `HOOKS.md` (new `iso_*` hooks), `user-docs/development/project-structure.md` (dirs), `user-docs/development/commands.md` (CLI), `user-docs/configuration/config-guide.md` (config vars), `user-docs/icons/` (icon changes). Use Context7 for external API docs. NEVER write "Isotone CMS" - just "Isotone". Document IMMEDIATELY.
+**(4) VALIDATION**: Test BEFORE commit: `composer analyse` (PHPStan), `phpcs --standard=PSR12` (exclude vendor JS), run unit tests + add new, verify integrations work, confirm hooks fire, manual UI test affected paths, check performance (queries/load time). No regressions allowed.
+**DIRECTORY STRUCTURE**: `iso-core/` (Core/Router/Hook/Services, helpers.php, runtime/ for production dependencies), `iso-admin/` (dashboard/settings/auth.php, Lumina UI templates), `iso-includes/` (security/user classes, CSS/JS assets), `iso-content/` (themes/plugins/uploads/logs/cache), `iso-api/` (RESTful endpoints + admin/), `iso-development/` (build/docs/analyzers/admin pages, tools/ for composer/PHPStan/PHPUnit), `user-docs/` (Markdown source), `docs/` (HTML output), `error/` (HTTP error pages), root: config.php/index.php
+**ROUTING**: Use `Router.php`. Add: `$router->addRoute('GET', '/path/{param:type}', handler)`. Types: any/id/slug/year/month/day/alpha/alphanum. Errors route through `server/error.php`. API: `/api/*` → `/iso-api/*.php`. NO Laravel/Symfony patterns.
+**DATABASE**: MySQL: `mysql -h 172.19.240.1 -u root isotone_db`. RedBeanPHP ONLY - NO raw SQL/migrations. Tables: singular, lowercase, no underscores (`user` not `users`). `R::dispense('todo')` auto-creates tables.
+**API**: All endpoints in `/iso-api/` ONLY. RESTful standards. Include CORS headers. Validate input, return proper HTTP codes. For todos/notes/reminders use: `curl -X POST http://172.19.240.1/isotone/iso-api/admin/todos.php -H "X-API-Key: iso_live_sk_80bb6b016cb366469f2ff9bba1cc00bd8e259f2408e797d9" -H "Content-Type: application/json" -d '{"title":"Task","priority":"medium"}'`
+**UI/UX**: "Lumina UI" = glassmorphism cards + bottom glow, headers w/ icons/badges/actions, hover lift (1px). Classes: `content-card`/`tab-card`/`form-card`, `info-card` + colors (red/yellow/blue/green/purple/cyan), cyan accent (#06b6d4). Templates: `/iso-admin/lumina-template.php`, `/iso-admin/lumina-showcase.php`. Every UI needs light/dark styles. Use `lumina.css`, NO inline styles.
+**CSS & STYLING**: NEVER inline styles/`<style>` tags. Admin pages use Tailwind v4.1.12(DO NOT CHANGE VERSION) + Lumina UI. Tailwind: build with `npm run build/watch/minify`. Lumina: LESS sources in `/iso-development/lumina/src/` - edit LESS files then `npm run lumina:build/watch/minify` (from `/iso-development/tailwind/`). Use Lumina classes: `content-card`, `glass`, `glow-bottom`, `info-{color}`. Check existing before creating new.

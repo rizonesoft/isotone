@@ -29,7 +29,7 @@
     "autoload": {
         "psr-4": {
             "Isotone\\": "iso-core/",
-            "Isotone\\Automation\\": "iso-automation/src/"
+            "Isotone\\Automation\\": "iso-development/src/"
         },
         "files": [
             "iso-core/helpers.php",
@@ -38,36 +38,36 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\": "iso-development/tests/"
         }
     },
     "scripts": {
         "test": "phpunit",
         "test:unit": "phpunit --testsuite Unit",
         "test:integration": "phpunit --testsuite Integration",
-        "analyse": "phpstan analyse",
-        "analyse:core": "phpstan analyse iso-core",
-        "analyse:admin": "phpstan analyse iso-admin",
-        "analyse:all": "phpstan analyse",
-        "analyse:strict": "phpstan analyse --level=8",
+        "analyse": "phpstan analyse -c iso-development/phpstan.neon",
+        "analyse:core": "phpstan analyse -c iso-development/phpstan.neon iso-core",
+        "analyse:admin": "phpstan analyse -c iso-development/phpstan.neon iso-admin",
+        "analyse:all": "phpstan analyse -c iso-development/phpstan.neon",
+        "analyse:strict": "phpstan analyse -c iso-development/phpstan.neon --level=8",
         "check-style": "phpcs iso-core --standard=PSR12",
         "fix-style": "phpcbf iso-core --standard=PSR12",
-        "docs:check": "php iso-automation/cli.php docs:check",
-        "docs:update": "php iso-automation/cli.php docs:update",
-        "docs:index": "php iso-automation/cli.php docs:index",
-        "docs:lint": "php iso-automation/cli.php docs:lint",
-        "docs:build": "php iso-automation/cli.php docs:build",
+        "docs:check": "php iso-development/cli.php docs:check",
+        "docs:update": "php iso-development/cli.php docs:update",
+        "docs:index": "php iso-development/cli.php docs:index",
+        "docs:lint": "php iso-development/cli.php docs:lint",
+        "docs:build": "php iso-development/cli.php docs:build",
         "docs:html": "@docs:build",
-        "docs:hooks": "php iso-automation/cli.php hooks:scan",
+        "docs:hooks": "php iso-development/cli.php hooks:scan",
         "docs:all": [
             "@docs:update",
             "@docs:hooks",
             "@docs:index"
         ],
         "hooks:docs": "@docs:hooks",
-        "hooks:scan": "php iso-automation/cli.php hooks:scan",
-        "ide:sync": "php iso-automation/cli.php sync:ide",
-        "validate:rules": "php iso-automation/cli.php validate:rules",
+        "hooks:scan": "php iso-development/cli.php hooks:scan",
+        "ide:sync": "php iso-development/cli.php sync:ide",
+        "validate:rules": "php iso-development/cli.php validate:rules",
         "version:patch": [
             "php isotone version:bump patch alpha",
             "php isotone changelog"
@@ -83,12 +83,12 @@
         "pre-commit": [
             "@check-style"
         ],
-        "tailwind:build": "php iso-automation/cli.php tailwind:build",
-        "tailwind:watch": "php iso-automation/cli.php tailwind:watch",
-        "tailwind:minify": "php iso-automation/cli.php tailwind:minify",
-        "tailwind:install": "php iso-automation/cli.php tailwind:install",
-        "tailwind:update": "php iso-automation/cli.php tailwind:update",
-        "tailwind:status": "php iso-automation/cli.php tailwind:status"
+        "tailwind:build": "php iso-development/cli.php tailwind:build",
+        "tailwind:watch": "php iso-development/cli.php tailwind:watch",
+        "tailwind:minify": "php iso-development/cli.php tailwind:minify",
+        "tailwind:install": "php iso-development/cli.php tailwind:install",
+        "tailwind:update": "php iso-development/cli.php tailwind:update",
+        "tailwind:status": "php iso-development/cli.php tailwind:status"
     },
     "config": {
         "optimize-autoloader": true,

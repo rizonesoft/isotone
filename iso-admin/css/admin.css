@@ -21,8 +21,6 @@ body {
     min-height: 100vh;
 }
 
-/* Remove forced backgrounds - let Tailwind handle it */
-
 /* Override Tailwind's h-full to ensure proper background */
 body.min-h-full {
     min-height: 100vh !important;
@@ -42,56 +40,6 @@ main {
 /* Hide Alpine.js elements until loaded */
 [x-cloak] {
     display: none !important;
-}
-
-/* ==========================================================================
-   Sidebar Active States
-   ========================================================================== */
-
-/* Active menu item indicator */
-.sidebar-menu-active {
-    position: relative;
-    background-color: rgba(6, 182, 212, 0.1);
-}
-
-.sidebar-menu-active::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background-color: #06b6d4;
-}
-
-/* Active submenu item */
-.sidebar-submenu-active {
-    background-color: rgba(6, 182, 212, 0.15);
-    color: #06b6d4;
-    font-weight: 600;
-}
-
-/* Smooth transitions for menu states */
-.sidebar-menu-item {
-    transition: all 0.2s ease;
-}
-
-/* ==========================================================================
-   Color Utilities (supplements Tailwind)
-   ========================================================================== */
-
-/* Remove forced colors - let Tailwind's dark mode handle it */
-
-.text-white {
-    color: #ffffff;
-}
-
-.text-gray-400 {
-    color: #9ca3af;
-}
-
-.text-cyan-400 {
-    color: #22d3ee;
 }
 
 /* ==========================================================================
@@ -117,14 +65,7 @@ main {
     pointer-events: none;
 }
 
-.spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid #374151;
-    border-top-color: #00d9ff;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-}
+/* Spinner styles are defined in critical.css for FOUC prevention */
 
 @keyframes spin {
     to {
@@ -158,14 +99,6 @@ main > div:last-child {
    Sidebar Styles
    ========================================================================== */
 
-.sidebar-collapsed {
-    width: 4rem;
-}
-
-.sidebar-expanded {
-    width: 16rem;
-}
-
 .sidebar-transition {
     transition: all 0.3s ease;
 }
@@ -175,21 +108,165 @@ main > div:last-child {
    ========================================================================== */
 
 ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 10px;
+    height: 10px;
 }
 
+/* Track - subtle inset with glass effect */
 ::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(229, 231, 235, 0.8); /* Light gray with opacity */
+    box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
 }
 
+.dark ::-webkit-scrollbar-track,
+html.dark ::-webkit-scrollbar-track {
+    background: rgba(31, 41, 55, 0.8); /* Dark gray with opacity */
+    box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
+}
+
+
+/* Thumb - sleek with gradient and glow */
 ::-webkit-scrollbar-thumb {
-    background: rgba(0, 217, 255, 0.3);
-    border-radius: 3px;
+    background: linear-gradient(135deg, 
+        rgba(6, 182, 212, 0.7) 0%,
+        rgba(6, 182, 212, 0.5) 50%,
+        rgba(34, 211, 238, 0.6) 100%);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 0 1px rgba(255, 255, 255, 0.5) inset,
+        0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 217, 255, 0.5);
+    background: linear-gradient(135deg, 
+        rgba(6, 182, 212, 0.9) 0%,
+        rgba(6, 182, 212, 0.7) 50%,
+        rgba(34, 211, 238, 0.8) 100%);
+    box-shadow: 
+        0 0 1px rgba(255, 255, 255, 0.7) inset,
+        0 2px 6px rgba(0, 0, 0, 0.15),
+        0 0 12px rgba(6, 182, 212, 0.3);
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(135deg, 
+        rgba(6, 182, 212, 1) 0%,
+        rgba(6, 182, 212, 0.8) 50%,
+        rgba(34, 211, 238, 0.9) 100%);
+    box-shadow: 
+        0 0 2px rgba(255, 255, 255, 0.8) inset,
+        0 1px 3px rgba(0, 0, 0, 0.2),
+        0 0 16px rgba(6, 182, 212, 0.4);
+}
+
+/* Dark mode thumb adjustments */
+html.dark ::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, 
+        rgba(34, 211, 238, 0.6) 0%,
+        rgba(6, 182, 212, 0.4) 50%,
+        rgba(34, 211, 238, 0.5) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 
+        0 0 1px rgba(255, 255, 255, 0.2) inset,
+        0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, 
+        rgba(34, 211, 238, 0.8) 0%,
+        rgba(6, 182, 212, 0.6) 50%,
+        rgba(34, 211, 238, 0.7) 100%);
+    box-shadow: 
+        0 0 2px rgba(255, 255, 255, 0.3) inset,
+        0 2px 6px rgba(0, 0, 0, 0.4),
+        0 0 15px rgba(34, 211, 238, 0.4);
+}
+
+/* Corner where scrollbars meet */
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+/* Scrollbar buttons - match track background */
+::-webkit-scrollbar-button {
+    background: rgba(229, 231, 235, 0.8); /* Same as track */
+    border: none;
+    height: 10px;
+    width: 10px;
+}
+
+::-webkit-scrollbar-button:hover {
+    background: rgba(209, 213, 219, 0.9); /* Slightly darker on hover */
+}
+
+::-webkit-scrollbar-button:active {
+    background: rgba(156, 163, 175, 1); /* Even darker when clicked */
+}
+
+/* Dark mode button styles */
+html.dark ::-webkit-scrollbar-button {
+    background: rgba(31, 41, 55, 0.8); /* Same as dark track */
+}
+
+html.dark ::-webkit-scrollbar-button:hover {
+    background: rgba(55, 65, 81, 0.9); /* Slightly lighter on hover */
+}
+
+html.dark ::-webkit-scrollbar-button:active {
+    background: rgba(75, 85, 99, 1); /* Even lighter when clicked */
+}
+
+/* Minimalist chevron arrows - vertical */
+::-webkit-scrollbar-button:vertical:decrement {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='none' stroke='%2306b6d4' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M2 6L5 3L8 6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+::-webkit-scrollbar-button:vertical:increment {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='none' stroke='%2306b6d4' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M2 4L5 7L8 4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Minimalist chevron arrows - horizontal */
+::-webkit-scrollbar-button:horizontal:decrement {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='none' stroke='%2306b6d4' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M6 2L3 5L6 8'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+::-webkit-scrollbar-button:horizontal:increment {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='none' stroke='%2306b6d4' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M4 2L7 5L4 8'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Dark mode arrows - lighter cyan */
+html.dark ::-webkit-scrollbar-button:vertical:decrement {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='none' stroke='%2322d3ee' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M2 6L5 3L8 6'/%3E%3C/svg%3E");
+}
+
+html.dark ::-webkit-scrollbar-button:vertical:increment {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='none' stroke='%2322d3ee' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M2 4L5 7L8 4'/%3E%3C/svg%3E");
+}
+
+html.dark ::-webkit-scrollbar-button:horizontal:decrement {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='none' stroke='%2322d3ee' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M6 2L3 5L6 8'/%3E%3C/svg%3E");
+}
+
+html.dark ::-webkit-scrollbar-button:horizontal:increment {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='none' stroke='%2322d3ee' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M4 2L7 5L4 8'/%3E%3C/svg%3E");
+}
+
+/* Single arrow at each end only */
+::-webkit-scrollbar-button:vertical:start:increment,
+::-webkit-scrollbar-button:vertical:end:decrement,
+::-webkit-scrollbar-button:horizontal:start:increment,
+::-webkit-scrollbar-button:horizontal:end:decrement {
+    display: none;
 }
 
 /* ==========================================================================
@@ -209,80 +286,6 @@ main > div:last-child {
 
 .toast-enter {
     animation: slideIn 0.3s ease-out;
-}
-
-/* ==========================================================================
-   Logo Animations (matching frontend)
-   ========================================================================== */
-
-@keyframes pulse {
-    0%, 100% {
-        transform: scale(1);
-        filter: drop-shadow(0 0 20px rgba(0, 217, 255, 0.5));
-    }
-    50% {
-        transform: scale(1.05);
-        filter: drop-shadow(0 0 30px rgba(0, 255, 136, 0.6));
-    }
-}
-
-/* Dark mode logo (brighter) */
-.dark .isotone-logo-pulse {
-    animation: pulse 2s ease-in-out infinite;
-    filter: brightness(1);
-}
-
-/* Light mode logo (darker) */
-.isotone-logo-pulse {
-    animation: pulse 2s ease-in-out infinite;
-    filter: brightness(0.7) saturate(1.2);
-}
-
-/* Shimmer Effect for Text */
-@keyframes shimmer {
-    0%, 100% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-}
-
-/* Subtle Pulse for Toni Button */
-@keyframes pulse-subtle {
-    0%, 100% {
-        opacity: 0.5;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 1;
-        transform: scale(1.1);
-    }
-}
-
-.animate-pulse-subtle {
-    animation: pulse-subtle 2s ease-in-out infinite;
-    transform-origin: center;
-}
-
-/* Dark mode shimmer (brighter) */
-.dark .isotone-text-shimmer {
-    background: linear-gradient(135deg, #FFFFFF 0%, #00D9FF 50%, #00FF88 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: shimmer 4s ease-in-out infinite;
-    background-size: 200% 200%;
-}
-
-/* Light mode shimmer (darker) */
-.isotone-text-shimmer {
-    background: linear-gradient(135deg, #1F2937 0%, #0891B2 50%, #059669 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: shimmer 4s ease-in-out infinite;
-    background-size: 200% 200%;
 }
 
 /* ==========================================================================
@@ -321,211 +324,6 @@ details summary::before {
 
 details[open] summary::before {
     transform: rotate(90deg);
-}
-
-/* ==========================================================================
-   Hook Badges (Hooks Explorer)
-   ========================================================================== */
-
-.hook-badge {
-    background: linear-gradient(135deg, rgba(31, 41, 55, 0.9), rgba(17, 24, 39, 0.7));
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    transition: all 0.2s ease;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.hook-badge:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Action Badge */
-.hook-badge-action {
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.1));
-    border-color: rgba(16, 185, 129, 0.3);
-    color: #10b981;
-}
-
-.hook-badge-action:hover {
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(5, 150, 105, 0.2));
-    border-color: rgba(16, 185, 129, 0.5);
-}
-
-/* Filter Badge */
-.hook-badge-filter {
-    background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(245, 158, 11, 0.1));
-    border-color: rgba(251, 191, 36, 0.3);
-    color: #fbbf24;
-}
-
-.hook-badge-filter:hover {
-    background: linear-gradient(135deg, rgba(251, 191, 36, 0.3), rgba(245, 158, 11, 0.2));
-    border-color: rgba(251, 191, 36, 0.5);
-}
-
-/* System Badge */
-.hook-badge-system {
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.1));
-    border-color: rgba(139, 92, 246, 0.3);
-    color: #a78bfa;
-}
-
-.hook-badge-system:hover {
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(124, 58, 237, 0.2));
-    border-color: rgba(139, 92, 246, 0.5);
-}
-
-/* Dynamic Badge */
-.hook-badge-dynamic {
-    background: linear-gradient(135deg, rgba(251, 146, 60, 0.2), rgba(249, 115, 22, 0.1));
-    border-color: rgba(251, 146, 60, 0.3);
-    color: #fb923c;
-}
-
-.hook-badge-dynamic:hover {
-    background: linear-gradient(135deg, rgba(251, 146, 60, 0.3), rgba(249, 115, 22, 0.2));
-    border-color: rgba(251, 146, 60, 0.5);
-}
-
-/* Callbacks Badge */
-.hook-badge-callbacks {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.1));
-    border-color: rgba(59, 130, 246, 0.3);
-    color: #60a5fa;
-}
-
-.hook-badge-callbacks:hover {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(37, 99, 235, 0.2));
-    border-color: rgba(59, 130, 246, 0.5);
-}
-
-/* Implemented/Active Badge */
-.hook-badge-implemented {
-    background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(22, 163, 74, 0.1));
-    border-color: rgba(34, 197, 94, 0.3);
-    color: #4ade80;
-}
-
-.hook-badge-implemented:hover {
-    background: linear-gradient(135deg, rgba(34, 197, 94, 0.3), rgba(22, 163, 74, 0.2));
-    border-color: rgba(34, 197, 94, 0.5);
-}
-
-/* Pending Badge */
-.hook-badge-pending {
-    background: linear-gradient(135deg, rgba(107, 114, 128, 0.2), rgba(75, 85, 99, 0.1));
-    border-color: rgba(107, 114, 128, 0.3);
-    color: #9ca3af;
-}
-
-.hook-badge-pending:hover {
-    background: linear-gradient(135deg, rgba(107, 114, 128, 0.3), rgba(75, 85, 99, 0.2));
-    border-color: rgba(107, 114, 128, 0.5);
-}
-
-/* ==========================================================================
-   Utility Classes
-   ========================================================================== */
-
-.bg-gray-750 {
-    background-color: rgba(55, 65, 81, 0.5);
-}
-
-/* Basic layout utilities */
-.rounded-lg {
-    border-radius: 0.5rem;
-}
-
-.p-4 {
-    padding: 1rem;
-}
-
-.p-6 {
-    padding: 1.5rem;
-}
-
-.grid {
-    display: grid;
-}
-
-.gap-4 {
-    gap: 1rem;
-}
-
-/* ==========================================================================
-   Responsive Utilities
-   ========================================================================== */
-
-@media (max-width: 768px) {
-    .sidebar-expanded {
-        width: 100%;
-        position: fixed;
-        z-index: 50;
-    }
-    
-    .sidebar-collapsed {
-        transform: translateX(-100%);
-    }
-}
-
-/* ==========================================================================
-   Terminal Styles (Automation Page)
-   ========================================================================== */
-
-#terminal {
-    background: linear-gradient(180deg, #000000 0%, #0a0a0a 100%);
-    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
-    scrollbar-width: thin;
-    scrollbar-color: #00D9FF #000000;
-}
-
-#terminal::-webkit-scrollbar {
-    width: 8px;
-}
-
-#terminal::-webkit-scrollbar-track {
-    background: #000000;
-}
-
-#terminal::-webkit-scrollbar-thumb {
-    background: #00D9FF;
-    border-radius: 4px;
-}
-
-#terminal::-webkit-scrollbar-thumb:hover {
-    background: #00FF88;
-}
-
-.terminal-command {
-    color: #00D9FF;
-}
-
-.terminal-success {
-    color: #00FF88;
-}
-
-.terminal-error {
-    color: #FF3333;
-}
-
-.terminal-warning {
-    color: #FFAA00;
-}
-
-.terminal-info {
-    color: #888888;
-}
-
-@keyframes blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0; }
-}
-
-#terminal-cursor.blinking {
-    animation: blink 1s infinite;
 }
 
 /* ==========================================================================

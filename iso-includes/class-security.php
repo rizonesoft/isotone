@@ -267,7 +267,7 @@ class IsotoneSecurity {
         ];
         
         // Log to file (create security log if doesn't exist)
-        $log_file = dirname(__DIR__) . '/iso-runtime/logs/security.log';
+        $log_file = dirname(__DIR__) . '/iso-content/logs/security.log';
         $log_dir = dirname($log_file);
         
         if (!is_dir($log_dir)) {

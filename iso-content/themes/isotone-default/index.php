@@ -15,7 +15,7 @@ if (!defined('ISOTONE_ROOT')) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo get_site_title(); ?> - <?php echo get_page_title(); ?></title>
-    <link rel="stylesheet" href="/iso-includes/css/isotone.css">
+    <link rel="stylesheet" href="<?php echo get_theme_url(); ?>/assets/css/isotone.css">
     <link rel="stylesheet" href="<?php echo get_theme_url(); ?>/style.css">
     <?php do_action('isotone_head'); ?>
 </head>

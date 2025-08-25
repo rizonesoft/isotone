@@ -1,0 +1,31 @@
+parameters:
+    level: 6
+    paths:
+        - ../iso-core
+        - ../iso-admin
+        - ../iso-includes
+        - src
+        - ../iso-api
+    excludePaths:
+        - ../vendor
+        - ../iso-content/themes/*
+        - ../iso-content/plugins/*
+        - tailwind/node_modules
+    bootstrapFiles:
+        - ../vendor/autoload.php
+        - ../config.php
+    scanDirectories:
+        - ../iso-core
+        - ../iso-includes
+    ignoreErrors:
+        # Ignore RedBeanPHP dynamic properties
+        - '#Access to an undefined property RedBeanPHP\\OODBBean::\$\w+#'
+        # Ignore WordPress-style global functions that may not be defined in all contexts
+        - '#Function iso_\w+ not found#'
+        - '#Function esc_\w+ not found#'
+        # Ignore dynamic class loading without namespaces (Isotone pattern)
+        - '#Class \w+ not found#'
+        # Ignore superglobals usage (common in CMS)
+        - '#Superglobal \$_(GET|POST|SESSION|COOKIE|SERVER) should not be accessed directly#'
+    reportUnmatchedIgnoredErrors: false
+    treatPhpDocTypesAsCertain: false

@@ -1,0 +1,48 @@
+/**
+ * Lumina Admin CSS
+ * Main entry point for Lumina UI in admin interface
+ * 
+ * @package Isotone
+ * @subpackage Lumina
+ * @version 1.0.0
+ */
+
+@import url("modules/base.css"); /* Base styles */
+@import url("modules/panel.css"); /* Panel styles */
+@import url("modules/lumina.css"); /* Core Lumina styles */
+@import url("modules/animation.css"); /* Animations, spinners, and loaders */
+@import url("modules/chart.css"); /* Chart components */
+@import url("modules/alert.css"); /* Alert components */
+@import url("modules/card.css"); /* Card components (metric & info cards) */
+
+/* ============================================================================
+ * OVERRIDES
+ * Custom variable overrides for admin interface
+ * Uncomment and modify these to customize the theme
+ * ============================================================================ */
+
+/* Example: Override accent colors for admin 
+:root {
+    --lumina-cyan-light: #06b6d4;
+    --lumina-cyan-dark: #ffffff;
+}
+*/
+
+/* ============================================================================
+ * ADMIN BACKGROUND STYLES
+ * ============================================================================ */
+
+/* Gradient background based on current theme colors */
+.admin-gradient-bg {
+    /* Light mode: gradient from gray-50 to slightly darker */
+    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 50%, #f9fafb 100%);
+    background-attachment: fixed;
+}
+
+/* Dark mode gradient */
+.dark .admin-gradient-bg {
+    /* Dark mode: gradient from gray-900 to slightly darker */
+    background: linear-gradient(135deg, #111827 0%, #0f172a 50%, #111827 100%);
+    background-attachment: fixed;
+}
+

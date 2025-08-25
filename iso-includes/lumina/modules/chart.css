@@ -1,0 +1,26 @@
+/**
+ * Lumina UI Design System v1.0 - Chart Module
+ * 
+ * Contains all chart-related styles
+ * Extracted from lumina.css for better modularity
+ * 
+ * @package Isotone
+ * @subpackage Lumina
+ * @version 1.0.0
+ */
+
+/* ============================================================================
+ * CHART COMPONENTS
+ * ============================================================================ */
+
+/* Chart container for responsive charts */
+.chart-container {
+    position: relative;
+    height: 250px;
+    width: 100%;
+}
+
+.chart-container canvas {
+    max-width: 100%;
+    height: 100% !important;
+}

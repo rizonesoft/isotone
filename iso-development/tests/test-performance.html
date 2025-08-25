@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Isotone Error Page Performance Testing</title>
+    <style>
+        body {
+            font-family: monospace;
+            background: #111;
+            color: #0f0;
+            padding: 20px;
+        }
+        .test-links {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .test-links a {
+            padding: 10px 20px;
+            background: #00ffff20;
+            border: 1px solid #00ffff;
+            color: #00ffff;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .test-links a:hover {
+            background: #00ffff40;
+        }
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: 2px solid #00ffff;
+            margin-top: 20px;
+        }
+        .stats {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.9);
+            border: 1px solid #00ffff;
+            padding: 10px;
+            font-size: 12px;
+            z-index: 10000;
+        }
+        .metric {
+            margin: 5px 0;
+        }
+        .metric span {
+            color: #00ffff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Isotone Error Page - Performance Testing</h1>
+    
+    <div class="stats" id="stats">
+        <div class="metric">FPS: <span id="fps">0</span></div>
+        <div class="metric">CPU Time: <span id="cpu">0</span>ms</div>
+        <div class="metric">Memory: <span id="memory">N/A</span></div>
+        <div class="metric">Status: <span id="mode">Active</span></div>
+    </div>
+    
+    <div class="test-links">
+        <a href="#" onclick="loadTest('test1'); return false;">Test Page 1</a>
+        <a href="#" onclick="loadTest('test2'); return false;">Test Page 2</a>
+        <a href="#" onclick="loadTest('test3'); return false;">Test Page 3</a>
+        <a href="#" onclick="loadTest('main'); return false;">Main Error Page</a>
+    </div>
+    
+    <div>
+        <h3>Browser Throttling Instructions:</h3>
+        <ol>
+            <li>Open Chrome DevTools (F12)</li>
+            <li>Go to Performance tab</li>
+            <li>Click gear icon ⚙️</li>
+            <li>Set CPU: 4x or 6x slowdown</li>
+            <li>Set Network: Slow 3G</li>
+            <li>Click test buttons above</li>
+        </ol>
+    </div>
+    
+    <iframe id="testFrame" src=""></iframe>
+    
+    <script>
+        // FPS counter
+        let fps = 0;
+        let lastTime = performance.now();
+        let frames = 0;
+        
+        function updateFPS() {
+            frames++;
+            const now = performance.now();
+            if (now >= lastTime + 1000) {
+                fps = Math.round((frames * 1000) / (now - lastTime));
+                document.getElementById('fps').textContent = fps;
+                frames = 0;
+                lastTime = now;
+            }
+            requestAnimationFrame(updateFPS);
+        }
+        updateFPS();
+        
+        // Memory monitoring (Chrome only)
+        if (performance.memory) {
+            setInterval(() => {
+                const used = (performance.memory.usedJSHeapSize / 1048576).toFixed(1);
+                const total = (performance.memory.totalJSHeapSize / 1048576).toFixed(1);
+                document.getElementById('memory').textContent = `${used}/${total} MB`;
+            }, 1000);
+        }
+        
+        // CPU monitoring
+        let cpuTime = 0;
+        if (window.PerformanceObserver) {
+            const observer = new PerformanceObserver((list) => {
+                for (const entry of list.getEntries()) {
+                    cpuTime = Math.round(entry.duration);
+                    document.getElementById('cpu').textContent = cpuTime;
+                }
+            });
+            observer.observe({ entryTypes: ['measure', 'navigation'] });
+        }
+        
+        function loadTest(mode) {
+            let url;
+            switch(mode) {
+                case 'test1':
+                    url = 'test-low-perf.php';
+                    break;
+                case 'test2':
+                    url = 'test-medium-perf.php';
+                    break;
+                case 'test3':
+                    url = 'test-high-perf.php';
+                    break;
+                case 'main':
+                    url = 'server/error.php?code=404';
+                    break;
+            }
+            
+            document.getElementById('mode').textContent = 'Active';
+            document.getElementById('testFrame').src = url;
+        }
+        
+        // Load main error page by default
+        loadTest('main');
+    </script>
+</body>
+</html>

@@ -1,0 +1,477 @@
+/**
+ * Lumina UI Design System v1.0 - Card Module
+ * 
+ * Contains all card-related styles including metric cards and info cards
+ * Extracted from lumina.css for better modularity
+ * 
+ * @package Isotone
+ * @subpackage Lumina
+ * @version 1.0.0
+ */
+
+/* ============================================================================
+ * METRIC CARDS
+ * ============================================================================ */
+
+/* Base metric card styling */
+.metric-card {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.dark .metric-card {
+    background: #1f2937;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+}
+
+.metric-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.dark .metric-card:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+/* Metric card with gradient accent */
+.metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gradient-start, var(--lumina-cyan-light)), var(--gradient-end, #3b82f6));
+}
+
+/* Metric card content layout */
+.metric-card-content {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.metric-card-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.metric-card-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6b7280;
+    margin-bottom: 0.25rem;
+}
+
+.dark .metric-card-label {
+    color: #9ca3af;
+}
+
+.metric-card-value {
+    font-size: 1.875rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.dark .metric-card-value {
+    color: #f9fafb;
+}
+
+.metric-card-change {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.metric-card-change.positive {
+    color: #10b981;
+}
+
+.dark .metric-card-change.positive {
+    color: #34d399;
+}
+
+.metric-card-change.negative {
+    color: #ef4444;
+}
+
+.dark .metric-card-change.negative {
+    color: #f87171;
+}
+
+.metric-card-change.neutral {
+    color: #6b7280;
+}
+
+.dark .metric-card-change.neutral {
+    color: #9ca3af;
+}
+
+/* Metric card icon */
+.metric-card-icon {
+    flex-shrink: 0;
+    width: 3.5rem;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    background: linear-gradient(135deg, var(--icon-bg-start, #dbeafe), var(--icon-bg-end, #eff6ff));
+}
+
+.dark .metric-card-icon {
+    background: linear-gradient(135deg, var(--icon-bg-start-dark, #1e3a8a), var(--icon-bg-end-dark, #1e40af));
+}
+
+.metric-card-icon svg {
+    width: 1.75rem;
+    height: 1.75rem;
+}
+
+/* Metric card color variants */
+.metric-card.metric-cyan {
+    --gradient-start: var(--lumina-cyan-light);
+    --gradient-end: #0891b2;
+    --icon-bg-start: #cffafe;
+    --icon-bg-end: #ecfeff;
+    --icon-bg-start-dark: #164e63;
+    --icon-bg-end-dark: #155e75;
+}
+
+.metric-card.metric-cyan .metric-card-icon svg {
+    color: #0891b2;
+}
+
+.dark .metric-card.metric-cyan .metric-card-icon svg {
+    color: var(--lumina-cyan-dark);
+}
+
+.metric-card.metric-blue {
+    --gradient-start: #3b82f6;
+    --gradient-end: #2563eb;
+    --icon-bg-start: #dbeafe;
+    --icon-bg-end: #eff6ff;
+    --icon-bg-start-dark: #1e3a8a;
+    --icon-bg-end-dark: #1e40af;
+}
+
+.metric-card.metric-blue .metric-card-icon svg {
+    color: #2563eb;
+}
+
+.dark .metric-card.metric-blue .metric-card-icon svg {
+    color: #60a5fa;
+}
+
+.metric-card.metric-green {
+    --gradient-start: #10b981;
+    --gradient-end: #059669;
+    --icon-bg-start: #d1fae5;
+    --icon-bg-end: #ecfdf5;
+    --icon-bg-start-dark: #064e3b;
+    --icon-bg-end-dark: #065f46;
+}
+
+.metric-card.metric-green .metric-card-icon svg {
+    color: #059669;
+}
+
+.dark .metric-card.metric-green .metric-card-icon svg {
+    color: #34d399;
+}
+
+.metric-card.metric-purple {
+    --gradient-start: #8b5cf6;
+    --gradient-end: #7c3aed;
+    --icon-bg-start: #ede9fe;
+    --icon-bg-end: #f5f3ff;
+    --icon-bg-start-dark: #4c1d95;
+    --icon-bg-end-dark: #5b21b6;
+}
+
+.metric-card.metric-purple .metric-card-icon svg {
+    color: #7c3aed;
+}
+
+.dark .metric-card.metric-purple .metric-card-icon svg {
+    color: #a78bfa;
+}
+
+/* Sparkline container for mini charts */
+.metric-card-sparkline {
+    margin-top: 1rem;
+    height: 3rem;
+    opacity: 0.5;
+}
+
+/* Loading state for metric cards - requires animation.css for shimmer animation */
+.metric-card.loading .metric-card-value {
+    background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    color: transparent;
+    border-radius: 0.25rem;
+    display: inline-block;
+    min-width: 5rem;
+}
+
+/* ============================================================================
+ * INFO CARDS
+ * ============================================================================ */
+
+/* Base info card with icon on left */
+.info-card {
+    background: linear-gradient(135deg, white 0%, #fafafa 100%);
+    border-radius: 1rem;
+    padding: 1.25rem 1.5rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.dark .info-card {
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Bottom glow line effect */
+.info-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        var(--glow-color, var(--lumina-cyan-light)) 20%,
+        var(--glow-color, var(--lumina-cyan-light)) 50%,
+        var(--glow-color, var(--lumina-cyan-light)) 80%,
+        transparent 100%);
+    opacity: 0.6;
+    transition: all 0.3s ease;
+    filter: blur(0.5px);
+}
+
+/* Glow spread effect */
+.info-card::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40%;
+    height: 4px;
+    background: radial-gradient(ellipse at center, 
+        var(--glow-color, var(--lumina-cyan-light)) 0%, 
+        transparent 70%);
+    opacity: 0.3;
+    transition: all 0.3s ease;
+    filter: blur(4px);
+}
+
+.info-card:hover::before {
+    width: 80%;
+    opacity: 1;
+    filter: blur(0);
+}
+
+.info-card:hover::after {
+    width: 60%;
+    opacity: 0.5;
+    filter: blur(6px);
+}
+
+/* Hover effects - subtle and professional */
+.info-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+.dark .info-card:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.info-card-content {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Info card icon container - no background */
+.info-card-icon {
+    flex-shrink: 0;
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.info-card:hover .info-card-icon {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+.info-card-icon svg {
+    width: 2.5rem;
+    height: 2.5rem;
+    transition: all 0.3s ease;
+}
+
+/* Info card text content */
+.info-card-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.info-card-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6b7280;
+    margin-bottom: 0.375rem;
+    line-height: 1;
+    opacity: 0.8;
+}
+
+.dark .info-card-label {
+    color: #9ca3af;
+}
+
+.info-card-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    line-height: 1;
+    color: #111827;
+    background: linear-gradient(135deg, var(--value-gradient-start, #111827), var(--value-gradient-end, #374151));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.dark .info-card-value {
+    background: linear-gradient(135deg, var(--value-gradient-start-dark, #f9fafb), var(--value-gradient-end-dark, #e5e7eb));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+/* Info card color variants */
+.info-card.info-red {
+    --glow-color: #ef4444;
+    --value-gradient-start: #dc2626;
+    --value-gradient-end: #7f1d1d;
+    --value-gradient-start-dark: #fca5a5;
+    --value-gradient-end-dark: #f87171;
+}
+
+.info-card.info-red .info-card-icon svg {
+    color: #dc2626;
+}
+
+.dark .info-card.info-red .info-card-icon svg {
+    color: #ef4444;
+}
+
+.info-card.info-yellow {
+    --glow-color: #fbbf24;
+    --value-gradient-start: #d97706;
+    --value-gradient-end: #78350f;
+    --value-gradient-start-dark: #fde68a;
+    --value-gradient-end-dark: #fbbf24;
+}
+
+.info-card.info-yellow .info-card-icon svg {
+    color: #d97706;
+}
+
+.dark .info-card.info-yellow .info-card-icon svg {
+    color: #fbbf24;
+}
+
+.info-card.info-blue {
+    --glow-color: #60a5fa;
+    --value-gradient-start: #2563eb;
+    --value-gradient-end: #1e3a8a;
+    --value-gradient-start-dark: #bfdbfe;
+    --value-gradient-end-dark: #60a5fa;
+}
+
+.info-card.info-blue .info-card-icon svg {
+    color: #2563eb;
+}
+
+.dark .info-card.info-blue .info-card-icon svg {
+    color: #60a5fa;
+}
+
+.info-card.info-green {
+    --glow-color: #34d399;
+    --value-gradient-start: #059669;
+    --value-gradient-end: #064e3b;
+    --value-gradient-start-dark: #a7f3d0;
+    --value-gradient-end-dark: #34d399;
+}
+
+.info-card.info-green .info-card-icon svg {
+    color: #059669;
+}
+
+.dark .info-card.info-green .info-card-icon svg {
+    color: #34d399;
+}
+
+.info-card.info-purple {
+    --glow-color: #a78bfa;
+    --value-gradient-start: #7c3aed;
+    --value-gradient-end: #4c1d95;
+    --value-gradient-start-dark: #ddd6fe;
+    --value-gradient-end-dark: #a78bfa;
+}
+
+.info-card.info-purple .info-card-icon svg {
+    color: #7c3aed;
+}
+
+.dark .info-card.info-purple .info-card-icon svg {
+    color: #a78bfa;
+}
+
+.info-card.info-cyan {
+    --glow-color: var(--lumina-cyan-dark);
+    --value-gradient-start: #0891b2;
+    --value-gradient-end: #164e63;
+    --value-gradient-start-dark: #a5f3fc;
+    --value-gradient-end-dark: var(--lumina-cyan-dark);
+}
+
+.info-card.info-cyan .info-card-icon svg {
+    color: #0891b2;
+}
+
+.dark .info-card.info-cyan .info-card-icon svg {
+    color: var(--lumina-cyan-dark);
+}

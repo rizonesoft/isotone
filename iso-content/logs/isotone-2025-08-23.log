@@ -1,0 +1,3 @@
+[2025-08-23 19:10:02] isotone.INFO: Test info message {"user":"admin"}
+[2025-08-23 19:10:02] isotone.WARNING: Test warning message 
+[2025-08-23 19:10:02] isotone.ERROR: Test error message {"code":500}

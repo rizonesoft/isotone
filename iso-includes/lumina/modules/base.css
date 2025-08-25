@@ -1,0 +1,45 @@
+/**
+ * Lumina Base Variables
+ * Core CSS variables and foundational styles for the Lumina UI system
+ * 
+ * @package Isotone
+ * @subpackage Lumina
+ * @version 1.0.0
+ */
+
+/* ============================================================================
+ * CSS VARIABLES - Global color scheme
+ * 
+ * To change the accent color throughout Lumina UI:
+ * 1. Update --lumina-cyan-light for light mode
+ * 2. Update --lumina-cyan-dark for dark mode
+ * These variables control all cyan accents in the design system
+ * ============================================================================ */
+:root {
+    /* Lumina cyan accent colors - CHANGE THESE TO UPDATE THEME */
+    --lumina-cyan-light: #06b6d4;  /* Light mode primary cyan */
+    --lumina-cyan-dark: #22d3ee;   /* Dark mode primary cyan */
+    
+    /* Active accent color (changes based on theme) */
+    --lumina-accent: var(--lumina-cyan-light);
+    
+    /* Isotone brand colors for backgrounds */
+    --primary: #0A0E27;         /* Primary dark blue */
+    --primary-dark: #060815;    /* Darker variant */
+    
+    /* Panel glassmorphism variables */
+    --panel-bg-light: rgba(255, 255, 255, 0.85);  /* Light mode panel background */
+    --panel-bg-dark: rgba(31, 41, 55, 0.85);      /* Dark mode panel background */
+    --panel-opacity: 0.90;                          /* Panel opacity */
+    --panel-blur: 6px;                              /* Default blur amount */
+    --panel-blur-sidebar: 8px;                      /* Sidebar blur amount */
+    
+    /* Active panel background (changes based on theme) */
+    --panel-bg: var(--panel-bg-light);
+}
+
+/* Dark mode overrides */
+.dark {
+    --lumina-accent: var(--lumina-cyan-dark);
+    --panel-bg: var(--panel-bg-dark);
+}

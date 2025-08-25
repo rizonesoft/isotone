@@ -32,12 +32,12 @@ if (file_exists(ISOTONE_ROOT . '/config.php')) {
 // Load composer autoloader (for RedBean and other non-Symfony packages)
 require_once ISOTONE_ROOT . '/vendor/autoload.php';
 
-// Load core application
-use Isotone\Core\Application;
+// Load core router
+use Isotone\Core\Router;
 
-// Create and run application
-$app = new Application(ISOTONE_ROOT);
-$app->handle();
+// Create and run router
+$router = new Router(ISOTONE_ROOT);
+$router->handle();
 
 // Debug: Show memory usage in development
 if (defined('DEBUG_MODE') && DEBUG_MODE) {

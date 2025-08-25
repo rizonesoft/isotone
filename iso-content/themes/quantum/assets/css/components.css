@@ -1,0 +1,450 @@
+/**
+ * Isotone - Component Styles
+ * Buttons, badges, forms, cards, and other UI components
+ */
+
+/* Titles with Gradient Effect */
+.iso-title {
+    font-size: var(--text-5xl);
+    font-weight: var(--font-weight-black);
+    letter-spacing: var(--letter-spacing-tight);
+    background: linear-gradient(135deg, #FFFFFF 0%, var(--accent) 50%, var(--accent-green) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 4s ease-in-out infinite;
+    background-size: 200% 200%;
+}
+
+.iso-title-sm {
+    font-size: var(--text-2xl);
+}
+
+.iso-title-md {
+    font-size: var(--text-3xl);
+}
+
+.iso-title-lg {
+    font-size: var(--text-4xl);
+}
+
+/* Brand Text */
+.iso-brand-text {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-black);
+    letter-spacing: var(--letter-spacing-wider);
+    background: linear-gradient(135deg, #FFFFFF 0%, var(--accent) 50%, var(--accent-green) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 4s ease-in-out infinite;
+    background-size: 200% 200%;
+}
+
+/* Subtitles */
+.iso-subtitle {
+    color: var(--text-secondary);
+    font-size: var(--text-lg);
+    line-height: var(--line-height-normal);
+    margin-bottom: var(--space-xl);
+}
+
+/* Buttons */
+.iso-btn {
+    display: inline-block;
+    padding: var(--space-md) var(--space-xl);
+    background: linear-gradient(135deg, var(--accent), var(--accent-green));
+    color: var(--primary);
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-base);
+    letter-spacing: var(--letter-spacing-widest);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 
+        var(--shadow-md),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    text-decoration: none;
+}
+
+.iso-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.iso-btn:hover::before {
+    left: 100%;
+}
+
+.iso-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 6px 30px rgba(0, 217, 255, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.iso-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.iso-btn-arrow::after {
+    content: '→';
+    font-size: 1.2em;
+    margin-left: var(--space-sm);
+    position: relative;
+    z-index: 2;
+}
+
+.iso-btn-secondary {
+    background: rgba(0, 0, 0, 0.3);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+}
+
+/* Badges */
+.iso-badge {
+    display: inline-block;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: 20px;
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-spacing-wide);
+}
+
+.iso-badge-success {
+    background: rgba(0, 255, 136, 0.1);
+    color: var(--success);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+}
+
+.iso-badge-warning {
+    background: rgba(255, 184, 0, 0.1);
+    color: var(--warning);
+    border: 1px solid rgba(255, 184, 0, 0.3);
+}
+
+.iso-badge-danger {
+    background: rgba(255, 69, 58, 0.1);
+    color: var(--danger);
+    border: 1px solid rgba(255, 69, 58, 0.3);
+}
+
+.iso-badge-info {
+    background: rgba(0, 217, 255, 0.1);
+    color: var(--info);
+    border: 1px solid rgba(0, 217, 255, 0.3);
+}
+
+/* Status Messages */
+.iso-status {
+    padding: var(--space-lg) var(--space-xl);
+    border-radius: var(--radius-md);
+    margin: var(--space-2xl) 0;
+    font-size: var(--text-base);
+}
+
+.iso-status-success {
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    color: var(--success);
+}
+
+.iso-status-error {
+    background: rgba(255, 69, 58, 0.1);
+    border: 1px solid rgba(255, 69, 58, 0.3);
+    color: var(--danger);
+}
+
+.iso-status-info {
+    background: rgba(0, 217, 255, 0.1);
+    border: 1px solid rgba(0, 217, 255, 0.3);
+    color: var(--info);
+}
+
+/* Forms */
+.iso-form-group {
+    margin-bottom: var(--space-lg);
+}
+
+.iso-label {
+    display: block;
+    margin-bottom: var(--space-sm);
+    color: var(--text-primary);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--text-sm);
+    letter-spacing: var(--letter-spacing-wide);
+}
+
+.iso-input {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: var(--text-base);
+    transition: all 0.3s ease;
+}
+
+.iso-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.1);
+}
+
+.iso-input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.5;
+}
+
+.iso-input-hint {
+    margin-top: var(--space-xs);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+}
+
+/* Links Section */
+.iso-links {
+    margin-top: var(--space-xl);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--border);
+    text-align: center;
+}
+
+.iso-links a {
+    color: var(--accent);
+    margin: 0 var(--space-md);
+    transition: color 0.3s ease;
+}
+
+.iso-links a:hover {
+    color: var(--accent-green);
+}
+
+/* Card Footer */
+.iso-card-footer {
+    margin-top: var(--space-xl);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--border);
+    text-align: center;
+}
+
+.iso-version {
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-wide);
+    opacity: 0.8;
+}
+
+/* Database Status Box */
+.iso-db-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-md);
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-xl);
+}
+
+/* Success Message */
+.success-message {
+    background: rgba(0, 255, 136, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    border-radius: 8px;
+    color: var(--success);
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+}
+
+/* Error Message */
+.error-message {
+    background: rgba(255, 69, 58, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 69, 58, 0.3);
+    border-radius: 8px;
+    color: var(--danger);
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+}
+
+/* Section Titles */
+.iso-section-title {
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+    margin-bottom: var(--space-lg);
+    letter-spacing: var(--letter-spacing-wide);
+}
+
+/* Subtitle Variations */
+.iso-subtitle-sm {
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-wide);
+    margin-top: var(--space-xs);
+}
+
+/* Status Labels */
+.iso-status-label {
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-wide);
+}
+
+/* Success Message Box */
+.iso-success-message {
+    background: rgba(0, 255, 136, 0.05);
+    border: 1px solid rgba(0, 255, 136, 0.2);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    margin: var(--space-2xl) 0;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.iso-success-message h2 {
+    margin-bottom: var(--space-md);
+}
+
+.iso-success-message p {
+    color: var(--text-secondary);
+    font-size: var(--text-base);
+    margin-bottom: 0;
+}
+
+/* Quick Actions Section */
+.iso-quick-actions {
+    margin: var(--space-2xl) 0;
+    text-align: center;
+}
+
+.iso-quick-actions .iso-btn-group {
+    margin-top: var(--space-lg);
+}
+
+/* Development Info Box */
+.iso-dev-info {
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    margin: var(--space-2xl) 0;
+}
+
+/* Info Grid */
+.iso-info-grid {
+    display: grid;
+    gap: var(--space-md);
+}
+
+.iso-info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-lg);
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid rgba(71, 85, 105, 0.2);
+}
+
+.iso-info-item:last-child {
+    border-bottom: none;
+}
+
+.iso-info-label {
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-wide);
+    flex-shrink: 0;
+}
+
+.iso-info-item code {
+    word-break: break-all;
+    font-size: var(--text-sm);
+}
+
+/* Badge Icon Prefixes */
+.iso-badge-success::before {
+    content: '✓';
+    font-weight: bold;
+    margin-right: 0.4rem;
+}
+
+.iso-badge-warning::before {
+    content: '○';
+    margin-right: 0.4rem;
+}
+
+.iso-badge-danger::before {
+    content: '✗';
+    font-weight: bold;
+    margin-right: 0.4rem;
+}
+
+.iso-badge-info::before {
+    content: '•';
+    margin-right: 0.4rem;
+}
+
+/* Responsive Components */
+@media (max-width: 768px) {
+    .iso-title {
+        font-size: var(--text-3xl);
+    }
+    
+    .iso-brand-text {
+        font-size: var(--text-xl);
+    }
+    
+    .iso-btn {
+        width: 100%;
+    }
+    
+    .iso-links a {
+        display: block;
+        margin: var(--space-sm) 0;
+    }
+    
+    .iso-success-message {
+        padding: var(--space-lg);
+    }
+    
+    .iso-dev-info {
+        padding: var(--space-lg);
+    }
+    
+    .iso-info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-xs);
+    }
+    
+    .iso-info-item code {
+        width: 100%;
+    }
+}

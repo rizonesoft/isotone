@@ -554,7 +554,7 @@ function tokenUsageMonitor() {
             console.log(`Fetching usage data for period: ${this.period}`);
             
             try {
-                const response = await fetch(`/isotone/iso-admin/api/token-usage.php?period=${this.period}`, {
+                const response = await fetch(`/isotone/iso-api/admin/token-usage.php?period=${this.period}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

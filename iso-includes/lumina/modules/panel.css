@@ -1,0 +1,40 @@
+/**
+ * Panel Styles Module
+ * Consistent styling for panels (header, footer, sidebar)
+ * 
+ * @package Isotone
+ * @subpackage Lumina
+ * @version 1.0.0
+ */
+
+/* ============================================================================
+ * BASE PANEL STYLES
+ * ============================================================================ */
+
+/* Semi-transparent panel with blur effect */
+.panel {
+    background-color: var(--panel-bg);
+    backdrop-filter: blur(var(--panel-blur));
+    -webkit-backdrop-filter: blur(var(--panel-blur));
+    transition: background-color 0.3s ease;
+}
+
+/* Panel with more blur for sidebars */
+.panel-sidebar {
+    background-color: var(--panel-bg);
+    backdrop-filter: blur(var(--panel-blur-sidebar));
+    -webkit-backdrop-filter: blur(var(--panel-blur-sidebar));
+}
+
+/* Panel padding variations */
+.panel-padding-sm {
+    padding: 0.75rem 1rem;
+}
+
+.panel-padding-md {
+    padding: 1rem 1.5rem;
+}
+
+.panel-padding-lg {
+    padding: 1.5rem 2rem;
+}

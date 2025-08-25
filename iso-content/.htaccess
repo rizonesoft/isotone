@@ -1,16 +1,34 @@
 # Isotone - iso-content Directory Protection
+# Protects logs, cache, temp, sessions while allowing uploads
 
-# Allow access to uploaded files
-<FilesMatch "\.(jpg|jpeg|png|gif|svg|pdf|doc|docx|zip|mp4|mp3)$">
+# Directory listing disabled
+Options -Indexes
+
+# Allow access to uploaded media files
+<FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|pdf|doc|docx|xls|xlsx|zip|mp4|mp3|mov|avi)$">
     Order Allow,Deny
     Allow from all
 </FilesMatch>
 
-# Deny access to PHP files in uploads
+# Deny access to PHP files (security measure)
 <FilesMatch "\.php$">
     Order Deny,Allow
     Deny from all
 </FilesMatch>
 
-# Directory listing disabled
-Options -Indexes
+# Block direct access to sensitive directories
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Block access to logs directory
+    RewriteRule ^logs/ - [F,L]
+    
+    # Block access to cache directory
+    RewriteRule ^cache/ - [F,L]
+    
+    # Block access to temp directory
+    RewriteRule ^temp/ - [F,L]
+    
+    # Block access to sessions directory
+    RewriteRule ^sessions/ - [F,L]
+</IfModule>

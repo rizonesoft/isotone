@@ -318,8 +318,8 @@ $fun_messages = [
 ob_start();
 ?>
 
-<!-- Load admin components CSS -->
-<link rel="stylesheet" href="css/admin-components.css">
+<!-- Load Lumina UI CSS (minified) -->
+<link rel="stylesheet" href="/isotone/iso-includes/lumina/lumina.min.css">
 
 <!-- Alpine.js component for the entire page -->
 <div x-data="loginSecurityPage()" x-init="init()">

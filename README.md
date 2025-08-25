@@ -90,7 +90,9 @@ For detailed requirements and technology stack, see [Technology Stack Documentat
 
 2. **Install dependencies**
    ```bash
+   cd iso-development/tools
    composer install
+   cd ../..
    ```
 
 3. **Configure database**
@@ -125,13 +127,15 @@ For detailed setup instructions, see the [Development Setup Guide](docs/DEVELOPM
 
 ```
 isotone/
-├── app/                  # Core application code
-│   ├── Core/            # Core CMS functionality
-│   ├── Commands/        # CLI commands
-│   ├── Models/          # Data models
-│   └── Services/        # Business logic
-├── iso-admin/           # Admin panel (coming soon)
-├── iso-includes/        # Shared resources
+├── iso-core/            # Core application code
+│   ├── Core/           # Core CMS functionality
+│   ├── Commands/       # CLI commands
+│   ├── Services/       # Business logic
+│   └── runtime/        # Production dependencies (autoloader)
+├── iso-admin/          # Admin panel
+├── iso-includes/       # Shared resources
+├── iso-development/    # Development tools (not for production)
+│   └── tools/         # Composer, PHPStan, PHPUnit
 │   ├── assets/          # Static assets (images, logos)
 │   ├── css/             # Modular CSS architecture
 │   │   ├── base.css     # Core variables & typography

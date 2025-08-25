@@ -1,0 +1,155 @@
+# Isotone CMS - Nginx Configuration Example
+# 
+# This configuration works with the new Router system
+# Place this in your nginx server block or sites-available directory
+# 
+# Replace /var/www/isotone with your actual Isotone installation path
+# Replace example.com with your actual domain
+
+server {
+    listen 80;
+    listen [::]:80;
+    
+    # Server name (domain)
+    server_name example.com www.example.com;
+    
+    # Document root - point to your Isotone installation
+    root /var/www/isotone;
+    
+    # Default index file
+    index index.php;
+    
+    # Character set
+    charset utf-8;
+    
+    # Disable access logs for favicon and robots
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+    
+    # Security headers
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    
+    # Remove PHP version header
+    fastcgi_hide_header X-Powered-By;
+    
+    # Main location block - Router handles everything
+    location / {
+        # Try files, then directories, then route through index.php
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+    
+    # Protect sensitive files
+    location ~ /\.(env|git|svn|htaccess) {
+        deny all;
+        return 404;
+    }
+    
+    # Block access to sensitive directories
+    location ~ ^/(iso-automation|vendor|node_modules)/ {
+        deny all;
+        return 404;
+    }
+    
+    # Block access to documentation and config files
+    location ~* \.(md|yml|yaml|ini|log|bak|backup|sql)$ {
+        deny all;
+        return 404;
+    }
+    
+    # Block access to composer files
+    location ~ ^/composer\.(json|lock)$ {
+        deny all;
+        return 404;
+    }
+    
+    # PHP handling
+    location ~ \.php$ {
+        # Ensure file exists
+        try_files $uri =404;
+        
+        # FastCGI settings
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        
+        # Point to your PHP-FPM socket or TCP port
+        # Socket (recommended for same-server setup):
+        fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
+        # Or TCP (adjust port as needed):
+        # fastcgi_pass 127.0.0.1:9000;
+        
+        fastcgi_index index.php;
+        
+        # FastCGI parameters
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+        
+        # PHP-FPM settings for better performance
+        fastcgi_buffer_size 128k;
+        fastcgi_buffers 4 256k;
+        fastcgi_busy_buffers_size 256k;
+        fastcgi_temp_file_write_size 256k;
+        
+        # Timeouts
+        fastcgi_connect_timeout 60;
+        fastcgi_send_timeout 300;
+        fastcgi_read_timeout 300;
+    }
+    
+    # Static file handling with caching
+    location ~* \.(jpg|jpeg|gif|png|ico|css|js|pdf|txt|html|htm|xml|json|woff|woff2|ttf|eot|svg)$ {
+        # Try to serve file directly, fallback to Router for 404
+        try_files $uri /index.php?$query_string;
+        
+        # Cache control for static assets
+        expires 30d;
+        add_header Cache-Control "public, immutable";
+        access_log off;
+    }
+    
+    # Gzip compression
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_types text/plain text/css text/xml text/javascript application/javascript application/xml+rss application/json;
+    
+    # Client body size (for file uploads)
+    client_max_body_size 20M;
+    
+    # Error pages handled by Router
+    error_page 400 401 403 404 405 408 500 502 503 504 /index.php;
+}
+
+# HTTPS Configuration (uncomment and configure when using SSL)
+# server {
+#     listen 443 ssl http2;
+#     listen [::]:443 ssl http2;
+#     
+#     server_name example.com www.example.com;
+#     root /var/www/isotone;
+#     
+#     # SSL certificates
+#     ssl_certificate /path/to/your/certificate.crt;
+#     ssl_certificate_key /path/to/your/private.key;
+#     
+#     # SSL configuration
+#     ssl_protocols TLSv1.2 TLSv1.3;
+#     ssl_ciphers HIGH:!aNULL:!MD5;
+#     ssl_prefer_server_ciphers on;
+#     
+#     # HSTS (uncomment when ready)
+#     # add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+#     
+#     # Include all the location blocks from above
+#     # ... (copy location blocks here)
+# }
+
+# Redirect HTTP to HTTPS (uncomment when using SSL)
+# server {
+#     listen 80;
+#     listen [::]:80;
+#     server_name example.com www.example.com;
+#     return 301 https://$server_name$request_uri;
+# }

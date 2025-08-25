@@ -81,7 +81,12 @@ $session_keys_to_keep = [
     'isotone_admin_last_activity',
     'fingerprint',
     'csrf_token',
-    'last_regeneration'
+    'last_regeneration',
+    // Temporary session data that needs to survive redirects
+    'new_api_key',
+    'success_message',
+    'error_message',
+    'security_warning'
 ];
 
 // Remove any keys not in the whitelist
@@ -154,7 +159,7 @@ function requireRole($role) {
 // CSRF Protection for POST requests (skip for API endpoints)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if this is an API endpoint
-    $is_api = strpos($_SERVER['REQUEST_URI'], '/iso-admin/api/') !== false;
+    $is_api = strpos($_SERVER['REQUEST_URI'], '/iso-api/admin/') !== false;
     
     // Only validate CSRF for non-API POST requests
     if (!$is_api && !iso_verify_csrf()) {

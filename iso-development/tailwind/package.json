@@ -1,0 +1,24 @@
+{
+  "name": "isotone-tailwind",
+  "version": "1.0.0",
+  "description": "Tailwind CSS build system for Isotone",
+  "private": true,
+  "scripts": {
+    "build": "npx @tailwindcss/cli -i ./src/input.css -o ../../../iso-admin/css/tailwind.css",
+    "watch": "npx @tailwindcss/cli -i ./src/input.css -o ../../../iso-admin/css/tailwind.css --watch",
+    "minify": "npx @tailwindcss/cli -i ./src/input.css -o ../../../iso-admin/css/tailwind.min.css --minify",
+    "lumina:build": "npx lessc ../lumina/src/lumina.less ../../../iso-includes/lumina/lumina.css",
+    "lumina:watch": "npx lessc ../lumina/src/lumina.less ../../../iso-includes/lumina/lumina.css --watch",
+    "lumina:minify": "npx lessc ../lumina/src/lumina.less ../../../iso-includes/lumina/lumina.min.css --clean-css"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.12",
+    "less": "^4.4.1",
+    "less-plugin-clean-css": "^1.6.0",
+    "tailwindcss": "^4.1.12"
+  },
+  "dependencies": {
+    "alpinejs": "^3.14.9",
+    "chart.js": "^4.5.0"
+  }
+}

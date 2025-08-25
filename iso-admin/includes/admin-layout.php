@@ -206,7 +206,8 @@ $admin_menu = [
             ['title' => 'Writing', 'url' => '/isotone/iso-admin/settings-writing.php'],
             ['title' => 'Media', 'url' => '/isotone/iso-admin/settings-media.php'],
             ['title' => 'Permalinks', 'url' => '/isotone/iso-admin/settings-permalinks.php'],
-            ['title' => 'Privacy', 'url' => '/isotone/iso-admin/settings-privacy.php']
+            ['title' => 'Privacy', 'url' => '/isotone/iso-admin/settings-privacy.php'],
+            ['title' => 'API Keys', 'url' => '/isotone/iso-admin/api-keys.php']
         ]
     ],
     'tools' => [
@@ -214,24 +215,28 @@ $admin_menu = [
         'icon' => 'wrench',
         'url' => '/isotone/iso-admin/tools.php',
         'submenu' => [
+            ['title' => 'To-Do List', 'url' => '/isotone/iso-admin/todos.php'],
             ['title' => 'Import', 'url' => '/isotone/iso-admin/import.php'],
             ['title' => 'Export', 'url' => '/isotone/iso-admin/export.php'],
             ['title' => 'Site Health', 'url' => '/isotone/iso-admin/site-health.php'],
             ['title' => 'Backup', 'url' => '/isotone/iso-admin/backup.php']
         ]
-    ],
-    'development' => [
-        'title' => 'Development',
-        'icon' => 'code',
-        'url' => '/isotone/iso-admin/development.php',
-        'submenu' => [
-            ['title' => 'Automation', 'url' => '/isotone/iso-admin/automation.php'],
-            ['title' => 'Hooks Explorer', 'url' => '/isotone/iso-admin/hooks-explorer.php'],
-            ['title' => 'API Testing', 'url' => '/isotone/iso-admin/api-test.php'],
-            ['title' => 'Debug Console', 'url' => '/isotone/iso-admin/debug.php']
-        ]
     ]
 ];
+
+// Add Development menu only if iso-development directory exists
+if (is_dir(dirname(dirname(__DIR__)) . '/iso-development')) {
+    $admin_menu['development'] = [
+        'title' => 'Development',
+        'icon' => 'code',
+        'url' => '#',  // No direct URL, just expands submenu
+        'submenu' => [
+            ['title' => 'Commands', 'url' => '/isotone/iso-development/admin/commands.php'],
+            ['title' => 'Hooks Explorer', 'url' => '/isotone/iso-development/admin/hooks-explorer.php'],
+            ['title' => 'Lumina UI', 'url' => '/isotone/iso-development/admin/lumina.php']
+        ]
+    ];
+}
 
 // Helper function to render icons using the Icon API
 function render_icon($icon_name, $class = 'w-6 h-6') {
@@ -272,13 +277,11 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
         }
     </script>
     
-    <!-- Preload admin CSS -->
+    <!-- Preload CSS files -->
     <link rel="preload" href="/isotone/iso-admin/css/admin.css" as="style">
+    <link rel="preload" href="/isotone/iso-includes/lumina/lumina-admin.css" as="style">
     
-    <!-- Admin CSS -->
-    <link rel="stylesheet" href="/isotone/iso-admin/css/admin.css">
-    
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS (load first for utility classes) -->
     <?php 
     // Prefer minified version if available, otherwise use regular version
     $tailwindMinPath = __DIR__ . '/../css/tailwind.min.css';
@@ -304,6 +307,12 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
             }
         </style>
     <?php endif; ?>
+    
+    <!-- Admin CSS (base admin styles) -->
+    <link rel="stylesheet" href="/isotone/iso-admin/css/admin.css">
+    
+    <!-- Lumina UI Design System -->
+    <link rel="stylesheet" href="/isotone/iso-includes/lumina/lumina-admin.css">
     
     <!-- Chart.js (Local) -->
     <?php 
@@ -350,7 +359,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
     <!-- Favicon -->
     <link rel="icon" href="/isotone/favicon.ico">
 </head>
-<body class="dark:bg-gray-900 bg-gray-50 dark:text-gray-100 text-gray-900" 
+<body class="admin-gradient-bg dark:text-gray-100 text-gray-900" 
       x-data="adminApp()" 
       x-init="init()"
       @keydown.cmd.k.prevent="showSearch = true"
@@ -363,7 +372,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
     </div>
 
     <!-- Top Admin Bar -->
-    <header class="fixed top-0 left-0 right-0 h-16 dark:bg-gray-800 bg-white border-b dark:border-gray-700 border-gray-200 shadow-md z-50">
+    <header class="panel fixed top-0 left-0 right-0 h-16 border-b dark:border-gray-700 border-gray-200 shadow-md z-50">
         <div class="h-full px-4 flex items-center justify-between">
             <!-- Left side -->
             <div class="flex items-center space-x-4">
@@ -373,12 +382,14 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                 </button>
                 
                 <!-- Logo -->
-                <div class="flex items-center space-x-2">
-                    <!-- Isotone SVG Logo - changes based on theme -->
-                    <img :src="darkMode ? '/isotone/iso-includes/assets/logo.svg' : '/isotone/iso-includes/assets/logo-light.svg'" 
-                         alt="Isotone" 
-                         class="w-8 h-8 isotone-logo-pulse">
-                    <h2 class="text-xl font-bold isotone-text-shimmer">
+                <div class="flex items-center space-x-3">
+                    <!-- Orbital Spinner as Logo -->
+                    <div class="spinner-orbit" style="width: 2rem; height: 2rem;">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <h2 class="text-xl font-bold">
                         Isotone
                     </h2>
                 </div>
@@ -493,7 +504,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
     <div class="flex" style="padding-top: 64px; min-height: 100vh;">
         <!-- Sidebar -->
         <aside :class="sidebarCollapsed ? 'w-16' : 'w-64'" 
-               class="fixed left-0 top-16 bottom-0 dark:bg-gray-800 bg-gray-100 dark:border-gray-700 border-gray-200 border-r overflow-y-auto overflow-x-hidden sidebar-transition z-30"
+               class="panel-sidebar fixed left-0 top-16 bottom-0 dark:border-gray-700 border-gray-200 border-r overflow-y-auto overflow-x-hidden sidebar-transition z-30"
                x-data="{ collapsed: false }">
             
             <!-- Collapse Toggle -->
@@ -550,7 +561,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
         </aside>
 
         <!-- Main Content Area -->
-        <main :class="sidebarCollapsed ? 'ml-16' : 'ml-64'" class="flex-1 sidebar-transition flex flex-col">
+        <main :class="sidebarCollapsed ? 'ml-16' : 'ml-64'" class="flex-1 sidebar-transition flex flex-col pb-16">
             <!-- Breadcrumbs -->
             <div class="px-8 py-4 border-b dark:border-gray-700 border-gray-200">
                 <nav class="flex items-center space-x-2 text-sm">
@@ -572,31 +583,37 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
             <div class="flex-1 p-8">
                 <?php echo $page_content ?? ''; ?>
             </div>
-            
-            <!-- Footer -->
-            <div class="mt-auto border-t dark:border-gray-700 border-gray-200 py-2 px-8 dark:bg-gray-900 bg-gray-50">
+        </main>
+        
+        <!-- Footer -->
+        <div :class="sidebarCollapsed ? 'ml-16' : 'ml-64'" class="panel fixed bottom-0 left-0 right-0 h-auto z-40 border-t dark:border-gray-700 border-gray-200 sidebar-transition">
+            <div class="px-8 py-3">
                 <div class="flex items-center justify-between">
                     <!-- Left: Copyright and Version -->
-                    <div class="flex items-center space-x-3">
-                        <span class="text-sm dark:text-gray-500 text-gray-600">
-                            © <?php echo date('Y'); ?> Isotone
-                        </span>
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm dark:text-gray-300 text-gray-700 font-medium">
+                                © <?php echo date('Y'); ?> Isotone
+                            </span>
+                        </div>
                         <?php 
                         // Get version from config.php comment
-                        $version = '0.1.2-alpha'; // Default
+                        $version = '0.1.2-alpha'; // Default fallback
                         $config_path = dirname(dirname(__DIR__)) . '/config.php';
                         if (file_exists($config_path)) {
-                            $config_file = file_get_contents($config_path);
-                            if (preg_match('/@version\s+(.+)/', $config_file, $matches)) {
+                            $config_content = @file_get_contents($config_path);
+                            if ($config_content && preg_match('/@version\s+(.+)/', $config_content, $matches)) {
                                 $version = trim($matches[1]);
                             }
                         }
                         ?>
-                        <span class="text-sm dark:text-gray-500 text-gray-600">
-                            v<?php echo $version; ?>
-                        </span>
+                        <div class="flex items-center">
+                            <span class="text-sm dark:text-cyan-400 text-cyan-600 font-medium">
+                                Version <?php echo htmlspecialchars($version); ?>
+                            </span>
+                        </div>
                     </div>
-                    
+                
                     <!-- Right: Performance Metrics -->
                     <div class="flex items-center space-x-4 text-sm">
                         <?php
@@ -630,9 +647,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                                 <path d="m20.1191 13.0215c-.78-3.1232-4.3364-5.2783-7.3051-5.1914a8.2492 8.2492 0 0 0 -6.6778 3.7793 8.5592 8.5592 0 0 0 -.5468 8.042 6.4508 6.4508 0 0 0 4.5888 3.7786 5.3028 5.3028 0 0 0 4.4253-.9817 5.8793 5.8793 0 0 0 1.6765-2.3057 5.2523 5.2523 0 0 0 -.8452-4.73 2.7761 2.7761 0 0 0 -2.6529-1.1416 2.1829 2.1829 0 0 0 -2.0766 2.4228c.0737.9786.6533 1.8057 1.2646 1.8057a.75.75 0 0 1 0 1.5c-1.436 0-2.6225-1.373-2.7607-3.1924a3.65 3.65 0 0 1 3.3476-4.0185 4.2155 4.2155 0 0 1 4.0562 1.6953c2.3586 2.5813.96 6.4135.932 6.47a8.1556 8.1556 0 0 0 2.5741-7.9324z"></path>
                             </svg>
                             <?php endif; ?>
-                            <span class="<?php echo $is_fast ? 'dark:text-green-400 text-green-600' : 'dark:text-orange-400 text-orange-600'; ?>">
-                                <?php echo $page_time; ?>ms
-                            </span>
+                            <span class="dark:text-gray-400 text-gray-600"><?php echo $page_time; ?>ms</span>
                         </div>
                         
                         <!-- Memory Usage -->
@@ -665,7 +680,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                     </div>
                 </div>
             </div>
-        </main>
+        </div>
     </div>
 
     <!-- Search Modal -->
@@ -885,7 +900,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                         formData.append('action', 'send');
                         formData.append('message', message);
                         
-                        const response = await fetch('/isotone/iso-admin/api/toni.php', {
+                        const response = await fetch('/isotone/iso-api/admin/toni.php', {
                             method: 'POST',
                             body: formData
                         });
@@ -966,7 +981,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                 
                 async loadToniHistory() {
                     try {
-                        const response = await fetch('/isotone/iso-admin/api/toni.php?action=history');
+                        const response = await fetch('/isotone/iso-api/admin/toni.php?action=history');
                         const data = await response.json();
                         
                         if (data.success) {
@@ -1069,7 +1084,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                             image_length: base64Image.length
                         });
                         
-                        const response = await fetch('/isotone/iso-admin/api/toni.php', {
+                        const response = await fetch('/isotone/iso-api/admin/toni.php', {
                             method: 'POST',
                             body: formData
                         });
@@ -1213,7 +1228,7 @@ function render_icon($icon_name, $class = 'w-6 h-6') {
                     if (!confirm('Clear your conversation with Toni?')) return;
                     
                     try {
-                        const response = await fetch('/isotone/iso-admin/api/toni.php?action=clear');
+                        const response = await fetch('/isotone/iso-api/admin/toni.php?action=clear');
                         const data = await response.json();
                         
                         if (data.success) {

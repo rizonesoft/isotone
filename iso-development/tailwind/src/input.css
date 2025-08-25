@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+/* Define dark mode variant */
+@variant dark (&:where(.dark, .dark *));
+
+/* Explicitly tell Tailwind where to scan for classes */
+@source "../../../iso-admin/**/*.{php,html,js}";
+@source "../../../iso-core/**/*.php";
+@source "../../../iso-themes/**/*.php";
+@source "../../../iso-content/**/*.php";
+@source "../../../iso-includes/lumina/**/*.{php,html}";
+
+/* Custom Isotone Styles */
+@layer utilities {
+  
+}

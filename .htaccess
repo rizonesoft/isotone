@@ -41,12 +41,29 @@ Options -Indexes
 <IfModule mod_rewrite.c>
     RewriteEngine On
     
-    # Handle the front controller pattern
-    # This allows Isotone to handle all non-file/non-directory requests
+    # Route all non-existing files and directories through the Router
+    # This simple rule works identically on Apache, Nginx, and LiteSpeed
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
+
+# ============================================================================
+# FALLBACK ERROR HANDLING (Router handles errors, but these are backup)
+# The Router will handle all error responses internally
+# ============================================================================
+# Note: These are kept as fallback for server-level errors
+# The Router handles application-level errors
+ErrorDocument 400 /isotone/index.php
+ErrorDocument 401 /isotone/index.php
+ErrorDocument 403 /isotone/index.php
+ErrorDocument 404 /isotone/index.php
+ErrorDocument 405 /isotone/index.php
+ErrorDocument 408 /isotone/index.php
+ErrorDocument 500 /isotone/index.php
+ErrorDocument 502 /isotone/index.php
+ErrorDocument 503 /isotone/index.php
+ErrorDocument 504 /isotone/index.php
 
 # ============================================================================
 # PROTECT SENSITIVE FILES (Using modern Apache 2.4 syntax when available)

@@ -33,8 +33,8 @@ $isInstalled = file_exists(dirname(__DIR__, 3) . '/config.php');
     <meta property="og:url" content="<?php echo $baseUrl; ?>">
     
     <!-- Isotone CSS - Contains glass morphism styles -->
-    <link rel="stylesheet" href="<?php echo $baseUrl; ?>/iso-includes/css/isotone.css">
-    <link rel="stylesheet" href="<?php echo $baseUrl; ?>/iso-includes/css/landing.css">
+    <link rel="stylesheet" href="<?php echo $baseUrl; ?>/iso-content/themes/isotone/assets/css/isotone.css">
+    <link rel="stylesheet" href="<?php echo $baseUrl; ?>/iso-content/themes/isotone/assets/css/landing.css">
     
     <!-- Favicon -->
     <link rel="icon" href="<?php echo $baseUrl; ?>/favicon.ico">

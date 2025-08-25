@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="/isotone/iso-admin/css/tailwind.css">
     <?php else: ?>
         <script src="https://cdn.tailwindcss.com"></script>
-        <script src="/isotone/iso-admin/js/tailwind-config.js"></script>
+        <script src="/isotone/iso-includes/js/tailwind-config.js"></script>
     <?php endif; ?>
     
     <!-- Favicon -->

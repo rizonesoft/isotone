@@ -9,6 +9,11 @@
  * @since 1.0.0
  */
 
+// Load the Hook class if not already loaded
+if (!class_exists('Isotone\Core\Hook')) {
+    require_once __DIR__ . '/Core/Hook.php';
+}
+
 use Isotone\Core\Hook;
 
 // ==================================================================

@@ -38,6 +38,10 @@ database.json
 .phpstorm.meta.php
 _ide_helper.php
 
+# Claude AI files
+.claude
+CLAUDE.md
+
 # OS files
 .DS_Store
 Thumbs.db
