@@ -1,10 +1,11 @@
 <?php
+
 /**
  * Media Service
- * 
+ *
  * Handles media uploads and image processing using Intervention Image
  * Organizes uploads by year/month like WordPress
- * 
+ *
  * @package Isotone
  * @subpackage Services
  */
@@ -24,7 +25,7 @@ class MediaService
     private array $allowedTypes = [
         'jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'
     ];
-    
+
     /**
      * Image size configurations
      */
@@ -35,7 +36,7 @@ class MediaService
         'large' => ['width' => 1024, 'height' => 1024, 'crop' => false],
         'full' => ['width' => 1920, 'height' => 1920, 'crop' => false],
     ];
-    
+
     public function __construct()
     {
         // Use Imagick if available, otherwise GD
@@ -44,14 +45,14 @@ class MediaService
         } else {
             $this->manager = new ImageManager(new GdDriver());
         }
-        
+
         $this->uploadsPath = dirname(__DIR__, 2) . '/iso-content/uploads';
         $this->uploadsUrl = '/isotone/iso-content/uploads';
     }
-    
+
     /**
      * Process an uploaded file
-     * 
+     *
      * @param array $uploadedFile The $_FILES array element
      * @param array $options Processing options
      * @return array Information about processed files
@@ -62,32 +63,32 @@ class MediaService
         if ($uploadedFile['error'] !== UPLOAD_ERR_OK) {
             throw new \Exception('Upload failed with error code: ' . $uploadedFile['error']);
         }
-        
+
         // Check file type
         $extension = strtolower(pathinfo($uploadedFile['name'], PATHINFO_EXTENSION));
         if (!in_array($extension, $this->allowedTypes)) {
             throw new \Exception('File type not allowed: ' . $extension);
         }
-        
+
         // Create year/month directory structure
         $now = Carbon::now();
         $year = $now->format('Y');
         $month = $now->format('m');
         $uploadDir = $this->uploadsPath . '/' . $year . '/' . $month;
-        
+
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0755, true);
         }
-        
+
         // Generate unique filename
         $filename = $this->generateUniqueFilename($uploadedFile['name'], $uploadDir);
         $filepath = $uploadDir . '/' . $filename;
-        
+
         // Move uploaded file
         if (!move_uploaded_file($uploadedFile['tmp_name'], $filepath)) {
             throw new \Exception('Failed to move uploaded file');
         }
-        
+
         // Process image if it's not an SVG
         if ($extension !== 'svg') {
             $result = $this->processImage($filepath, $options);
@@ -96,17 +97,17 @@ class MediaService
                 'original' => $this->getFileInfo($filepath, $year, $month)
             ];
         }
-        
+
         // Log the upload
         LogService::info('Media uploaded', [
             'filename' => $filename,
             'size' => $uploadedFile['size'],
             'type' => $uploadedFile['type']
         ]);
-        
+
         return $result;
     }
-    
+
     /**
      * Process image and create different sizes
      */
@@ -117,31 +118,31 @@ class MediaService
         $directory = $pathinfo['dirname'];
         $filename = $pathinfo['filename'];
         $extension = $pathinfo['extension'];
-        
+
         // Get year/month from path
         preg_match('/(\d{4})\/(\d{2})/', $directory, $matches);
         $year = $matches[1] ?? date('Y');
         $month = $matches[2] ?? date('m');
-        
+
         // Read the original image
         $image = $this->manager->read($filepath);
-        
+
         // Store original info
         $result['original'] = $this->getFileInfo($filepath, $year, $month);
-        
+
         // Get custom sizes or use defaults
         $sizes = $options['sizes'] ?? $this->sizes;
-        
+
         // Generate each size
         foreach ($sizes as $sizeName => $config) {
             // Skip if original is smaller than target size
             if ($image->width() <= $config['width'] && $config['width'] > 0) {
                 continue;
             }
-            
+
             // Create size variant
             $sizedImage = clone $image;
-            
+
             if ($config['crop']) {
                 // Crop to exact dimensions
                 $sizedImage = $sizedImage->cover($config['width'], $config['height']);
@@ -155,28 +156,28 @@ class MediaService
                     $sizedImage = $sizedImage->scaleDown(height: $config['height']);
                 }
             }
-            
+
             // Save sized image
             $sizedFilename = $filename . '-' . $sizeName . '.' . $extension;
             $sizedPath = $directory . '/' . $sizedFilename;
-            
+
             // Set quality
             $quality = $options['quality'] ?? 85;
             $sizedImage->save($sizedPath, quality: $quality);
-            
+
             $result[$sizeName] = $this->getFileInfo($sizedPath, $year, $month);
         }
-        
+
         // Generate WebP version if enabled
         if ($options['generate_webp'] ?? true) {
             $webpPath = $directory . '/' . $filename . '.webp';
             $image->toWebp()->save($webpPath, quality: 85);
             $result['webp'] = $this->getFileInfo($webpPath, $year, $month);
         }
-        
+
         return $result;
     }
-    
+
     /**
      * Get file information
      */
@@ -184,7 +185,7 @@ class MediaService
     {
         $filename = basename($filepath);
         $size = filesize($filepath);
-        
+
         // Get image dimensions if applicable
         $dimensions = [];
         if (@getimagesize($filepath)) {
@@ -194,7 +195,7 @@ class MediaService
                 'height' => $height
             ];
         }
-        
+
         return array_merge([
             'path' => $filepath,
             'url' => $this->uploadsUrl . '/' . $year . '/' . $month . '/' . $filename,
@@ -203,7 +204,7 @@ class MediaService
             'size_formatted' => $this->formatFileSize($size),
         ], $dimensions);
     }
-    
+
     /**
      * Generate unique filename
      */
@@ -212,18 +213,18 @@ class MediaService
         $pathinfo = pathinfo($originalName);
         $filename = $this->sanitizeFilename($pathinfo['filename']);
         $extension = strtolower($pathinfo['extension']);
-        
+
         $finalName = $filename . '.' . $extension;
         $counter = 1;
-        
+
         while (file_exists($directory . '/' . $finalName)) {
             $finalName = $filename . '-' . $counter . '.' . $extension;
             $counter++;
         }
-        
+
         return $finalName;
     }
-    
+
     /**
      * Sanitize filename
      */
@@ -237,10 +238,10 @@ class MediaService
         $filename = trim($filename, '-');
         // Lowercase
         $filename = strtolower($filename);
-        
+
         return $filename ?: 'file';
     }
-    
+
     /**
      * Format file size
      */
@@ -248,15 +249,15 @@ class MediaService
     {
         $units = ['B', 'KB', 'MB', 'GB'];
         $i = 0;
-        
+
         while ($bytes >= 1024 && $i < count($units) - 1) {
             $bytes /= 1024;
             $i++;
         }
-        
+
         return round($bytes, 2) . ' ' . $units[$i];
     }
-    
+
     /**
      * Delete media and all its sizes
      */
@@ -265,19 +266,19 @@ class MediaService
         if (!file_exists($filepath)) {
             return false;
         }
-        
+
         $pathinfo = pathinfo($filepath);
         $directory = $pathinfo['dirname'];
         $filename = $pathinfo['filename'];
         $extension = $pathinfo['extension'];
-        
+
         // Delete all size variants
         $patterns = [
             $filepath, // Original
             $directory . '/' . $filename . '-*.' . $extension, // Sizes
             $directory . '/' . $filename . '.webp', // WebP
         ];
-        
+
         $deleted = 0;
         foreach ($patterns as $pattern) {
             foreach (glob($pattern) as $file) {
@@ -286,15 +287,15 @@ class MediaService
                 }
             }
         }
-        
+
         LogService::info('Media deleted', [
             'filepath' => $filepath,
             'files_deleted' => $deleted
         ]);
-        
+
         return $deleted > 0;
     }
-    
+
     /**
      * Get upload directory for current month
      */
@@ -303,7 +304,7 @@ class MediaService
         $now = Carbon::now();
         return $this->uploadsPath . '/' . $now->format('Y/m');
     }
-    
+
     /**
      * Set custom image sizes
      */
@@ -311,7 +312,7 @@ class MediaService
     {
         $this->sizes = $sizes;
     }
-    
+
     /**
      * Add a custom image size
      */

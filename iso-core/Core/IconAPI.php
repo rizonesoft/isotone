@@ -1,10 +1,11 @@
 <?php
+
 /**
  * IconAPI Service Class
- * 
+ *
  * Provides methods for efficiently loading and displaying icons
  * For use by themes and plugins
- * 
+ *
  * @package Isotone
  * @since 0.3.0
  */
@@ -15,12 +16,12 @@ class IconAPI
      * Cache for loaded icons to prevent multiple loads
      */
     private static $cache = [];
-    
+
     /**
      * Base URL for icon API endpoint
      */
     private static $apiUrl = null;
-    
+
     /**
      * Get the icon API base URL
      */
@@ -30,11 +31,11 @@ class IconAPI
             // Determine base URL dynamically
             $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
             $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-            
+
             // Better path detection for various environments
             $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
             $requestUri = $_SERVER['REQUEST_URI'] ?? '';
-            
+
             // Try to find the isotone base path
             if (strpos($scriptName, '/isotone/') !== false) {
                 // Extract isotone path from script name
@@ -46,15 +47,15 @@ class IconAPI
                 // Fallback to calculating from directory structure
                 $basePath = str_replace($_SERVER['DOCUMENT_ROOT'] ?? '', '', dirname(dirname(__DIR__)));
             }
-            
+
             self::$apiUrl = $protocol . '://' . $host . $basePath . '/iso-api/icons.php';
         }
         return self::$apiUrl;
     }
-    
+
     /**
      * Get an icon URL for lazy loading
-     * 
+     *
      * @param string $name Icon name
      * @param string $style Icon style (outline, solid, micro)
      * @param array $params Additional parameters (size, class, color)
@@ -67,7 +68,7 @@ class IconAPI
             'name' => $name,
             'style' => $style
         ];
-        
+
         // Add optional parameters
         if (isset($params['size'])) {
             $queryParams['size'] = $params['size'];
@@ -78,13 +79,13 @@ class IconAPI
         if (isset($params['color'])) {
             $queryParams['color'] = $params['color'];
         }
-        
+
         return $url . '?' . http_build_query($queryParams);
     }
-    
+
     /**
      * Get an icon as an img tag for lazy loading
-     * 
+     *
      * @param string $name Icon name
      * @param string $style Icon style (outline, solid, micro)
      * @param array $attributes HTML attributes for the img tag
@@ -93,7 +94,7 @@ class IconAPI
     public static function getIconImg($name, $style = 'outline', $attributes = [])
     {
         $url = self::getIconUrl($name, $style, $attributes);
-        
+
         // Default attributes
         $defaultAttrs = [
             'src' => $url,
@@ -101,27 +102,27 @@ class IconAPI
             'loading' => 'lazy',
             'decoding' => 'async'
         ];
-        
+
         // Merge with provided attributes
         $attributes = array_merge($defaultAttrs, $attributes);
-        
+
         // Remove API-specific attributes from HTML
         unset($attributes['icon'], $attributes['style'], $attributes['color']);
-        
+
         // Build HTML
         $html = '<img';
         foreach ($attributes as $key => $value) {
             $html .= ' ' . $key . '="' . htmlspecialchars($value) . '"';
         }
         $html .= '>';
-        
+
         return $html;
     }
-    
+
     /**
      * Get inline SVG (loads immediately, no lazy loading)
      * Uses caching to prevent multiple loads of the same icon
-     * 
+     *
      * @param string $name Icon name
      * @param string $style Icon style (outline, solid, micro)
      * @param array $attributes SVG attributes
@@ -130,7 +131,7 @@ class IconAPI
     public static function getIconSvg($name, $style = 'outline', $attributes = [])
     {
         $cacheKey = $name . '_' . $style;
-        
+
         // Check cache first
         if (isset(self::$cache[$cacheKey])) {
             $svgPath = self::$cache[$cacheKey];
@@ -139,24 +140,24 @@ class IconAPI
             $svgPath = self::loadIconPath($name, $style);
             self::$cache[$cacheKey] = $svgPath;
         }
-        
+
         if (empty($svgPath)) {
             // Return a fallback icon (question mark circle)
             $svgPath = '<path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />';
             $style = 'outline'; // Use outline style for fallback
         }
-        
+
         // Build SVG with attributes
         return self::buildSvg($svgPath, $style, $attributes);
     }
-    
+
     /**
      * Load icon path from library
      */
     private static function loadIconPath($name, $style)
     {
         $libraryPath = dirname(__DIR__) . '/Core/';
-        
+
         switch ($style) {
             case 'outline':
                 require_once $libraryPath . 'IconLibrary.php';
@@ -166,7 +167,7 @@ class IconAPI
                     }
                 }
                 break;
-                
+
             case 'solid':
                 require_once $libraryPath . 'IconLibrarySolid.php';
                 if (class_exists('IconLibrarySolid') && method_exists('IconLibrarySolid', 'hasIcon')) {
@@ -175,7 +176,7 @@ class IconAPI
                     }
                 }
                 break;
-                
+
             case 'micro':
                 require_once $libraryPath . 'IconLibraryMicro.php';
                 if (class_exists('IconLibraryMicro') && method_exists('IconLibraryMicro', 'hasIcon')) {
@@ -185,10 +186,10 @@ class IconAPI
                 }
                 break;
         }
-        
+
         return '';
     }
-    
+
     /**
      * Build SVG element from path
      */
@@ -196,7 +197,7 @@ class IconAPI
     {
         // Default attributes based on style
         $defaults = [];
-        
+
         switch ($style) {
             case 'outline':
                 $defaults = [
@@ -208,7 +209,7 @@ class IconAPI
                     'aria-hidden' => 'true'
                 ];
                 break;
-                
+
             case 'solid':
                 $defaults = [
                     'xmlns' => 'http://www.w3.org/2000/svg',
@@ -217,7 +218,7 @@ class IconAPI
                     'aria-hidden' => 'true'
                 ];
                 break;
-                
+
             case 'micro':
                 $defaults = [
                     'xmlns' => 'http://www.w3.org/2000/svg',
@@ -227,24 +228,24 @@ class IconAPI
                 ];
                 break;
         }
-        
+
         // Merge attributes
         $attributes = array_merge($defaults, $attributes);
-        
+
         // Build SVG
         $svg = '<svg';
         foreach ($attributes as $key => $value) {
             $svg .= ' ' . $key . '="' . htmlspecialchars($value) . '"';
         }
         $svg .= '>' . $svgPath . '</svg>';
-        
+
         return $svg;
     }
-    
+
     /**
      * Preload specific icons into cache
      * Useful for icons that are used frequently
-     * 
+     *
      * @param array $icons Array of ['name' => 'icon-name', 'style' => 'outline']
      */
     public static function preloadIcons($icons)
@@ -252,7 +253,7 @@ class IconAPI
         foreach ($icons as $icon) {
             $name = $icon['name'] ?? '';
             $style = $icon['style'] ?? 'outline';
-            
+
             if (!empty($name)) {
                 $cacheKey = $name . '_' . $style;
                 if (!isset(self::$cache[$cacheKey])) {
@@ -261,7 +262,7 @@ class IconAPI
             }
         }
     }
-    
+
     /**
      * Clear icon cache
      */
@@ -269,7 +270,7 @@ class IconAPI
     {
         self::$cache = [];
     }
-    
+
     /**
      * Get all cached icons (for debugging)
      */

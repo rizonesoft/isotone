@@ -1,9 +1,10 @@
 <?php
+
 /**
  * Isotone Theme API
- * 
+ *
  * Native theming functions for Isotone
- * 
+ *
  * @package Isotone\Core
  * @since 1.0.0
  */
@@ -23,7 +24,7 @@ class ThemeAPI
     private $currentPost = null;
     private $posts = [];
     private $postIndex = -1;
-    
+
     /**
      * Get singleton instance
      */
@@ -34,7 +35,7 @@ class ThemeAPI
         }
         return self::$instance;
     }
-    
+
     private function __construct()
     {
         $this->themeService = new ThemeService();
@@ -42,7 +43,7 @@ class ThemeAPI
         $this->initializeSiteInfo();
         $this->loadPosts();
     }
-    
+
     /**
      * Load posts for the loop
      */
@@ -52,7 +53,7 @@ class ThemeAPI
         $this->posts = $contentService->getPosts();
         $this->postIndex = -1;
     }
-    
+
     /**
      * Initialize site information from database
      */
@@ -68,7 +69,7 @@ class ThemeAPI
             'admin_email' => 'admin@example.com',
             'theme' => $this->currentTheme['name'] ?? 'Default'
         ];
-        
+
         // Load from database if available
         if (R::testConnection()) {
             $settings = R::findAll('setting');
@@ -78,7 +79,7 @@ class ThemeAPI
             }
         }
     }
-    
+
     /**
      * Get site URL
      */
@@ -90,7 +91,7 @@ class ThemeAPI
         $path = rtrim($path, '/');
         return $protocol . '://' . $host . $path;
     }
-    
+
     /**
      * Get site information
      */
@@ -99,7 +100,7 @@ class ThemeAPI
         if (empty($key)) {
             return $this->siteInfo;
         }
-        
+
         // Handle special keys
         switch ($key) {
             case 'home':
@@ -133,7 +134,7 @@ class ThemeAPI
                 return $this->siteInfo[$key] ?? '';
         }
     }
-    
+
     /**
      * Get home URL
      */
@@ -145,7 +146,7 @@ class ThemeAPI
         }
         return $url;
     }
-    
+
     /**
      * Get template directory URI
      */
@@ -156,7 +157,7 @@ class ThemeAPI
         }
         return $this->siteInfo['url'] . '/iso-content/themes/default';
     }
-    
+
     /**
      * Get stylesheet URI
      */
@@ -164,7 +165,7 @@ class ThemeAPI
     {
         return $this->getTemplateDirectoryUri() . '/style.css';
     }
-    
+
     /**
      * Get stylesheet directory URI (for child themes, same as template for now)
      */
@@ -172,7 +173,7 @@ class ThemeAPI
     {
         return $this->getTemplateDirectoryUri();
     }
-    
+
     /**
      * Get theme mod (customizer setting)
      */
@@ -186,7 +187,7 @@ class ThemeAPI
         }
         return $default;
     }
-    
+
     /**
      * Set theme mod
      */
@@ -204,7 +205,7 @@ class ThemeAPI
             R::store($setting);
         }
     }
-    
+
     /**
      * Check if we have posts
      */
@@ -212,7 +213,7 @@ class ThemeAPI
     {
         return !empty($this->posts) && $this->postIndex < count($this->posts) - 1;
     }
-    
+
     /**
      * Setup the current post
      */
@@ -223,7 +224,7 @@ class ThemeAPI
             $this->currentPost = $this->posts[$this->postIndex];
         }
     }
-    
+
     /**
      * Get the title
      */
@@ -234,7 +235,7 @@ class ThemeAPI
         }
         return $this->siteInfo['name'] . ' - ' . $this->siteInfo['description'];
     }
-    
+
     /**
      * Get the content
      */
@@ -245,7 +246,7 @@ class ThemeAPI
         }
         return '<p>Welcome to ' . $this->siteInfo['name'] . '. This is your homepage.</p>';
     }
-    
+
     /**
      * Get the excerpt
      */
@@ -254,13 +255,13 @@ class ThemeAPI
         if ($this->currentPost && isset($this->currentPost->excerpt)) {
             return $this->currentPost->excerpt;
         }
-        
+
         $content = $this->getContent();
         $content = strip_tags($content);
         $content = substr($content, 0, 200);
         return $content . '...';
     }
-    
+
     /**
      * Get permalink
      */
@@ -272,7 +273,7 @@ class ThemeAPI
         }
         return '#';
     }
-    
+
     /**
      * Get the date
      */
@@ -283,7 +284,7 @@ class ThemeAPI
         }
         return date($format);
     }
-    
+
     /**
      * Get the author
      */
@@ -294,7 +295,7 @@ class ThemeAPI
         }
         return 'Admin';
     }
-    
+
     /**
      * Get author meta
      */
@@ -312,7 +313,7 @@ class ThemeAPI
                 return '';
         }
     }
-    
+
     /**
      * Get avatar
      */
@@ -321,7 +322,7 @@ class ThemeAPI
         $avatar_url = $this->siteInfo['url'] . '/iso-includes/assets/default-avatar.png';
         return '<img src="' . $avatar_url . '" class="avatar" width="' . $size . '" height="' . $size . '" alt="' . $alt . '">';
     }
-    
+
     /**
      * Check if has category
      */
@@ -330,7 +331,7 @@ class ThemeAPI
         // Placeholder - categories not implemented yet
         return false;
     }
-    
+
     /**
      * Get categories
      */
@@ -339,7 +340,7 @@ class ThemeAPI
         // Placeholder - categories not implemented yet
         return 'Uncategorized';
     }
-    
+
     /**
      * Check if has tag
      */
@@ -348,7 +349,7 @@ class ThemeAPI
         // Placeholder - tags not implemented yet
         return false;
     }
-    
+
     /**
      * Get tags
      */
@@ -357,7 +358,7 @@ class ThemeAPI
         // Placeholder - tags not implemented yet
         return [];
     }
-    
+
     /**
      * Get tag link
      */
@@ -365,7 +366,7 @@ class ThemeAPI
     {
         return '#';
     }
-    
+
     /**
      * Check if has post thumbnail
      */
@@ -374,7 +375,7 @@ class ThemeAPI
         // Placeholder - thumbnails not implemented yet
         return false;
     }
-    
+
     /**
      * Get post thumbnail
      */
@@ -382,7 +383,7 @@ class ThemeAPI
     {
         return '';
     }
-    
+
     /**
      * Get edit post link
      */
@@ -394,7 +395,7 @@ class ThemeAPI
         }
         return '';
     }
-    
+
     /**
      * Get locale
      */
@@ -402,64 +403,110 @@ class ThemeAPI
     {
         return $this->siteInfo['language'] . '_' . strtoupper($this->siteInfo['language']);
     }
-    
+
     /**
      * Check page type functions
      */
-    public function isHome() { return true; } // For now, always home
-    public function isFrontPage() { return true; }
-    public function isSingle() { return false; }
-    public function isPage() { return false; }
-    public function isArchive() { return false; }
-    public function isCategory($category = '') { return false; }
-    public function isTag($tag = '') { return false; }
-    public function isAuthor($author = '') { return false; }
-    public function isDate() { return false; }
-    public function isSearch() { return false; }
-    public function is404() { return false; }
-    public function isAdmin() { return false; }
-    
+    public function isHome()
+    {
+        return true;
+    } // For now, always home
+    public function isFrontPage()
+    {
+        return true;
+    }
+    public function isSingle()
+    {
+        return false;
+    }
+    public function isPage()
+    {
+        return false;
+    }
+    public function isArchive()
+    {
+        return false;
+    }
+    public function isCategory($category = '')
+    {
+        return false;
+    }
+    public function isTag($tag = '')
+    {
+        return false;
+    }
+    public function isAuthor($author = '')
+    {
+        return false;
+    }
+    public function isDate()
+    {
+        return false;
+    }
+    public function isSearch()
+    {
+        return false;
+    }
+    public function is404()
+    {
+        return false;
+    }
+    public function isAdmin()
+    {
+        return false;
+    }
+
     /**
      * Body class
      */
     public function getBodyClass($class = '')
     {
         $classes = is_array($class) ? $class : explode(' ', $class);
-        
+
         // Add conditional classes
         $classes[] = 'isotone-theme';
         $classes[] = $this->currentTheme['slug'] ?? 'no-theme';
-        
-        if ($this->isHome()) $classes[] = 'home';
-        if ($this->isFrontPage()) $classes[] = 'front-page';
-        if ($this->isSingle()) $classes[] = 'single';
-        if ($this->isPage()) $classes[] = 'page';
-        if ($this->isArchive()) $classes[] = 'archive';
-        
+
+        if ($this->isHome()) {
+            $classes[] = 'home';
+        }
+        if ($this->isFrontPage()) {
+            $classes[] = 'front-page';
+        }
+        if ($this->isSingle()) {
+            $classes[] = 'single';
+        }
+        if ($this->isPage()) {
+            $classes[] = 'page';
+        }
+        if ($this->isArchive()) {
+            $classes[] = 'archive';
+        }
+
         // Remove duplicates and empty values
         $classes = array_unique(array_filter($classes));
-        
+
         return implode(' ', $classes);
     }
-    
+
     /**
      * Post class
      */
     public function getPostClass($class = '', $post_id = null)
     {
         $classes = is_array($class) ? $class : explode(' ', $class);
-        
+
         $classes[] = 'post';
         if ($this->currentPost) {
             $classes[] = 'post-' . ($this->currentPost->id ?? '0');
             $classes[] = 'type-' . ($this->currentPost->type ?? 'post');
             $classes[] = 'status-' . ($this->currentPost->status ?? 'publish');
         }
-        
+
         $classes = array_unique(array_filter($classes));
         return implode(' ', $classes);
     }
-    
+
     /**
      * Navigation menu
      */
@@ -482,9 +529,9 @@ class ThemeAPI
             'items_wrap' => '<ul id="%1$s" class="%2$s">%3$s</ul>',
             'depth' => 0
         ];
-        
+
         $args = array_merge($defaults, $args);
-        
+
         // For now, return a default menu
         $menu = '<ul class="' . esc_attr($args['menu_class']) . '">';
         $menu .= '<li><a href="' . $this->getHomeUrl() . '">Home</a></li>';
@@ -492,20 +539,20 @@ class ThemeAPI
         $menu .= '<li><a href="' . $this->getHomeUrl('blog') . '">Blog</a></li>';
         $menu .= '<li><a href="' . $this->getHomeUrl('contact') . '">Contact</a></li>';
         $menu .= '</ul>';
-        
+
         if ($args['container']) {
             $container_class = $args['container_class'] ? ' class="' . esc_attr($args['container_class']) . '"' : '';
             $container_id = $args['container_id'] ? ' id="' . esc_attr($args['container_id']) . '"' : '';
             $menu = '<' . $args['container'] . $container_id . $container_class . '>' . $menu . '</' . $args['container'] . '>';
         }
-        
+
         if ($args['echo']) {
             echo $menu;
         }
-        
+
         return $menu;
     }
-    
+
     /**
      * Check if nav menu exists
      */
@@ -514,21 +561,21 @@ class ThemeAPI
         // Placeholder - menu system not implemented yet
         return false;
     }
-    
+
     /**
      * Template part loading
      */
     public function getTemplatePart($slug, $name = null, $args = [])
     {
         $templates = [];
-        
+
         if ($name !== null) {
             $templates[] = "{$slug}-{$name}.php";
         }
         $templates[] = "{$slug}.php";
-        
+
         $theme_path = dirname(dirname(__DIR__)) . '/iso-content/themes/' . ($this->currentTheme['slug'] ?? 'default');
-        
+
         foreach ($templates as $template) {
             $file = $theme_path . '/' . $template;
             if (file_exists($file)) {

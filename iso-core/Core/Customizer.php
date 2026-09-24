@@ -1,10 +1,11 @@
 <?php
+
 /**
  * Isotone Theme Customizer API
- * 
+ *
  * Provides a live preview customization interface for themes
  * Compatible with WordPress-style customizer registration
- * 
+ *
  * @package Isotone\Core
  * @since 1.0.0
  */
@@ -19,43 +20,43 @@ class Customizer
      * Singleton instance
      */
     private static $instance = null;
-    
+
     /**
      * Registered panels
      * @var array
      */
     private $panels = [];
-    
+
     /**
      * Registered sections
      * @var array
      */
     private $sections = [];
-    
+
     /**
      * Registered settings
      * @var array
      */
     private $settings = [];
-    
+
     /**
      * Registered controls
      * @var array
      */
     private $controls = [];
-    
+
     /**
      * Current theme
      * @var array
      */
     private $current_theme = null;
-    
+
     /**
      * Customizer capabilities
      * @var string
      */
     private $capability = 'customize';
-    
+
     /**
      * Get singleton instance
      */
@@ -66,7 +67,7 @@ class Customizer
         }
         return self::$instance;
     }
-    
+
     /**
      * Private constructor
      */
@@ -75,7 +76,7 @@ class Customizer
         $this->current_theme = ThemeAPI::getInstance()->currentTheme;
         $this->registerDefaultSections();
     }
-    
+
     /**
      * Register default customizer sections
      */
@@ -88,7 +89,7 @@ class Customizer
             'description' => 'Customize your site title, tagline, and logo',
             'icon' => 'identification'
         ]);
-        
+
         // Colors Section
         $this->addSection('colors', [
             'title' => 'Colors',
@@ -96,7 +97,7 @@ class Customizer
             'description' => 'Customize your site colors',
             'icon' => 'swatch'
         ]);
-        
+
         // Header Section
         $this->addSection('header', [
             'title' => 'Header',
@@ -104,7 +105,7 @@ class Customizer
             'description' => 'Customize your site header',
             'icon' => 'rectangle-stack'
         ]);
-        
+
         // Footer Section
         $this->addSection('footer', [
             'title' => 'Footer',
@@ -112,11 +113,11 @@ class Customizer
             'description' => 'Customize your site footer',
             'icon' => 'bars-3-bottom'
         ]);
-        
+
         // Register default settings and controls
         $this->registerDefaultSettings();
     }
-    
+
     /**
      * Register default settings and controls
      */
@@ -130,14 +131,14 @@ class Customizer
             'transport' => 'postMessage',
             'sanitize_callback' => 'sanitize_text_field'
         ]);
-        
+
         $this->addControl('blogname', [
             'label' => 'Site Title',
             'section' => 'site_identity',
             'type' => 'text',
             'priority' => 10
         ]);
-        
+
         // Site Tagline
         $this->addSetting('blogdescription', [
             'default' => 'Just another Isotone site',
@@ -146,7 +147,7 @@ class Customizer
             'transport' => 'postMessage',
             'sanitize_callback' => 'sanitize_text_field'
         ]);
-        
+
         $this->addControl('blogdescription', [
             'label' => 'Tagline',
             'section' => 'site_identity',
@@ -154,7 +155,7 @@ class Customizer
             'priority' => 20,
             'description' => 'In a few words, explain what this site is about.'
         ]);
-        
+
         // Primary Color
         $this->addSetting('primary_color', [
             'default' => '#00D9FF',
@@ -163,14 +164,14 @@ class Customizer
             'transport' => 'postMessage',
             'sanitize_callback' => 'sanitize_hex_color'
         ]);
-        
+
         $this->addControl('primary_color', [
             'label' => 'Primary Color',
             'section' => 'colors',
             'type' => 'color',
             'priority' => 10
         ]);
-        
+
         // Background Color
         $this->addSetting('background_color', [
             'default' => '#0A0E27',
@@ -179,7 +180,7 @@ class Customizer
             'transport' => 'postMessage',
             'sanitize_callback' => 'sanitize_hex_color'
         ]);
-        
+
         $this->addControl('background_color', [
             'label' => 'Background Color',
             'section' => 'colors',
@@ -187,7 +188,7 @@ class Customizer
             'priority' => 20
         ]);
     }
-    
+
     /**
      * Add a customizer panel
      */
@@ -200,11 +201,11 @@ class Customizer
             'capability' => 'edit_theme_options',
             'theme_supports' => ''
         ];
-        
+
         $this->panels[$id] = array_merge($defaults, $args);
         return $this;
     }
-    
+
     /**
      * Add a customizer section
      */
@@ -219,11 +220,11 @@ class Customizer
             'theme_supports' => '',
             'icon' => 'cog'  // Default icon
         ];
-        
+
         $this->sections[$id] = array_merge($defaults, $args);
         return $this;
     }
-    
+
     /**
      * Add a customizer setting
      */
@@ -238,11 +239,11 @@ class Customizer
             'sanitize_callback' => '',
             'sanitize_js_callback' => ''
         ];
-        
+
         $this->settings[$id] = array_merge($defaults, $args);
         return $this;
     }
-    
+
     /**
      * Add a customizer control
      */
@@ -258,12 +259,12 @@ class Customizer
             'input_attrs' => [],
             'active_callback' => ''
         ];
-        
+
         $this->controls[$id] = array_merge($defaults, $args);
         $this->controls[$id]['setting'] = $id; // Link control to setting
         return $this;
     }
-    
+
     /**
      * Get all panels
      */
@@ -271,19 +272,19 @@ class Customizer
     {
         return $this->panels;
     }
-    
+
     /**
      * Get all sections
      */
     public function getSections()
     {
         // Sort by priority
-        uasort($this->sections, function($a, $b) {
+        uasort($this->sections, function ($a, $b) {
             return $a['priority'] - $b['priority'];
         });
         return $this->sections;
     }
-    
+
     /**
      * Get all settings
      */
@@ -291,36 +292,36 @@ class Customizer
     {
         return $this->settings;
     }
-    
+
     /**
      * Get all controls
      */
     public function getControls()
     {
         // Sort by priority
-        uasort($this->controls, function($a, $b) {
+        uasort($this->controls, function ($a, $b) {
             return $a['priority'] - $b['priority'];
         });
         return $this->controls;
     }
-    
+
     /**
      * Get controls for a specific section
      */
     public function getSectionControls($section_id)
     {
-        $section_controls = array_filter($this->controls, function($control) use ($section_id) {
+        $section_controls = array_filter($this->controls, function ($control) use ($section_id) {
             return $control['section'] === $section_id;
         });
-        
+
         // Sort by priority
-        uasort($section_controls, function($a, $b) {
+        uasort($section_controls, function ($a, $b) {
             return $a['priority'] - $b['priority'];
         });
-        
+
         return $section_controls;
     }
-    
+
     /**
      * Get setting value
      */
@@ -329,9 +330,9 @@ class Customizer
         if (!isset($this->settings[$setting_id])) {
             return null;
         }
-        
+
         $setting = $this->settings[$setting_id];
-        
+
         if ($setting['type'] === 'option') {
             // Get from options table
             if (R::testConnection()) {
@@ -344,10 +345,10 @@ class Customizer
             // Get theme mod
             return ThemeAPI::getInstance()->getThemeMod($setting_id, $setting['default']);
         }
-        
+
         return $setting['default'];
     }
-    
+
     /**
      * Save setting value
      */
@@ -356,14 +357,14 @@ class Customizer
         if (!isset($this->settings[$setting_id])) {
             return false;
         }
-        
+
         $setting = $this->settings[$setting_id];
-        
+
         // Sanitize value
         if (!empty($setting['sanitize_callback']) && is_callable($setting['sanitize_callback'])) {
             $value = call_user_func($setting['sanitize_callback'], $value);
         }
-        
+
         if ($setting['type'] === 'option') {
             // Save to options table
             if (R::testConnection()) {
@@ -381,31 +382,31 @@ class Customizer
             // Save as theme mod
             ThemeAPI::getInstance()->setThemeMod($setting_id, $value);
         }
-        
+
         return true;
     }
-    
+
     /**
      * Save all customizer values
      */
     public function save($values)
     {
         $saved = [];
-        
+
         foreach ($values as $setting_id => $value) {
             if ($this->saveSettingValue($setting_id, $value)) {
                 $saved[$setting_id] = $value;
             }
         }
-        
+
         // Trigger action after save
         if (function_exists('do_action')) {
             do_action('customize_save_after', $saved);
         }
-        
+
         return $saved;
     }
-    
+
     /**
      * Check if user can customize
      */
@@ -414,15 +415,15 @@ class Customizer
         // Simply check if user is logged in as admin
         // The customize.php page already uses requireRole('admin')
         // so if we got here, the user is an admin
-        
+
         // Just verify the session exists
         if (isset($_SESSION['isotone_admin_logged_in']) && $_SESSION['isotone_admin_logged_in'] === true) {
             return true;
         }
-        
+
         return false;
     }
-    
+
     /**
      * Render control HTML
      */
@@ -431,25 +432,25 @@ class Customizer
         if (!isset($this->controls[$control_id])) {
             return '';
         }
-        
+
         $control = $this->controls[$control_id];
         $setting_id = $control['setting'];
         $value = $this->getSettingValue($setting_id);
-        
+
         $html = '<div class="customize-control customize-control-' . esc_attr($control['type']) . '" data-control-id="' . esc_attr($control_id) . '">';
-        
+
         // Label
         if (!empty($control['label'])) {
             $html .= '<label for="customize-control-' . esc_attr($control_id) . '">';
             $html .= '<span class="customize-control-title">' . esc_html($control['label']) . '</span>';
             $html .= '</label>';
         }
-        
+
         // Description
         if (!empty($control['description'])) {
             $html .= '<span class="description customize-control-description">' . esc_html($control['description']) . '</span>';
         }
-        
+
         // Control input
         switch ($control['type']) {
             case 'text':
@@ -459,7 +460,7 @@ class Customizer
                 $html .= 'class="customize-control-input" ';
                 $html .= 'data-customize-setting-link="' . esc_attr($setting_id) . '" />';
                 break;
-                
+
             case 'textarea':
                 $html .= '<textarea id="customize-control-' . esc_attr($control_id) . '" ';
                 $html .= 'name="' . esc_attr($setting_id) . '" ';
@@ -468,7 +469,7 @@ class Customizer
                 $html .= esc_textarea($value);
                 $html .= '</textarea>';
                 break;
-                
+
             case 'checkbox':
                 $html .= '<input type="checkbox" id="customize-control-' . esc_attr($control_id) . '" ';
                 $html .= 'name="' . esc_attr($setting_id) . '" ';
@@ -477,7 +478,7 @@ class Customizer
                 $html .= 'class="customize-control-input" ';
                 $html .= 'data-customize-setting-link="' . esc_attr($setting_id) . '" />';
                 break;
-                
+
             case 'select':
                 $html .= '<select id="customize-control-' . esc_attr($control_id) . '" ';
                 $html .= 'name="' . esc_attr($setting_id) . '" ';
@@ -491,7 +492,7 @@ class Customizer
                 }
                 $html .= '</select>';
                 break;
-                
+
             case 'color':
                 $html .= '<input type="color" id="customize-control-' . esc_attr($control_id) . '" ';
                 $html .= 'name="' . esc_attr($setting_id) . '" ';
@@ -499,12 +500,12 @@ class Customizer
                 $html .= 'class="customize-control-input customize-control-color" ';
                 $html .= 'data-customize-setting-link="' . esc_attr($setting_id) . '" />';
                 break;
-                
+
             case 'range':
                 $min = isset($control['input_attrs']['min']) ? $control['input_attrs']['min'] : 0;
                 $max = isset($control['input_attrs']['max']) ? $control['input_attrs']['max'] : 100;
                 $step = isset($control['input_attrs']['step']) ? $control['input_attrs']['step'] : 1;
-                
+
                 $html .= '<input type="range" id="customize-control-' . esc_attr($control_id) . '" ';
                 $html .= 'name="' . esc_attr($setting_id) . '" ';
                 $html .= 'value="' . esc_attr($value) . '" ';
@@ -515,7 +516,7 @@ class Customizer
                 $html .= 'data-customize-setting-link="' . esc_attr($setting_id) . '" />';
                 $html .= '<span class="customize-control-range-value">' . esc_html($value) . '</span>';
                 break;
-                
+
             case 'radio':
                 foreach ($control['choices'] as $choice_value => $choice_label) {
                     $html .= '<label>';
@@ -530,33 +531,34 @@ class Customizer
                 }
                 break;
         }
-        
+
         $html .= '</div>';
-        
+
         return $html;
     }
-    
+
     /**
      * Get all setting values for preview
      */
     public function getPreviewValues()
     {
         $values = [];
-        
+
         foreach ($this->settings as $setting_id => $setting) {
             $values[$setting_id] = [
                 'value' => $this->getSettingValue($setting_id),
                 'transport' => $setting['transport']
             ];
         }
-        
+
         return $values;
     }
 }
 
 // Helper function for sanitizing hex colors
 if (!function_exists('sanitize_hex_color')) {
-    function sanitize_hex_color($color) {
+    function sanitize_hex_color($color)
+    {
         if (preg_match('/^#[a-f0-9]{6}$/i', $color)) {
             return $color;
         }
@@ -566,13 +568,15 @@ if (!function_exists('sanitize_hex_color')) {
 
 // Helper function for checking values
 if (!function_exists('checked')) {
-    function checked($checked, $current = true, $echo = true) {
+    function checked($checked, $current = true, $echo = true)
+    {
         return $checked == $current ? 'checked="checked"' : '';
     }
 }
 
 if (!function_exists('selected')) {
-    function selected($selected, $current = true, $echo = true) {
+    function selected($selected, $current = true, $echo = true)
+    {
         return $selected == $current ? 'selected="selected"' : '';
     }
 }

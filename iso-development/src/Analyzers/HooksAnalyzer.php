@@ -276,7 +276,7 @@ class HooksAnalyzer
     private function saveStatsToJson()
     {
         // Save stats to JSON file instead for now
-        $statsFile = $this->rootPath . '/iso-automation/storage/hook-stats.json';
+        $statsFile = $this->rootPath . '/iso-development/storage/hook-stats.json';
         
         // Ensure directory exists
         $dir = dirname($statsFile);
@@ -302,7 +302,7 @@ class HooksAnalyzer
         file_put_contents($statsFile, json_encode($stats, JSON_PRETTY_PRINT));
         
         if (!$this->quiet) {
-            echo "   ✅ Hook statistics saved to iso-automation/storage/hook-stats.json\n";
+            echo "   ✅ Hook statistics saved to iso-development/storage/hook-stats.json\n";
         }
         
     }
@@ -455,7 +455,7 @@ class HooksAnalyzer
             echo "📄 Generating hooks data for explorer...\n";
         }
         
-        $jsonFile = $this->rootPath . '/iso-automation/storage/hooks-implementation.json';
+        $jsonFile = $this->rootPath . '/iso-development/storage/hooks-implementation.json';
         
         // Ensure directory exists
         $dir = dirname($jsonFile);
@@ -495,7 +495,7 @@ class HooksAnalyzer
         file_put_contents($jsonFile, json_encode($data, JSON_PRETTY_PRINT));
         
         if (!$this->quiet) {
-            echo "   Generated: iso-automation/storage/hooks-implementation.json\n";
+            echo "   Generated: iso-development/storage/hooks-implementation.json\n";
         }
     }
     
@@ -613,8 +613,8 @@ class HooksAnalyzer
         
         echo "\n";
         echo "📁 Updated Resources:\n";
-        echo "   - iso-automation/storage/hook-stats.json (hook statistics)\n";
-        echo "   - iso-automation/storage/hooks-implementation.json (data for Hooks Explorer)\n";
+        echo "   - iso-development/storage/hook-stats.json (hook statistics)\n";
+        echo "   - iso-development/storage/hooks-implementation.json (data for Hooks Explorer)\n";
         echo "   - user-docs/development/api-reference.md (API documentation)\n";
         echo "\n";
         echo "📊 View statistics in: Admin → Development → Hooks Explorer\n";

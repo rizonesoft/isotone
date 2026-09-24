@@ -17,9 +17,10 @@ last_updated: 2025-08-25
 isotone/
 ├── CLAUDE.md
 ├── README.md
-├── composer              # Wrapper script for composer in tools/
+├── composer.json
 ├── config.sample.php
-├── docs/                 # Generated HTML documentation
+├── docs/
+│   ├── api/
 │   ├── api-reference/
 │   ├── assets/
 │   │   ├── css/
@@ -32,74 +33,66 @@ isotone/
 │   ├── icons/
 │   ├── toni/
 │   └── troubleshooting/
-├── error/                # HTTP error pages
-├── install/              # Installation wizard
+├── error/
 │   ├── README.md
-│   └── assets/
-├── iso-admin/            # Admin panel
-│   ├── api/
+├── install/
+│   ├── README.md
+│   ├── assets/
+│   │   └── css/
+├── iso-admin/
 │   ├── css/
 │   ├── includes/
 │   ├── js/
-│   └── lumina/          # Lumina UI templates
-├── iso-api/              # REST API endpoints
-│   └── admin/
-├── iso-content/          # User content
+│   ├── lumina/
+│   │   ├── README.md
+├── iso-api/
+│   ├── admin/
+├── iso-content/
 │   ├── README.md
 │   ├── cache/
 │   ├── logs/
 │   ├── plugins/
-│   │   └── hello-isotone/
+│   │   ├── hello-isotone/
+│   ├── sessions/
+│   ├── temp/
 │   ├── themes/
 │   │   ├── isotone/
 │   │   ├── isotone-default/
 │   │   ├── neutron/
 │   │   └── quantum/
 │   └── uploads/
-├── iso-core/             # Core system
+│   │   └── 2025/
+├── iso-core/
 │   ├── Commands/
 │   ├── Config/
 │   ├── Core/
 │   ├── Services/
-│   └── runtime/         # Production dependencies (formerly vendor/)
-│       ├── autoload.php
-│       ├── gabordemooij/    # RedBeanPHP
-│       ├── intervention/    # Image processing
-│       ├── league/          # CommonMark
-│       ├── monolog/         # Logging
-│       ├── nesbot/          # Carbon dates
-│       └── symfony/         # YAML parser
-├── iso-development/      # Development tools (excluded from production)
+├── iso-development/
 │   ├── README.md
-│   ├── admin/           # Development admin pages
+│   ├── admin/
 │   ├── cache/
-│   ├── cli.php          # Automation CLI
-│   ├── lumina/          # Lumina UI source (LESS)
-│   ├── src/             # Automation source
+│   ├── src/
 │   │   ├── Analyzers/
 │   │   ├── Commands/
 │   │   ├── Core/
+│   │   ├── Dashboard/
 │   │   ├── Documentation/
 │   │   ├── Generators/
 │   │   └── Rules/
 │   ├── storage/
-│   ├── tailwind/        # Tailwind build tools
+│   ├── tailwind/
 │   │   ├── README.md
 │   │   ├── package.json
 │   │   └── src/
-│   ├── tests/           # Test files
-│   └── tools/           # Development dependencies
-│       ├── composer     # Composer executable
-│       ├── composer.json
-│       ├── composer.lock
-│       └── phpstan.neon # PHPStan config
-├── iso-includes/        # Shared includes
+│   ├── tests/
+├── iso-includes/
 │   ├── assets/
-│   ├── css/
 │   ├── js/
-│   ├── lumina/          # Lumina UI compiled CSS
-│   └── scripts/
-├── server/              # Server configurations
+│   │   ├── README.md
+│   └── lumina/
+│   │   └── modules/
+├── server/
+│   ├── README.md
 ├── user-docs/
 │   ├── .kb/
 │   ├── .vitepress/

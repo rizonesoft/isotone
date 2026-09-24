@@ -1,10 +1,11 @@
 <?php
+
 /**
  * Heroicons v2.1.5 - Outline Icons
- * 
+ *
  * MIT License
  * Copyright (c) 2020-2024 Refactoring UI Inc.
- * 
+ *
  * This file contains all 316 outline icons from Heroicons v2.1.5
  * Icons are 24x24 with stroke="currentColor" and fill="none"
  * Extracted from hericons-outline.html page source
@@ -336,7 +337,7 @@ class IconLibrary
 
     /**
      * Get an outline icon by name
-     * 
+     *
      * @param string $name Icon name
      * @param array $attributes Additional SVG attributes
      * @return string SVG element or empty string if not found
@@ -367,7 +368,7 @@ class IconLibrary
 
     /**
      * Get the raw SVG path for an icon
-     * 
+     *
      * @param string $name Icon name
      * @return string SVG path element(s)
      */
@@ -378,7 +379,7 @@ class IconLibrary
 
     /**
      * Check if an icon exists
-     * 
+     *
      * @param string $name Icon name
      * @return bool
      */
@@ -389,7 +390,7 @@ class IconLibrary
 
     /**
      * Get all available icon names
-     * 
+     *
      * @return array
      */
     public static function getIconNames()
@@ -399,7 +400,7 @@ class IconLibrary
 
     /**
      * Get total count of icons
-     * 
+     *
      * @return int
      */
     public static function getIconCount()

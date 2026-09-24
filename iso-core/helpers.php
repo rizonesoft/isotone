@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 if (!function_exists('env')) {
@@ -18,18 +19,18 @@ if (!function_exists('env')) {
             'APP_DEBUG' => 'DEBUG_MODE',
             'APP_URL' => 'SITE_URL',
         ];
-        
+
         if (isset($configMap[$key]) && defined($configMap[$key])) {
             return constant($configMap[$key]);
         }
-        
+
         // Fallback to environment variables (for backward compatibility)
         $value = $_ENV[$key] ?? $_SERVER[$key] ?? getenv($key);
-        
+
         if ($value === false) {
             return $default;
         }
-        
+
         switch (strtolower($value)) {
             case 'true':
             case '(true)':
@@ -44,11 +45,11 @@ if (!function_exists('env')) {
             case '(null)':
                 return null;
         }
-        
+
         if (preg_match('/\A([\'"])(.*)\1\z/', $value, $matches)) {
             return $matches[2];
         }
-        
+
         return $value;
     }
 }
@@ -57,7 +58,7 @@ if (!function_exists('config')) {
     function config(string $key, mixed $default = null): mixed
     {
         static $config = [];
-        
+
         if (empty($config)) {
             $configPath = ISOTONE_ROOT . '/config';
             if (is_dir($configPath)) {
@@ -67,17 +68,17 @@ if (!function_exists('config')) {
                 }
             }
         }
-        
+
         $keys = explode('.', $key);
         $value = $config;
-        
+
         foreach ($keys as $k) {
             if (!isset($value[$k])) {
                 return $default;
             }
             $value = $value[$k];
         }
-        
+
         return $value;
     }
 }
@@ -148,7 +149,7 @@ use Carbon\Carbon;
 if (!function_exists('iso_date')) {
     /**
      * Create a Carbon date instance
-     * 
+     *
      * @param mixed $date Date string, timestamp, or null for now
      * @param string|null $format Optional format to return
      * @return Carbon|string
@@ -164,7 +165,7 @@ if (!function_exists('iso_human_date')) {
     /**
      * Get human-readable date difference
      * Examples: "2 hours ago", "in 3 days", "yesterday"
-     * 
+     *
      * @param mixed $date Date to convert
      * @return string
      */
@@ -177,7 +178,7 @@ if (!function_exists('iso_human_date')) {
 if (!function_exists('iso_localized_date')) {
     /**
      * Get localized date string
-     * 
+     *
      * @param mixed $date Date to format
      * @param string $format Format string (default: 'LLLL' - full date and time)
      * @param string|null $locale Locale to use (null for site default)
@@ -189,7 +190,7 @@ if (!function_exists('iso_localized_date')) {
             // Get from site settings or default to 'en'
             $locale = 'en'; // TODO: get from site settings
         }
-        
+
         return Carbon::parse($date)->locale($locale)->isoFormat($format);
     }
 }
@@ -197,7 +198,7 @@ if (!function_exists('iso_localized_date')) {
 if (!function_exists('iso_timezone')) {
     /**
      * Convert date to specific timezone
-     * 
+     *
      * @param mixed $date Date to convert
      * @param string $timezone Target timezone
      * @param string|null $format Optional format
@@ -213,7 +214,7 @@ if (!function_exists('iso_timezone')) {
 if (!function_exists('iso_date_range')) {
     /**
      * Format a date range
-     * 
+     *
      * @param mixed $start Start date
      * @param mixed $end End date
      * @param string $format Date format
@@ -223,7 +224,7 @@ if (!function_exists('iso_date_range')) {
     {
         $startDate = Carbon::parse($start);
         $endDate = Carbon::parse($end);
-        
+
         if ($startDate->isSameDay($endDate)) {
             return $startDate->format($format);
         } elseif ($startDate->isSameMonth($endDate)) {
@@ -239,7 +240,7 @@ if (!function_exists('iso_date_range')) {
 if (!function_exists('iso_age')) {
     /**
      * Calculate age from date
-     * 
+     *
      * @param mixed $date Birth date
      * @return int Age in years
      */
@@ -252,7 +253,7 @@ if (!function_exists('iso_age')) {
 if (!function_exists('iso_working_days')) {
     /**
      * Calculate working days between two dates
-     * 
+     *
      * @param mixed $start Start date
      * @param mixed $end End date
      * @return int Number of working days
@@ -261,7 +262,7 @@ if (!function_exists('iso_working_days')) {
     {
         $startDate = Carbon::parse($start);
         $endDate = Carbon::parse($end);
-        
+
         $days = 0;
         while ($startDate->lte($endDate)) {
             if (!$startDate->isWeekend()) {
@@ -269,7 +270,7 @@ if (!function_exists('iso_working_days')) {
             }
             $startDate->addDay();
         }
-        
+
         return $days;
     }
 }
@@ -277,7 +278,7 @@ if (!function_exists('iso_working_days')) {
 if (!function_exists('iso_error')) {
     /**
      * Display error page or redirect to error handler
-     * 
+     *
      * @param int $code HTTP error code (400, 401, 403, 404, 405, 408, 500, 502, 503, 504)
      * @param bool $redirect Whether to redirect or include directly
      * @return void
@@ -286,12 +287,12 @@ if (!function_exists('iso_error')) {
     {
         // Valid error codes
         $valid_codes = [400, 401, 403, 404, 405, 408, 500, 502, 503, 504];
-        
+
         // Default to 404 if invalid code
         if (!in_array($code, $valid_codes)) {
             $code = 404;
         }
-        
+
         if ($redirect) {
             // Redirect to error page
             header("Location: /isotone/server/error.php?code={$code}");
@@ -299,7 +300,7 @@ if (!function_exists('iso_error')) {
         } else {
             // Set the error code in GET for the error page
             $_GET['code'] = $code;
-            
+
             // Include error page directly
             require_once dirname(__DIR__) . '/server/error.php';
             exit;
@@ -311,7 +312,7 @@ if (!function_exists('iso_abort')) {
     /**
      * Abort execution with error page
      * Alias for iso_error with direct include
-     * 
+     *
      * @param int $code HTTP error code
      * @return void
      */

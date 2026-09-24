@@ -1,7 +1,8 @@
 <?php
+
 /**
  * Isotone - Version Management System
- * 
+ *
  * @copyright  2025 Rizonetech (Pty) Ltd
  * @license    MIT License
  * @author     Rizonetech Development Team
@@ -19,17 +20,17 @@ class Version
      * Minimum PHP version required
      */
     public const MIN_PHP_VERSION = '8.3.0';
-    
+
     /**
      * Version configuration file
      */
-    private const VERSION_FILE = __DIR__ . '/../../iso-automation/version.json';
-    
+    private const VERSION_FILE = __DIR__ . '/../../iso-development/version.json';
+
     /**
      * Version data cache
      */
     private static ?array $versionData = null;
-    
+
     /**
      * Development stage constants
      */
@@ -37,7 +38,7 @@ class Version
     public const STAGE_BETA = 'beta';
     public const STAGE_RC = 'rc';
     public const STAGE_STABLE = 'stable';
-    
+
     /**
      * Load version data from file
      */
@@ -60,7 +61,7 @@ class Version
         }
         return self::$versionData;
     }
-    
+
     /**
      * Save version data to file
      */
@@ -70,7 +71,7 @@ class Version
         $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         return file_put_contents(self::VERSION_FILE, $json) !== false;
     }
-    
+
     /**
      * Get current version information
      */
@@ -87,7 +88,7 @@ class Version
             'php_required' => self::MIN_PHP_VERSION
         ];
     }
-    
+
     /**
      * Get version stage (alpha, beta, rc, stable)
      */
@@ -97,7 +98,7 @@ class Version
             $data = self::loadVersionData();
             $version = $data['current'];
         }
-        
+
         if (strpos($version, '-alpha') !== false) {
             return self::STAGE_ALPHA;
         } elseif (strpos($version, '-beta') !== false) {
@@ -107,7 +108,7 @@ class Version
         }
         return self::STAGE_STABLE;
     }
-    
+
     /**
      * Compare versions using semantic versioning
      */
@@ -115,7 +116,7 @@ class Version
     {
         return version_compare($version1, $version2);
     }
-    
+
     /**
      * Check if current version meets requirement
      */
@@ -124,7 +125,7 @@ class Version
         $data = self::loadVersionData();
         return version_compare($data['current'], $requirement, '>=');
     }
-    
+
     /**
      * Get version history
      */
@@ -137,7 +138,7 @@ class Version
         }
         return $history;
     }
-    
+
     /**
      * Get features for a specific version
      */
@@ -145,7 +146,7 @@ class Version
     {
         $data = self::loadVersionData();
         $version = $version ?? $data['current'];
-        
+
         foreach ($data['history'] as $item) {
             if ($item['version'] === $version) {
                 return $item['features'] ?? [];
@@ -153,7 +154,7 @@ class Version
         }
         return [];
     }
-    
+
     /**
      * Check if PHP version meets requirements
      */
@@ -161,7 +162,7 @@ class Version
     {
         return version_compare(PHP_VERSION, self::MIN_PHP_VERSION, '>=');
     }
-    
+
     /**
      * Get semantic version parts
      */
@@ -171,11 +172,11 @@ class Version
             $data = self::loadVersionData();
             $version = $data['current'];
         }
-        
+
         // Remove pre-release identifiers for parsing
         $cleanVersion = preg_replace('/-.*$/', '', $version);
         $parts = explode('.', $cleanVersion);
-        
+
         return [
             'major' => (int)($parts[0] ?? 0),
             'minor' => (int)($parts[1] ?? 0),
@@ -184,7 +185,7 @@ class Version
             'full' => $version
         ];
     }
-    
+
     /**
      * Get pre-release identifier
      */
@@ -195,14 +196,14 @@ class Version
         }
         return null;
     }
-    
+
     /**
      * Generate next version number
      */
     public static function getNextVersion(string $type = 'patch'): string
     {
         $current = self::parse();
-        
+
         switch ($type) {
             case 'major':
                 return sprintf('%d.0.0', $current['major'] + 1);
@@ -210,14 +211,15 @@ class Version
                 return sprintf('%d.%d.0', $current['major'], $current['minor'] + 1);
             case 'patch':
             default:
-                return sprintf('%d.%d.%d', 
-                    $current['major'], 
-                    $current['minor'], 
+                return sprintf(
+                    '%d.%d.%d',
+                    $current['major'],
+                    $current['minor'],
                     $current['patch'] + 1
                 );
         }
     }
-    
+
     /**
      * Bump version number
      */
@@ -225,7 +227,7 @@ class Version
     {
         $data = self::loadVersionData();
         $current = self::parse($data['current']);
-        
+
         // Calculate new version
         switch ($type) {
             case 'major':
@@ -236,13 +238,14 @@ class Version
                 break;
             case 'patch':
             default:
-                $newVersion = sprintf('%d.%d.%d', 
-                    $current['major'], 
-                    $current['minor'], 
+                $newVersion = sprintf(
+                    '%d.%d.%d',
+                    $current['major'],
+                    $current['minor'],
                     $current['patch'] + 1
                 );
         }
-        
+
         // Preserve current stage unless explicitly specified
         if ($stage !== null) {
             $newVersion .= '-' . $stage;
@@ -250,16 +253,16 @@ class Version
             // Keep the current stage if no new stage specified
             $newVersion .= '-' . $current['prerelease'];
         }
-        
+
         // Update version data
         $oldVersion = $data['current'];
         $data['current'] = $newVersion;
         $data['release_date'] = date('Y-m-d');
-        
+
         if ($codename !== null) {
             $data['codename'] = $codename;
         }
-        
+
         // Add to history
         $data['history'][] = [
             'version' => $newVersion,
@@ -269,13 +272,13 @@ class Version
             'breaking_changes' => [],
             'from_version' => $oldVersion
         ];
-        
+
         // Save changes
         self::saveVersionData($data);
-        
+
         return $newVersion;
     }
-    
+
     /**
      * Set version directly
      */
@@ -283,14 +286,14 @@ class Version
     {
         $data = self::loadVersionData();
         $oldVersion = $data['current'];
-        
+
         $data['current'] = $version;
         $data['release_date'] = date('Y-m-d');
-        
+
         if ($codename !== null) {
             $data['codename'] = $codename;
         }
-        
+
         // Add to history if different
         if ($version !== $oldVersion) {
             $data['history'][] = [
@@ -302,17 +305,17 @@ class Version
                 'from_version' => $oldVersion
             ];
         }
-        
+
         return self::saveVersionData($data);
     }
-    
+
     /**
      * Add features to current version
      */
     public static function addFeatures(array $features): bool
     {
         $data = self::loadVersionData();
-        
+
         // Find current version in history
         foreach ($data['history'] as &$item) {
             if ($item['version'] === $data['current']) {
@@ -320,10 +323,10 @@ class Version
                 return self::saveVersionData($data);
             }
         }
-        
+
         return false;
     }
-    
+
     /**
      * Check for updates (placeholder for future implementation)
      */
@@ -338,7 +341,7 @@ class Version
             'update_url' => null
         ];
     }
-    
+
     /**
      * Get compatibility information
      */
@@ -365,7 +368,7 @@ class Version
             ]
         ];
     }
-    
+
     /**
      * Format version for display
      */
@@ -374,27 +377,27 @@ class Version
         $data = self::loadVersionData();
         $version = $version ?? $data['current'];
         $formatted = "v{$version}";
-        
+
         if ($includeCodename && $version === $data['current']) {
             $formatted .= " (" . $data['codename'] . ")";
         }
-        
+
         return $formatted;
     }
-    
+
     /**
      * Get version badge HTML
      */
     public static function getBadge(): string
     {
         $stage = self::getStage();
-        $badgeConfig = match($stage) {
+        $badgeConfig = match ($stage) {
             'alpha' => ['bg' => '#DC2626', 'text' => '#FFFFFF'], // Red background, white text
-            'beta' => ['bg' => '#D97706', 'text' => '#FFFFFF'], // Orange background, white text  
+            'beta' => ['bg' => '#D97706', 'text' => '#FFFFFF'], // Orange background, white text
             'rc' => ['bg' => '#0EA5E9', 'text' => '#FFFFFF'], // Blue background, white text
             default => ['bg' => '#16A34A', 'text' => '#FFFFFF'] // Green background, white text (stable)
         };
-        
+
         return sprintf(
             '<span style="background: %s; color: %s; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">%s</span>',
             $badgeConfig['bg'],

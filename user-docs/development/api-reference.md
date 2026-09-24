@@ -1,68 +1,12 @@
 # Isotone Hooks API Reference
 
-> Auto-generated: 2025-08-18 17:14:26
+> Auto-generated: 2025-08-26 04:48:43
 
 ## Overview
 
 This document lists all hooks that are actually implemented in the Isotone codebase.
 
 ## Actions
-
-### `after_setup_theme`
-
-Fires after the theme is loaded
-
-**Since:** 1.0.0
-
-**Usage:**
-```php
-add_action('after_setup_theme', 'your_callback_function', 10, 1);
-```
-
-**Fired in:**
-- `iso-admin/hooks-explorer.php:52`
-
-### `init`
-
-Fires after Isotone has finished loading but before any headers are sent
-
-**Since:** 1.0.0
-
-**Usage:**
-```php
-add_action('init', 'your_callback_function', 10, 1);
-```
-
-**Fired in:**
-- `iso-admin/hooks-explorer.php:53`
-
-### `widgets_init`
-
-Fires after all default widgets have been registered
-
-**Since:** 1.0.0
-
-**Usage:**
-```php
-add_action('widgets_init', 'your_callback_function', 10, 1);
-```
-
-**Fired in:**
-- `iso-admin/hooks-explorer.php:54`
-
-### `iso_enqueue_scripts`
-
-Fires when scripts and styles should be enqueued
-
-**Since:** 1.0.0
-
-**Usage:**
-```php
-add_action('iso_enqueue_scripts', 'your_callback_function', 10, 1);
-```
-
-**Fired in:**
-- `iso-admin/hooks-explorer.php:55`
 
 ### `isotone_head`
 

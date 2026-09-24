@@ -1,7 +1,8 @@
 <?php
+
 /**
  * Isotone - Toni AI Assistant Service
- * 
+ *
  * @copyright  2025 Rizonetech (Pty) Ltd
  * @license    MIT License
  * @author     Rizonetech Development Team
@@ -35,7 +36,7 @@ When you receive [Page Context] messages, understand the user is on that specifi
      * Default model configuration
      */
     private const DEFAULT_MODEL = 'gpt-5-nano';
-    
+
     /**
      * Model-specific configuration
      * GPT-5 models use the new Responses API with different parameters
@@ -65,11 +66,12 @@ When you receive [Page Context] messages, understand the user is on that specifi
     {
         try {
             // Get recent messages for context
-            $messages = R::find('toni', 
-                'user_id = ? ORDER BY created_at DESC LIMIT ?', 
+            $messages = R::find(
+                'toni',
+                'user_id = ? ORDER BY created_at DESC LIMIT ?',
                 [$userId, self::CONTEXT_WINDOW]
             );
-            
+
             // Convert to array and reverse for chronological order
             $conversation = [];
             foreach (array_reverse($messages) as $message) {
@@ -80,7 +82,7 @@ When you receive [Page Context] messages, understand the user is on that specifi
                     'created_at' => $message->created_at
                 ];
             }
-            
+
             return $conversation;
         } catch (Exception $e) {
             error_log('Toni conversation error: ' . $e->getMessage());
@@ -141,7 +143,7 @@ When you receive [Page Context] messages, understand the user is on that specifi
             ];
         }
     }
-    
+
     /**
      * Send a message to Toni
      */
@@ -204,26 +206,26 @@ When you receive [Page Context] messages, understand the user is on that specifi
         $debugInfo['message'] = $message;
         $debugInfo['has_image'] = true;
         $debugInfo['context_count'] = count($context);
-        
+
         // Try to get AI response with image
         $aiResponse = $this->getAIResponseWithImageDebug($message, $imageData, $context, $debugInfo);
-        
+
         if ($aiResponse) {
             $debugInfo['ai_response_received'] = true;
             return $aiResponse;
         }
-        
+
         $debugInfo['ai_response_received'] = false;
         $debugInfo['fallback_used'] = true;
-        
+
         // Fallback response for image
-        return "I can see you've shared a screenshot. While I'm having trouble analyzing it right now, I can help you with:\n\n" . 
+        return "I can see you've shared a screenshot. While I'm having trouble analyzing it right now, I can help you with:\n\n" .
                "• Understanding what's on your screen\n" .
                "• Troubleshooting any issues you see\n" .
                "• Explaining UI elements or error messages\n\n" .
                "What specifically would you like help with regarding this screenshot?";
     }
-    
+
     /**
      * Generate response with image
      */
@@ -234,11 +236,11 @@ When you receive [Page Context] messages, understand the user is on that specifi
         if ($aiResponse) {
             return $aiResponse;
         }
-        
+
         // Fallback response
         return "I can see you've shared a screenshot. What would you like me to help you with?";
     }
-    
+
     /**
      * Generate response with debug information
      */
@@ -247,18 +249,18 @@ When you receive [Page Context] messages, understand the user is on that specifi
         $debugInfo['timestamp'] = date('Y-m-d H:i:s');
         $debugInfo['message'] = $message;
         $debugInfo['context_count'] = count($context);
-        
+
         // Try to get AI response with debug tracking
         $aiResponse = $this->getAIResponseWithDebug($message, $context, $debugInfo);
-        
+
         if ($aiResponse) {
             $debugInfo['ai_response_received'] = true;
             return $aiResponse;
         }
-        
+
         $debugInfo['ai_response_received'] = false;
         $debugInfo['fallback_used'] = true;
-        
+
         // Fallback to contextual responses
         return $this->getFallbackResponse($message);
     }
@@ -273,7 +275,7 @@ When you receive [Page Context] messages, understand the user is on that specifi
             // Use the model selected for Toni chat function
             $provider = 'openai';
             $model = $this->getSetting('toni_chat_model', self::DEFAULT_MODEL);
-            
+
             // Get default config and override with user settings
             $defaultConfig = self::MODEL_CONFIG[$model] ?? self::MODEL_CONFIG[self::DEFAULT_MODEL];
             $modelConfig = [
@@ -281,7 +283,7 @@ When you receive [Page Context] messages, understand the user is on that specifi
                 'verbosity' => $this->getSetting('toni_chat_verbosity', $defaultConfig['verbosity']),
                 'api_type' => $defaultConfig['api_type']
             ];
-            
+
             $timeout = intval($this->getSetting('toni_timeout', '30'));
 
             // Model pricing information
@@ -290,9 +292,9 @@ When you receive [Page Context] messages, understand the user is on that specifi
                 'gpt-5-mini' => ['input' => 0.25, 'output' => 2.00],
                 'gpt-5' => ['input' => 1.25, 'output' => 10.00]
             ];
-            
+
             $pricing = $modelPricing[$model] ?? $modelPricing['gpt-5-nano'];
-            
+
             $debugInfo['provider'] = $provider;
             $debugInfo['model'] = $model;
             $debugInfo['api_type'] = $modelConfig['api_type'];
@@ -300,24 +302,24 @@ When you receive [Page Context] messages, understand the user is on that specifi
             $debugInfo['verbosity'] = $modelConfig['verbosity'];
             $debugInfo['timeout'] = $timeout;
             $debugInfo['has_image'] = true;
-            
+
             $apiKey = $this->getSetting('openai_api_key');
-            
+
             $debugInfo['openai_api_key_present'] = !empty($apiKey);
-            
+
             if (empty($apiKey)) {
                 $debugInfo['error'] = 'OpenAI API key is empty';
                 return null;
             }
-            
+
             return $this->callGPT5WithImageDebug($message, $imageData, $context, $modelConfig, $timeout, $debugInfo, $model);
         } catch (Exception $e) {
             $debugInfo['exception'] = $e->getMessage();
         }
-        
+
         return null;
     }
-    
+
     /**
      * Get AI response with image
      */
@@ -326,7 +328,7 @@ When you receive [Page Context] messages, understand the user is on that specifi
         try {
             // Use the model selected for Toni chat function
             $model = $this->getSetting('toni_chat_model', self::DEFAULT_MODEL);
-            
+
             // Get default config and override with user settings
             $defaultConfig = self::MODEL_CONFIG[$model] ?? self::MODEL_CONFIG[self::DEFAULT_MODEL];
             $modelConfig = [
@@ -334,24 +336,24 @@ When you receive [Page Context] messages, understand the user is on that specifi
                 'verbosity' => $this->getSetting('toni_chat_verbosity', $defaultConfig['verbosity']),
                 'api_type' => $defaultConfig['api_type']
             ];
-            
+
             $timeout = intval($this->getSetting('toni_timeout', '30'));
 
             $apiKey = $this->getSetting('openai_api_key');
-            
+
             if (empty($apiKey)) {
                 error_log("Toni Debug - OpenAI API key is empty, returning null");
                 return null;
             }
-            
+
             return $this->callGPT5WithImage($message, $imageData, $context, $modelConfig, $timeout, $model);
         } catch (Exception $e) {
             error_log('Toni AI API error with image: ' . $e->getMessage());
         }
-        
+
         return null;
     }
-    
+
     /**
      * Get AI response from configured provider with debug info
      */
@@ -361,7 +363,7 @@ When you receive [Page Context] messages, understand the user is on that specifi
             // Use the model selected for Toni chat function
             $provider = 'openai';
             $model = $this->getSetting('toni_chat_model', self::DEFAULT_MODEL);
-            
+
             // Get default config and override with user settings
             $defaultConfig = self::MODEL_CONFIG[$model] ?? self::MODEL_CONFIG[self::DEFAULT_MODEL];
             $modelConfig = [
@@ -369,7 +371,7 @@ When you receive [Page Context] messages, understand the user is on that specifi
                 'verbosity' => $this->getSetting('toni_chat_verbosity', $defaultConfig['verbosity']),
                 'api_type' => $defaultConfig['api_type']
             ];
-            
+
             $timeout = intval($this->getSetting('toni_timeout', '30'));
 
             // Model pricing information
@@ -378,9 +380,9 @@ When you receive [Page Context] messages, understand the user is on that specifi
                 'gpt-5-mini' => ['input' => 0.25, 'output' => 2.00],
                 'gpt-5' => ['input' => 1.25, 'output' => 10.00]
             ];
-            
+
             $pricing = $modelPricing[$model] ?? $modelPricing['gpt-5-nano'];
-            
+
             $debugInfo['provider'] = $provider;
             $debugInfo['model'] = $model;
             $debugInfo['api_type'] = $modelConfig['api_type'];
@@ -395,19 +397,19 @@ When you receive [Page Context] messages, understand the user is on that specifi
             );
 
             $apiKey = $this->getSetting('openai_api_key');
-            
+
             $debugInfo['openai_api_key_present'] = !empty($apiKey);
-            
+
             if (empty($apiKey)) {
                 $debugInfo['error'] = 'OpenAI API key is empty';
                 return null;
             }
-            
+
             return $this->callGPT5WithDebug($message, $context, $modelConfig, $timeout, $debugInfo, $model);
         } catch (Exception $e) {
             $debugInfo['exception'] = $e->getMessage();
         }
-        
+
         return null;
     }
 
@@ -426,20 +428,20 @@ When you receive [Page Context] messages, understand the user is on that specifi
 
         // Build conversation input for Responses API with image
         $conversationHistory = "";
-        
+
         // Add system prompt
         $conversationHistory .= "System: " . self::SYSTEM_PROMPT . "\n\n";
-        
+
         // Add context messages (limited for image requests)
         $recentContext = array_slice($context, -3); // Only last 3 messages with images
         foreach ($recentContext as $contextMessage) {
             if ($contextMessage['role'] === 'user') {
                 $conversationHistory .= "User: " . $contextMessage['content'] . "\n\n";
-            } else if ($contextMessage['role'] === 'assistant') {
+            } elseif ($contextMessage['role'] === 'assistant') {
                 $conversationHistory .= "Assistant: " . $contextMessage['content'] . "\n\n";
             }
         }
-        
+
         // Add current message with image description
         $conversationHistory .= "User: " . $message . "\n[User has shared a screenshot - please analyze the visual content]";
 
@@ -448,11 +450,11 @@ When you receive [Page Context] messages, understand the user is on that specifi
             error_log("GPT-5 Image: Invalid image data format");
             return null;
         }
-        
+
         // Log image data info
         error_log("GPT-5 Image: Data URL prefix: " . substr($imageData, 0, 50));
         error_log("GPT-5 Image: Data length: " . strlen($imageData));
-        
+
         // Use GPT-5 Responses API format with image
         // According to OpenAI docs, use input_text and input_image types
         $payload = [
@@ -488,7 +490,7 @@ When you receive [Page Context] messages, understand the user is on that specifi
             'Authorization: Bearer ' . $apiKey,
             'Content-Type: application/json'
         ];
-        
+
         if (!empty($orgId)) {
             $headers[] = 'OpenAI-Organization: ' . $orgId;
             $debugInfo['org_id_used'] = true;
@@ -526,24 +528,24 @@ When you receive [Page Context] messages, understand the user is on that specifi
 
         // Log the raw response for debugging
         error_log("GPT-5 Image API Response: " . substr($response, 0, 1000));
-        
+
         $data = json_decode($response, true);
-        
+
         // Store full response structure for debugging
         if ($data) {
             $debugInfo['api_response_keys'] = array_keys($data);
             if (isset($data['output'])) {
-                $debugInfo['output_structure'] = array_map(function($item) {
+                $debugInfo['output_structure'] = array_map(function ($item) {
                     return ['type' => $item['type'] ?? 'unknown'];
                 }, $data['output']);
             }
         }
-        
+
         // Track token usage if available
         if (isset($data['usage'])) {
             $this->trackTokenUsage($model, $data['usage']);
         }
-        
+
         // Parse GPT-5 Responses API format
         // 1. Primary format - output array with message objects
         if (isset($data['output']) && is_array($data['output'])) {
@@ -580,7 +582,7 @@ When you receive [Page Context] messages, understand the user is on that specifi
                 }
             }
         }
-        
+
         // 2. Alternative format with direct output_text
         if (isset($data['output_text'])) {
             $debugInfo['content_type'] = 'output_text';
@@ -589,14 +591,14 @@ When you receive [Page Context] messages, understand the user is on that specifi
             $debugInfo['response_length'] = strlen($data['output_text']);
             return $data['output_text'];
         }
-        
+
         // 3. Direct output string
         if (isset($data['output']) && is_string($data['output'])) {
             $debugInfo['content_type'] = 'output_string';
             $debugInfo['response_length'] = strlen($data['output']);
             return $data['output'];
         }
-        
+
         $debugInfo['api_parse_error'] = 'Unexpected response format';
         $debugInfo['full_response_sample'] = substr(json_encode($data), 0, 500);
         if (isset($data['output']) && is_array($data['output']) && !empty($data['output'])) {
@@ -604,7 +606,7 @@ When you receive [Page Context] messages, understand the user is on that specifi
         }
         return null;
     }
-    
+
     /**
      * Call GPT-5 API with image
      */
@@ -615,7 +617,7 @@ When you receive [Page Context] messages, understand the user is on that specifi
             $model = self::DEFAULT_MODEL;
         }
         $orgId = $this->getSetting('openai_org_id');
-        
+
         if (empty($apiKey)) {
             error_log("Toni Debug - OpenAI API key is empty");
             return null;
@@ -625,17 +627,17 @@ When you receive [Page Context] messages, understand the user is on that specifi
 
         // Build conversation input with limited context for image requests
         $conversationHistory = "System: " . self::SYSTEM_PROMPT . "\n\n";
-        
+
         // Only include last few messages with images
         $recentContext = array_slice($context, -3);
         foreach ($recentContext as $contextMessage) {
             if ($contextMessage['role'] === 'user') {
                 $conversationHistory .= "User: " . $contextMessage['content'] . "\n\n";
-            } else if ($contextMessage['role'] === 'assistant') {
+            } elseif ($contextMessage['role'] === 'assistant') {
                 $conversationHistory .= "Assistant: " . $contextMessage['content'] . "\n\n";
             }
         }
-        
+
         $conversationHistory .= "User: " . $message;
 
         // Ensure image data has proper format
@@ -643,11 +645,11 @@ When you receive [Page Context] messages, understand the user is on that specifi
             error_log("GPT-5 Image: Invalid image data format");
             return null;
         }
-        
+
         // Log image data info
         error_log("GPT-5 Image: Data URL prefix: " . substr($imageData, 0, 50));
         error_log("GPT-5 Image: Data length: " . strlen($imageData));
-        
+
         // Use GPT-5 Responses API format with image
         // According to OpenAI docs, use input_text and input_image types
         $payload = [
@@ -679,7 +681,7 @@ When you receive [Page Context] messages, understand the user is on that specifi
             'Authorization: Bearer ' . $apiKey,
             'Content-Type: application/json'
         ];
-        
+
         if (!empty($orgId)) {
             $headers[] = 'OpenAI-Organization: ' . $orgId;
         }
@@ -704,15 +706,15 @@ When you receive [Page Context] messages, understand the user is on that specifi
         }
 
         $data = json_decode($response, true);
-        
+
         // Log response for debugging
         error_log("GPT-5 Image Response (first 500 chars): " . substr($response, 0, 500));
-        
+
         // Track token usage if available
         if (isset($data['usage'])) {
             $this->trackTokenUsage($model, $data['usage']);
         }
-        
+
         // Parse response - GPT-5 Responses API format
         // Primary format: output array with message objects
         if (isset($data['output']) && is_array($data['output'])) {
@@ -741,19 +743,19 @@ When you receive [Page Context] messages, understand the user is on that specifi
                 }
             }
         }
-        
+
         // Alternative: direct output_text field
         if (isset($data['output_text'])) {
             error_log("GPT-5 Image: Found output_text");
             return $data['output_text'];
         }
-        
+
         // Alternative: output string
         if (isset($data['output']) && is_string($data['output'])) {
             error_log("GPT-5 Image: Found direct output string");
             return $data['output'];
         }
-        
+
         // Log full structure for debugging
         error_log("GPT-5 Image API Error: Unexpected response format.");
         error_log("Response keys: " . json_encode(array_keys($data ?? [])));
@@ -762,7 +764,7 @@ When you receive [Page Context] messages, understand the user is on that specifi
         }
         return null;
     }
-    
+
     /**
      * Call GPT-5 API with debug tracking using new Responses API
      */
@@ -778,19 +780,19 @@ When you receive [Page Context] messages, understand the user is on that specifi
 
         // Build conversation input for Responses API
         $conversationHistory = "";
-        
+
         // Add system prompt
         $conversationHistory .= "System: " . self::SYSTEM_PROMPT . "\n\n";
-        
+
         // Add context messages
         foreach ($context as $contextMessage) {
             if ($contextMessage['role'] === 'user') {
                 $conversationHistory .= "User: " . $contextMessage['content'] . "\n\n";
-            } else if ($contextMessage['role'] === 'assistant') {
+            } elseif ($contextMessage['role'] === 'assistant') {
                 $conversationHistory .= "Assistant: " . $contextMessage['content'] . "\n\n";
             }
         }
-        
+
         // Add current message
         $conversationHistory .= "User: " . $message;
 
@@ -813,7 +815,7 @@ When you receive [Page Context] messages, understand the user is on that specifi
             'Authorization: Bearer ' . $apiKey,
             'Content-Type: application/json'
         ];
-        
+
         if (!empty($orgId)) {
             $headers[] = 'OpenAI-Organization: ' . $orgId;
             $debugInfo['org_id_used'] = true;
@@ -851,24 +853,24 @@ When you receive [Page Context] messages, understand the user is on that specifi
 
         // Log the raw response for debugging
         error_log("GPT-5 Raw API Response: " . substr($response, 0, 1000));
-        
+
         $data = json_decode($response, true);
-        
+
         // Track token usage if available
         if (isset($data['usage'])) {
             $this->trackTokenUsage($model, $data['usage']);
         }
-        
+
         if (json_last_error() !== JSON_ERROR_NONE) {
             $debugInfo['json_error'] = json_last_error_msg();
             $debugInfo['raw_response'] = substr($response, 0, 500);
             error_log("JSON decode error: " . json_last_error_msg());
             return null;
         }
-        
+
         // Log the actual response structure for debugging
         error_log("GPT-5 API Response Structure: " . json_encode($data));
-        
+
         // Try different response formats
         // 1. GPT-5 Responses API format - output is an array with message objects
         if (isset($data['output']) && is_array($data['output'])) {
@@ -883,7 +885,7 @@ When you receive [Page Context] messages, understand the user is on that specifi
                 }
             }
         }
-        
+
         // 2. Responses API format with 'output_text' (alternative format)
         if (isset($data['output_text'])) {
             $debugInfo['reasoning_tokens'] = $data['usage']['reasoning_tokens'] ?? 'unknown';
@@ -891,23 +893,23 @@ When you receive [Page Context] messages, understand the user is on that specifi
             $debugInfo['response_length'] = strlen($data['output_text']);
             return $data['output_text'];
         }
-        
+
         // 3. Chat Completions format (fallback)
         if (isset($data['choices'][0]['message']['content'])) {
             $debugInfo['tokens_used'] = $data['usage']['total_tokens'] ?? 'unknown';
             $debugInfo['response_length'] = strlen($data['choices'][0]['message']['content']);
             return $data['choices'][0]['message']['content'];
         }
-        
+
         $debugInfo['api_parse_error'] = 'Unexpected response format';
         $debugInfo['api_response_keys'] = array_keys($data ?? []);
         $debugInfo['raw_response_sample'] = substr($response, 0, 200);
-        
+
         // Add full response to debug for troubleshooting
         if (strlen($response) < 1000) {
             $debugInfo['full_response'] = $response;
         }
-        
+
         return null;
     }
 
@@ -929,7 +931,7 @@ When you receive [Page Context] messages, understand the user is on that specifi
     private function getFallbackResponse(string $message): string
     {
         $message_lower = strtolower($message);
-        
+
         // Help queries
         if (strpos($message_lower, 'help') !== false) {
             return "I'm here to help! You can ask me about:
@@ -941,7 +943,7 @@ When you receive [Page Context] messages, understand the user is on that specifi
 
 What would you like to know more about?";
         }
-        
+
         // Default response
         return "I understand you're asking about: \"" . $message . "\". 
 
@@ -963,7 +965,7 @@ Could you provide more details about what you're trying to accomplish?";
         try {
             // Use the model selected for Toni chat function
             $model = $this->getSetting('toni_chat_model', self::DEFAULT_MODEL);
-            
+
             // Get default config and override with user settings
             $defaultConfig = self::MODEL_CONFIG[$model] ?? self::MODEL_CONFIG[self::DEFAULT_MODEL];
             $modelConfig = [
@@ -971,7 +973,7 @@ Could you provide more details about what you're trying to accomplish?";
                 'verbosity' => $this->getSetting('toni_chat_verbosity', $defaultConfig['verbosity']),
                 'api_type' => $defaultConfig['api_type']
             ];
-            
+
             $timeout = intval($this->getSetting('toni_timeout', '30'));
 
             // Debug logging
@@ -979,17 +981,17 @@ Could you provide more details about what you're trying to accomplish?";
 
             $apiKey = $this->getSetting('openai_api_key');
             error_log("Toni Debug - OpenAI API Key present: " . (!empty($apiKey) ? 'YES' : 'NO'));
-            
+
             if (empty($apiKey)) {
                 error_log("Toni Debug - OpenAI API key is empty, falling back to default responses");
                 return null;
             }
-            
+
             return $this->callGPT5($message, $context, $modelConfig, $timeout, $model);
         } catch (Exception $e) {
             error_log('Toni AI API error: ' . $e->getMessage());
         }
-        
+
         return null;
     }
 
@@ -1003,7 +1005,7 @@ Could you provide more details about what you're trying to accomplish?";
             $model = self::DEFAULT_MODEL;
         }
         $orgId = $this->getSetting('openai_org_id');
-        
+
         if (empty($apiKey)) {
             error_log("Toni Debug - OpenAI API key is empty, returning null");
             return null;
@@ -1013,19 +1015,19 @@ Could you provide more details about what you're trying to accomplish?";
 
         // Build conversation input for Responses API
         $conversationHistory = "";
-        
+
         // Add system prompt
         $conversationHistory .= "System: " . self::SYSTEM_PROMPT . "\n\n";
-        
+
         // Add context messages
         foreach ($context as $contextMessage) {
             if ($contextMessage['role'] === 'user') {
                 $conversationHistory .= "User: " . $contextMessage['content'] . "\n\n";
-            } else if ($contextMessage['role'] === 'assistant') {
+            } elseif ($contextMessage['role'] === 'assistant') {
                 $conversationHistory .= "Assistant: " . $contextMessage['content'] . "\n\n";
             }
         }
-        
+
         // Add current message
         $conversationHistory .= "User: " . $message;
 
@@ -1045,7 +1047,7 @@ Could you provide more details about what you're trying to accomplish?";
             'Authorization: Bearer ' . $apiKey,
             'Content-Type: application/json'
         ];
-        
+
         if (!empty($orgId)) {
             $headers[] = 'OpenAI-Organization: ' . $orgId;
         }
@@ -1071,22 +1073,22 @@ Could you provide more details about what you're trying to accomplish?";
 
         // Log raw response for debugging
         error_log("GPT-5 Raw Response (first 500 chars): " . substr($response, 0, 500));
-        
+
         $data = json_decode($response, true);
-        
+
         // Track token usage if available
         if (isset($data['usage'])) {
             $this->trackTokenUsage($model, $data['usage']);
         }
-        
+
         if (json_last_error() !== JSON_ERROR_NONE) {
             error_log("JSON decode error in callGPT5: " . json_last_error_msg());
             return null;
         }
-        
+
         // Log the actual response structure for debugging
         error_log("GPT-5 API Response Keys: " . implode(', ', array_keys($data ?? [])));
-        
+
         // Try different response formats
         // 1. GPT-5 Responses API format - output is an array with message objects
         if (isset($data['output']) && is_array($data['output'])) {
@@ -1097,22 +1099,22 @@ Could you provide more details about what you're trying to accomplish?";
                 }
             }
         }
-        
+
         // 2. Responses API format with 'output_text' (alternative format)
         if (isset($data['output_text'])) {
             return $data['output_text'];
         }
-        
+
         // 3. Responses API format with 'text'
         if (isset($data['text'])) {
             return $data['text'];
         }
-        
+
         // 4. Chat Completions format (fallback)
         if (isset($data['choices'][0]['message']['content'])) {
             return $data['choices'][0]['message']['content'];
         }
-        
+
         error_log("GPT-5 API Error: Could not find response text in any expected field");
         error_log("Full response structure: " . json_encode($data));
         return null;
@@ -1127,14 +1129,14 @@ Could you provide more details about what you're trying to accomplish?";
         if (!$model) {
             $model = 'claude-3-haiku-20240307'; // Default to cheapest Claude model
         }
-        
+
         if (empty($apiKey)) {
             return null;
         }
 
         // Build messages array
         $messages = [];
-        
+
         // Add context messages (skip system messages for Anthropic)
         foreach ($context as $contextMessage) {
             if ($contextMessage['role'] !== 'system') {
@@ -1144,7 +1146,7 @@ Could you provide more details about what you're trying to accomplish?";
                 ];
             }
         }
-        
+
         // Add current message
         $messages[] = ['role' => 'user', 'content' => $message];
 
@@ -1197,32 +1199,32 @@ Could you provide more details about what you're trying to accomplish?";
             $record->input_tokens = $usage['input_tokens'] ?? 0;
             $record->output_tokens = $usage['output_tokens'] ?? 0;
             $record->total_tokens = $usage['total_tokens'] ?? 0;
-            
+
             // Calculate reasoning tokens if available
             if (isset($usage['output_tokens_details']['reasoning_tokens'])) {
                 $record->reasoning_tokens = $usage['output_tokens_details']['reasoning_tokens'];
             }
-            
+
             // Calculate cost based on model pricing (per 1M tokens)
             $modelPricing = [
                 'gpt-5-nano' => ['input' => 0.05, 'output' => 0.40],
                 'gpt-5-mini' => ['input' => 0.25, 'output' => 2.00],
                 'gpt-5' => ['input' => 1.25, 'output' => 10.00]
             ];
-            
+
             $pricing = $modelPricing[$model] ?? $modelPricing['gpt-5-nano'];
             $inputCost = ($record->input_tokens / 1000000) * $pricing['input'];
             $outputCost = ($record->output_tokens / 1000000) * $pricing['output'];
             $record->cost = round($inputCost + $outputCost, 6);
-            
+
             R::store($record);
-            
+
             error_log("Token usage tracked: Model=$model, Input={$record->input_tokens}, Output={$record->output_tokens}, Cost=\${$record->cost}");
         } catch (Exception $e) {
             error_log("Error tracking token usage: " . $e->getMessage());
         }
     }
-    
+
     /**
      * Get setting value from database
      */
@@ -1247,10 +1249,10 @@ Could you provide more details about what you're trying to accomplish?";
         if ($aiResponse) {
             return $aiResponse;
         }
-        
+
         // Fallback to contextual responses based on keywords
         $message_lower = strtolower($message);
-        
+
         // Help queries
         if (strpos($message_lower, 'help') !== false) {
             return "I'm here to help! You can ask me about:
@@ -1262,7 +1264,7 @@ Could you provide more details about what you're trying to accomplish?";
 
 What would you like to know more about?";
         }
-        
+
         // Content creation
         if (strpos($message_lower, 'post') !== false || strpos($message_lower, 'page') !== false) {
             return "To create a new post or page:
@@ -1274,7 +1276,7 @@ What would you like to know more about?";
 
 Would you like tips on writing engaging content?";
         }
-        
+
         // Plugin queries
         if (strpos($message_lower, 'plugin') !== false) {
             return "Isotone supports WordPress-compatible plugins. You can:
@@ -1284,7 +1286,7 @@ Would you like tips on writing engaging content?";
 
 Need help with a specific plugin?";
         }
-        
+
         // Theme queries
         if (strpos($message_lower, 'theme') !== false) {
             return "To manage themes:
@@ -1295,7 +1297,7 @@ Need help with a specific plugin?";
 
 Looking for theme recommendations?";
         }
-        
+
         // SEO queries
         if (strpos($message_lower, 'seo') !== false) {
             return "Here are some SEO best practices for Isotone:
@@ -1308,7 +1310,7 @@ Looking for theme recommendations?";
 
 Want specific SEO advice for your content?";
         }
-        
+
         // Settings queries
         if (strpos($message_lower, 'setting') !== false || strpos($message_lower, 'config') !== false) {
             return "You can configure Isotone from the Settings menu:
@@ -1321,17 +1323,17 @@ Want specific SEO advice for your content?";
 
 Which settings would you like to adjust?";
         }
-        
+
         // Greeting
         if (strpos($message_lower, 'hello') !== false || strpos($message_lower, 'hi') !== false) {
             return "Hello! I'm Toni, your AI assistant for Isotone. I'm here to help you manage your content, configure your site, and make the most of Isotone's features. What can I help you with today?";
         }
-        
+
         // Thank you
         if (strpos($message_lower, 'thank') !== false) {
             return "You're welcome! I'm always here to help. Feel free to ask if you need anything else!";
         }
-        
+
         // Default response
         return "I understand you're asking about: \"" . $message . "\". 
 
@@ -1365,7 +1367,7 @@ Could you provide more details about what you're trying to accomplish?";
     public function getSuggestions(int $userId): array
     {
         $suggestions = [];
-        
+
         // Check if user has posts
         $postCount = R::count('content', 'type = ? AND author_id = ?', ['post', $userId]);
         if ($postCount == 0) {
@@ -1376,7 +1378,7 @@ Could you provide more details about what you're trying to accomplish?";
                 'action' => '/isotone/iso-admin/post-edit.php?action=new'
             ];
         }
-        
+
         // Check if site has pages
         $pageCount = R::count('content', 'type = ?', ['page']);
         if ($pageCount < 2) {
@@ -1387,7 +1389,7 @@ Could you provide more details about what you're trying to accomplish?";
                 'action' => '/isotone/iso-admin/page-edit.php?action=new'
             ];
         }
-        
+
         // Check for plugins
         $suggestions[] = [
             'icon' => 'puzzle',
@@ -1395,7 +1397,7 @@ Could you provide more details about what you're trying to accomplish?";
             'description' => 'Enhance your site with powerful plugins',
             'action' => '/isotone/iso-admin/plugins.php'
         ];
-        
+
         // SEO reminder
         $suggestions[] = [
             'icon' => 'search',
@@ -1404,7 +1406,7 @@ Could you provide more details about what you're trying to accomplish?";
             'action' => '#',
             'message' => 'How can I improve my SEO?'
         ];
-        
+
         return $suggestions;
     }
 }

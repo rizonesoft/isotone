@@ -1,7 +1,8 @@
 <?php
+
 /**
  * Isotone - Database CLI Commands
- * 
+ *
  * @copyright  2025 Rizonetech (Pty) Ltd
  * @license    MIT License
  * @author     Rizonetech Development Team
@@ -23,9 +24,9 @@ class DatabaseCommand
         echo "\n";
         echo "🔍 Testing Database Connection\n";
         echo str_repeat('=', 40) . "\n\n";
-        
+
         $status = DatabaseService::getStatus();
-        
+
         if ($status['connected']) {
             echo "✅ Database Connected Successfully!\n\n";
             echo "Connection Details:\n";
@@ -33,11 +34,11 @@ class DatabaseCommand
             echo "  Database: " . $status['database'] . "\n";
             echo "  Username: " . $status['username'] . "\n";
             echo "  Tables:   " . $status['tables'] . "\n";
-            
+
             if (!empty($status['table_list'])) {
                 echo "  List:     " . implode(', ', $status['table_list']) . "\n";
             }
-            
+
             if (isset($status['version'])) {
                 echo "  Version:  " . $status['version'] . "\n";
             }
@@ -54,10 +55,10 @@ class DatabaseCommand
             echo "  • Username/password are correct\n";
             echo "  • PHP PDO MySQL extension is installed\n";
         }
-        
+
         echo "\n";
     }
-    
+
     /**
      * Initialize database schema
      */
@@ -66,9 +67,9 @@ class DatabaseCommand
         echo "\n";
         echo "🔧 Initializing Database Schema\n";
         echo str_repeat('=', 40) . "\n\n";
-        
+
         $result = DatabaseService::initializeSchema();
-        
+
         if ($result['success']) {
             echo "✅ Database schema initialized successfully!\n\n";
             echo "Tables Created:\n";
@@ -88,10 +89,10 @@ class DatabaseCommand
             echo "❌ Schema initialization failed\n\n";
             echo "Error: " . $result['error'] . "\n";
         }
-        
+
         echo "\n";
     }
-    
+
     /**
      * Show database status
      */
@@ -100,25 +101,25 @@ class DatabaseCommand
         echo "\n";
         echo "📊 Database Status\n";
         echo str_repeat('=', 40) . "\n\n";
-        
+
         $status = DatabaseService::getStatus();
-        
+
         $statusIcon = $status['connected'] ? '🟢' : '🔴';
         $statusText = $status['connected'] ? 'Connected' : 'Disconnected';
-        
+
         echo "Status: $statusIcon $statusText\n\n";
-        
+
         if ($status['connected']) {
             echo "Configuration:\n";
             echo "  Host:     " . $status['host'] . "\n";
             echo "  Database: " . $status['database'] . "\n";
             echo "  Username: " . $status['username'] . "\n";
             echo "  Tables:   " . $status['tables'] . " tables\n";
-            
+
             if (isset($status['version'])) {
                 echo "  Version:  " . $status['version'] . "\n";
             }
-            
+
             if (!empty($status['table_list'])) {
                 echo "\nTables:\n";
                 foreach ($status['table_list'] as $table) {
@@ -132,7 +133,7 @@ class DatabaseCommand
             echo "  Database: " . $status['database'] . "\n";
             echo "  Username: " . $status['username'] . "\n";
         }
-        
+
         echo "\n";
     }
 }

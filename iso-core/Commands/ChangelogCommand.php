@@ -1,7 +1,8 @@
 <?php
+
 /**
  * Isotone - Changelog Generator
- * 
+ *
  * @copyright  2025 Rizonetech (Pty) Ltd
  * @license    MIT License
  * @author     Rizonetech Development Team
@@ -25,23 +26,23 @@ class ChangelogCommand
         $changelog .= "All notable changes to Isotone will be documented in this file.\n\n";
         $changelog .= "The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),\n";
         $changelog .= "and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).\n\n";
-        
+
         // Sort versions in reverse order (newest first)
         $versions = array_keys($history);
-        usort($versions, function($a, $b) {
+        usort($versions, function ($a, $b) {
             return version_compare($b, $a);
         });
-        
+
         foreach ($versions as $version) {
             $item = $history[$version];
             $changelog .= "## [{$version}]";
-            
+
             if (!empty($item['codename'])) {
                 $changelog .= " - {$item['codename']}";
             }
-            
+
             $changelog .= " - {$item['date']}\n\n";
-            
+
             // Added features
             if (!empty($item['features'])) {
                 $changelog .= "### Added\n";
@@ -50,7 +51,7 @@ class ChangelogCommand
                 }
                 $changelog .= "\n";
             }
-            
+
             // Changed items
             if (!empty($item['changed'])) {
                 $changelog .= "### Changed\n";
@@ -59,7 +60,7 @@ class ChangelogCommand
                 }
                 $changelog .= "\n";
             }
-            
+
             // Fixed bugs
             if (!empty($item['fixed'])) {
                 $changelog .= "### Fixed\n";
@@ -68,7 +69,7 @@ class ChangelogCommand
                 }
                 $changelog .= "\n";
             }
-            
+
             // Breaking changes
             if (!empty($item['breaking_changes'])) {
                 $changelog .= "### ⚠ BREAKING CHANGES\n";
@@ -77,7 +78,7 @@ class ChangelogCommand
                 }
                 $changelog .= "\n";
             }
-            
+
             // Deprecated
             if (!empty($item['deprecated'])) {
                 $changelog .= "### Deprecated\n";
@@ -86,7 +87,7 @@ class ChangelogCommand
                 }
                 $changelog .= "\n";
             }
-            
+
             // Security
             if (!empty($item['security'])) {
                 $changelog .= "### Security\n";
@@ -96,10 +97,10 @@ class ChangelogCommand
                 $changelog .= "\n";
             }
         }
-        
+
         return $changelog;
     }
-    
+
     /**
      * Save changelog to file
      */
@@ -109,7 +110,7 @@ class ChangelogCommand
         $file = dirname(__DIR__, 2) . '/CHANGELOG.md';
         return file_put_contents($file, $changelog) !== false;
     }
-    
+
     /**
      * Display changelog
      */

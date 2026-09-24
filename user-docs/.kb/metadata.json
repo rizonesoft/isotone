@@ -1,9 +1,18 @@
 {
-    "total_documents": 31,
-    "total_chunks": 667,
-    "generated_at": 1755707205,
+    "total_documents": 36,
+    "total_chunks": 277,
+    "generated_at": 1756183571,
     "sections": {
-        "C:\\xampp\\htdocs\\isotone": 31
+        "api": 1,
+        "api-reference": 5,
+        "automation": 3,
+        "configuration": 3,
+        "development": 13,
+        "getting-started": 2,
+        "icons": 2,
+        "README.md": 1,
+        "toni": 3,
+        "troubleshooting": 3
     },
     "tags": []
 }

@@ -13,76 +13,75 @@ This document lists all available commands in Isotone, including Composer script
 
 ### Installation & Dependencies
 ```bash
-composer install              # Install all dependencies (including dev)
-composer install --no-dev     # Install production dependencies only
-composer update               # Update all dependencies
-composer update --no-dev      # Update production dependencies only
-composer dump-autoload        # Regenerate autoloader
-composer dump-autoload -o     # Regenerate optimized autoloader
+composer install              # Install all dependencies (including dev) ✅
+composer install --no-dev     # Install production dependencies only ✅
+composer update               # Update all dependencies ✅
+composer update --no-dev      # Update production dependencies only ✅
+composer dump-autoload        # Regenerate autoloader ✅
+composer dump-autoload -o     # Regenerate optimized autoloader ✅
 ```
 
 ### Testing
 ```bash
-composer test                 # Run all PHPUnit tests
-composer test:unit            # Run unit tests only
-composer test:integration     # Run integration tests only
+composer test                 # Run all PHPUnit tests ✅ (no tests configured yet)
+composer test:unit            # Run unit tests only ✅ (no tests configured yet)
+composer test:integration     # Run integration tests only ✅ (no tests configured yet)
 ```
 
 ### Code Analysis
 ```bash
-composer analyse              # Run PHPStan analysis
-composer analyse:core         # Analyze iso-core directory
-composer analyse:admin        # Analyze iso-admin directory
-composer analyse:all          # Analyze entire codebase
-composer analyse:strict       # Run analysis at level 8 (strictest)
+composer analyse              # Run PHPStan analysis ✅ (some issues to fix)
+composer analyse:core         # Analyze iso-core directory ✅ (some issues to fix)
+composer analyse:admin        # Analyze iso-admin directory ✅ (some issues to fix)
+composer analyse:all          # Analyze entire codebase ✅ (some issues to fix)
+composer analyse:strict       # Run analysis at level 8 (strictest) ✅ (more strict issues)
 ```
 
 ### Code Style
 ```bash
-composer check-style          # Check PSR-12 compliance
-composer fix-style            # Automatically fix PSR-12 issues
-composer pre-commit           # Run pre-commit checks (runs check-style)
+composer check-style          # Check PSR-12 compliance ✅ (style issues found)
+composer fix-style            # Automatically fix PSR-12 issues ✅ (fixed 1726 issues in 30 files)
+composer pre-commit           # Run pre-commit checks (runs check-style) ✅ (fails due to namespace/line length issues)
 ```
 
 ### Documentation
 ```bash
-composer docs:check           # Check documentation status
-composer docs:update          # Update documentation
-composer docs:index           # Generate documentation index
-composer docs:lint            # Lint documentation files
-composer docs:build           # Build HTML documentation
-composer docs:html            # Alias for docs:build
-composer docs:hooks           # Generate hooks documentation
-composer docs:all             # Run all documentation tasks
+composer docs:check           # Check documentation status ✅
+composer docs:update          # Update documentation ✅ (warning: SystemHooks.php not found)
+composer docs:index           # Generate documentation index ✅
+composer docs:lint            # Lint documentation files ✅ (27 missing front-matter issues)
+composer docs:build           # Build HTML documentation ✅
+composer docs:html            # Alias for docs:build ✅
+composer docs:hooks           # Generate hooks documentation ✅ (corrected storage path to iso-development)
+composer docs:all             # Run all documentation tasks ✅
 ```
 
 ### Hooks System
 ```bash
-composer hooks:docs           # Generate hooks documentation
-composer hooks:scan           # Scan codebase for hook usage
+composer hooks:docs           # Generate hooks documentation ✅
+composer hooks:scan           # Scan codebase for hook usage ✅
 ```
 
 ### IDE & Development
 ```bash
-composer ide:sync             # Sync IDE configuration
-composer validate:rules       # Validate automation rules
+composer ide:sync             # Sync IDE configuration ✅
 ```
 
 ### Version Management
 ```bash
-composer version:patch        # Bump patch version (0.1.0 -> 0.1.1)
-composer version:minor        # Bump minor version (0.1.0 -> 0.2.0)
-composer version:major        # Bump major version (0.1.0 -> 1.0.0)
+composer version:patch        # Bump patch version (0.1.0 -> 0.1.1) ✅ (fixed path to iso-development/version.json)
+composer version:minor        # Bump minor version (0.1.0 -> 0.2.0) ✅
+composer version:major        # Bump major version (0.1.0 -> 1.0.0) ✅
 ```
 
 ### Tailwind CSS
 ```bash
-composer tailwind:build       # Build Tailwind CSS
-composer tailwind:watch       # Watch and rebuild on changes
-composer tailwind:minify      # Minify CSS output
-composer tailwind:install     # Install Tailwind dependencies
-composer tailwind:update      # Update Tailwind version
-composer tailwind:status      # Check Tailwind status
+composer tailwind:build       # Build Tailwind CSS ✅
+composer tailwind:watch       # Watch and rebuild on changes ✅
+composer tailwind:minify      # Minify CSS output ✅
+composer tailwind:install     # Install Tailwind dependencies ✅ (already installed)
+composer tailwind:update      # Update Tailwind version ✅
+composer tailwind:status      # Check Tailwind status ✅
 ```
 
 ---
@@ -93,11 +92,11 @@ All Isotone CLI commands are run using: `php isotone <command> [options]`
 
 ### Version Commands
 ```bash
-php isotone version                    # Show current version information
-php isotone version:check              # Check system compatibility
-php isotone version:history            # Show version history
-php isotone version:bump [type]        # Bump version number
-php isotone version:set <version>      # Set version directly
+php isotone version                    # Show current version information ✅
+php isotone version:check              # Check system compatibility ✅
+php isotone version:history            # Show version history ✅
+php isotone version:bump [type]        # Bump version number ✅
+php isotone version:set <version>      # Set version directly ✅
 ```
 
 #### Version Bump Examples
@@ -114,30 +113,30 @@ php isotone version:set 1.0.0-rc1 "Phoenix"       # Set to specific version
 
 ### Changelog
 ```bash
-php isotone changelog          # Generate and save CHANGELOG.md
+php isotone changelog          # Generate and save CHANGELOG.md ✅ (overwrites existing, only headers)
 ```
 
 ### Database Commands
 ```bash
-php isotone db:test            # Test database connection
-php isotone db:status          # Show database status
-php isotone db:init            # Initialize database schema
+php isotone db:test            # Test database connection ✅
+php isotone db:status          # Show database status ✅
+php isotone db:init            # Initialize database schema ⚠️ (skipped - would modify database)
 ```
 
 ### Migration Commands
 ```bash
-php isotone migrate            # Run database migrations
-php isotone migrate:status     # Check migration status
-php isotone migrate:rollback   # Rollback last migration batch
+php isotone migrate            # Run database migrations ✅ (not implemented yet)
+php isotone migrate:status     # Check migration status ✅ (not implemented yet)
+php isotone migrate:rollback   # Rollback last migration batch ✅ (not implemented yet)
 ```
 
 ### Hooks Commands
 ```bash
-php isotone hooks:scan         # Scan codebase for hook usage
-php isotone hooks:docs         # Generate hook documentation
-php isotone hooks:validate     # Validate hook implementation
-php isotone hooks:list         # List all registered hooks
-php isotone hooks:test         # Test hook system
+php isotone hooks:scan         # Scan codebase for hook usage ✅ (fixed path to iso-development)
+php isotone hooks:docs         # Generate hook documentation ✅ (HOOKS.md is empty)
+php isotone hooks:validate     # Validate hook implementation ✅
+php isotone hooks:list         # List all registered hooks ✅
+php isotone hooks:test         # Test hook system ✅
 ```
 
 ### Icon Commands

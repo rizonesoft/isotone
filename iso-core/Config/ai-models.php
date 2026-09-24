@@ -1,4 +1,5 @@
 <?php
+
 /**
  * AI Model Configuration
  * Complete catalog of AI models with capabilities, pricing, and metadata
@@ -68,7 +69,7 @@ return [
                     'suitable_for' => ['complex'],
                     'status' => 'ga'
                 ],
-                
+
                 // GPT-4 Family
                 'gpt-4.1' => [
                     'name' => 'GPT-4.1',
@@ -126,7 +127,7 @@ return [
                     'suitable_for' => ['complex'],
                     'status' => 'ga'
                 ],
-                
+
                 // O-Series (Reasoning Models)
                 'o3' => [
                     'name' => 'o3',
@@ -190,7 +191,7 @@ return [
                 ]
             ]
         ],
-        
+
         'anthropic' => [
             'name' => 'Anthropic',
             'color' => 'purple',
@@ -211,7 +212,7 @@ return [
                     'suitable_for' => ['complex', 'vision'],
                     'status' => 'preview'
                 ],
-                
+
                 // Claude 3.5 Family
                 'claude-3.5-sonnet-20241022' => [
                     'name' => 'Claude 3.5 Sonnet',
@@ -241,7 +242,7 @@ return [
                     'suitable_for' => ['simple'],
                     'status' => 'ga'
                 ],
-                
+
                 // Claude 3.7 Family
                 'claude-3.7-sonnet' => [
                     'name' => 'Claude 3.7 Sonnet',
@@ -257,7 +258,7 @@ return [
                     'suitable_for' => ['standard', 'vision'],
                     'status' => 'preview'
                 ],
-                
+
                 // Claude 3 Family
                 'claude-3-opus-20240229' => [
                     'name' => 'Claude 3 Opus',
@@ -303,7 +304,7 @@ return [
                 ]
             ]
         ],
-        
+
         'google' => [
             'name' => 'Google AI',
             'color' => 'blue',
@@ -334,7 +335,7 @@ return [
                     'suitable_for' => ['standard', 'complex', 'vision'],
                     'status' => 'preview'
                 ],
-                
+
                 // Gemini 1.5 Family
                 'gemini-1.5-pro-002' => [
                     'name' => 'Gemini 1.5 Pro 002',
@@ -392,7 +393,7 @@ return [
                     'suitable_for' => ['simple'],
                     'status' => 'ga'
                 ],
-                
+
                 // Gemini Ultra
                 'gemini-ultra' => [
                     'name' => 'Gemini Ultra',
@@ -408,7 +409,7 @@ return [
                 ]
             ]
         ],
-        
+
         'groq' => [
             'name' => 'Groq',
             'color' => 'orange',
@@ -465,7 +466,7 @@ return [
             ]
         ]
     ],
-    
+
     'task_categories' => [
         'simple' => [
             'name' => 'Simple Tasks',

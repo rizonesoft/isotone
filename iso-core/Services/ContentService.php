@@ -1,9 +1,10 @@
 <?php
+
 /**
  * Isotone Content Service
- * 
+ *
  * Manages posts, pages, and other content types
- * 
+ *
  * @package Isotone\Services
  * @since 1.0.0
  */
@@ -28,13 +29,13 @@ class ContentService
             'limit' => 10,
             'offset' => 0
         ];
-        
+
         $args = array_merge($defaults, $args);
-        
+
         // For now, return demo posts since we don't have a content table yet
         return $this->getDemoPosts();
     }
-    
+
     /**
      * Get a single post by ID or slug
      */
@@ -48,7 +49,7 @@ class ContentService
             return $this->getDemoPostBySlug($id_or_slug);
         }
     }
-    
+
     /**
      * Create a new post
      */
@@ -57,7 +58,7 @@ class ContentService
         if (!R::testConnection()) {
             return false;
         }
-        
+
         $post = R::dispense('isotonepost');
         $post->title = $data['title'] ?? 'Untitled';
         $post->content = $data['content'] ?? '';
@@ -68,10 +69,10 @@ class ContentService
         $post->author = $data['author'] ?? 'Admin';
         $post->created_at = date('Y-m-d H:i:s');
         $post->updated_at = date('Y-m-d H:i:s');
-        
+
         return R::store($post);
     }
-    
+
     /**
      * Update a post
      */
@@ -80,25 +81,39 @@ class ContentService
         if (!R::testConnection()) {
             return false;
         }
-        
+
         $post = R::load('isotonepost', $id);
         if (!$post || !$post->id) {
             return false;
         }
-        
-        if (isset($data['title'])) $post->title = $data['title'];
-        if (isset($data['content'])) $post->content = $data['content'];
-        if (isset($data['excerpt'])) $post->excerpt = $data['excerpt'];
-        if (isset($data['slug'])) $post->slug = $data['slug'];
-        if (isset($data['post_type'])) $post->post_type = $data['post_type'];
-        if (isset($data['post_status'])) $post->post_status = $data['post_status'];
-        if (isset($data['author'])) $post->author = $data['author'];
-        
+
+        if (isset($data['title'])) {
+            $post->title = $data['title'];
+        }
+        if (isset($data['content'])) {
+            $post->content = $data['content'];
+        }
+        if (isset($data['excerpt'])) {
+            $post->excerpt = $data['excerpt'];
+        }
+        if (isset($data['slug'])) {
+            $post->slug = $data['slug'];
+        }
+        if (isset($data['post_type'])) {
+            $post->post_type = $data['post_type'];
+        }
+        if (isset($data['post_status'])) {
+            $post->post_status = $data['post_status'];
+        }
+        if (isset($data['author'])) {
+            $post->author = $data['author'];
+        }
+
         $post->updated_at = date('Y-m-d H:i:s');
-        
+
         return R::store($post);
     }
-    
+
     /**
      * Delete a post
      */
@@ -107,16 +122,16 @@ class ContentService
         if (!R::testConnection()) {
             return false;
         }
-        
+
         $post = R::load('isotonepost', $id);
         if (!$post || !$post->id) {
             return false;
         }
-        
+
         R::trash($post);
         return true;
     }
-    
+
     /**
      * Generate a URL-friendly slug from a title
      */
@@ -126,28 +141,28 @@ class ContentService
         $slug = preg_replace('/[^a-z0-9-]/', '-', $slug);
         $slug = preg_replace('/-+/', '-', $slug);
         $slug = trim($slug, '-');
-        
+
         // Ensure uniqueness
         $original = $slug;
         $counter = 1;
-        
+
         if (R::testConnection()) {
             while (R::findOne('isotonepost', 'slug = ?', [$slug])) {
                 $slug = $original . '-' . $counter;
                 $counter++;
             }
         }
-        
+
         return $slug;
     }
-    
+
     /**
      * Get demo posts for testing
      */
     private function getDemoPosts()
     {
         $posts = [];
-        
+
         // Create demo post objects
         $post1 = new \stdClass();
         $post1->id = 1;
@@ -169,7 +184,7 @@ class ContentService
         $post1->author = 'Admin';
         $post1->created_at = date('Y-m-d H:i:s', strtotime('-1 week'));
         $posts[] = $post1;
-        
+
         $post2 = new \stdClass();
         $post2->id = 2;
         $post2->title = 'Getting Started with Themes';
@@ -190,7 +205,7 @@ class ContentService
         $post2->author = 'Admin';
         $post2->created_at = date('Y-m-d H:i:s', strtotime('-3 days'));
         $posts[] = $post2;
-        
+
         $post3 = new \stdClass();
         $post3->id = 3;
         $post3->title = 'Building Plugins for Isotone';
@@ -211,10 +226,10 @@ class ContentService
         $post3->author = 'Admin';
         $post3->created_at = date('Y-m-d H:i:s', strtotime('-1 day'));
         $posts[] = $post3;
-        
+
         return $posts;
     }
-    
+
     /**
      * Get a demo post by ID
      */
@@ -228,7 +243,7 @@ class ContentService
         }
         return null;
     }
-    
+
     /**
      * Get a demo post by slug
      */
@@ -242,7 +257,7 @@ class ContentService
         }
         return null;
     }
-    
+
     /**
      * Check if posts table exists
      */
@@ -251,13 +266,13 @@ class ContentService
         if (!R::testConnection()) {
             return false;
         }
-        
+
         // RedBeanPHP will create the table automatically when we first use it
         // But we can check if it exists
         $tables = R::inspect();
         return in_array('isotonepost', $tables);
     }
-    
+
     /**
      * Initialize demo content
      */
@@ -266,19 +281,19 @@ class ContentService
         if (!R::testConnection()) {
             return false;
         }
-        
+
         // Check if we already have posts
         $count = R::count('isotonepost');
         if ($count > 0) {
             return true; // Already have content
         }
-        
+
         // Create demo posts
         $demoPosts = $this->getDemoPosts();
         foreach ($demoPosts as $demoPost) {
             $this->createPost((array) $demoPost);
         }
-        
+
         return true;
     }
 }

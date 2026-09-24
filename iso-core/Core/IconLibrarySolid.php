@@ -1,10 +1,11 @@
 <?php
+
 /**
  * Heroicons v2.1.5 - Solid Icons
- * 
+ *
  * MIT License
  * Copyright (c) 2020-2024 Refactoring UI Inc.
- * 
+ *
  * This file contains all 316 solid icons from Heroicons v2.1.5
  * Icons are 24x24 with fill="currentColor"
  * Extracted from heroicons-solid.html page source
@@ -336,7 +337,7 @@ class IconLibrarySolid
 
     /**
      * Get a solid icon by name
-     * 
+     *
      * @param string $name Icon name
      * @param array $attributes Additional SVG attributes
      * @return string SVG element or empty string if not found
@@ -365,7 +366,7 @@ class IconLibrarySolid
 
     /**
      * Get the raw SVG path for an icon
-     * 
+     *
      * @param string $name Icon name
      * @return string SVG path element(s)
      */
@@ -376,7 +377,7 @@ class IconLibrarySolid
 
     /**
      * Check if an icon exists
-     * 
+     *
      * @param string $name Icon name
      * @return bool
      */
@@ -387,7 +388,7 @@ class IconLibrarySolid
 
     /**
      * Get all available icon names
-     * 
+     *
      * @return array
      */
     public static function getIconNames()
@@ -397,7 +398,7 @@ class IconLibrarySolid
 
     /**
      * Get total count of icons
-     * 
+     *
      * @return int
      */
     public static function getIconCount()

@@ -1,7 +1,8 @@
 <?php
+
 /**
  * Isotone - Database Migration System
- * 
+ *
  * @copyright  2025 Rizonetech (Pty) Ltd
  * @license    MIT License
  * @author     Rizonetech Development Team
@@ -20,7 +21,7 @@ class Migration
      * Migration history table
      */
     private const MIGRATION_TABLE = 'isotone_migrations';
-    
+
     /**
      * Available migrations
      */
@@ -31,7 +32,7 @@ class Migration
             'down' => 'dropInitialSchema'
         ]
     ];
-    
+
     /**
      * Initialize migration system
      */
@@ -46,18 +47,18 @@ class Migration
             R::store($migration);
         }
     }
-    
+
     /**
      * Run pending migrations
      */
     public static function migrate(): array
     {
         self::initialize();
-        
+
         $results = [];
         $currentVersion = self::getCurrentVersion();
         $batch = self::getNextBatch();
-        
+
         foreach (self::$migrations as $version => $migration) {
             if (version_compare($version, $currentVersion, '>')) {
                 try {
@@ -66,7 +67,7 @@ class Migration
                     if (method_exists(self::class, $method)) {
                         self::$method();
                     }
-                    
+
                     // Record migration
                     $record = R::dispense(self::MIGRATION_TABLE);
                     $record->version = $version;
@@ -74,7 +75,7 @@ class Migration
                     $record->batch = $batch;
                     $record->executed_at = date('Y-m-d H:i:s');
                     R::store($record);
-                    
+
                     $results[] = [
                         'version' => $version,
                         'status' => 'success',
@@ -90,10 +91,10 @@ class Migration
                 }
             }
         }
-        
+
         return $results;
     }
-    
+
     /**
      * Rollback last batch of migrations
      */
@@ -101,13 +102,13 @@ class Migration
     {
         $results = [];
         $lastBatch = self::getLastBatch();
-        
+
         if ($lastBatch === 0) {
             return [['status' => 'info', 'message' => 'Nothing to rollback']];
         }
-        
+
         $migrations = R::find(self::MIGRATION_TABLE, 'batch = ? ORDER BY version DESC', [$lastBatch]);
-        
+
         foreach ($migrations as $migration) {
             $version = $migration->version;
             if (isset(self::$migrations[$version])) {
@@ -116,9 +117,9 @@ class Migration
                     if (method_exists(self::class, $method)) {
                         self::$method();
                     }
-                    
+
                     R::trash($migration);
-                    
+
                     $results[] = [
                         'version' => $version,
                         'status' => 'success',
@@ -134,10 +135,10 @@ class Migration
                 }
             }
         }
-        
+
         return $results;
     }
-    
+
     /**
      * Get current database version
      */
@@ -146,7 +147,7 @@ class Migration
         $latest = R::findOne(self::MIGRATION_TABLE, 'ORDER BY version DESC LIMIT 1');
         return $latest ? $latest->version : '0.0.0';
     }
-    
+
     /**
      * Get next batch number
      */
@@ -155,7 +156,7 @@ class Migration
         $latest = R::findOne(self::MIGRATION_TABLE, 'ORDER BY batch DESC LIMIT 1');
         return $latest ? $latest->batch + 1 : 1;
     }
-    
+
     /**
      * Get last batch number
      */
@@ -164,7 +165,7 @@ class Migration
         $latest = R::findOne(self::MIGRATION_TABLE, 'ORDER BY batch DESC LIMIT 1');
         return $latest ? $latest->batch : 0;
     }
-    
+
     /**
      * Check if database needs migration
      */
@@ -174,17 +175,17 @@ class Migration
         $latestVersion = Version::SCHEMA_VERSION;
         return version_compare($latestVersion, $currentVersion, '>');
     }
-    
+
     /**
      * Get migration status
      */
     public static function getStatus(): array
     {
         self::initialize();
-        
+
         $executed = [];
         $pending = [];
-        
+
         $records = R::findAll(self::MIGRATION_TABLE);
         foreach ($records as $record) {
             $executed[$record->version] = [
@@ -192,7 +193,7 @@ class Migration
                 'executed_at' => $record->executed_at
             ];
         }
-        
+
         foreach (self::$migrations as $version => $migration) {
             if (!isset($executed[$version]) || $version === '0.0.0') {
                 $pending[] = [
@@ -201,7 +202,7 @@ class Migration
                 ];
             }
         }
-        
+
         return [
             'current_version' => self::getCurrentVersion(),
             'target_version' => Version::SCHEMA_VERSION,
@@ -210,9 +211,9 @@ class Migration
             'needs_migration' => self::needsMigration()
         ];
     }
-    
+
     // Migration methods
-    
+
     /**
      * Create initial schema
      */
@@ -224,7 +225,7 @@ class Migration
         $setting->value = 'Isotone';
         $setting->type = 'string';
         R::store($setting);
-        
+
         // Users table structure (RedBean will create it)
         $user = R::dispense('isotone_users');
         $user->username = 'admin';
@@ -234,7 +235,7 @@ class Migration
         $user->created_at = date('Y-m-d H:i:s');
         R::store($user);
         R::trash($user); // Remove sample user
-        
+
         // Content table structure
         $content = R::dispense('isotone_content');
         $content->title = 'Sample';
@@ -246,7 +247,7 @@ class Migration
         R::store($content);
         R::trash($content); // Remove sample
     }
-    
+
     /**
      * Drop initial schema
      */

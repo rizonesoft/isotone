@@ -1,38 +1,14 @@
 {
-    "generated": "2025-08-18 17:14:25",
+    "generated": "2025-08-26 04:48:43",
     "stats": {
-        "files_scanned": 36,
-        "hooks_found": 10,
+        "files_scanned": 42,
+        "hooks_found": 6,
         "system_hooks_total": 58,
-        "system_hooks_implemented": 5,
+        "system_hooks_implemented": 1,
         "orphan_hooks": 5
     },
     "implementations": {
         "actions": {
-            "after_setup_theme": [
-                {
-                    "file": "iso-admin\/hooks-explorer.php",
-                    "line": 52
-                }
-            ],
-            "init": [
-                {
-                    "file": "iso-admin\/hooks-explorer.php",
-                    "line": 53
-                }
-            ],
-            "widgets_init": [
-                {
-                    "file": "iso-admin\/hooks-explorer.php",
-                    "line": 54
-                }
-            ],
-            "iso_enqueue_scripts": [
-                {
-                    "file": "iso-admin\/hooks-explorer.php",
-                    "line": 55
-                }
-            ],
             "isotone_head": [
                 {
                     "file": "iso-content\/themes\/isotone-default\/index.php",
@@ -77,13 +53,8 @@
             "type": "action",
             "description": "Fires after Isotone has finished loading but before any headers are sent",
             "since": "1.0.0",
-            "implemented": true,
-            "locations": [
-                {
-                    "file": "iso-admin\/hooks-explorer.php",
-                    "line": 53
-                }
-            ]
+            "implemented": false,
+            "locations": []
         },
         "iso_loaded": {
             "type": "action",
@@ -96,13 +67,8 @@
             "type": "action",
             "description": "Fires after the theme is loaded",
             "since": "1.0.0",
-            "implemented": true,
-            "locations": [
-                {
-                    "file": "iso-admin\/hooks-explorer.php",
-                    "line": 52
-                }
-            ]
+            "implemented": false,
+            "locations": []
         },
         "iso_head": {
             "type": "action",
@@ -134,13 +100,8 @@
             "type": "action",
             "description": "Fires when scripts and styles should be enqueued",
             "since": "1.0.0",
-            "implemented": true,
-            "locations": [
-                {
-                    "file": "iso-admin\/hooks-explorer.php",
-                    "line": 55
-                }
-            ]
+            "implemented": false,
+            "locations": []
         },
         "iso_before_content": {
             "type": "action",
@@ -293,13 +254,8 @@
             "type": "action",
             "description": "Fires after all default widgets have been registered",
             "since": "1.0.0",
-            "implemented": true,
-            "locations": [
-                {
-                    "file": "iso-admin\/hooks-explorer.php",
-                    "line": 54
-                }
-            ]
+            "implemented": false,
+            "locations": []
         },
         "dynamic_sidebar_before": {
             "type": "action",

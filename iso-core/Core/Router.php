@@ -1,14 +1,16 @@
 <?php
+
 /**
  * Isotone - Router System
- * 
+ *
  * Lightweight routing with pattern matching, error handling, and permalink support
  * Works identically on Apache, Nginx, and LiteSpeed
- * 
+ *
  * @copyright  2025 Rizonetech (Pty) Ltd
  * @license    MIT License
  * @author     Rizonetech Development Team
  */
+
 declare(strict_types=1);
 
 namespace Isotone\Core;
@@ -26,7 +28,7 @@ class Router
     private string $basePath;
     private ?array $currentRoute = null;
     private array $routeParams = [];
-    
+
     // Route parameter patterns
     private const PARAM_PATTERNS = [
         'any' => '([^/]+)',
@@ -38,14 +40,14 @@ class Router
         'alpha' => '([a-zA-Z]+)',
         'alphanum' => '([a-zA-Z0-9]+)'
     ];
-    
+
     public function __construct(string $basePath)
     {
         $this->basePath = $basePath;
         $this->initializeDefaultRoutes();
         $this->initializeErrorHandlers();
     }
-    
+
     /**
      * Initialize default system routes
      */
@@ -53,19 +55,19 @@ class Router
     {
         // System routes
         $this->addRoute('GET', '/', [$this, 'handleHome']);
-        
+
         // API routes - now handled through router
         $this->addRoute('GET', '/api/version', [$this, 'handleApiVersion']);
         $this->addRoute('GET', '/api/system', [$this, 'handleApiSystem']);
         $this->addRoute('GET', '/api', [$this, 'handleApiDiscovery']);
-        
+
         // Add pattern for general API routing
         $this->addRoute('*', '/api/{endpoint:any}', [$this, 'handleApiEndpoint']);
-        
+
         // Admin routes (for future integration)
         // $this->addRoute('*', '/admin/{path:any}', [$this, 'handleAdmin']);
     }
-    
+
     /**
      * Initialize error handlers
      */
@@ -74,17 +76,17 @@ class Router
         // Register error handlers for common HTTP errors
         // Each handler receives the error code and message as parameters
         $errorCodes = [400, 401, 403, 404, 405, 408, 500, 502, 503, 504];
-        
+
         foreach ($errorCodes as $code) {
-            $this->setErrorHandler($code, function($errorCode, $message = '') {
+            $this->setErrorHandler($code, function ($errorCode, $message = '') {
                 $this->handleError($errorCode, $message);
             });
         }
     }
-    
+
     /**
      * Add a route with pattern matching support
-     * 
+     *
      * @param string $method HTTP method (GET, POST, PUT, DELETE, PATCH, *, etc.)
      * @param string $pattern Route pattern with optional parameters
      * @param callable $handler Route handler
@@ -95,7 +97,7 @@ class Router
         // Parse pattern for parameters
         $regex = $this->convertPatternToRegex($pattern);
         $params = $this->extractParameterNames($pattern);
-        
+
         $route = [
             'method' => $method,
             'pattern' => $pattern,
@@ -104,7 +106,7 @@ class Router
             'params' => $params,
             'options' => $options
         ];
-        
+
         // Store both exact and pattern routes
         if (strpos($pattern, '{') === false) {
             // Exact route
@@ -114,7 +116,7 @@ class Router
             $this->patterns[] = $route;
         }
     }
-    
+
     /**
      * Convert route pattern to regex
      * Supports: {param}, {param:type}, {param?}
@@ -123,52 +125,52 @@ class Router
     {
         // Escape special regex characters (except our param placeholders)
         $pattern = preg_quote($pattern, '#');
-        
+
         // Restore the curly braces for parameters (they were escaped by preg_quote)
         $pattern = str_replace(['\\{', '\\}'], ['{', '}'], $pattern);
-        
+
         // Replace {param:type} with appropriate regex
         $pattern = preg_replace_callback(
             '#{([^}]+):([^}]+)}#',
             function ($matches) {
                 $name = $matches[1];
                 $type = $matches[2];
-                
+
                 // Check for optional parameter
                 $optional = '';
                 if (substr($name, -1) === '?') {
                     $name = substr($name, 0, -1);
                     $optional = '?';
                 }
-                
+
                 $regex = self::PARAM_PATTERNS[$type] ?? self::PARAM_PATTERNS['any'];
                 return $regex . $optional;
             },
             $pattern
         );
-        
+
         // Replace {param} with default pattern
         $pattern = preg_replace('#{([^}]+)}#', self::PARAM_PATTERNS['any'], $pattern);
-        
+
         return '#^' . $pattern . '$#';
     }
-    
+
     /**
      * Extract parameter names from pattern
      */
     private function extractParameterNames(string $pattern): array
     {
         preg_match_all('/\{([^:}]+)(?::[^}]+)?\}/', $pattern, $matches);
-        
+
         $params = [];
         foreach ($matches[1] as $param) {
             // Remove optional marker if present
             $params[] = rtrim($param, '?');
         }
-        
+
         return $params;
     }
-    
+
     /**
      * Set error handler for specific HTTP status code
      */
@@ -176,7 +178,7 @@ class Router
     {
         $this->errorHandlers[$code] = $handler;
     }
-    
+
     /**
      * Main request handler
      */
@@ -187,19 +189,19 @@ class Router
             $this->handleHttpError((int)$_SERVER['REDIRECT_STATUS']);
             return;
         }
-        
+
         // Check if error code is passed via query string (from ErrorDocument)
         if (isset($_GET['code']) && is_numeric($_GET['code']) && $_GET['code'] >= 400) {
             $this->handleHttpError((int)$_GET['code']);
             return;
         }
-        
+
         $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
         $uri = $this->parseUri();
-        
+
         // Try to find matching route
         $route = $this->findRoute($method, $uri);
-        
+
         if ($route) {
             $this->currentRoute = $route;
             $response = call_user_func_array($route['handler'], $this->routeParams);
@@ -208,19 +210,19 @@ class Router
             $this->handleHttpError(404);
         }
     }
-    
+
     /**
      * Parse and clean the request URI
      */
     private function parseUri(): string
     {
         $uri = $_SERVER['REQUEST_URI'] ?? '/';
-        
+
         // Remove query string
         if (($pos = strpos($uri, '?')) !== false) {
             $uri = substr($uri, 0, $pos);
         }
-        
+
         // Remove /isotone prefix if present
         if (strpos($uri, '/isotone') === 0) {
             $uri = preg_replace('#^/isotone#', '', $uri);
@@ -228,15 +230,15 @@ class Router
                 $uri = '/';
             }
         }
-        
+
         // Ensure URI starts with /
         if ($uri[0] !== '/') {
             $uri = '/' . $uri;
         }
-        
+
         return $uri;
     }
-    
+
     /**
      * Find matching route for method and URI
      */
@@ -244,47 +246,47 @@ class Router
     {
         // Clear previous route params
         $this->routeParams = [];
-        
+
         // Check exact routes first
         if (isset($this->routes[$method][$uri])) {
             return $this->routes[$method][$uri];
         }
-        
+
         // Check wildcard method exact routes
         if (isset($this->routes['*'][$uri])) {
             return $this->routes['*'][$uri];
         }
-        
+
         // Check pattern routes
         foreach ($this->patterns as $route) {
             // Check method match (including wildcard)
             if ($route['method'] !== '*' && $route['method'] !== $method) {
                 continue;
             }
-            
+
             // Check pattern match
             if (preg_match($route['regex'], $uri, $matches)) {
                 // Extract parameters
                 array_shift($matches); // Remove full match
-                
+
                 foreach ($route['params'] as $index => $paramName) {
                     $this->routeParams[$paramName] = $matches[$index] ?? null;
                 }
-                
+
                 return $route;
             }
         }
-        
+
         return null;
     }
-    
+
     /**
      * Handle HTTP errors
      */
     public function handleHttpError(int $code, string $message = ''): void
     {
         http_response_code($code);
-        
+
         if (isset($this->errorHandlers[$code])) {
             $response = call_user_func($this->errorHandlers[$code], $code, $message);
             $this->sendResponse($response);
@@ -293,7 +295,7 @@ class Router
             $this->handleError($code, $message);
         }
     }
-    
+
     /**
      * Default error handler
      */
@@ -301,7 +303,7 @@ class Router
     {
         // Set error code for error template
         $_GET['code'] = $code;
-        
+
         // Try to use the universal error handler
         $errorFile = $this->basePath . '/server/error.php';
         if (file_exists($errorFile)) {
@@ -310,10 +312,10 @@ class Router
             // Minimal fallback
             echo "Error $code: " . ($message ?: 'An error occurred');
         }
-        
+
         exit;
     }
-    
+
     /**
      * Send response to client
      */
@@ -330,7 +332,7 @@ class Router
             echo 'Invalid response';
         }
     }
-    
+
     /**
      * Get current route information
      */
@@ -338,7 +340,7 @@ class Router
     {
         return $this->currentRoute;
     }
-    
+
     /**
      * Get route parameters
      */
@@ -346,7 +348,7 @@ class Router
     {
         return $this->routeParams;
     }
-    
+
     /**
      * Get specific route parameter
      */
@@ -354,11 +356,11 @@ class Router
     {
         return $this->routeParams[$name] ?? $default;
     }
-    
+
     // ========================================================================
     // Route Handlers
     // ========================================================================
-    
+
     /**
      * Handle home/frontend routes
      */
@@ -366,21 +368,21 @@ class Router
     {
         // Initialize database
         DatabaseService::initialize();
-        
+
         // Load hooks system
         if (file_exists($this->basePath . '/iso-core/hooks.php')) {
             require_once $this->basePath . '/iso-core/hooks.php';
         }
-        
+
         // Load theme functions API
         if (file_exists($this->basePath . '/iso-core/theme-functions.php')) {
             require_once $this->basePath . '/iso-core/theme-functions.php';
         }
-        
+
         // Initialize theme service
         $themeService = new ThemeService();
         $activeTheme = $themeService->getActiveTheme();
-        
+
         if ($activeTheme) {
             // Load theme
             return $this->loadTheme($activeTheme);
@@ -389,54 +391,54 @@ class Router
             return $this->loadTemplate('no-theme');
         }
     }
-    
+
     /**
      * Load theme
      */
     private function loadTheme(array $themeInfo): string
     {
         $themePath = $themeInfo['path'];
-        
+
         // Load theme functions.php if exists
         $functionsFile = $themePath . '/functions.php';
         if (file_exists($functionsFile)) {
             require_once $functionsFile;
         }
-        
+
         // Fire theme initialization hooks
         if (function_exists('do_action')) {
             do_action('after_setup_theme');
             do_action('init');
             do_action('iso_loaded');
         }
-        
+
         // Check for theme compatibility file
         $compatFile = $themePath . '/compat.php';
         if (file_exists($compatFile)) {
             require_once $compatFile;
         }
-        
+
         // Determine which template to load
         $template = $this->getThemeTemplate($themePath);
-        
+
         if (!file_exists($template)) {
             // Fallback to index.php
             $template = $themePath . '/index.php';
         }
-        
+
         // Start output buffering
         ob_start();
-        
+
         // Set up global variables for theme
         global $isotone_theme, $isotone_router;
         $isotone_theme = $themeInfo;
         $isotone_router = $this;
-        
+
         // Fire template redirect hook
         if (function_exists('do_action')) {
             do_action('template_redirect');
         }
-        
+
         // Include the template
         if (file_exists($template)) {
             include $template;
@@ -444,24 +446,24 @@ class Router
             echo '<h1>Theme template not found</h1>';
             echo '<p>The active theme is missing required template files.</p>';
         }
-        
+
         $html = ob_get_clean();
-        
+
         // Fire shutdown hooks
         if (function_exists('do_action')) {
             do_action('shutdown');
         }
-        
+
         return $html;
     }
-    
+
     /**
      * Determine which theme template to use
      */
     private function getThemeTemplate(string $themePath): string
     {
         $uri = $this->parseUri();
-        
+
         // Template hierarchy (simplified for now)
         if ($uri === '/' || $uri === '') {
             // Check for front-page.php, home.php, then index.php
@@ -472,28 +474,28 @@ class Router
                 return $themePath . '/home.php';
             }
         }
-        
+
         // Default to index.php
         return $themePath . '/index.php';
     }
-    
+
     /**
      * Load a system template
      */
     private function loadTemplate(string $template): string
     {
         $templateFile = $this->basePath . '/iso-includes/templates/' . $template . '.php';
-        
+
         if (file_exists($templateFile)) {
             ob_start();
             include $templateFile;
             return ob_get_clean();
         }
-        
+
         // Fallback HTML
         return $this->getDefaultPage($template);
     }
-    
+
     /**
      * Get default page HTML (minimal fallback)
      */
@@ -535,12 +537,12 @@ class Router
     </div>
 </body>
 </html>';
-            
+
             default:
                 return '<h1>Page not found</h1>';
         }
     }
-    
+
     /**
      * Handle API version endpoint
      */
@@ -557,14 +559,14 @@ class Router
             'php_required' => $versionInfo['php_required']
         ];
     }
-    
+
     /**
      * Handle API system endpoint
      */
     private function handleApiSystem()
     {
         $versionInfo = Version::current();
-        
+
         return [
             'version' => $versionInfo,
             'environment' => [
@@ -582,7 +584,7 @@ class Router
             'update_check' => Version::checkForUpdates()
         ];
     }
-    
+
     /**
      * Handle API discovery endpoint
      */
@@ -595,54 +597,54 @@ class Router
             ob_start();
             include $apiFile;
             $output = ob_get_clean();
-            
+
             // Try to decode JSON response
             $json = json_decode($output, true);
             if ($json) {
                 return $json;
             }
-            
+
             // Return raw output if not JSON
             return $output;
         }
-        
+
         return [
             'error' => 'API discovery not available'
         ];
     }
-    
+
     /**
      * Handle general API endpoints
      */
     private function handleApiEndpoint()
     {
         $endpoint = $this->getRouteParam('endpoint');
-        
+
         // Map to actual API file
         $apiFile = $this->basePath . '/iso-api/' . $endpoint . '.php';
-        
+
         // Check for admin API endpoints
         if (strpos($endpoint, 'admin/') === 0) {
             $apiFile = $this->basePath . '/iso-api/' . $endpoint . '.php';
         }
-        
+
         if (file_exists($apiFile)) {
             // Set proper headers
             header('Content-Type: application/json');
             header('Access-Control-Allow-Origin: *');
-            
+
             // Include the API file
             include $apiFile;
             return null; // Response already sent by API file
         }
-        
+
         // API endpoint not found
         $this->handleHttpError(404, 'API endpoint not found');
     }
-    
+
     /**
      * Add WordPress-style permalink support
-     * 
+     *
      * @param string $structure Permalink structure (e.g., '/%year%/%monthnum%/%postname%/')
      */
     public function setPermalinkStructure(string $structure): void
@@ -653,11 +655,11 @@ class Router
             ['{year:year}', '{month:month}', '{day:day}', '{slug:slug}', '{category:slug}'],
             $structure
         );
-        
+
         // Add route for this permalink structure
         $this->addRoute('GET', $pattern, [$this, 'handlePermalink']);
     }
-    
+
     /**
      * Handle permalink requests
      */

@@ -1,10 +1,11 @@
 <?php
+
 /**
  * System Hooks Registration
- * 
+ *
  * This class registers all system hooks that themes and plugins can use.
  * Hooks are the extension points - the system defines them, extensions use them.
- * 
+ *
  * @package Isotone\Core
  * @since 1.0.0
  */
@@ -33,7 +34,7 @@ class SystemHooks
             'description' => 'Fires after the theme is loaded',
             'since' => '1.0.0'
         ],
-        
+
         // Head and Footer Hooks
         'iso_head' => [
             'type' => 'action',
@@ -50,14 +51,14 @@ class SystemHooks
             'description' => 'Fires immediately after the opening <body> tag',
             'since' => '1.0.0'
         ],
-        
+
         // Script and Style Hooks
         'iso_enqueue_scripts' => [
             'type' => 'action',
             'description' => 'Fires when scripts and styles should be enqueued',
             'since' => '1.0.0'
         ],
-        
+
         // Content Hooks
         'iso_before_content' => [
             'type' => 'action',
@@ -79,7 +80,7 @@ class SystemHooks
             'description' => 'Fires after a post is displayed',
             'since' => '1.0.0'
         ],
-        
+
         // Admin Hooks
         'admin_init' => [
             'type' => 'action',
@@ -106,7 +107,7 @@ class SystemHooks
             'description' => 'Fires at the top of the admin dashboard',
             'since' => '1.0.0'
         ],
-        
+
         // User and Authentication Hooks
         'iso_login' => [
             'type' => 'action',
@@ -123,7 +124,7 @@ class SystemHooks
             'description' => 'Fires when a new user registers',
             'since' => '1.0.0'
         ],
-        
+
         // Database Hooks
         'iso_before_save' => [
             'type' => 'action',
@@ -145,7 +146,7 @@ class SystemHooks
             'description' => 'Fires after data is deleted from database',
             'since' => '1.0.0'
         ],
-        
+
         // Plugin Hooks
         'iso_plugin_activation' => [
             'type' => 'action',
@@ -162,7 +163,7 @@ class SystemHooks
             'description' => 'Fires when a plugin is uninstalled',
             'since' => '1.0.0'
         ],
-        
+
         // Theme Hooks
         'iso_theme_activation' => [
             'type' => 'action',
@@ -174,7 +175,7 @@ class SystemHooks
             'description' => 'Fires when a theme is deactivated',
             'since' => '1.0.0'
         ],
-        
+
         // Widget Hooks
         'widgets_init' => [
             'type' => 'action',
@@ -191,7 +192,7 @@ class SystemHooks
             'description' => 'Fires after widgets are rendered in a sidebar',
             'since' => '1.0.0'
         ],
-        
+
         // AJAX Hooks (dynamic)
         'iso_ajax_{action}' => [
             'type' => 'action',
@@ -205,7 +206,7 @@ class SystemHooks
             'since' => '1.0.0',
             'dynamic' => true
         ],
-        
+
         // REST API Hooks
         'rest_api_init' => [
             'type' => 'action',
@@ -222,7 +223,7 @@ class SystemHooks
             'description' => 'Fires after processing a REST request',
             'since' => '1.0.0'
         ],
-        
+
         // Routing Hooks
         'template_redirect' => [
             'type' => 'action',
@@ -239,18 +240,18 @@ class SystemHooks
             'description' => 'Fires after route processing',
             'since' => '1.0.0'
         ],
-        
+
         // Shutdown Hook
         'shutdown' => [
             'type' => 'action',
             'description' => 'Fires just before PHP shuts down execution',
             'since' => '1.0.0'
         ],
-        
+
         // ============================================
         // FILTERS
         // ============================================
-        
+
         // Content Filters
         'the_content' => [
             'type' => 'filter',
@@ -267,7 +268,7 @@ class SystemHooks
             'description' => 'Filters the post excerpt',
             'since' => '1.0.0'
         ],
-        
+
         // URL Filters
         'iso_site_url' => [
             'type' => 'filter',
@@ -284,7 +285,7 @@ class SystemHooks
             'description' => 'Filters the admin URL',
             'since' => '1.0.0'
         ],
-        
+
         // Script/Style Filters
         'iso_enqueue_style' => [
             'type' => 'filter',
@@ -296,7 +297,7 @@ class SystemHooks
             'description' => 'Filters script enqueue data before adding',
             'since' => '1.0.0'
         ],
-        
+
         // Query Filters
         'iso_query_vars' => [
             'type' => 'filter',
@@ -308,7 +309,7 @@ class SystemHooks
             'description' => 'Filters the request variables',
             'since' => '1.0.0'
         ],
-        
+
         // Template Filters
         'iso_template_include' => [
             'type' => 'filter',
@@ -320,7 +321,7 @@ class SystemHooks
             'description' => 'Filters the active theme directory',
             'since' => '1.0.0'
         ],
-        
+
         // User Filters
         'iso_user_capabilities' => [
             'type' => 'filter',
@@ -332,7 +333,7 @@ class SystemHooks
             'description' => 'Filters authentication result',
             'since' => '1.0.0'
         ],
-        
+
         // Admin Filters
         'iso_admin_menu_items' => [
             'type' => 'filter',
@@ -344,7 +345,7 @@ class SystemHooks
             'description' => 'Filters admin bar items',
             'since' => '1.0.0'
         ],
-        
+
         // Settings Filters
         'iso_option_{option_name}' => [
             'type' => 'filter',
@@ -358,7 +359,7 @@ class SystemHooks
             'since' => '1.0.0'
         ]
     ];
-    
+
     /**
      * Initialize and register all system hooks
      */
@@ -367,24 +368,24 @@ class SystemHooks
         // System hooks don't need callbacks - they're just defined as extension points
         // The system will call do_action() or apply_filters() at appropriate times
         // Themes and plugins will add_action() or add_filter() to hook into them
-        
+
         // This method is primarily for documentation and validation
         // We can use it to ensure hooks are properly defined before being fired
     }
-    
+
     /**
      * Get all registered system hooks
-     * 
+     *
      * @return array
      */
     public static function getSystemHooks()
     {
         return self::$systemHooks;
     }
-    
+
     /**
      * Check if a hook is a system hook
-     * 
+     *
      * @param string $hook Hook name
      * @return bool
      */
@@ -394,7 +395,7 @@ class SystemHooks
         if (isset(self::$systemHooks[$hook])) {
             return true;
         }
-        
+
         // Check dynamic hooks
         foreach (self::$systemHooks as $pattern => $info) {
             if (!empty($info['dynamic'])) {
@@ -406,13 +407,13 @@ class SystemHooks
                 }
             }
         }
-        
+
         return false;
     }
-    
+
     /**
      * Get hook information
-     * 
+     *
      * @param string $hook Hook name
      * @return array|null
      */
@@ -421,7 +422,7 @@ class SystemHooks
         if (isset(self::$systemHooks[$hook])) {
             return self::$systemHooks[$hook];
         }
-        
+
         // Check dynamic hooks
         foreach (self::$systemHooks as $pattern => $info) {
             if (!empty($info['dynamic'])) {
@@ -431,13 +432,13 @@ class SystemHooks
                 }
             }
         }
-        
+
         return null;
     }
-    
+
     /**
      * Fire a system hook (with validation)
-     * 
+     *
      * @param string $hook Hook name
      * @param mixed ...$args Arguments to pass
      * @return mixed
@@ -451,9 +452,9 @@ class SystemHooks
                 error_log("Warning: Firing unregistered hook: $hook");
             }
         }
-        
+
         $info = self::getHookInfo($hook);
-        
+
         if ($info && $info['type'] === 'filter') {
             return apply_filters($hook, ...$args);
         } else {

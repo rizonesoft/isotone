@@ -1,10 +1,11 @@
 <?php
+
 /**
  * Log Service
- * 
+ *
  * Centralized logging service using Monolog
  * Provides logging capabilities throughout Isotone
- * 
+ *
  * @package Isotone
  * @subpackage Services
  */
@@ -20,7 +21,7 @@ class LogService
 {
     private static ?Logger $instance = null;
     private static string $logPath;
-    
+
     /**
      * Get the logger instance
      */
@@ -29,24 +30,24 @@ class LogService
         if (self::$instance === null) {
             self::init();
         }
-        
+
         return self::$instance;
     }
-    
+
     /**
      * Initialize the logger
      */
     private static function init(): void
     {
         self::$logPath = dirname(__DIR__, 2) . '/iso-content/logs';
-        
+
         // Ensure log directory exists
         if (!is_dir(self::$logPath)) {
             mkdir(self::$logPath, 0755, true);
         }
-        
+
         self::$instance = new Logger('isotone');
-        
+
         // Custom formatter without stack traces for cleaner logs
         $formatter = new LineFormatter(
             "[%datetime%] %channel%.%level_name%: %message% %context%\n",
@@ -54,7 +55,7 @@ class LogService
             false,
             true
         );
-        
+
         // Error log - only errors and above
         $errorHandler = new StreamHandler(
             self::$logPath . '/error.log',
@@ -62,7 +63,7 @@ class LogService
         );
         $errorHandler->setFormatter($formatter);
         self::$instance->pushHandler($errorHandler);
-        
+
         // Daily rotating log - info and above
         $dailyHandler = new RotatingFileHandler(
             self::$logPath . '/isotone.log',
@@ -71,12 +72,12 @@ class LogService
         );
         $dailyHandler->setFormatter($formatter);
         self::$instance->pushHandler($dailyHandler);
-        
+
         // Security log - for authentication and security events
         // We'll create a separate logger for security to avoid filter issues
         // This is handled in the security() method instead
     }
-    
+
     /**
      * Log an info message
      */
@@ -84,7 +85,7 @@ class LogService
     {
         self::get()->info($message, $context);
     }
-    
+
     /**
      * Log a warning message
      */
@@ -92,7 +93,7 @@ class LogService
     {
         self::get()->warning($message, $context);
     }
-    
+
     /**
      * Log an error message
      */
@@ -100,7 +101,7 @@ class LogService
     {
         self::get()->error($message, $context);
     }
-    
+
     /**
      * Log a critical message
      */
@@ -108,7 +109,7 @@ class LogService
     {
         self::get()->critical($message, $context);
     }
-    
+
     /**
      * Log a debug message
      */
@@ -116,7 +117,7 @@ class LogService
     {
         self::get()->debug($message, $context);
     }
-    
+
     /**
      * Log a security event
      */
@@ -127,10 +128,10 @@ class LogService
         $timestamp = date('Y-m-d H:i:s');
         $contextStr = !empty($context) ? json_encode($context) : '';
         $logLine = "[$timestamp] isotone.SECURITY: $message $contextStr\n";
-        
+
         file_put_contents($securityLog, $logLine, FILE_APPEND | LOCK_EX);
     }
-    
+
     /**
      * Log a database query (for debugging)
      */
@@ -143,7 +144,7 @@ class LogService
             ]);
         }
     }
-    
+
     /**
      * Get the log file path
      */
@@ -151,7 +152,7 @@ class LogService
     {
         return self::$logPath;
     }
-    
+
     /**
      * Clear old log files
      */
@@ -159,7 +160,7 @@ class LogService
     {
         $files = glob(self::$logPath . '/*.log*');
         $now = time();
-        
+
         foreach ($files as $file) {
             if (is_file($file)) {
                 if ($now - filemtime($file) >= 60 * 60 * 24 * $daysToKeep) {
@@ -167,7 +168,7 @@ class LogService
                 }
             }
         }
-        
+
         self::info('Cleaned old log files', ['days_kept' => $daysToKeep]);
     }
 }
